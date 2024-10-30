@@ -1,13 +1,15 @@
 import type { Metadata } from "next";
-import "./styles/globals.css";
+import "./_styles/globals.css";
 import PreviousPathnameProvider from "@/provider/previous-pathname";
-import cn from "@/utils/class_names";
+import cn from "@/utils/class-names";
 import { Suspense } from "react";
 import GlobalModal from "@/components/modal";
+import { inter, oxygen } from "./fonts";
 
 export const metadata: Metadata = {
   title: "KADA",
-  description: "Transforming Kaduna through Food Security and National Development",
+  description:
+    "Transforming Kaduna through Food Security and National Development",
 };
 
 export default function RootLayout({
@@ -17,12 +19,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={cn(
-          "font-oxygen"
-        )}
-      >
-
+      <body className={cn(oxygen.variable, inter.variable, "font-oxygen")}>
         <PreviousPathnameProvider>
           <Suspense fallback={<div className="">Loading...</div>}>
             <main className="relative">

@@ -2,7 +2,7 @@
 import React from "react";
 import { usePathname } from "next/navigation";
 import useScreenSize from "@/hooks/use-screen-size";
-import cn from "@/utils/class_names";
+import cn from "@/utils/class-names";
 import Link from "next/link";
 import { Badge } from "rizzui";
 import { ArrowLeftEndOnRectangleIcon } from "@heroicons/react/16/solid";
@@ -20,20 +20,57 @@ const adminBasePath = "/admin";
 // Admin Menu
 const adminMenuItems: MenuItem[] = [
   { icon: "/images/home-icon.svg", label: "Dashboard", href: adminBasePath },
-  { icon: "/images/home-icon.svg", label: "Farmers", href: `${adminBasePath}/members` },
-  { icon: "/images/home-icon.svg", label: "Cooperative", href: `${adminBasePath}/cooperative` },
-  { icon: "/images/home-icon.svg", label: "Requests", href: `${adminBasePath}/requests`, addons: '3' },
-  { icon: "/images/home-icon.svg", label: "Insight", href: `${adminBasePath}/insight` },
+  {
+    icon: "/images/home-icon.svg",
+    label: "Farmers",
+    href: `${adminBasePath}/members`,
+  },
+  {
+    icon: "/images/home-icon.svg",
+    label: "Cooperative",
+    href: `${adminBasePath}/cooperative`,
+  },
+  {
+    icon: "/images/home-icon.svg",
+    label: "Requests",
+    href: `${adminBasePath}/requests`,
+    addons: "3",
+  },
+  {
+    icon: "/images/home-icon.svg",
+    label: "Insight",
+    href: `${adminBasePath}/insight`,
+  },
 ];
 
 // Regular User Menu
 const menuItems: MenuItem[] = [
   { icon: "/images/home-icon.svg", label: "Dashboard", href: basePath },
-  { icon: "/images/home-icon.svg", label: "Members", href: `${basePath}/members` },
-  { icon: "/images/home-icon.svg", label: "Events", href: `${basePath}/events` },
-  { icon: "/images/home-icon.svg", label: "Opportunities", href: `${basePath}/opportunities` },
-  { icon: "/images/home-icon.svg", label: "Funding", href: `${basePath}/funding` },
-  { icon: "/images/home-icon.svg", label: "Vendors", href: `${basePath}/vendors` },
+  {
+    icon: "/images/home-icon.svg",
+    label: "Members",
+    href: `${basePath}/members`,
+  },
+  {
+    icon: "/images/home-icon.svg",
+    label: "Events",
+    href: `${basePath}/events`,
+  },
+  {
+    icon: "/images/home-icon.svg",
+    label: "Opportunities",
+    href: `${basePath}/opportunities`,
+  },
+  {
+    icon: "/images/home-icon.svg",
+    label: "Funding",
+    href: `${basePath}/funding`,
+  },
+  {
+    icon: "/images/home-icon.svg",
+    label: "Vendors",
+    href: `${basePath}/vendors`,
+  },
 ];
 
 const Sidebar: React.FC = () => {
@@ -49,7 +86,13 @@ const Sidebar: React.FC = () => {
   if (width < 992) return null; // Hide sidebar on smaller screens
 
   return (
-    <aside className={cn("flex flex-col w-[19%] max-md:ml-0 max-md:w-full pr- min-h-screen border-r h-full fixed bg-white", isAdminRoute, "border-green-300")}>
+    <aside
+      className={cn(
+        "flex flex-col w-[19%] max-md:ml-0 max-md:w-full pr- min-h-screen border-r h-full fixed bg-white",
+        isAdminRoute,
+        "border-green-300"
+      )}
+    >
       <nav className="flex overflow-hidden flex-col items-start px-6 pt-5 pb-64 mx-auto w-full leading-tight bg-white border-r-0 border-zinc-700 border-opacity-30 max-md:px-5 max-md:pb-24 max-md:mt-10">
         <div className="flex gap-2 self-center text-sm font-bold whitespace-nowrap text-zinc-700 w-[81px]">
           <img
@@ -66,11 +109,15 @@ const Sidebar: React.FC = () => {
             className="object-contain shrink-0 rounded-full aspect-square w-[39px]"
           />
           <div className="flex flex-col mt-1.5">
-            <div className="self-start text-sm font-semibold text-black">FACESIIWO</div>
+            <div className="self-start text-sm font-semibold text-black">
+              FACESIIWO
+            </div>
             <div className="text-xs text-zinc-500">Cooperative Society</div>
           </div>
         </div>
-        <h2 className="mt-16 mb-5 text-sm font- text-neutral-700 max-md:mt-10">MENU</h2>
+        <h2 className="mt-16 mb-5 text-sm font- text-neutral-700 max-md:mt-10">
+          MENU
+        </h2>
 
         {itemsToRender.map((item, index) => {
           const isActive = pathname === item.href; // Check if the current path matches the item's href.
@@ -94,7 +141,9 @@ const Sidebar: React.FC = () => {
               <div className="flex gap-3 items-center w-full">
                 <div>{item.label}</div>
                 {item.addons && (
-                  <Badge variant="outline" color="success" className="-0">{item.addons}</Badge>
+                  <Badge variant="outline" color="success" className="-0">
+                    {item.addons}
+                  </Badge>
                 )}
               </div>
             </Link>
@@ -102,8 +151,10 @@ const Sidebar: React.FC = () => {
         })}
 
         <div className="flex gap-4 items-center self-stretch py-2.5 pr-8 px-2 mt-52  max-md:mt-10">
-          <Link href={'/portal'} className="flex gap-2 items-center w-full hover:underline text-zinc-700">
-
+          <Link
+            href={"/portal"}
+            className="flex gap-2 items-center w-full hover:underline text-zinc-700"
+          >
             <ArrowLeftEndOnRectangleIcon className="w-4 text-zinc-700" />
 
             <div>Logout</div>

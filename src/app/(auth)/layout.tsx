@@ -7,7 +7,13 @@ export default function MainAuthLayout({
   children: React.ReactNode;
 }) {
   return (
-    <Suspense fallback={<div className=""><AppLoader /></div>}>
+    <Suspense
+      fallback={
+        <div className="">
+          <AppLoader />
+        </div>
+      }
+    >
       {children}
     </Suspense>
   );

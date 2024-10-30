@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -p 5991",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -p 5991",
     "lint": "next lint"
   },
   "dependencies": {
@@ -16,10 +16,12 @@
     "clsx": "^2.1.1",
     "jotai": "^2.10.0",
     "next": "14.2.14",
-    "next-images": "^1.8.5",
+    "nextjs-toploader": "^3.7.15",
     "react": "^18",
     "react-dom": "^18",
     "react-hook-form": "^7.53.0",
+    "react-hot-toast": "^2.4.1",
+    "react-rating": "^2.0.5",
     "rizzui": "^0.8.7",
     "swiper": "^11.1.14",
     "tailwind-merge": "^2.5.2"

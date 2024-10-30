@@ -1,5 +1,5 @@
 "use client";
-import cn from "@/utils/class_names";
+import cn from "@/utils/class-names";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useRef, useState } from "react";
@@ -122,16 +122,12 @@ const MobileNav = () => {
       ))}
     </>
   );
-}
+};
 
-const NavModal = ({
-  open,
-}: {
-  open: boolean;
-}) => {
+const NavModal = ({ open }: { open: boolean }) => {
   const { width } = useScreenSize();
   const [activeTab, setActiveTab] = React.useState(1);
-  const [tabs, ] = React.useState([
+  const [tabs] = React.useState([
     {
       id: 1,
       title: "About Nigeria",
@@ -166,9 +162,9 @@ const NavModal = ({
                 placeholder="Search for services, news e.tc"
                 className="bg-white rounded-xl"
                 inputClassName="!h-[48px] rounded-xl w-full"
-              // prefix={
-              //   <Search2Icon className="fill-gray-500 h-[20px] w-[20px]" />
-              // }
+                // prefix={
+                //   <Search2Icon className="fill-gray-500 h-[20px] w-[20px]" />
+                // }
               />
             </div>
 
@@ -244,7 +240,7 @@ const NavModal = ({
       </div>
     </>
   );
-}
+};
 
 type AccordionProps = {
   title: string;

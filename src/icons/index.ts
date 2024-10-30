@@ -11,3 +11,14 @@ export { default as UserIcon } from "./user.svg";
 export { default as UsersIcon } from "./users.svg";
 export { default as PlusIcon } from "./plus.svg";
 export { default as ArrowRightIcon } from "./arrow-right.svg";
+export { default as HandCoins } from "./hand-coins.svg";
+export { default as DashboardIcon } from "./dashboard.svg";
+export { default as LotusIcon } from "./lotus.svg";
+export { default as BriefcaseIcon } from "./briefcase.svg";
+export { default as MoneyIcon } from "./money.svg";
+export { default as StorefrontIcon } from "./storefront.svg";
+export { default as ProfileIcon } from "./profile.svg";
+export { default as CelebrateIcon } from "./celebrate.svg";
+
+// app icons
+export { default as CameraIcon } from "./camera.svg";
