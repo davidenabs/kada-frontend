@@ -5,7 +5,7 @@ import Input from "@/components/form/input";
 import { SearchIcon } from "@/icons";
 import React from "react";
 
-function VendorsSharedPage() {
+function FarmerVendorsSharedPage() {
   return (
     <section className="flex gap-4">
       <div className="flex-1">
@@ -60,4 +60,4 @@ function VendorsSharedPage() {
   );
 }
 
-export default VendorsSharedPage;
+export default FarmerVendorsSharedPage;

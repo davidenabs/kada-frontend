@@ -6,6 +6,13 @@ import cn from "@/utils/class-names";
 import Link from "next/link";
 import { Badge } from "rizzui";
 import { ArrowLeftEndOnRectangleIcon } from "@heroicons/react/16/solid";
+import {
+  BriefcaseIcon,
+  DashboardIcon,
+  ProfileIcon,
+  StorefrontIcon,
+  UsersListIcon,
+} from "@/icons";
 
 interface MenuItem {
   icon: string;
@@ -45,31 +52,40 @@ const adminMenuItems: MenuItem[] = [
 
 // Regular User Menu
 const menuItems: MenuItem[] = [
-  { icon: "/images/home-icon.svg", label: "Dashboard", href: basePath },
   {
-    icon: "/images/home-icon.svg",
+    icon: DashboardIcon,
+    label: "Dashboard",
+    href: basePath,
+  },
+  {
+    icon: UsersListIcon,
     label: "Members",
     href: `${basePath}/members`,
   },
+  // {
+  //   icon: DashboardIcon,
+  //   label: "Events",
+  //   href: `${basePath}/events`,
+  // },
   {
-    icon: "/images/home-icon.svg",
-    label: "Events",
-    href: `${basePath}/events`,
-  },
-  {
-    icon: "/images/home-icon.svg",
+    icon: BriefcaseIcon,
     label: "Opportunities",
     href: `${basePath}/opportunities`,
   },
   {
-    icon: "/images/home-icon.svg",
+    icon: DashboardIcon,
     label: "Funding",
     href: `${basePath}/funding`,
   },
   {
-    icon: "/images/home-icon.svg",
+    icon: StorefrontIcon,
     label: "Vendors",
     href: `${basePath}/vendors`,
+  },
+  {
+    icon: ProfileIcon,
+    label: "Profile",
+    href: `${basePath}/profile`,
   },
 ];
 
@@ -88,13 +104,13 @@ const Sidebar: React.FC = () => {
   return (
     <aside
       className={cn(
-        "flex flex-col w-[19%] max-md:ml-0 max-md:w-full pr- min-h-screen border-r h-full fixed bg-white",
+        "flex flex-col w-[254px] max-md:ml-0 max-md:w-full pr- min-h-screen border-r-[.4px] h-full fixed bg-white",
         isAdminRoute,
-        "border-green-300"
+        "border-[#33354354]"
       )}
     >
       <nav className="flex overflow-hidden flex-col items-start px-6 pt-5 pb-64 mx-auto w-full leading-tight bg-white border-r-0 border-zinc-700 border-opacity-30 max-md:px-5 max-md:pb-24 max-md:mt-10">
-        <div className="flex gap-2 self-center text-sm font-bold whitespace-nowrap text-zinc-700 w-[81px]">
+        <div className="flex gap-2 text-sm font-bold whitespace-nowrap text-zinc-700 w-[81px]">
           <img
             src="/images/logo.svg"
             alt="Logo"
@@ -102,42 +118,32 @@ const Sidebar: React.FC = () => {
           />
           <div className="my-auto">KADA</div>
         </div>
-        <div className="flex gap-4 items-start self-stretch py-2.5 pr-8 px-2 mt-11 rounded-2xl bg-neutral-100 max-md:p- max-md:mt-10">
-          <img
-            src="/images/coop-dp.png"
-            alt="User Avatar"
-            className="object-contain shrink-0 rounded-full aspect-square w-[39px]"
-          />
-          <div className="flex flex-col mt-1.5">
-            <div className="self-start text-sm font-semibold text-black">
-              FACESIIWO
-            </div>
-            <div className="text-xs text-zinc-500">Cooperative Society</div>
-          </div>
-        </div>
-        <h2 className="mt-16 mb-5 text-sm font- text-neutral-700 max-md:mt-10">
+
+        <h2 className="mt-10 mb-5 text-sm font- text-neutral-700 max-md:mt-10">
           MENU
         </h2>
 
         {itemsToRender.map((item, index) => {
           const isActive = pathname === item.href; // Check if the current path matches the item's href.
+          const Icon: any = item.icon;
 
           return (
             <Link
               key={index}
               href={item.href}
               className={cn(
-                "flex items-center gap-2 my-3 ml- text- font- px-5 w-full",
-                isActive ? "text-white bg-green-600 py-2.5" : "text-zinc-700",
-                "max-md:ml-2.5",
-                isAdminRoute ? "rounded-full" : "rounded-xl"
+                "flex items-center gap-2 my-3 px-5 w-full rounded-full",
+                isActive ? "text-white bg-[#197A53] py-2.5" : "text-zinc-700",
+                "max-md:ml-2.5"
               )}
             >
-              <img
-                src={item.icon}
-                alt={`${item.label}`}
-                className="object-contain shrink-0 self-center aspect-square w-[18px] fill-re-800"
+              <Icon
+                className={cn(
+                  "w-5 h-5",
+                  isActive ? "fill-[#0BCE6B]" : "fill-[#343330]"
+                )}
               />
+
               <div className="flex gap-3 items-center w-full">
                 <div>{item.label}</div>
                 {item.addons && (
@@ -150,10 +156,10 @@ const Sidebar: React.FC = () => {
           );
         })}
 
-        <div className="flex gap-4 items-center self-stretch py-2.5 pr-8 px-2 mt-52  max-md:mt-10">
+        <div className="mt-16">
           <Link
             href={"/portal"}
-            className="flex gap-2 items-center w-full hover:underline text-zinc-700"
+            className="flex items-center gap-2 my-3 px-5 w-full rounded-full"
           >
             <ArrowLeftEndOnRectangleIcon className="w-4 text-zinc-700" />
 

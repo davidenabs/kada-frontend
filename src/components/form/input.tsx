@@ -18,7 +18,7 @@ const Input: React.FC<InputProp> = ({
   inputClassName,
   ...props
 }) => (
-  <div className="flex flex-col my-1">
+  <div className="flex flex-col">
     <RizzInput
       label={label}
       type={type}

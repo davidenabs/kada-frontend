@@ -34,9 +34,9 @@ const navItems = [
     path: "/dashboard/farmer/funding",
   },
   {
-    label: "Opportunities",
+    label: "Cooperative",
     icon: HandCoins,
-    path: "/dashboard/farmer/opportunities",
+    path: "/dashboard/farmer/cooperative",
   },
   {
     label: "Events",

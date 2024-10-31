@@ -19,6 +19,9 @@ export { default as MoneyIcon } from "./money.svg";
 export { default as StorefrontIcon } from "./storefront.svg";
 export { default as ProfileIcon } from "./profile.svg";
 export { default as CelebrateIcon } from "./celebrate.svg";
+export { default as UsersListIcon } from "./users-list.svg";
+export { default as MapPinIcon } from "./map-pin.svg";
+export { default as VerifiedIcon } from "./verified.svg";
 
 // app icons
 export { default as CameraIcon } from "./camera.svg";

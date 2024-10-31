@@ -20,6 +20,8 @@ const config: Config = {
       },
       backgroundImage: {
         "hero-image": "url('/images/bg.png')",
+        "custom-gradient":
+          "linear-gradient(331.35deg, rgba(0, 0, 0, 0) 30.95%, rgba(38, 84, 38, 0.8) 62.42%)",
       },
 
       colors: {
