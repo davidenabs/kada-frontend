@@ -10,6 +10,8 @@ import MembersTable from "./table";
 import { useModal } from "@/hooks/use-modal";
 import MembershipRequestModal from "@/components/modals/cooperative/membership-request";
 import AddMemberModal from "@/components/modals/cooperative/add-member";
+import { ClipboardIcon } from "@heroicons/react/16/solid";
+import ImportMemberModal from "@/components/modals/cooperative/import-member";
 
 function CooperativeMembersPage() {
   useDashboardTitle("Members");
@@ -24,6 +26,16 @@ function CooperativeMembersPage() {
           </h2>
 
           <div className="flex gap-4">
+            <button
+              onClick={() =>
+                openModal({
+                  customSize: "480px",
+                  view: <ImportMemberModal close={closeModal} />,
+                })
+              }
+            >
+              <ClipboardIcon className="w-4 h-4" />
+            </button>
             <KadaButton
               className="rounded-full"
               variant="outline"

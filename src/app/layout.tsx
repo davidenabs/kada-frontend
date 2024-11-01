@@ -5,6 +5,7 @@ import cn from "@/utils/class-names";
 import { Suspense } from "react";
 import GlobalModal from "@/components/modal";
 import { inter, oxygen } from "./fonts";
+import GlobalDrawer from "@/components/drawer";
 
 export const metadata: Metadata = {
   title: "KADA",
@@ -25,6 +26,7 @@ export default function RootLayout({
             <main className="relative">
               {children}
               <GlobalModal />
+              <GlobalDrawer />
             </main>
           </Suspense>
         </PreviousPathnameProvider>
