@@ -8,8 +8,8 @@ import {
 } from "@/icons";
 import Image from "next/image";
 import Input from "@/components/form/input";
-import Services from "@/components/shared/vendors/service/services";
-import Products from "@/components/shared/vendors/service/products";
+import Services from "@/components/shared/farmer/vendors/service/services";
+import Products from "@/components/shared/farmer/vendors/service/products";
 import { EnvelopeIcon, PhoneIcon } from "@heroicons/react/16/solid";
 import { KadaButton } from "@/components/form/button";
 import { ChatBubbleLeftIcon } from "@heroicons/react/20/solid";

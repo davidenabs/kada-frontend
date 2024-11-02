@@ -26,28 +26,28 @@ const adminBasePath = "/admin";
 
 // Admin Menu
 const adminMenuItems: MenuItem[] = [
-  { icon: "/images/home-icon.svg", label: "Dashboard", href: adminBasePath },
-  {
-    icon: "/images/home-icon.svg",
-    label: "Farmers",
-    href: `${adminBasePath}/members`,
-  },
-  {
-    icon: "/images/home-icon.svg",
-    label: "Cooperative",
-    href: `${adminBasePath}/cooperative`,
-  },
-  {
-    icon: "/images/home-icon.svg",
-    label: "Requests",
-    href: `${adminBasePath}/requests`,
-    addons: "3",
-  },
-  {
-    icon: "/images/home-icon.svg",
-    label: "Insight",
-    href: `${adminBasePath}/insight`,
-  },
+  { icon: DashboardIcon, label: "Dashboard", href: adminBasePath },
+  // {
+  //   icon: "/images/home-icon.svg",
+  //   label: "Farmers",
+  //   href: `${adminBasePath}/members`,
+  // },
+  // {
+  //   icon: "/images/home-icon.svg",
+  //   label: "Cooperative",
+  //   href: `${adminBasePath}/cooperative`,
+  // },
+  // {
+  //   icon: "/images/home-icon.svg",
+  //   label: "Requests",
+  //   href: `${adminBasePath}/requests`,
+  //   addons: "3",
+  // },
+  // {
+  //   icon: "/images/home-icon.svg",
+  //   label: "Insight",
+  //   href: `${adminBasePath}/insight`,
+  // },
 ];
 
 // Regular User Menu

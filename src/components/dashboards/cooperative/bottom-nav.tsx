@@ -58,35 +58,35 @@ const BottomNavigation: React.FC = () => {
   const pathname = usePathname();
   const { width } = useScreenSize();
 
-  if (width > 992) return <></>;
-  else
-    return (
-      <nav className="fixed bottom-0  flex overflow-hidden z-10 gap-5 justify-between items-start px-6 pt-8 pb-4 mt-52 w-full text-xs font-semibold leading-tight text-white whitespace-nowrap bg-stone-50">
-        {menuItems.map((item, index) => {
-          const isActive = pathname === item.href; // Check if the current route matches the menu item.
+  if (width > 992) return null;
 
-          return (
-            <div key={index} className="flex flex-col items-center">
-              <a href={item.href}>
-                <img
-                  loading="lazy"
-                  src={item.icon}
-                  alt={item.label}
-                  className={`object-contain aspect-square w-[22px] ${
-                    isActive ? "bg-green-600 p-1 rounded-full" : ""
-                  }`}
-                />
-              </a>
-              {isActive && (
-                <div className="overflow-hidden gap-2.5 self-stretch px-2 py-1 mt-1.5 bg-green-600 rounded-[60px] text-white">
-                  {item.label}
-                </div>
-              )}
-            </div>
-          );
-        })}
-      </nav>
-    );
+  return (
+    <nav className="fixed bottom-0  flex overflow-hidden z-10 gap-5 justify-between items-start px-6 pt-8 pb-4 mt-52 w-full text-xs font-semibold leading-tight text-white whitespace-nowrap bg-stone-50">
+      {menuItems.map((item, index) => {
+        const isActive = pathname === item.href; // Check if the current route matches the menu item.
+
+        return (
+          <div key={index} className="flex flex-col items-center">
+            <a href={item.href}>
+              <img
+                loading="lazy"
+                src={item.icon}
+                alt={item.label}
+                className={`object-contain aspect-square w-[22px] ${
+                  isActive ? "bg-green-600 p-1 rounded-full" : ""
+                }`}
+              />
+            </a>
+            {isActive && (
+              <div className="overflow-hidden gap-2.5 self-stretch px-2 py-1 mt-1.5 bg-green-600 rounded-[60px] text-white">
+                {item.label}
+              </div>
+            )}
+          </div>
+        );
+      })}
+    </nav>
+  );
 };
 
 export default BottomNavigation;
