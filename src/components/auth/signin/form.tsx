@@ -6,9 +6,40 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { Title } from "rizzui";
+import { useForm } from "react-hook-form";
+import LoginSchema, { LoginSchemaType } from "@/schema/auth";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useLoginMutation } from "@/app/_api/auth";
+import { toast } from "sonner";
 
 const SignInForm: React.FC = () => {
   const router = useRouter();
+
+  const loginMutation = useLoginMutation();
+
+  const {
+    control,
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm({
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+    resolver: zodResolver(LoginSchema),
+  });
+
+  const onSubmit = (data: LoginSchemaType) => {
+    toast.loading("Logging in...");
+
+    loginMutation.mutate(data, {
+      onSuccess: () => {
+        toast.dismiss();
+        toast.success("Login successful");
+      },
+    });
+  };
 
   return (
     <div className="my-auto bg-white md:px-12 px-1 py-10 rounded-lg self-center shadow-lg">
@@ -17,7 +48,11 @@ const SignInForm: React.FC = () => {
         <Title as="h4">Welcome Back to KADA!</Title>
       </div>
 
-      <form className="flex flex-col mx-auto -center mt-8 max-w-[90%] md:max-w-full">
+      <form
+        noValidate
+        className="flex flex-col mx-auto -center mt-8 max-w-[90%] md:max-w-full"
+        onSubmit={handleSubmit(onSubmit)}
+      >
         <div className="text-xl font-bold text-green-800">Sign in</div>
         <div className="mt-1 text-sm font-thin text-black">
           Please enter your credentials to sign in
@@ -27,8 +62,9 @@ const SignInForm: React.FC = () => {
         </label>
         <Input
           placeholder="Email"
-          id="email"
           inputClassName="!py-3 !px-5 !w-[369px] mt-6"
+          {...register("email")}
+          error={errors.email?.message}
         />
 
         <label htmlFor="password" className="sr-only">
@@ -38,9 +74,17 @@ const SignInForm: React.FC = () => {
           placeholder="********"
           id="email"
           className="!py-3 !px-5 !w-[369px] mt-2"
+          {...register("password")}
+          error={errors.password?.message}
         />
 
-        <Button className="!py-3 mt-8 !rounded-full ">Sign in</Button>
+        <Button
+          type="submit"
+          className="!py-3 mt-8 !rounded-full"
+          loading={isSubmitting}
+        >
+          Sign in
+        </Button>
         <Link href="#" className="self-end mt-2 text-sm font-light text-black">
           Forgot Password?
         </Link>

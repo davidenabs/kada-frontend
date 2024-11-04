@@ -22,10 +22,10 @@ export const defaultUser: UserState = {
   language: null,
 };
 
-export const userAtom = atomWithStorage("gsp-user", defaultUser, undefined, {
+export const userAtom = atomWithStorage("kada-user", defaultUser, undefined, {
   getOnInit: true,
 });
 
-export const clearUserAtom = atom(null, (_get, set, ) => {
+export const clearUserAtom = atom(null, (_get, set) => {
   return set(userAtom, defaultUser);
 });

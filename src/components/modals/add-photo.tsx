@@ -5,7 +5,7 @@ import React, { Fragment, useRef } from "react";
 import Input from "../form/input";
 import { KadaButton } from "../form/button";
 import Image from "next/image";
-import { Toaster, toast } from "react-hot-toast";
+import { toast } from "sonner";
 
 interface Props {
   close: () => void;
