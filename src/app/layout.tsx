@@ -9,6 +9,7 @@ import ReactQueryProvider from "@/provider/react-query";
 import PreviousPathnameProvider from "@/provider/previous-pathname";
 import "./_styles/globals.css";
 import { Toaster } from "@/components/common/toast";
+import LoaderProvider from "@/provider/loader";
 
 export const metadata: Metadata = {
   title: "KADA",
@@ -28,10 +29,12 @@ export default function RootLayout({
           <PreviousPathnameProvider>
             <Suspense fallback={<div className="">Loading...</div>}>
               <main className="relative">
-                <Toaster />
-                {children}
-                <GlobalModal />
-                <GlobalDrawer />
+                <LoaderProvider>
+                  <Toaster />
+                  {children}
+                  <GlobalModal />
+                  <GlobalDrawer />
+                </LoaderProvider>
               </main>
             </Suspense>
           </PreviousPathnameProvider>

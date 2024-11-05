@@ -46,12 +46,12 @@ export class ApiClient {
     return response.data;
   }
 
-  static async put<T>(url: string, data: unknown) {
-    const response = await client.put<T>(url, data);
+  static async put<T>(url: string, data: unknown, options?: any) {
+    const response = await client.put<T>(url, data, options);
     return response.data;
   }
 
-  static async patch<T>(url: string, data: unknown) {
+  static async patch<T>(url: string, data: unknown, options?: any) {
     const response = await client.patch<T>(url, data);
     return response.data;
   }
