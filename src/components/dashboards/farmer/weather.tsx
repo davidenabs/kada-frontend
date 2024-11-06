@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 const WeatherWidget: React.FC = () => {
   return (
@@ -11,14 +11,21 @@ const WeatherWidget: React.FC = () => {
           <div className="flex flex-col w-6/12 max-md:ml-0 max-md:w-full">
             <div className="flex flex-col mt-5 leading-tight text-black max-md:mt-10">
               <h2 className="text-xl font-bold">Good Afternoon</h2>
-              <p className="self-start mt-1 text-base font-light">Kaduna, Nigeria</p>
+              <p className="self-start mt-1 text-base font-light">
+                Kaduna, Nigeria
+              </p>
             </div>
           </div>
           <div className="flex flex-col ml-5 w-6/12 max-md:ml-0 max-md:w-full">
             <div className="flex grow gap-2 items-center text-2xl font-light leading-tight text-black whitespace-nowrap max-md:mt-10">
               <div className="self-stretch my-auto">24</div>
               <div className="self-stretch my-auto">c</div>
-              <img loading="lazy" src="/images/sun.svg" alt="Weather icon" className="object-contain shrink-0 self-stretch aspect-square w-[81px]" />
+              <img
+                loading="lazy"
+                src="/images/sun.svg"
+                alt="Weather icon"
+                className="object-contain shrink-0 self-stretch aspect-square w-[81px]"
+              />
             </div>
           </div>
         </div>

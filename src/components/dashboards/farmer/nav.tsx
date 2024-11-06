@@ -1,65 +1,127 @@
-import React, { useState } from 'react';
+import {
+  BriefcaseIcon,
+  DashboardIcon,
+  HandCoins,
+  LotusIcon,
+  MoneyIcon,
+  ProfileIcon,
+  StorefrontIcon,
+} from "@/icons";
+import cn from "@/utils/class-names";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import React, { Fragment, useState } from "react";
+
+const navItems = [
+  {
+    icon: DashboardIcon,
+    label: "Dashboard",
+    path: "/dashboard/farmer",
+  },
+  {
+    icon: LotusIcon,
+    label: "Farms",
+    path: "/dashboard/farmer/farms",
+  },
+  {
+    icon: BriefcaseIcon,
+    label: "Vendors",
+    path: "/dashboard/farmer/vendors",
+  },
+  {
+    icon: MoneyIcon,
+    label: "Funding",
+    path: "/dashboard/farmer/funding",
+  },
+  {
+    label: "Cooperative",
+    icon: HandCoins,
+    path: "/dashboard/farmer/cooperative",
+  },
+  {
+    label: "Events",
+    icon: StorefrontIcon,
+    path: "/dashboard/farmer/events",
+  },
+  {
+    label: "Profile",
+    icon: ProfileIcon,
+    path: "/dashboard/farmer/profile",
+  },
+];
 
 interface NavItemProps {
-    icon?: string; // icon is optional since some items don't have an icon
-    label: string;
-    isActive?: boolean;
-    onClick: () => void;
+  icon?: string; // icon is optional since some items don't have an icon
+  label: string;
+  // onClick: () => void;
+  pathname: string;
+  path: string;
 }
 
-const NavItem: React.FC<NavItemProps> = ({ icon, label, isActive, onClick }) => {
-    const baseClasses = "flex gap-1 items-end cursor-pointer"; // Added cursor-pointer for better UX
-    const activeClasses = isActive
-        ? "px-3 py-2.5 font-bold text-white bg-teal-700 rounded-[60px]"
-        : "my-auto text-black";
+const NavItem: React.FC<NavItemProps> = ({
+  icon,
+  label,
+  // onClick,
+  pathname,
+  path,
+}) => {
+  const baseClasses = "flex gap-1 items-end cursor-pointer"; // Added cursor-pointer for better UX
 
-    return (
-        <div className={`${baseClasses} ${activeClasses}`} onClick={onClick}>
-            {icon && <img loading="lazy" src={icon} alt={label} className="object-contain shrink-0 aspect-square w-[18px]" />}
-            <div>{label}</div>
-        </div>
-    );
+  const isActive = () => {
+    if (path === "/dashboard/farmer") {
+      return pathname === path; // Only match exactly for "/dashboard"
+    }
+    return pathname?.startsWith(path);
+  };
+
+  const activeClasses = isActive()
+    ? "px-3 py-2.5 font-bold text-white bg-[#197A53] rounded-[60px]"
+    : "my-auto text-black";
+
+  const Icon: any = icon;
+
+  return (
+    <div className={cn(baseClasses, activeClasses)}>
+      <Icon
+        className={cn(
+          "w-5 h-5",
+          isActive() ? "fill-[#0BCE6B]" : "fill-[#343330]"
+        )}
+      />
+      <div>{label}</div>
+    </div>
+  );
 };
 
 const Navigation: React.FC = () => {
-    const [activeNav, setActiveNav] = useState<string>('Dashboard'); // Track the active page
+  const pathname = usePathname();
+  const [activeNav, setActiveNav] = useState<string>("Dashboard");
 
-    const navItems = [
-        { icon: "https://cdn.builder.io/api/v1/image/assets/TEMP/fa8229e57a2a07aa0ac9678880aaf013429ec6c3ee0e2c8d6b5a83d5cc41f5a5?placeholderIfAbsent=true&apiKey=e3159558e3c24b7bb6f2db02f0873db3", label: "Dashboard" },
-        { icon: "https://cdn.builder.io/api/v1/image/assets/TEMP/bf27cadaba572421394c010f7081e1333020a554f5de431176b95974f6d0977d?placeholderIfAbsent=true&apiKey=e3159558e3c24b7bb6f2db02f0873db3", label: "Farms" },
-        { icon: "https://cdn.builder.io/api/v1/image/assets/TEMP/2601d0655b8b2f597af9611b2b57de004cd0497217baae2b22b37b47f43c5d69?placeholderIfAbsent=true&apiKey=e3159558e3c24b7bb6f2db02f0873db3", label: "Vendors" },
-        { icon: "https://cdn.builder.io/api/v1/image/assets/TEMP/aad57492463811d6a604b16f61176a24a103e788faea5eb150a6589247d853ac?placeholderIfAbsent=true&apiKey=e3159558e3c24b7bb6f2db02f0873db3", label: "Funding" },
-        { label: "Opportunities" },
-        { label: "Events" },
-    ];
-
-    return (
-        <nav className="flex flex-wrap gap-5 justify-between w-full text-sm leading-tight max-w-[1283px] max-md:max-w-full">
-            <div className="flex flex-wrap gap-10 max-md:max-w-full">
-                <div className="flex gap-9 whitespace-nowrap">
-                    {navItems.slice(0, 2).map((item, index) => (
-                        <NavItem
-                            key={index}
-                            {...item}
-                            isActive={activeNav === item.label}
-                            onClick={() => setActiveNav(item.label)}
-                        />
-                    ))}
-                </div>
-                <div className="flex flex-auto gap-10 my-auto text-black max-md:max-w-full">
-                    {navItems.slice(2).map((item, index) => (
-                        <NavItem
-                            key={index}
-                            {...item}
-                            isActive={activeNav === item.label}
-                            onClick={() => setActiveNav(item.label)}
-                        />
-                    ))}
-                </div>
-            </div>
-            <div className="my-auto font-bold text-black underline">My profile</div> {/* Display the active page */}
-        </nav>
-    );
+  return (
+    <nav className="flex flex-wrap gap-5 justify-between w-full text-sm leading-tight bg-white px-8 py-4">
+      <div className="flex flex-wrap gap-10 max-md:max-w-full">
+        <div className="flex gap-9 whitespace-nowrap">
+          {navItems.slice().map((item, index) => (
+            <Fragment key={index}>
+              <Link
+                href={item.path}
+                passHref
+                scroll={false}
+                className="inline-flex"
+              >
+                <NavItem
+                  key={index}
+                  {...item}
+                  pathname={pathname}
+                  path={item.path}
+                />
+              </Link>
+            </Fragment>
+          ))}
+        </div>
+      </div>
+    </nav>
+  );
 };
 
 export default Navigation;

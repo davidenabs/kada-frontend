@@ -6,7 +6,7 @@ import Button from "@/components/form/button";
 import useScreenSize from "@/hooks/use-screen-size";
 import { useAtom, useSetAtom } from "jotai";
 import { appAtom, openNavDrawerAtom } from "@/stores/app";
-import cn from "@/utils/class_names";
+import cn from "@/utils/class-names";
 import { usePathname, useRouter } from "next/navigation";
 import { Bars3Icon } from "@heroicons/react/16/solid";
 
@@ -19,10 +19,18 @@ interface NavItemProps {
 const NavItem: React.FC<NavItemProps> = ({ text, isActive, route }) => {
   return (
     <div className="flex flex-col items-center">
-      <Link href={route} className={cn("text-tertiary-700", isActive && "font-bold text-primary-700")}>
+      <Link
+        href={route}
+        className={cn(
+          "text-tertiary-700",
+          isActive && "font-bold text-primary-700"
+        )}
+      >
         {text}
       </Link>
-      {isActive && <div className="h-1.5 w-1.5 bg-primary-default rounded-full mt-1" />}
+      {isActive && (
+        <div className="h-1.5 w-1.5 bg-primary-default rounded-full mt-1" />
+      )}
     </div>
   );
 };
@@ -37,10 +45,10 @@ const navItems: NavItemProps[] = [
 
 const Navbar: React.FC = () => {
   const { width } = useScreenSize();
-  const [app,] = useAtom(appAtom);
+  const [app] = useAtom(appAtom);
   const updateNavDrawer = useSetAtom(openNavDrawerAtom);
   const [isMenuOpen, setIsMenuOpen] = useState(false); // State to toggle mobile menu
-  const currentPath = usePathname()
+  const currentPath = usePathname();
   const router = useRouter();
 
   const handleCloseNavDrawer = useCallback(() => {
@@ -68,7 +76,11 @@ const Navbar: React.FC = () => {
       <header className="fixed w-full z-[999]">
         <div className="flex justify-between items-center h-[90px] lg:h-[121px] app_container relative z-[999] leading-tight bg-[#F2F9F5] !backdrop-blur-lg">
           {/* Logo */}
-          <Logo className={cn(width < 1024 ? "h-[46.49px] w-[46px]" : "h-[66.49px] w-[66px]")} />
+          <Logo
+            className={cn(
+              width < 1024 ? "h-[46.49px] w-[46px]" : "h-[66.49px] w-[66px]"
+            )}
+          />
 
           {/* Hamburger Icon for Mobile Screens */}
           {width < 1024 ? (
@@ -78,14 +90,20 @@ const Navbar: React.FC = () => {
             >
               {isMenuOpen ? (
                 <CloseIcon className="h-6 w" />
+              ) : (
                 // <Hamburger className="h-6 w-6" />
-              ) : (<Bars3Icon className="h-6 w-6 fill-black" />)}
+                <Bars3Icon className="h-6 w-6 fill-black" />
+              )}
             </button>
           ) : (
             // Full Navigation for Larger Screens
             <nav className="hidden lg:flex gap-10 self-stretch my-auto text-zinc-700">
               {navItems.map((item, index) => (
-                <NavItem key={index} {...item} isActive={currentPath === item.route} />
+                <NavItem
+                  key={index}
+                  {...item}
+                  isActive={currentPath === item.route}
+                />
               ))}
             </nav>
           )}
@@ -93,7 +111,10 @@ const Navbar: React.FC = () => {
           {/* Button (always visible on large screens, hidden on mobile) */}
           {width >= 1024 && (
             <div>
-              <Button handleClick={() => router.push('/portal')} className="flex w-[146px] h-[45px] gap-2.5 justify-center items-center  !px-5 !py-0 my-auto font-bold text-white !rounded-full">
+              <Button
+                handleClick={() => router.push("/portal")}
+                className="flex w-[146px] h-[45px] gap-2.5 justify-center items-center  !px-5 !py-0 my-auto font-bold text-white !rounded-full"
+              >
                 <span className="self-stretch my-auto">Kada Portal</span>
                 <Lock className="my-auto aspect-square w-[18px]" />
               </Button>
@@ -111,7 +132,10 @@ const Navbar: React.FC = () => {
                 </li>
               ))}
               <li>
-                <Button handleClick={() => router.push('/portal')} className="flex w-[146px] h-[45px] gap-2.5 justify-center items-center  !px-5 !py-0 my-auto font-bold text-white !rounded-full">
+                <Button
+                  handleClick={() => router.push("/portal")}
+                  className="flex w-[146px] h-[45px] gap-2.5 justify-center items-center  !px-5 !py-0 my-auto font-bold text-white !rounded-full"
+                >
                   <span className="self-stretch my-auto">Kada Portal</span>
                   <Lock className="my-auto aspect-square w-[18px]" />
                 </Button>

@@ -1,6 +1,7 @@
 "use client";
 
 import { atom, useAtomValue, useSetAtom } from "jotai";
+import { useEffect } from "react";
 import { ModalSize } from "rizzui";
 
 type ModalTypes = {
@@ -45,6 +46,16 @@ export function useModal() {
       isOpen: false,
     });
   };
+
+  // set view to null when modal is closed
+  useEffect(() => {
+    if (!state.isOpen) {
+      setState({
+        ...state,
+        view: null,
+      });
+    }
+  }, [state.isOpen]);
 
   return {
     ...state,

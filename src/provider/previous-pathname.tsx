@@ -8,7 +8,7 @@ export const PreviousPathnameContext = createContext<string | undefined>(
 
 export default function PreviousPathnameProvider({
   children,
-}: PropsWithChildren<unknown>) { // Use `unknown` instead of `{}` to avoid the lint warning
+}: PropsWithChildren<unknown>) {
   const pathname = usePathname();
   const ref = useRef<string>("/");
 

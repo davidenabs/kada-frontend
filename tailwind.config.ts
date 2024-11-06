@@ -14,11 +14,14 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        oxygen: ['Oxygen', 'sans-serif'],
-        raleway: ['Raleway', 'sans-serif'],
+        inter: ["var(--inter)"],
+        oxygen: ["var(--oxygen)"],
+        railway: ["var(--raleway)"],
       },
       backgroundImage: {
-        "hero-image": "url('/images/bg.png')"
+        "hero-image": "url('/images/bg.png')",
+        "custom-gradient":
+          "linear-gradient(331.35deg, rgba(0, 0, 0, 0) 30.95%, rgba(38, 84, 38, 0.8) 62.42%)",
       },
 
       colors: {
@@ -26,7 +29,7 @@ const config: Config = {
         foreground: "var(--foreground)",
         border: {},
         primary: {
-          default: "#0F6238", //"#367B62", // Base
+          DEFAULT: "#0F6238", //"#367B62", // Base
           100: "#d7e5e0", // 10%
           200: "#bcd3cb", // 20%
           300: "#9bbdb1", // 30%
@@ -40,7 +43,7 @@ const config: Config = {
           1100: "#0b1914", // 100%
         },
         secondary: {
-          default: "#F7D150", // Base
+          DEFAULT: "#F7D150", // Base
           100: "#fdf6dc", // 10%
           200: "#fcf0c5", // 20%
           300: "#fbe8a8", // 30%
@@ -66,14 +69,12 @@ const config: Config = {
           900: "#1a1b22", // 80%
           1000: "#111216", // 90%
           1100: "#0a0b0d", // 100%
-        }, 
+        },
         others: {
           lightGreen: "#F2F9F5",
-          lightYellow: "#FCF8E7"
-        } ,      
-        text: {
-         
-        }
+          lightYellow: "#FCF8E7",
+        },
+        text: {},
       },
       boxShadow: {},
       screens: {
@@ -84,8 +85,8 @@ const config: Config = {
         "2xl": "1440px",
       },
       animation: {
-        'spin-slow': 'spin 3s linear infinite',
-      }
+        "spin-slow": "spin 3s linear infinite",
+      },
     },
   },
   plugins: [
@@ -95,7 +96,7 @@ const config: Config = {
       };
       addComponents(newComponents);
     }),
-    require("@tailwindcss/forms")
+    require("@tailwindcss/forms"),
   ],
 };
 export default config;

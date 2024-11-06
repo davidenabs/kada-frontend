@@ -1,0 +1,19 @@
+"use client";
+import { FullPageLoader } from "@/components/shared/loader";
+import React, { useEffect, useState } from "react";
+
+function LoaderProvider({ children }: React.PropsWithChildren) {
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    setLoaded(true);
+  }, []);
+
+  if (!loaded) {
+    return <FullPageLoader />;
+  }
+
+  return children;
+}
+
+export default LoaderProvider;
