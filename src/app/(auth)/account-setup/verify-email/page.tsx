@@ -76,8 +76,6 @@ const EmailVerificationPage: React.FC = () => {
   };
 
   const onSubmit = (data: verifySchemaType) => {
-    console.log(data, "data");
-
     const newData = {
       userId: data.email,
       otp: data.otp,
@@ -97,7 +95,6 @@ const EmailVerificationPage: React.FC = () => {
       onError: (error) => {
         console.error("Failed to create farm:", error);
         // toast.dismiss();
-        processError(error);
       },
     });
   };

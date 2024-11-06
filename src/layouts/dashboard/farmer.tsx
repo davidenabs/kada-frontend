@@ -2,7 +2,8 @@
 import NextProgress from "@/components/common/next-progress";
 import Header from "@/components/dashboards/farmer/header";
 import Navigation from "@/components/dashboards/farmer/nav";
-import AppLoader from "@/components/shared/loader";
+import AppLoader, { FullPageLoader } from "@/components/shared/loader";
+import useCheckUserFields from "@/hooks/user-field";
 import React, { Suspense } from "react";
 
 export default function FarmerDahboardLayout({
@@ -10,11 +11,23 @@ export default function FarmerDahboardLayout({
 }: {
   children: React.ReactNode;
 }) {
+  useCheckUserFields([
+    {
+      // field: "farmerProfile.isNinVerified",
+      field: "verified",
+      redirectTo: "/account-setup/verify-email",
+      condition: (value) => value === false,
+    },
+  ]);
   const [loaded, setLoaded] = React.useState(false);
 
   React.useEffect(() => {
     setLoaded(true);
   }, []);
+
+  if (!loaded) {
+    return <FullPageLoader />;
+  }
 
   return (
     <Suspense

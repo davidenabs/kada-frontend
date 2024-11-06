@@ -11,13 +11,28 @@ export interface IUser {
   password: string;
   userType: UserType;
   verified: boolean;
-  verificationMethod: "EMAIL" | "SMS" | "BOTH";
+  verificationMethod: "EMAIL" | "PHONE" | "BOTH";
   otp: string;
   otpCreatedAt: string | null;
+  farmerProfile: IFarmerProfile | null;
 }
 
 export enum UserType {
+  SUPERADMIN = "SUPERADMIN",
   FARMER = "FARMER",
-  ADMIN = "ADMIN",
-  USER = "USER",
+  COOPERATIVE = "COOPERATIVE",
+  ENUMERATOR = "ENUMERATOR",
+  VENDOR = "VENDOR",
+}
+
+export interface IVerifyNinPayload {
+  nin: string;
+}
+
+export interface IFarmerProfile {
+  id: number;
+  nationalIdentificationNumber: string;
+  ninData: any;
+  isNinVerified: boolean;
+  dob: string;
 }
