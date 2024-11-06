@@ -1,13 +1,9 @@
+import { IUser } from "@/interface/user";
 import { atom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
 
-interface User {
-  id: number;
-  name: string;
-  email: string;
-}
 interface UserState {
-  user: User | null;
+  user: IUser | null;
   token: string | null;
   role: string | null;
   authenticated: boolean;

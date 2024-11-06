@@ -12,7 +12,10 @@ import { Toaster } from "@/components/common/toast";
 import LoaderProvider from "@/provider/loader";
 
 export const metadata: Metadata = {
-  title: "KADA",
+  title: {
+    default: "KADA",
+    template: "%s - KADA",
+  },
   description:
     "Transforming Kaduna through Food Security and National Development",
 };

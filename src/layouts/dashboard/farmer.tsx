@@ -10,6 +10,12 @@ export default function FarmerDahboardLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const [loaded, setLoaded] = React.useState(false);
+
+  React.useEffect(() => {
+    setLoaded(true);
+  }, []);
+
   return (
     <Suspense
       fallback={

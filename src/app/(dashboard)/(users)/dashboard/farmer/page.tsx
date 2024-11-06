@@ -1,4 +1,5 @@
 "use client";
+import { withAuth } from "@/components/common/auth";
 import CreateFarmCard from "@/components/dashboards/farmer/create-farm-card";
 import JoinCooperative from "@/components/dashboards/farmer/join-cooperative";
 import VendorList from "@/components/dashboards/farmer/vendors";
@@ -8,6 +9,7 @@ import CreateFarm from "@/components/modals/create-farm";
 import useDashboardTitle from "@/hooks/use-dashboard-tite";
 import { useModal } from "@/hooks/use-modal";
 import { PlusIcon } from "@/icons";
+import { UserType } from "@/interface/user";
 import React from "react";
 
 const CooperativeDashboard: React.FC = () => {
@@ -68,4 +70,6 @@ const CooperativeDashboard: React.FC = () => {
   );
 };
 
-export default CooperativeDashboard;
+export default withAuth(CooperativeDashboard, {
+  allowedUserTypes: [UserType.FARMER],
+});

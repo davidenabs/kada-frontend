@@ -37,7 +37,7 @@ export const useCreateFarmMutation = () => {
       data: ICreateFarmPayload;
       farmerId: string;
     }) => farmClient.createFarm(data, farmerId),
-    onError: (error) => {
+    onError: (error: any) => {
       console.error(error);
       processError(error);
     },
@@ -49,7 +49,7 @@ export const useUpdateFarmMutation = () => {
   return useMutation({
     mutationFn: ({ data, id }: { data: any; id: string }) =>
       farmClient.updateFarm(data, id),
-    onError: (error) => {
+    onError: (error: any) => {
       console.error(error);
       processError(error);
     },
@@ -60,7 +60,7 @@ export const useUpdateFarmMutation = () => {
 export const useDeleteFarmMutation = () => {
   return useMutation({
     mutationFn: (id: string) => farmClient.deleteFarm(id),
-    onError: (error) => {
+    onError: (error: any) => {
       console.error(error);
       processError(error);
     },
@@ -89,7 +89,7 @@ export const useCreateFarmGalleryMutation = () => {
       data: ICreateFarmGalleryPayload;
       id: string;
     }) => farmClient.createFarmGallery(data, id),
-    onError: (error) => {
+    onError: (error: any) => {
       console.error(error);
       processError(error);
     },

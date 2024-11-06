@@ -1,9 +1,15 @@
-import VerificationProfile from '@/components/account-setup/verification-profile';
-import React from 'react';
+import VerificationProfile from "@/components/account-setup/verification-profile";
+import { Metadata } from "next";
+import React from "react";
 
-const NimcPage: React.FC = () => {
-
-    return <div className='app_container'><VerificationProfile /></div>
+export const metadata: Metadata = {
+  title: "Profile",
 };
 
-export default NimcPage;
+export default function NimcPage() {
+  return (
+    <>
+      <VerificationProfile />
+    </>
+  );
+}

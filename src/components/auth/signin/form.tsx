@@ -11,14 +11,15 @@ import LoginSchema, { LoginSchemaType } from "@/schema/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useLoginMutation } from "@/app/_api/auth";
 import { toast } from "sonner";
+import { useAtom } from "jotai";
+import { userAtom } from "@/stores/user";
 
 const SignInForm: React.FC = () => {
   const router = useRouter();
-
+  const [user, setUser] = useAtom(userAtom);
   const loginMutation = useLoginMutation();
 
   const {
-    control,
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
@@ -33,10 +34,31 @@ const SignInForm: React.FC = () => {
   const onSubmit = (data: LoginSchemaType) => {
     toast.loading("Logging in...");
 
-    loginMutation.mutate(data, {
-      onSuccess: () => {
+    const newData = {
+      userId: data.email,
+      password: data.password,
+    };
+
+    loginMutation.mutate(newData, {
+      onSuccess: (response) => {
+        const { data, message, status } = response;
+        setUser({
+          ...user,
+          user: data.user,
+          token: data.token,
+          authenticated: true,
+        });
         toast.dismiss();
         toast.success("Login successful");
+
+        const userType = data.user.userType;
+
+        if (userType === "FARMER") {
+          router.push("/dashboard/farmer");
+        }
+      },
+      onError: (error) => {
+        toast.dismiss();
       },
     });
   };
