@@ -22,7 +22,6 @@ export interface IVerifyOtpPayload {
 }
 
 export interface ISendOtpPayload {
-  phoneNumber?: string;
-  email?: string;
-  userId?: string;
+  userId: string;
+  method: string;
 }

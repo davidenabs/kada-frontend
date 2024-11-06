@@ -13,9 +13,13 @@ export default function FarmerDahboardLayout({
 }) {
   useCheckUserFields([
     {
-      // field: "farmerProfile.isNinVerified",
       field: "verified",
       redirectTo: "/account-setup/verify-email",
+      condition: (value) => value === false,
+    },
+    {
+      field: "farmerProfile.isNinVerified",
+      redirectTo: "/account-setup/profile/nimc",
       condition: (value) => value === false,
     },
   ]);

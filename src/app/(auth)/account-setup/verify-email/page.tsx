@@ -12,7 +12,6 @@ import { useVerifyOtpMutation } from "@/app/_api/auth";
 import { toast } from "sonner";
 import { useModal } from "@/hooks/use-modal";
 import ResendOtp from "@/components/modals/auth/resend-otp";
-import processError from "@/utils/error";
 
 const verifySchema = z.object({
   email: z
@@ -49,7 +48,7 @@ const EmailVerificationPage: React.FC = () => {
     formState: { errors, isSubmitting },
   } = useForm({
     defaultValues: {
-      email: "roqeebyusuff001@gmail.com",
+      email: "",
       otp: "",
     },
     resolver: zodResolver(verifySchema),
@@ -85,7 +84,7 @@ const EmailVerificationPage: React.FC = () => {
       onSuccess: (response) => {
         const { data, message, status } = response;
         console.log(response);
-        if (data.verified) {
+        if (data.success) {
           toast.success("Account verified successfully");
           // router.push("/sign-in");
         } else {

@@ -8,7 +8,10 @@ import {
   ICreateFarmPayload,
 } from "@/interface/farm";
 
-export const useGetFarms = ({ enabled = true, params = {} }: IQueryParams) => {
+export const useGetFarmsQuerry = ({
+  enabled = true,
+  params = {},
+}: IQueryParams) => {
   return useQuery<IResponse<any>, Error>({
     queryKey: [API_ENDPOINTS.GET_FARMS],
     queryFn: () => farmClient.getFarms(params),
@@ -16,7 +19,7 @@ export const useGetFarms = ({ enabled = true, params = {} }: IQueryParams) => {
   });
 };
 
-export const useGetFarm = ({
+export const useGetFarmQuery = ({
   enabled = true,
   params = {},
   id,

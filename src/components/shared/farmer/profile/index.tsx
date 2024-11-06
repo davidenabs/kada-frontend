@@ -1,11 +1,25 @@
+"use client";
+import { withAuth } from "@/components/common/auth";
 import { KadaButton } from "@/components/form/button";
 import Input from "@/components/form/input";
 import { Lock, VerifiedIcon } from "@/icons";
+import { UserType } from "@/interface/user";
+import { userAtom } from "@/stores/user";
 import { PencilIcon } from "@heroicons/react/16/solid";
+import { useAtomValue } from "jotai";
 import Image from "next/image";
 import React from "react";
 
 function FarmerProfileSharedPage() {
+  const { user } = useAtomValue(userAtom);
+  const [loaded, setLoaded] = React.useState(false);
+
+  React.useEffect(() => {
+    setLoaded(true);
+  }, []);
+
+  if (!loaded) return null;
+
   return (
     <div className="flex justify-stretch items-stretch gap-8">
       <div className="flex-1 space-y-6">
@@ -21,7 +35,9 @@ function FarmerProfileSharedPage() {
             </div>
 
             <div className="">
-              <h4 className="text-[18px] font-bold">Ismail Abdulkadir</h4>
+              <h4 className="text-[18px] font-bold">
+                {user?.firstName} {user?.lastName}
+              </h4>
               <div className="flex items-center space-x-2">
                 <VerifiedIcon className="w-4 h-4" />
                 <span>Verified</span>
@@ -51,7 +67,9 @@ function FarmerProfileSharedPage() {
             <span className="text-lg">Email</span>
 
             <div className="flex">
-              <span className="text-[#878D96]">20 Dec, 2023</span>
+              <span className="text-[#878D96]">
+                {user?.email || "Not available"}
+              </span>
             </div>
           </div>
 
@@ -59,7 +77,9 @@ function FarmerProfileSharedPage() {
             <span className="text-lg">Phone</span>
 
             <div className="flex">
-              <span className="text-[#878D96]">+234 814 26584 12</span>
+              <span className="text-[#878D96]">
+                {user?.phoneNumber || "Not available"}
+              </span>
             </div>
           </div>
 
@@ -68,8 +88,7 @@ function FarmerProfileSharedPage() {
 
             <div className="flex">
               <span className="text-[#878D96]">
-                GreenSprout Agro Mart 12 Independence Way, Kawo, Kaduna, Kaduna
-                State, Nigeria.
+                {user?.address ?? "Not Available"}
               </span>
             </div>
           </div>
@@ -120,4 +139,6 @@ function FarmerProfileSharedPage() {
   );
 }
 
-export default FarmerProfileSharedPage;
+export default withAuth(FarmerProfileSharedPage, {
+  allowedUserTypes: [UserType.FARMER],
+});

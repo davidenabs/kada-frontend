@@ -36,14 +36,16 @@ function ResendOtp({ close }: { close: () => void }) {
   });
 
   const onSubmit = async (data: sendSchemaType) => {
+    const isEmail = data.userId.includes("@");
     const newData = {
-      email: data.userId,
+      userId: data.userId,
+      method: isEmail ? "email" : "phone",
     };
     mutateAsync(newData, {
       onSuccess: (response) => {
         const { data, message, status } = response;
         console.log(response);
-        if (data.success) {
+        if (response.success) {
           toast.success("OTP sent successfully");
           reset({ userId: "" });
           close();

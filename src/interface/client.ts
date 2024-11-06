@@ -8,6 +8,6 @@ export interface IQueryParams {
 
 export interface IResponse<T> {
   data: T;
-  status: boolean;
+  success: boolean;
   message: string;
 }

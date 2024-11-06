@@ -9,7 +9,6 @@ export const useVerifyNinMutation = () => {
   return useMutation({
     mutationFn: (data: IVerifyNinPayload) => userClient.verifyNin(data),
     onError: (error: any) => {
-      console.log(error + "Failed to verify NIN");
       processError(error);
     },
   });

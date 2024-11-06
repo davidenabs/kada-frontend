@@ -1,32 +1,36 @@
 "use client";
+import { useGetFarmsQuerry } from "@/app/_api/farm";
 import { withAuth } from "@/components/common/auth";
 import CreateFarmCard from "@/components/dashboards/farmer/create-farm-card";
 import JoinCooperative from "@/components/dashboards/farmer/join-cooperative";
 import VendorList from "@/components/dashboards/farmer/vendors";
 import WeatherWidget from "@/components/dashboards/farmer/weather";
 import Button from "@/components/form/button";
-import CreateFarm from "@/components/modals/create-farm";
+import CreateFarmModal from "@/components/modals/create-farm";
 import useDashboardTitle from "@/hooks/use-dashboard-tite";
 import { useModal } from "@/hooks/use-modal";
 import { PlusIcon } from "@/icons";
 import { UserType } from "@/interface/user";
+import { userAtom } from "@/stores/user";
+import { useAtom } from "jotai";
 import React from "react";
 
 const CooperativeDashboard: React.FC = () => {
   useDashboardTitle("Dashboard");
-  const { openModal } = useModal();
+  const { openModal, closeModal } = useModal();
+  const [user, setUser] = useAtom(userAtom);
 
   const handleOpenModal = () => {
     openModal({
       customSize: "654px",
-      view: <CreateFarm />,
+      view: <CreateFarmModal close={closeModal} />,
     });
   };
 
   return (
     <>
       <h1 className="mb-4 text-base font-bold leading-tight text-teal-700">
-        Hello, Jerry
+        Hello, {user?.user?.firstName}
       </h1>
       <div className="flex">
         <section className="flex flex-col w-[69%] max-md:ml-0 max-md:w-full space-y-6">

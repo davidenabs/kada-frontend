@@ -1,7 +1,12 @@
 "use client";
+import { useGetFarmsQuerry } from "@/app/_api/farm";
+import CreateFarmModal from "@/components/modals/create-farm";
+import AppLoader from "@/components/shared/loader";
+import { useModal } from "@/hooks/use-modal";
 import { ArrowRightIcon } from "@heroicons/react/16/solid";
 import Link from "next/link";
 import React, { useState } from "react";
+import { Loader } from "rizzui";
 
 interface FarmCardProps {
   name: string;
@@ -120,36 +125,66 @@ const farms = [
 
 const CreateFarmCard: React.FC = () => {
   const [isClick, setIsClick] = useState(false);
+  const { openModal, closeModal } = useModal();
+  const [loaded, setLoaded] = React.useState(false);
+  const [page, setPage] = React.useState(1);
+  const [limit, setLimit] = React.useState(10);
+  React.useEffect(() => {
+    setLoaded(true);
+  }, []);
 
-  if (isClick) return <FarmList farms={farms} />;
-  else
+  const handleOpenModal = () => {
+    openModal({
+      customSize: "654px",
+      view: <CreateFarmModal close={closeModal} />,
+    });
+  };
+
+  const { data, isLoading } = useGetFarmsQuerry({
+    enabled: loaded,
+    params: {
+      page,
+      limit,
+    },
+  });
+
+  if (isLoading)
     return (
-      <div className="flex flex-col grow justify-center items-center px-20 py-48 w-full bg-white rounded-3xl border border-solid border-teal-700 border-opacity-30 max-md:px-5 max-md:py-24 max-md:mt-5 max-md:max-w-full">
-        <div className="flex flex-col items-center max-w-full w-[291px]">
-          <div className="flex flex-col items-center bg-green-100 rounded-full h-[76px] w-[76px]">
-            <img
-              loading="lazy"
-              src="/images/vector-moon.svg"
-              alt="Create Farm Icon"
-              className="object-contain w-full aspect-square"
-            />
-          </div>
-          <div className="flex flex-col justify-center items-center self-stretch mt-4 leading-none text-black">
-            <h3 className="text-xl font-bold">You are yet to create a farm</h3>
-            <p className="mt-2 text-sm font-light">
-              Farm information will appear here once created
-            </p>
-          </div>
-          <button
-            onClick={() => setIsClick(true)}
-            className="flex gap-0.5 items-start mt-5 text-sm leading-none text-green-800"
-          >
-            <span>Create Farm</span>
-            <ArrowRightIcon className="w-4 h-4 fill-green-800" />
-          </button>
-        </div>
-      </div>
+      <section className="flex items-center justify-center order border border-teal-700 border-opacity-30 bg-white rounded-3xl py-10">
+        <Loader size="lg" variant="spinner" />
+      </section>
     );
+
+  if (data?.data?.total && data?.data?.total > 0)
+    return <FarmList farms={data?.data.farms} />;
+
+  return (
+    <div className="flex flex-col grow justify-center items-center px-20 py-48 w-full bg-white rounded-3xl border border-solid border-teal-700 border-opacity-30 max-md:px-5 max-md:py-24 max-md:mt-5 max-md:max-w-full">
+      <div className="flex flex-col items-center max-w-full w-[291px]">
+        <div className="flex flex-col items-center bg-green-100 rounded-full h-[76px] w-[76px]">
+          <img
+            loading="lazy"
+            src="/images/vector-moon.svg"
+            alt="Create Farm Icon"
+            className="object-contain w-full aspect-square"
+          />
+        </div>
+        <div className="flex flex-col justify-center items-center self-stretch mt-4 leading-none text-black">
+          <h3 className="text-xl font-bold">You are yet to create a farm</h3>
+          <p className="mt-2 text-sm font-light">
+            Farm information will appear here once created
+          </p>
+        </div>
+        <button
+          onClick={() => handleOpenModal()}
+          className="flex gap-0.5 items-start mt-5 text-sm leading-none text-green-800"
+        >
+          <span>Create Farm</span>
+          <ArrowRightIcon className="w-4 h-4 fill-green-800" />
+        </button>
+      </div>
+    </div>
+  );
 };
 
 export default CreateFarmCard;

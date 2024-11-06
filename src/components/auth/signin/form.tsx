@@ -41,7 +41,7 @@ const SignInForm: React.FC = () => {
 
     loginMutation.mutate(newData, {
       onSuccess: (response) => {
-        const { data, message, status } = response;
+        const { data, message } = response;
         setUser({
           ...user,
           user: data.user,
