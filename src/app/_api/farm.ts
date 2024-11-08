@@ -1,18 +1,24 @@
-import { IQueryParams, IResponse } from "@/interface/client";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import {
+  IPaginatedResponse,
+  IQueryParams,
+  IResponse,
+} from "@/interface/client";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import API_ENDPOINTS from "./client/endpoint";
 import farmClient from "./client/farm";
 import processError from "@/utils/error";
 import {
   ICreateFarmGalleryPayload,
   ICreateFarmPayload,
+  IFarm,
+  IFarmGallery,
 } from "@/interface/farm";
 
 export const useGetFarmsQuerry = ({
   enabled = true,
   params = {},
 }: IQueryParams) => {
-  return useQuery<IResponse<any>, Error>({
+  return useQuery<IResponse<IPaginatedResponse<IFarm, "farms">>, Error>({
     queryKey: [API_ENDPOINTS.GET_FARMS],
     queryFn: () => farmClient.getFarms(params),
     enabled: enabled !== undefined ? enabled : true,
@@ -32,9 +38,16 @@ export const useGetFarmQuery = ({
 };
 
 export const useCreateFarmMutation = () => {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: ({ data, farmerId }: { data: any; farmerId: any }) =>
       farmClient.createFarm(data, farmerId),
+
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({
+        queryKey: [API_ENDPOINTS.GET_FARMS],
+      });
+    },
     onError: (error: any) => {
       processError(error);
     },
@@ -65,14 +78,14 @@ export const useDeleteFarmMutation = () => {
   });
 };
 
-export const useGetFarmGallery = ({
+export const useGetFarmGalleryQuery = ({
   enabled = true,
   params = {},
-  id,
-}: IQueryParams & { id: string }) => {
-  return useQuery<IResponse<any>, Error>({
+  farmId,
+}: IQueryParams & { farmId: string }) => {
+  return useQuery<IResponse<IFarmGallery[]>, Error>({
     queryKey: [API_ENDPOINTS.GET_FARM_GALLERY],
-    queryFn: () => farmClient.getFarmGallery(params, id),
+    queryFn: () => farmClient.getFarmGallery(params, farmId),
     enabled: enabled !== undefined ? enabled : true,
   });
 };
@@ -81,13 +94,12 @@ export const useCreateFarmGalleryMutation = () => {
   return useMutation({
     mutationFn: ({
       data,
-      id,
+      farmId,
     }: {
       data: ICreateFarmGalleryPayload;
-      id: string;
-    }) => farmClient.createFarmGallery(data, id),
+      farmId: string;
+    }) => farmClient.createFarmGallery(data, farmId),
     onError: (error: any) => {
-      console.error(error);
       processError(error);
     },
     mutationKey: [API_ENDPOINTS.CREATE_FARM_GALLERY],

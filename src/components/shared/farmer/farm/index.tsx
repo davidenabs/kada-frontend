@@ -1,6 +1,8 @@
 "use client";
-import React, { Suspense } from "react";
+import React from "react";
 import FarmInfo from "@/components/dashboards/farmer/farm-info";
+import { useParams } from "next/navigation";
+import { useGetFarmQuery } from "@/app/_api/farm";
 
 interface NavigationItemProps {
   text: string;
@@ -27,14 +29,12 @@ const NavigationItem: React.FC<NavigationItemProps> = ({ text, active }) => {
   );
 };
 
-export default function FarmsPage({
-  params,
-}: {
-  params: {
-    slug: string;
-  };
-}) {
-  const slug = params.slug;
+function FarmSharedPage() {
+  const { farmId } = useParams();
+  const { data, isFetching } = useGetFarmQuery({
+    enabled: true,
+    id: farmId as string,
+  });
 
   const navigationItems = [
     { text: "Dashboard", active: false },
@@ -42,16 +42,20 @@ export default function FarmsPage({
     { text: "FGSC Farms", active: true },
   ];
 
+  if (isFetching) {
+    return <div>Loading...</div>;
+  }
+
   return (
-    <>
-      <div className="">
-        <nav className="flex gap-3 justifybetween max-w-full text-xs font-light text-neutral-700 w[262px]">
-          {navigationItems.map((item, index) => (
-            <NavigationItem key={index} text={item.text} active={item.active} />
-          ))}
-        </nav>
-        <FarmInfo />
-      </div>
-    </>
+    <div className="">
+      <nav className="flex gap-3 justifybetween max-w-full text-xs font-light text-neutral-700 w[262px]">
+        {navigationItems.map((item, index) => (
+          <NavigationItem key={index} text={item.text} active={item.active} />
+        ))}
+      </nav>
+      <FarmInfo {...data?.data} farmId={farmId} />
+    </div>
   );
 }
+
+export default FarmSharedPage;

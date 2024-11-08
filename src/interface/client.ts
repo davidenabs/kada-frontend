@@ -11,3 +11,9 @@ export interface IResponse<T> {
   success: boolean;
   message: string;
 }
+
+export type IPaginatedResponse<T, K extends string> = {
+  total: number;
+  page: number;
+  limit: number;
+} & { [key in K]: T[] };

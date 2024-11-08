@@ -6,15 +6,33 @@ import Input from "../form/input";
 import { KadaButton } from "../form/button";
 import Image from "next/image";
 import { toast } from "sonner";
+import { IFarmGallery } from "@/interface/farm";
+import { z } from "zod";
+import { Controller, useForm } from "react-hook-form";
+import {
+  CreateFarmSchemaType,
+  CreateGallerySchemaType,
+  createGallerySchema,
+} from "@/schema/farm";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useCreateFarmGalleryMutation } from "@/app/_api/farm";
 
 interface Props {
   close: () => void;
+  gallery: IFarmGallery[] | [];
+  farmId: string;
 }
 
-function AddPhoto({ close }: Props) {
-  const fileInputRef = useRef<HTMLInputElement>(null);
+const defaultValues = {
+  description: "",
+  file: null,
+};
 
-  const notify = () => toast("Here is your toast.");
+function AddPhoto({ close, gallery, farmId }: Props) {
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [files, setFiles] = React.useState<File | null>(null);
+
+  const { mutateAsync, isPending } = useCreateFarmGalleryMutation();
 
   const handleClick = () => {
     fileInputRef.current?.click();
@@ -23,15 +41,53 @@ function AddPhoto({ close }: Props) {
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      // Handle the file upload here
-      console.log("File selected:", file.name);
-      // You can add your file upload logic here
+      setFiles(file);
+    } else {
+      setFiles(null);
     }
+  };
+
+  const {
+    reset,
+    control,
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm({
+    defaultValues,
+    resolver: zodResolver(createGallerySchema),
+  });
+
+  const onSubmit = (data: CreateGallerySchemaType) => {
+    console.log(data);
+    mutateAsync(
+      {
+        data: {
+          description: data.description,
+          file: data.file as File,
+        },
+        farmId: farmId,
+      },
+      {
+        onSuccess: (response) => {
+          console.log(response);
+          if (response.success) {
+            toast.success("Gallery created successfully");
+            reset(defaultValues);
+            close();
+          }
+        },
+        onError: (error) => {},
+      }
+    );
   };
 
   return (
     <Fragment>
-      <section className="w-full rounded-[10px] bg-white p-4">
+      <form
+        className="w-full rounded-[10px] bg-white p-4"
+        onSubmit={handleSubmit(onSubmit)}
+      >
         <div className="flex justify-between">
           <h1 className="text-2xl font-bold text-[#205B42]">Add photo</h1>
           <button className="" onClick={close}>
@@ -64,20 +120,35 @@ function AddPhoto({ close }: Props) {
                 <div className="">
                   <KadaButton className="!bg-black">Upload</KadaButton>
                 </div>
-                <input
-                  type="file"
-                  className="hidden"
-                  ref={fileInputRef}
-                  onChange={handleFileChange}
-                  accept=".svg,.png,.jpg,.jpeg,.gif"
+                <Controller
+                  control={control}
+                  name="file"
+                  render={({ field: { value, onChange } }) => (
+                    <input
+                      type="file"
+                      className="hidden"
+                      ref={fileInputRef}
+                      onChange={(e) => {
+                        onChange(e.target.files?.[0]);
+                        handleFileChange(e);
+                      }}
+                      accept=".svg,.png,.jpg,.jpeg,.gif"
+                    />
+                  )}
                 />
               </div>
+
+              <p className="text-red-500 text-xs mt-1">
+                {errors?.file?.message}
+              </p>
             </div>
 
             <div className="flex-1">
               <Input
                 label="Describe this photo"
                 placeholder="Enter photo description"
+                {...register("description")}
+                error={errors.description?.message}
               />
             </div>
           </div>
@@ -85,19 +156,27 @@ function AddPhoto({ close }: Props) {
           <div className="border border-[#ECF2F6] bg-[#FAFAFA] rounded-2xl p-4 mt-8">
             <h4>Your Photo Gallery</h4>
             <div className="grid grid-cols-4 mt-6">
-              <div className="">
-                <div className="relative w-full h-[220px]">
-                  <Image
-                    src="/images/bdo.png"
-                    alt="BDO"
-                    fill
-                    className="rounded-2xl object-cover"
-                  />
-                </div>
-              </div>
+              {gallery.map((image, index) => {
+                return (
+                  <div className="" key={index}>
+                    <div className="relative w-full h-[220px] border rounded">
+                      <Image
+                        src={
+                          image.imagePath.startsWith("/")
+                            ? image.imagePath
+                            : `/${image.imagePath}`
+                        }
+                        alt="Farm Image"
+                        fill
+                        className="rounded-2xl object-cover"
+                      />
+                    </div>
+                  </div>
+                );
+              })}
             </div>
 
-            <div className="mt-8">
+            {/* <div className="mt-8">
               <label className="text-xs font-inter">Photo Description</label>
               <div className="flex items-center gap-4">
                 <Input placeholder="Enter photo description" />
@@ -106,19 +185,20 @@ function AddPhoto({ close }: Props) {
                   Save changes
                 </KadaButton>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
 
         <div className="flex justify-end mt-6">
           <KadaButton
+            type="submit"
             className="!rounded-full !h-[55px] !w-[181px]"
-            onClick={notify}
+            loading={isPending || isSubmitting}
           >
             Submit
           </KadaButton>
         </div>
-      </section>
+      </form>
     </Fragment>
   );
 }

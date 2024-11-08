@@ -25,3 +25,5 @@ export { default as VerifiedIcon } from "./verified.svg";
 
 // app icons
 export { default as CameraIcon } from "./camera.svg";
+export { default as ArrowRight } from "./arrow-rightt.svg";
+export { default as ArrowLeft } from "./arrow-left.svg";

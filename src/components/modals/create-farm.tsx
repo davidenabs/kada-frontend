@@ -16,6 +16,7 @@ import { userAtom } from "@/stores/user";
 import { toast } from "sonner";
 import { CreateFarmSchemaType, createFarmSchema } from "@/schema/farm";
 import { MultiSelect } from "rizzui";
+import { useGetFarmProductsQuery } from "@/app/_api/farm-products";
 
 const defaultValues = {
   name: "",
@@ -48,10 +49,14 @@ function CreateFarmModal({ close }: { close: () => void }) {
   const [userLocation, setUserLocation] = useState<[number, number] | null>(
     null
   );
-  const { mutateAsync, isPending } = useCreateFarmMutation();
   const user = useAtomValue(userAtom);
   const [loaded, setLoaded] = useState(false);
   const [season, setSeason] = useState<string>("");
+  const [products, setProducts] = useState<any[]>([]);
+
+  // * react-query
+  const { mutateAsync, isPending } = useCreateFarmMutation();
+  const { data, isFetching, isRefetching } = useGetFarmProductsQuery({});
 
   const {
     control,
@@ -83,6 +88,17 @@ function CreateFarmModal({ close }: { close: () => void }) {
   }, []);
 
   useEffect(() => {
+    if ((!isFetching || !isRefetching) && data) {
+      const tempProducts: any[] = [];
+      data.data.forEach((d: any) => {
+        tempProducts.push({ label: d.name, value: d.id });
+      });
+
+      setProducts(tempProducts);
+    }
+  }, [data, isFetching, isRefetching]);
+
+  useEffect(() => {
     if (typeof window !== "undefined") {
       setLoaded(true);
       delete (window as any).L.Icon.Default.prototype._getIconUrl;
@@ -106,20 +122,20 @@ function CreateFarmModal({ close }: { close: () => void }) {
   };
 
   const onSubmit = (data: CreateFarmSchemaType) => {
-    console.log(data);
     const newData = {
       data: {
         ...data,
         landArea: Number(data.landArea),
-        activeSeason: "Summer",
       },
       farmerId: user.user?.id!,
     };
     mutateAsync(newData, {
       onSuccess: (response) => {
-        console.log(response);
-        // reset();
-        // close();
+        if (response.success) {
+          toast.success("Farm created successfully");
+          reset(defaultValues);
+          close();
+        }
       },
       onError: (error) => {
         console.error("Failed to create farm:", error);
@@ -131,8 +147,11 @@ function CreateFarmModal({ close }: { close: () => void }) {
 
   return (
     <Fragment>
-      <section className="flex overflow-hidden flex-col w-full bgwhite rounded-[10px] max-md:max-w-full bg-white p-10">
-        <header className="flex justify-between">
+      <form
+        className="flex overflow-hidden flex-col w-full rounded-[10px] max-md:max-w-full bg-white p-10"
+        onSubmit={handleSubmit(onSubmit)}
+      >
+        <header className="flex justify-between bg-[#FFFFFF] border-b border-[#ECF2F6]">
           <h1 className="self-start text-2xl font-bold text-green-800">
             Create Farm
           </h1>
@@ -141,11 +160,8 @@ function CreateFarmModal({ close }: { close: () => void }) {
           </button>
         </header>
 
-        <div className="flex flex-col w-full">
-          <form
-            className="flex flex-col space-y-4"
-            onSubmit={handleSubmit(onSubmit)}
-          >
+        <div className="w-full h-[70vh] overflow-y-scroll">
+          <div className="flex flex-col space-y-4">
             <Input
               label="Farm Name"
               placeholder="Enter farm name"
@@ -166,25 +182,42 @@ function CreateFarmModal({ close }: { close: () => void }) {
 
             <div className="">
               <label className="mb-1.5 text-sm">Active Seasons</label>
-              <div className="border border-primary w-full rounded-full divide-x divide-primary flex overflow-hidden mt-1.5 h-[56px]">
-                {seasons.map((s) => (
-                  <button
-                    type="button"
-                    key={s.label + s.value}
-                    className={`w-full h-full py-2 ${
-                      season === s.value ? "bg-[#D8FBE9]" : ""
-                    }`}
-                    onClick={() => setSeason(s.value)}
-                  >
-                    {s.label}
-                  </button>
-                ))}
-              </div>
+              <Controller
+                control={control}
+                name="activeSeason"
+                render={({
+                  field: { value, onChange },
+                  fieldState: { error },
+                }) => (
+                  <>
+                    <div className="border border-primary w-full rounded-full divide-x divide-primary flex overflow-hidden mt-1.5 h-[56px]">
+                      {seasons.map((s) => (
+                        <button
+                          type="button"
+                          key={s.label + s.value}
+                          className={`w-full h-full py-2 ${
+                            value === s.value ? "bg-[#D8FBE9]" : ""
+                          }`}
+                          onClick={() => {
+                            setSeason(s.value);
+                            onChange(s.value);
+                          }}
+                        >
+                          {s.label}
+                        </button>
+                      ))}
+                    </div>
+                    {error && (
+                      <p className="text-red-500 text-sm mt-1">
+                        {error.message}
+                      </p>
+                    )}
+                  </>
+                )}
+              />
             </div>
 
             <div className="">
-              <label className="mb-1.5 text-sm">Products</label>
-
               <Controller
                 control={control}
                 name="products"
@@ -193,15 +226,16 @@ function CreateFarmModal({ close }: { close: () => void }) {
                   fieldState: { error },
                 }) => (
                   <MultiSelect
-                    options={[]}
-                    label="Multi Select"
+                    label="Products"
                     value={value}
-                    // options={options}
+                    options={products}
                     onChange={onChange}
                     error={error?.message}
-                    className="w-full max-w-md"
+                    className="w-full"
                     clearable={true}
                     onClear={() => onChange([])}
+                    selectClassName="!h-[56px] rounded-full border-[0.4px] border-primary"
+                    errorClassName="text-red-500"
                   />
                 )}
               />
@@ -242,17 +276,19 @@ function CreateFarmModal({ close }: { close: () => void }) {
                 </span>
               )}
             </div>
-
-            <Button
-              type="submit"
-              className="!rounded-full !shadow-none"
-              loading={isSubmitting || isPending}
-            >
-              Create Farm
-            </Button>
-          </form>
+          </div>
         </div>
-      </section>
+
+        <div className="w-full">
+          <Button
+            type="submit"
+            className="!rounded-full !shadow-none"
+            loading={isSubmitting || isPending}
+          >
+            Create Farm
+          </Button>
+        </div>
+      </form>
     </Fragment>
   );
 }

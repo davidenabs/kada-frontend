@@ -44,7 +44,11 @@ const API_ENDPOINTS = {
   GET_PRODUCT_TEMPLATE: "/market/get-product-template",
   UPLOAD_PRODUCTS_FROM_SHEETS: "/market/upload-products-from-sheet",
 
-
+  // farm products
+  GET_FARM_PRODUCTS: "/farm-products",
+  CREATE_FARM_PRODUCT: "/farm-products",
+  UPDATE_FARM_PRODUCT: "/farm-products/:productId",
+  DELETE_FARM_PRODUCT: "/farm-products/:productId",
 };
 
 export default API_ENDPOINTS;

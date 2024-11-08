@@ -17,3 +17,28 @@ export interface ICreateFarmPayload {
   activeSeason: string;
   products: string[]; // IDs of related products
 }
+
+export interface IFarm {
+  id: string;
+  name: string;
+  landArea: number;
+  location?: string;
+  activeSeason: string;
+  products?: {
+    id: string;
+    name: string;
+    description: string | null;
+  }[];
+  geoLocation: IGeoLocation;
+  imagePath: string;
+  isVerified: boolean;
+  farmerId: string;
+}
+
+export interface IFarmGallery {
+  id: string;
+  description: string;
+  imagePath: string;
+  createdAt: string | Date;
+  updatedAt: string | Date;
+}
