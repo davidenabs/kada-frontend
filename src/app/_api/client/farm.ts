@@ -12,11 +12,8 @@ const farmClient = {
     ApiClient.get(API_ENDPOINTS.GET_FARMS, params),
   getFarm: (params: IParams, id: string): Promise<any> =>
     ApiClient.get(API_ENDPOINTS.GET_FARM.replace(":id", id), params),
-  createFarm: (data: ICreateFarmPayload, farmerId: string): Promise<any> =>
-    ApiClient.post(
-      API_ENDPOINTS.CREATE_FARM.replace(":farmerId", farmerId),
-      data
-    ),
+  createFarm: (data: any, farmerId: string): Promise<any> =>
+    ApiClient.post(API_ENDPOINTS.CREATE_FARM.replace(":farmerId", ""), data),
   updateFarm: (data: any, id: string): Promise<any> =>
     ApiClient.put(API_ENDPOINTS.UPDATE_FARM.replace(":farmId", id), data),
   deleteFarm: (id: string): Promise<any> =>

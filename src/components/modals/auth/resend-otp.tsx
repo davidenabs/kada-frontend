@@ -40,6 +40,7 @@ function ResendOtp({ close }: { close: () => void }) {
     const newData = {
       userId: data.userId,
       method: isEmail ? "email" : "phone",
+      type: "verify-account",
     };
     mutateAsync(newData, {
       onSuccess: (response) => {

@@ -33,15 +33,9 @@ export const useGetFarmQuery = ({
 
 export const useCreateFarmMutation = () => {
   return useMutation({
-    mutationFn: ({
-      data,
-      farmerId,
-    }: {
-      data: ICreateFarmPayload;
-      farmerId: string;
-    }) => farmClient.createFarm(data, farmerId),
+    mutationFn: ({ data, farmerId }: { data: any; farmerId: any }) =>
+      farmClient.createFarm(data, farmerId),
     onError: (error: any) => {
-      console.error(error);
       processError(error);
     },
     mutationKey: [API_ENDPOINTS.CREATE_FARM],

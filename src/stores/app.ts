@@ -9,6 +9,7 @@ interface AppState {
   dahboardDrawerFooterContent: React.ReactNode | null;
   isProfileMdaSetup: boolean;
   isSidebarOpen: boolean;
+  userEmail: string | null;
 }
 
 export const defaultApp: AppState = {
@@ -19,11 +20,12 @@ export const defaultApp: AppState = {
   dahboardDrawerFooterContent: null,
   isProfileMdaSetup: false,
   isSidebarOpen: false,
+  userEmail: null,
 };
 
 // export const appAtom = atomWithStorage("gsp-app", defaultApp);
 export const appAtom = atom(defaultApp);
-export const clearAppAtom = atom(null, (_get, set, ) => {
+export const clearAppAtom = atom(null, (_get, set) => {
   return set(appAtom, defaultApp);
 });
 

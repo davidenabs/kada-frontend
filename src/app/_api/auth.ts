@@ -1,5 +1,6 @@
 import {
   ILoginPayload,
+  IRegisterPayload,
   ISendOtpPayload,
   IVerifyOtpPayload,
 } from "@/interface/auth";
@@ -10,6 +11,15 @@ import authClient from "./client/auth";
 export const useLoginMutation = () => {
   return useMutation({
     mutationFn: (data: ILoginPayload) => authClient.login(data),
+    onError: (error: any) => {
+      processError(error);
+    },
+  });
+};
+
+export const useRegisterMutation = () => {
+  return useMutation({
+    mutationFn: (data: IRegisterPayload) => authClient.register(data),
     onError: (error: any) => {
       processError(error);
     },

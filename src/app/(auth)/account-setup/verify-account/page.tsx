@@ -12,13 +12,12 @@ import { useVerifyOtpMutation } from "@/app/_api/auth";
 import { toast } from "sonner";
 import { useModal } from "@/hooks/use-modal";
 import ResendOtp from "@/components/modals/auth/resend-otp";
+import { useAtom } from "jotai";
+import { appAtom } from "@/stores/app";
+import { OtpType } from "@/interface/auth";
 
 const verifySchema = z.object({
-  email: z
-    .string()
-    .trim()
-    .min(1, { message: "Email is required" })
-    .email({ message: "Invalid email address" }),
+  email: z.string().trim().min(1, { message: "Email/Phone is required" }),
   otp: z
     .string()
     .min(1, { message: "OTP is required" })
@@ -30,6 +29,7 @@ const verifySchema = z.object({
 type verifySchemaType = z.infer<typeof verifySchema>;
 
 const EmailVerificationPage: React.FC = () => {
+  const [app, setApp] = useAtom(appAtom);
   const router = useRouter();
   const [loaded, setLoaded] = useState(false);
   //   const { userType, loaded } = useUserType();
@@ -40,11 +40,21 @@ const EmailVerificationPage: React.FC = () => {
 
   useEffect(() => {
     setLoaded(true);
+
+    if (app.userEmail) {
+      setValue("email", app.userEmail);
+    }
+
+    return () => {
+      setLoaded(false);
+      setApp({ ...app, userEmail: null });
+    };
   }, []);
 
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors, isSubmitting },
   } = useForm({
     defaultValues: {
@@ -53,20 +63,6 @@ const EmailVerificationPage: React.FC = () => {
     },
     resolver: zodResolver(verifySchema),
   });
-
-  //   if (userType === "farmer") {
-  //     route = "/account-setup/profile";
-  //   } else if (userType === "guest") {
-  //     route = "/account-setup/profile/nimc";
-  //   } else if (userType === "cooperative") {
-  //     route = "/account-setup/profile/cooperative";
-  //   } else if (userType === "data-enumerator") {
-  //     route = "/account-setup/profile/data-enumerator";
-  //   } else {
-  //     route = "/sign-in";
-  //   }
-
-  //   console.log("User type", userType);
 
   const handleResendOtp = () => {
     openModal({
@@ -78,15 +74,15 @@ const EmailVerificationPage: React.FC = () => {
     const newData = {
       userId: data.email,
       otp: data.otp,
+      type: OtpType.VERIFY_ACCOUNT,
     };
 
     mutateAsync(newData, {
       onSuccess: (response) => {
-        const { data, message, status } = response;
-        console.log(response);
-        if (data.success) {
+        const { data, message, success } = response;
+        if (success) {
           toast.success("Account verified successfully");
-          // router.push("/sign-in");
+          router.push("/sign-in");
         } else {
           toast.error("Invalid OTP");
         }
@@ -125,7 +121,15 @@ const EmailVerificationPage: React.FC = () => {
 
           <Input
             className="!w-[300px] mt-4"
-            placeholder=""
+            placeholder="Provide your email/phone number"
+            label="Email/Phone"
+            {...register("email")}
+            error={errors.email?.message}
+          />
+
+          <Input
+            className="!w-[300px] mt-4"
+            placeholder="123456"
             label="Enter OTP"
             {...register("otp")}
             error={errors.otp?.message}

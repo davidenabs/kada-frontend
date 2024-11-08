@@ -1,8 +1,17 @@
-import { IUser } from "./user";
+import { IUser, UserType } from "./user";
 
 export interface ILoginPayload {
   userId: string;
   password: string;
+}
+
+export interface IRegisterPayload {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phoneNumber: string;
+  password: string;
+  userType: string;
 }
 
 export interface ILoginResponse {
@@ -10,18 +19,19 @@ export interface ILoginResponse {
   user: IUser;
 }
 
-export interface IRegisterPayload {
-  name: string;
-  email: string;
-  password: string;
-}
-
 export interface IVerifyOtpPayload {
   userId: string;
   otp: string;
+  type: OtpType;
+}
+
+export enum OtpType {
+  VERIFY_ACCOUNT = "verify-account",
+  CHANGE_PASSWORD = "change-password",
 }
 
 export interface ISendOtpPayload {
   userId: string;
   method: string;
+  type: string;
 }

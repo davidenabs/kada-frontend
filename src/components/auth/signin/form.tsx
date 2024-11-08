@@ -76,26 +76,23 @@ const SignInForm: React.FC = () => {
         onSubmit={handleSubmit(onSubmit)}
       >
         <div className="text-xl font-bold text-green-800">Sign in</div>
-        <div className="mt-1 text-sm font-thin text-black">
+        <div className="mt-1 text-sm font-thin text-black mb-4">
           Please enter your credentials to sign in
         </div>
-        <label htmlFor="email" className="sr-only">
-          Email
-        </label>
+
         <Input
-          placeholder="Email"
-          inputClassName="!py-3 !px-5 !w-[369px] mt-6"
+          label="Email/Phone"
+          placeholder="Enter your email or phone number"
+          inputClassName=""
           {...register("email")}
           error={errors.email?.message}
         />
 
-        <label htmlFor="password" className="sr-only">
-          Password
-        </label>
         <Password
+          label="Password"
           placeholder="********"
           id="email"
-          className="!py-3 !px-5 !w-[369px] mt-2"
+          className="mt-4"
           {...register("password")}
           error={errors.password?.message}
         />
@@ -103,7 +100,7 @@ const SignInForm: React.FC = () => {
         <Button
           type="submit"
           className="!py-3 mt-8 !rounded-full"
-          loading={isSubmitting}
+          loading={isSubmitting || loginMutation.isPending}
         >
           Sign in
         </Button>

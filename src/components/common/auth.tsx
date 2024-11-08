@@ -48,7 +48,7 @@ export function withAuth<T extends object>(
       };
 
       checkAuth();
-    }, [router, loaded]);
+    }, [router, loaded, user]);
 
     if (!loaded) {
       return <FullPageLoader />;

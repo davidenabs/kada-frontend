@@ -1,26 +1,18 @@
 "use client";
 import { useGetFarmsQuerry } from "@/app/_api/farm";
 import CreateFarmModal from "@/components/modals/create-farm";
-import AppLoader from "@/components/shared/loader";
 import { useModal } from "@/hooks/use-modal";
+import { IFarm } from "@/interface/farm";
 import { ArrowRightIcon } from "@heroicons/react/16/solid";
 import Link from "next/link";
 import React, { useState } from "react";
 import { Loader } from "rizzui";
 
-interface FarmCardProps {
-  name: string;
-  hectares: number;
-  location: string;
-  season: string;
-  crops: string[];
-}
-
-const FarmCard: React.FC<FarmCardProps> = ({
+const FarmCard: React.FC<IFarm> = ({
   name,
-  hectares,
+  landArea,
   location,
-  season,
+  activeSeason,
   crops,
 }) => {
   return (
@@ -29,24 +21,26 @@ const FarmCard: React.FC<FarmCardProps> = ({
       className="flex overflow-hidden flex-col grow pt-28 text-sm font-light leading-none rounded-lg shadow-[10px_10px_30px_rgba(199,199,199,0.25)] max-md:pt-24 max-md:mt-9 bg-[url('/images/crop-thumb.png')] bg-norepeat bg-cov"
     >
       <div className="flex overflow-hidden flex-col items-start px-4 py-5 w-full rounded-lg bg-zinc-50 max-md:pr-5">
-        <h3 className="text-lg font-bold text-teal-700 max-md:ml-1">{name}</h3>
+        <h3 className="text-lg font-bold text-teal-700 max-md:ml-1 capitalize">
+          {name}
+        </h3>
         <p className="mt-1 font-semibold uppercase text-neutral-500 max-md:ml-1">
-          {hectares} Hectares
+          {landArea} Hectares
         </p>
         <p className="mt-6 leading-4 text-zinc-700 max-md:ml-1">{location}</p>
         <div className="flex gap-1.5 items-center mt-11 text-teal-700 max-md:mt-10">
           <div className="flex shrink-0 self-stretch my-auto w-2 h-2 bg-teal-700 rounded-full" />
-          <p className="self-stretch my-auto">{season}</p>
+          <p className="self-stretch my-auto">{activeSeason}</p>
         </div>
         <div className="flex gap-1.5 self-stretch mt-5 w-full text-black whitespace-nowrap max-md:mr-1">
-          {crops.map((crop, index) => (
+          {/* {crops.map((crop, index) => (
             <span
               key={index}
               className="gap-2.5 self-stretch px-2.5 py-1 rounded border-zinc-300 border-[0.5px]"
             >
               {crop}
             </span>
-          ))}
+          ))} */}
         </div>
         <Link
           href="/dashboard/farmer/FGSC-Farm"
@@ -59,16 +53,8 @@ const FarmCard: React.FC<FarmCardProps> = ({
   );
 };
 
-interface Farm {
-  name: string;
-  hectares: number;
-  location: string;
-  season: string;
-  crops: string[];
-}
-
 interface FarmListProps {
-  farms: Farm[];
+  farms: IFarm[];
 }
 
 const FarmList: React.FC<FarmListProps> = ({ farms }) => {
@@ -123,7 +109,7 @@ const farms = [
   },
 ];
 
-const CreateFarmCard: React.FC = () => {
+function CreateFarmCard() {
   const [isClick, setIsClick] = useState(false);
   const { openModal, closeModal } = useModal();
   const [loaded, setLoaded] = React.useState(false);
@@ -185,6 +171,6 @@ const CreateFarmCard: React.FC = () => {
       </div>
     </div>
   );
-};
+}
 
 export default CreateFarmCard;

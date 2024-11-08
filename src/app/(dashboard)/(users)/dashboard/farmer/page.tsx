@@ -1,5 +1,4 @@
 "use client";
-import { useGetFarmsQuerry } from "@/app/_api/farm";
 import { withAuth } from "@/components/common/auth";
 import CreateFarmCard from "@/components/dashboards/farmer/create-farm-card";
 import JoinCooperative from "@/components/dashboards/farmer/join-cooperative";
@@ -15,7 +14,7 @@ import { userAtom } from "@/stores/user";
 import { useAtom } from "jotai";
 import React from "react";
 
-const CooperativeDashboard: React.FC = () => {
+function FarmerDashboard() {
   useDashboardTitle("Dashboard");
   const { openModal, closeModal } = useModal();
   const [user, setUser] = useAtom(userAtom);
@@ -72,8 +71,10 @@ const CooperativeDashboard: React.FC = () => {
       </div>
     </>
   );
-};
+}
 
-export default withAuth(CooperativeDashboard, {
+export default withAuth(FarmerDashboard, {
   allowedUserTypes: [UserType.FARMER],
 });
+
+// export default CooperativeDashboard;

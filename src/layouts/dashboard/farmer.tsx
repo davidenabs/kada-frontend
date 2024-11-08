@@ -14,7 +14,7 @@ export default function FarmerDahboardLayout({
   useCheckUserFields([
     {
       field: "verified",
-      redirectTo: "/account-setup/verify-email",
+      redirectTo: "/account-setup/verify-account",
       condition: (value) => value === false,
     },
     {
