@@ -55,6 +55,8 @@ const SignInForm: React.FC = () => {
 
         if (userType === "FARMER") {
           router.push("/dashboard/farmer");
+        } else if (userType === "COOPERATIVE") {
+          router.push("/dashboard/cooperative");
         }
       },
       onError: (error) => {
