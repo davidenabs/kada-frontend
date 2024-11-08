@@ -15,6 +15,7 @@ export interface IUser {
   otp: string;
   otpCreatedAt: string | null;
   farmerProfile: IFarmerProfile | null;
+  cooperativeProfile: ICooperativeProfile | null;
 }
 
 export enum UserType {
@@ -35,4 +36,12 @@ export interface IFarmerProfile {
   ninData: any;
   isNinVerified: boolean;
   dob: string;
+}
+
+export interface ICooperativeProfile {
+  id: number;
+  name?: string | null;
+  about?: string | null;
+  eligibility?: string | null;
+  registrationNumber?: string | null;
 }
