@@ -1,6 +1,11 @@
 import FarmerCooperativeSharedPage from "@/components/shared/farmer/cooperative";
+import { Metadata } from "next";
 import React from "react";
 
-export default function VendorsCooperativePage() {
+export const metadata: Metadata = {
+  title: "Cooperative",
+};
+
+export default function FarmerCooperativePage() {
   return <FarmerCooperativeSharedPage />;
 }

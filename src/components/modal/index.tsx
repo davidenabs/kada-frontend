@@ -6,7 +6,8 @@ import { Modal } from "rizzui";
 import { useModal } from "../../hooks/use-modal";
 
 export default function GlobalModal() {
-  const { isOpen, view, closeModal, customSize, size } = useModal();
+  const { isOpen, view, closeModal, customSize, size, outSideClickClose } =
+    useModal();
   const pathname = usePathname();
   useEffect(() => {
     closeModal();
@@ -16,7 +17,11 @@ export default function GlobalModal() {
   return (
     <Modal
       isOpen={isOpen}
-      onClose={closeModal}
+      onClose={() => {
+        if (outSideClickClose) {
+          closeModal();
+        }
+      }}
       customSize={customSize}
       size={size}
       overlayClassName="dark:bg-opacity-40 dark:backdrop-blur-sm"

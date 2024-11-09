@@ -5,9 +5,12 @@ import Button from "@/components/form/button";
 import Input from "@/components/form/input";
 import useCheckUserField from "@/hooks/user-field";
 import { UserType } from "@/interface/user";
+import { userAtom } from "@/stores/user";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useAtom } from "jotai";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 
 const nimcVwrifySchema = z.object({
@@ -27,14 +30,14 @@ type nimcVwrifySchemaType = z.infer<typeof nimcVwrifySchema>;
 const NimcVerification: React.FC = () => {
   useCheckUserField([
     {
-      // field: "farmerProfile.isNinVerified",
-      field: "verified",
+      field: "farmerProfile.isNinVerified",
       redirectTo: "/dashboard/farmer",
       condition: (value) => value === true,
     },
   ]);
 
   const [loaded, setLoaded] = useState(false);
+  const [user, setUser] = useAtom(userAtom);
   const { mutateAsync, isPending } = useVerifyNinMutation();
   const {
     register,
@@ -51,13 +54,21 @@ const NimcVerification: React.FC = () => {
   const onSubmit = (data: nimcVwrifySchemaType) => {
     mutateAsync(data, {
       onSuccess: (response) => {
-        const { data, message, status } = response;
-        console.log(response);
-        // if (data.verified) {
-        //   toast.success("Account verified successfully");
-        // } else {
-        //   toast.error("Invalid OTP");
-        // }
+        if (response.success) {
+          toast.success("Account verified successfully");
+          setUser({
+            ...user,
+            user: {
+              ...user.user!,
+              farmerProfile: {
+                ...user.user?.farmerProfile!,
+                isNinVerified: true,
+              },
+            },
+          });
+        } else {
+          toast.error("Invalid OTP");
+        }
       },
       onError: (error) => {},
     });

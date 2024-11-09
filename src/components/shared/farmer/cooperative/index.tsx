@@ -1,35 +1,38 @@
 "use client";
 import Tab from "@/components/common/tab";
 import Input from "@/components/form/input";
-import {
-  ArrowRightIcon,
-  BriefcaseIcon,
-  MapPinIcon,
-  SearchIcon,
-  UsersListIcon,
-} from "@/icons";
+import { BriefcaseIcon, SearchIcon } from "@/icons";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
-import { KadaButton } from "@/components/form/button";
-import cn from "@/utils/class-names";
 import { useModal } from "@/hooks/use-modal";
-import CooperativeInfoModal from "@/components/modals/cooperative-info";
+import { useGetUsersQuery } from "@/app/_api/user";
+import { UserType } from "@/interface/user";
+import CooperativeCard from "@/components/common/cards/cooperative";
+import { Empty } from "rizzui";
+import CooperativeCardGallery from "@/components/skeletons/cooperative-card";
+import { withAuth } from "@/components/common/auth";
 
 function FarmerCooperativeSharedPage() {
   const { closeModal, openModal } = useModal();
   const router = useRouter();
-  const [activeTab, setActiveTab] = useState("Approved");
+  const [activeTab, setActiveTab] = useState("All Cooperative");
+
+  const { data, isFetching, isRefetching } = useGetUsersQuery({
+    params: {
+      userType: UserType.COOPERATIVE,
+    },
+  });
+
   const tabs = [
     {
-      id: "approved",
-      label: "Approved",
+      id: "all",
+      label: "All Cooperative",
       badge: 3,
       icon: BriefcaseIcon,
     },
     {
-      id: "pending",
-      label: "Pending",
+      id: "active",
+      label: "Active Cooperative",
       badge: 0,
       icon: BriefcaseIcon,
     },
@@ -68,75 +71,35 @@ function FarmerCooperativeSharedPage() {
         </div>
 
         <div className="">
-          <div className="grid grid-cols-2">
-            <div className="bg-white rounded-2xl border border-[#ECF2F6] p-4">
-              <div
-                className="flex items-center gap-4 cursor-pointer"
-                onClick={() => {
-                  openModal({
-                    customSize: "80%",
-                    view: <CooperativeInfoModal close={closeModal} />,
-                  });
-                }}
-              >
-                <div className="relative w-[123px] h-[118px]">
-                  <Image
-                    src="/images/bdo.png"
-                    alt="bdo"
-                    fill
-                    className="object-cover rounded-md"
-                  />
-                </div>
-
-                <div className="flex-1">
-                  <div className="flex justify-between items-center">
-                    <div className="">
-                      <h4 className="text-[15px] font-semibold font-inter">
-                        Cooperative Name
-                      </h4>
-                      <p className="text-xs mt-1">
-                        Empowering local farmers through shared resources and
-                        support
-                      </p>
-                      <div className="flex items-center my-2 gap-4">
-                        <div className="flex items-center gap-2">
-                          <MapPinIcon className="w-4 h-4" />
-                          <span className="text-xs">Chikun, Kaduna</span>
-                        </div>
-
-                        <div className="flex items-center gap-2">
-                          <UsersListIcon className="w-[19px] h-[11px] text-[#667185]" />
-                          <span className="text-xs">234 Members</span>
-                        </div>
-                      </div>
-
-                      <div className="flex items-center">
-                        <span className="text-sm">(91)</span>
-                      </div>
-                    </div>
-
-                    <KadaButton
-                      className={cn(
-                        "rounded-full",
-                        "!border-green-500 !bg-[#ECF6F1]"
-                      )}
-                      variant="outline"
-                      onClick={() => router.push("/vendors/cooperative/1")}
-                      rightIcon={
-                        <ArrowRightIcon className="w-[18px] h-[18px]" />
-                      }
-                    >
-                      Join
-                    </KadaButton>
-                  </div>
-                </div>
-              </div>
+          {isFetching || isRefetching ? (
+            <div className="grid grid-cols-2">
+              <CooperativeCardGallery />
             </div>
-          </div>
+          ) : data?.data?.total === 0 ? (
+            <>
+              <Empty text="No cooperative found" />
+            </>
+          ) : (
+            <>
+              <div className="grid grid-cols-2">
+                {data?.data?.users.map((user) => (
+                  <CooperativeCard
+                    closeModal={closeModal}
+                    openModal={openModal}
+                    router={router}
+                    key={user.id}
+                    data={user}
+                  />
+                ))}
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>
   );
 }
 
-export default FarmerCooperativeSharedPage;
+export default withAuth(FarmerCooperativeSharedPage, {
+  allowedUserTypes: [UserType.FARMER],
+});

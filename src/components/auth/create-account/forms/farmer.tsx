@@ -1,65 +1,162 @@
-import Button from '@/components/form/button';
-import Input from '@/components/form/input';
-import Password from '@/components/form/password';
-import { useRouter } from 'next/navigation';
-import React from 'react';
+import { useRegisterMutation } from "@/app/_api/auth";
+import Button from "@/components/form/button";
+import Input from "@/components/form/input";
+import Password from "@/components/form/password";
+import { UserType } from "@/interface/user";
+import { RegisterSchema, RegisterSchemaType } from "@/schema/auth";
+import { appAtom } from "@/stores/app";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useAtom } from "jotai";
+import { useRouter } from "next/navigation";
+import React from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+
+const defaultValues = {
+  firstName: "",
+  lastName: "",
+  email: "",
+  phoneNumber: "",
+  password: "",
+  confirmPassword: "",
+  userType: UserType.FARMER,
+  acceptTerms: false,
+};
 
 const FarmerForm: React.FC = () => {
-    const router = useRouter();
-    return (
-        <form className="flex flex-col items-start lg:px-8 mt20 max-md:pl-=5 max-md:mt-10 w-full">
-            <div className="flex flex-col">
-                <h2 className="text-base font-bold text-teal-700">Farmers Account</h2>
-                <p className="mt-1 text-sm font-medium text-zinc-500">Please complete the form to get started</p>
-            </div>
-            <div className="flex flex-col self-stretch mt-9">
-                <label htmlFor="email" className="text-sm font-medium text-zinc-700">Email</label>
-                <Input placeholder="Enter your email" className='!py-3 h-[40px]' />
-            </div>
-            <div className="flex flex-col mt-5 self-stretch">
-                <label htmlFor="firstName" className="text-sm font-medium text-zinc-700">First Name</label>
-                <Input id="firstName" placeholder="What is your name" className='!py-3 h-[40px]' />
+  const [app, setApp] = useAtom(appAtom);
+  const router = useRouter();
+  const { mutateAsync, isPending } = useRegisterMutation();
 
-            </div>
-            <div className="flex flex-col mt-5 self-stretch ">
-                <label htmlFor="lastName" className="text-sm font-medium text-zinc-700">Last Name</label>
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm({
+    defaultValues,
+    resolver: zodResolver(RegisterSchema),
+  });
 
-                <Input id="lastName" placeholder="What is your Surname" className='!py-3 h-[40px]' />
+  const onSubmit = (data: RegisterSchemaType) => {
+    const { confirmPassword, ...newData } = data;
 
-            </div>
-            <div className="flex flex-col mt-5 self-stretch  whitespace-nowrap">
-                <label htmlFor="phone" className="text-sm font-medium text-zinc-700">Phone</label>
+    setApp({ ...app, userEmail: data.email });
+    router.push("/account-setup/verify-account?type=farmer");
 
-                <Input prefix={'+234'} type="tel" id="phone" placeholder="" className='!py-3 h-[40px]' />
+    // mutateAsync(data, {
+    //   onSuccess: (response) => {
+    //     console.log(response);
+    //     if (response.success) {
+    //       toast.success(response.message);
+    //       setApp({ ...app, userEmail: data.email });
+    //       router.push("/account-setup/verify-account?type=farmer");
+    //     } else {
+    //       toast.error(response.message);
+    //     }
+    //   },
+    //   onError: (error) => {},
+    // });
+  };
 
-            </div>
+  return (
+    <form
+      className="flex flex-col items-start lg:px-8 mt20 max-md:pl-=5 max-md:mt-10 w-full"
+      onSubmit={handleSubmit(onSubmit)}
+    >
+      <div className="flex flex-col">
+        <h2 className="text-base font-bold text-teal-700">Farmers Account</h2>
+        <p className="mt-1 text-sm font-medium text-zinc-500">
+          Please complete the form to get started
+        </p>
+      </div>
 
-            <div className="flex flex-col mt-5 self-stretch  whitespace-nowrap">
-                <label htmlFor="password" className="text-sm font-medium text-zinc-700">Create Password</label>
+      <div className="space-y-4 w-full">
+        <Input
+          label="Email"
+          placeholder="Enter your email"
+          className=""
+          {...register("email")}
+          error={errors.email?.message}
+        />
 
-                <Password id="password" placeholder={'*******'} className='!py-3 h-[40px]' />
-            </div>
+        <Input
+          label="First Name"
+          id="firstName"
+          placeholder="What is your name"
+          className=""
+          {...register("firstName")}
+          error={errors.firstName?.message}
+        />
 
-            <div className="flex flex-col mt-5 self-stretch  whitespace-nowrap">
-                <label htmlFor="confirmPassword" className="text-sm font-medium text-zinc-700">Confirm Password</label>
+        <Input
+          label="Last Name"
+          id="lastName"
+          placeholder="What is your Surname"
+          className=""
+          {...register("lastName")}
+          error={errors.lastName?.message}
+        />
 
+        <Input
+          label="Phone Number"
+          prefix={"+234"}
+          type="tel"
+          id="phone"
+          placeholder="08012345678"
+          className=""
+          {...register("phoneNumber")}
+          error={errors.phoneNumber?.message}
+        />
 
-                <Password id="confirmPassword" placeholder={'*******'} className='!py-3 h-[40px]' />
-            </div>
+        <Password
+          label="Create Password"
+          id="password"
+          placeholder={"*******"}
+          className=""
+          {...register("password")}
+          error={errors.password?.message}
+        />
 
-            <div className="flex flex-col mt-9 self-stretch">
-                <div className="flex gap-1.5 items-center text-sm font-light text-zinc-700">
-                    <input type="checkbox" id="terms" className="w-3 h-3 border border-solid border-zinc-700" />
-                    <label htmlFor="terms" className="self-stretch my-auto">
-                        <span className="font-medium">I agree with the terms and conditions of this application</span>
-                    </label>
-                </div>
-                <Button handleClick={() => router.push(
-                    '/account-setup/verify-email?type=farmer'
-                )} className='!rounded-full !py-4 mt-3.5 w-full'> Create Account</Button>
-            </div>
-        </form>
-    );
+        <Password
+          label="Confirm Password"
+          id="confirmPassword"
+          placeholder={"*******"}
+          className=""
+          {...register("confirmPassword")}
+          error={errors.confirmPassword?.message}
+        />
+      </div>
+
+      <div className="flex flex-col mt-9 self-stretch">
+        <div className="">
+          <div className="flex gap-1.5 items-center text-sm font-light text-zinc-700">
+            <input
+              {...register("acceptTerms")}
+              type="checkbox"
+              id="terms"
+              className="w-3 h-3 border border-solid border-zinc-700 rounded-sm checked:bg-primary checked:border-primary focus:ring-0 text-primary"
+            />
+            <label htmlFor="terms" className="self-stretch my-auto">
+              <span className="font-medium">
+                I agree with the terms and conditions of this application
+              </span>
+            </label>
+          </div>
+          <p className="text-red-500 text-xs mt-1">
+            {errors.acceptTerms?.message}
+          </p>
+        </div>
+
+        <Button
+          className="!rounded-full !py-4 mt-3.5 w-full"
+          type="submit"
+          loading={isSubmitting || isPending}
+        >
+          Create Account
+        </Button>
+      </div>
+    </form>
+  );
 };
 
 export default FarmerForm;

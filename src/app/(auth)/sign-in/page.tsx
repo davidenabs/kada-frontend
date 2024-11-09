@@ -1,8 +1,11 @@
 import SignInForm from "@/components/auth/signin/form";
+import { Metadata } from "next";
 import React from "react";
 
-const SignInPage: React.FC = () => {
-  return <SignInForm />;
+export const metadata: Metadata = {
+  title: "Sign In",
 };
 
-export default SignInPage;
+export default function SignInPage() {
+  return <SignInForm />;
+}

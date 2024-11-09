@@ -13,9 +13,9 @@ const client = axios.create({
 });
 
 client.interceptors.request.use((config) => {
-  const user = store.get(userAtom);
-
-  const token = user?.token;
+  const data = localStorage.getItem("kada-user");
+  const user = data && JSON.parse(data);
+  const token = user && user.token;
 
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
@@ -37,7 +37,9 @@ client.interceptors.response.use(
 
 export class ApiClient {
   static async get<T>(url: string, params?: IParams) {
-    const response = await client.get<T>(url, params);
+    const response = await client.get<T>(url, {
+      params,
+    });
     return response.data;
   }
 

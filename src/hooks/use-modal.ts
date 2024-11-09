@@ -9,6 +9,7 @@ type ModalTypes = {
   isOpen: boolean;
   customSize?: string;
   size?: ModalSize;
+  outSideClickClose?: boolean;
 };
 
 const modalAtom = atom<ModalTypes>({
@@ -16,6 +17,7 @@ const modalAtom = atom<ModalTypes>({
   view: null,
   customSize: "320px",
   size: "sm",
+  outSideClickClose: false,
 });
 
 export function useModal() {
@@ -26,10 +28,12 @@ export function useModal() {
     view,
     customSize,
     size,
+    outSideClickClose = false,
   }: {
     view: React.ReactNode;
     customSize?: string;
     size?: ModalSize;
+    outSideClickClose?: boolean;
   }) => {
     setState({
       ...state,
@@ -37,6 +41,7 @@ export function useModal() {
       view,
       customSize,
       size,
+      outSideClickClose,
     });
   };
 

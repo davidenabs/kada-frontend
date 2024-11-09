@@ -8,6 +8,12 @@ export interface IQueryParams {
 
 export interface IResponse<T> {
   data: T;
-  status: boolean;
+  success: boolean;
   message: string;
 }
+
+export type IPaginatedResponse<T, K extends string> = {
+  total: number;
+  page: number;
+  limit: number;
+} & { [key in K]: T[] };
