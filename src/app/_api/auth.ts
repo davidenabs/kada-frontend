@@ -1,6 +1,7 @@
 import {
   ILoginPayload,
   IRegisterPayload,
+  IResetPasswordPayload,
   ISendOtpPayload,
   IVerifyOtpPayload,
 } from "@/interface/auth";
@@ -20,6 +21,15 @@ export const useLoginMutation = () => {
 export const useRegisterMutation = () => {
   return useMutation({
     mutationFn: (data: IRegisterPayload) => authClient.register(data),
+    onError: (error: any) => {
+      processError(error);
+    },
+  });
+};
+
+export const useResetPasswordMutation = () => {
+  return useMutation({
+    mutationFn: (data: IResetPasswordPayload) => authClient.resetPassword(data),
     onError: (error: any) => {
       processError(error);
     },

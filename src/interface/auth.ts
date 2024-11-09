@@ -14,6 +14,12 @@ export interface IRegisterPayload {
   userType: string;
 }
 
+export interface IResetPasswordPayload {
+  userId: string;
+  otp: string;
+  password: string;
+}
+
 export interface ILoginResponse {
   token: string;
   user: IUser;

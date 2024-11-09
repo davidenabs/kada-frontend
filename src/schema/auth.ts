@@ -68,26 +68,31 @@ export const ForgotPasswordSchema = z.object({
 export type ForgotPasswordSchemaType = z.infer<typeof ForgotPasswordSchema>;
 
 // reset password schema
-export const ResetPasswordSchema = z.object({
-  userId: z.string().min(1, { message: "Email or phone number is required" }),
-  otp: z.string().min(1, { message: "OTP is required" }),
-  password: z
-    .string()
-    .min(1, { message: "Password is required" })
-    .min(6, { message: "Password must be at least 6 characters" })
-    .regex(/[A-Z]/, {
-      message: "Password must contain at least one capital letter",
-    })
-    .regex(/[a-z]/, {
-      message: "Password must contain at least one small letter",
-    })
-    .regex(/[0-9]/, { message: "Password must contain at least one number" })
-    .regex(/[^a-zA-Z0-9]/, {
-      message: "Password must contain at least one special character",
-    }),
-  confirmPassword: z
-    .string()
-    .min(1, { message: "Confirm password is required" }),
-});
+export const ResetPasswordSchema = z
+  .object({
+    userId: z.string().min(1, { message: "Email or phone number is required" }),
+    otp: z.string().min(1, { message: "OTP is required" }),
+    password: z
+      .string()
+      .min(1, { message: "Password is required" })
+      .min(6, { message: "Password must be at least 6 characters" })
+      .regex(/[A-Z]/, {
+        message: "Password must contain at least one capital letter",
+      })
+      .regex(/[a-z]/, {
+        message: "Password must contain at least one small letter",
+      })
+      .regex(/[0-9]/, { message: "Password must contain at least one number" })
+      .regex(/[^a-zA-Z0-9]/, {
+        message: "Password must contain at least one special character",
+      }),
+    confirmPassword: z
+      .string()
+      .min(1, { message: "Confirm password is required" }),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords don't match",
+    path: ["confirmPassword"],
+  });
 
 export type ResetPasswordSchemaType = z.infer<typeof ResetPasswordSchema>;

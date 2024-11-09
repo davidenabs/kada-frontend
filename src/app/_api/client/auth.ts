@@ -3,6 +3,7 @@ import {
   ILoginPayload,
   ILoginResponse,
   IRegisterPayload,
+  IResetPasswordPayload,
   ISendOtpPayload,
   IVerifyOtpPayload,
 } from "@/interface/auth";
@@ -14,6 +15,8 @@ const authClient = {
     ApiClient.post(API_ENDPOINTS.LOGIN, data),
   register: async (data: IRegisterPayload): Promise<IResponse<any>> =>
     ApiClient.post(API_ENDPOINTS.REGISTER, data),
+  resetPassword: async (data: IResetPasswordPayload): Promise<IResponse<any>> =>
+    ApiClient.post(API_ENDPOINTS.RESET_PASSWORD, data),
   verifyOtp: async (data: IVerifyOtpPayload): Promise<any> =>
     ApiClient.post(API_ENDPOINTS.VERIFY_OTP, data),
   sendOtp: async (data: ISendOtpPayload): Promise<any> =>

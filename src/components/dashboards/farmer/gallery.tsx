@@ -71,12 +71,7 @@ function Gallery({ images }: { images: IFarmGallery[] }) {
           <SwiperSlide key={index} className="h-full">
             <div className="relative w-full h-[295px] md:h-full overflow-hidden">
               <Image
-                // src={image?.imagePath}
-                src={
-                  image.imagePath.startsWith("/")
-                    ? image.imagePath
-                    : `/${image.imagePath}`
-                }
+                src={image.imagePath}
                 alt={image?.description || "Farm Image"}
                 fill
                 className="object-cover"

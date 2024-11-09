@@ -2,6 +2,7 @@
 import { withAuth } from "@/components/common/auth";
 import { KadaButton } from "@/components/form/button";
 import Input from "@/components/form/input";
+import useDashboardTitle from "@/hooks/use-dashboard-tite";
 import { Lock, VerifiedIcon } from "@/icons";
 import { UserType } from "@/interface/user";
 import { userAtom } from "@/stores/user";
@@ -11,6 +12,7 @@ import Image from "next/image";
 import React from "react";
 
 function FarmerProfileSharedPage() {
+  useDashboardTitle("Profile");
   const { user } = useAtomValue(userAtom);
   const [loaded, setLoaded] = React.useState(false);
 
@@ -27,8 +29,8 @@ function FarmerProfileSharedPage() {
           <div className="flex items-center gap-4">
             <div className="relative w-[99px] h-[99px]">
               <Image
-                src="/images/bdo.png"
-                alt="bdo"
+                src={user?.imagePath ?? "/images/avatar.png"}
+                alt={user?.firstName + "Profile Picture"}
                 fill
                 className="object-cover rounded-full"
               />
@@ -38,10 +40,12 @@ function FarmerProfileSharedPage() {
               <h4 className="text-[18px] font-bold">
                 {user?.firstName} {user?.lastName}
               </h4>
-              <div className="flex items-center space-x-2">
-                <VerifiedIcon className="w-4 h-4" />
-                <span>Verified</span>
-              </div>
+              {user?.verified && (
+                <div className="flex items-center space-x-2">
+                  <VerifiedIcon className="w-4 h-4" />
+                  <span>Verified</span>
+                </div>
+              )}
             </div>
           </div>
         </div>

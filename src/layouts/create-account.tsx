@@ -48,12 +48,15 @@ function CreateAccountLayout({ children }: { children: React.ReactNode }) {
             />
             <ProfileTypeSelector />
           </div>
-          <div className="mt-24 w-full leading-tight max-md:mt-10 self-stretch overflow-y-scroll">
-            <div className="flex gap-3.5 pl-3 pb-20 self-start text-base">
-              <Link href="/sign-in" className="text-black underline">
+          <div className="mt-24 w-full leading-tight max-md:mt-10 self-stretch overflow-y-scroll pb-10">
+            <div className="flex gap-2 px-8 pb-10 self-start text-base">
+              <Link
+                href="/sign-in"
+                className="text-black underline font-oxygen"
+              >
                 Login here
               </Link>
-              <span className="basis-auto text-neutral-400">
+              <span className="basis-auto text-[#A4A4A4]">
                 if you already have an account
               </span>
             </div>

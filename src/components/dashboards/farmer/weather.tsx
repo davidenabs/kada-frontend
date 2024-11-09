@@ -1,16 +1,35 @@
 import React from "react";
 
 const WeatherWidget: React.FC = () => {
+  const greeting = React.useMemo(() => {
+    const date = new Date();
+    const hours = date.getHours();
+    let greeting = "";
+    if (hours < 12) {
+      greeting = "Good Morning";
+    } else if (hours < 18) {
+      greeting = "Good Afternoon";
+    } else {
+      greeting = "Good Evening";
+    }
+    return greeting;
+  }, []);
+
   return (
     <div className="flex overflow-hidden flex-col pt-7 mx-auto w-full rounded-3xl border border-solid bg-slate-50 bg-[url('/images/weather-bg.png')] bg-cover bg-center border-neutral-300 shadow-[0px_0px_30px_rgba(189,189,189,0.25)] max-md:mt-5 h-[188px]">
       <div className="self-start ml-8 text-sm font-light leading-tight text-black max-md:ml-2.5">
-        FRIDAY JAN 5, 2O24
+        {new Date().toLocaleDateString("en-US", {
+          weekday: "long",
+          year: "numeric",
+          month: "short",
+          day: "numeric",
+        })}
       </div>
       <div className="px-8 pt-1.5 pb-12 mt-2.5 w-full max-md:px-5">
         <div className="flex gap-5 max-md:flex-col">
           <div className="flex flex-col w-6/12 max-md:ml-0 max-md:w-full">
             <div className="flex flex-col mt-5 leading-tight text-black max-md:mt-10">
-              <h2 className="text-xl font-bold">Good Afternoon</h2>
+              <h2 className="text-xl font-bold">{greeting}</h2>
               <p className="self-start mt-1 text-base font-light">
                 Kaduna, Nigeria
               </p>

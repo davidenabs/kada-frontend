@@ -5,6 +5,7 @@ import CreateFarmModal from "@/components/modals/create-farm";
 import { useModal } from "@/hooks/use-modal";
 import { IFarm } from "@/interface/farm";
 import { ArrowRightIcon } from "@heroicons/react/16/solid";
+import { useRouter } from "next/navigation";
 import React from "react";
 import { Loader } from "rizzui";
 
@@ -13,15 +14,21 @@ interface FarmListProps {
 }
 
 const FarmList: React.FC<FarmListProps> = ({ farms }) => {
+  const router = useRouter();
   const newFarms = farms.slice(0, 3);
   return (
     <section className="flex flex-col rounded-none max-w-full">
       <div className="flex flex-col px-8 pt-9 pb-16 w-full bg-white rounded-3xl border border-solid border-teal-700 border-opacity-30 max-md:px-5 max-md:max-w-full ">
         <header className="flex flex-wrap gap-5 justify-between w-full font-bold text-black max-md:max-w-full">
           <h2 className="flex gap-2 items-start text-lg leading-none">
-            Your farms <span>({newFarms.length})</span>
+            Your farms <span>({farms.length})</span>
           </h2>
-          <button className="text-sm leading-tight">See all</button>
+          <button
+            className="text-sm leading-tight"
+            onClick={() => router.push("/dashboard/farmer/farms")}
+          >
+            See all
+          </button>
         </header>
 
         <div className="mt-10 max-md:max-w-full">

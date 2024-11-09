@@ -11,8 +11,10 @@ import CooperativeCard from "@/components/common/cards/cooperative";
 import { Empty } from "rizzui";
 import CooperativeCardGallery from "@/components/skeletons/cooperative-card";
 import { withAuth } from "@/components/common/auth";
+import useDashboardTitle from "@/hooks/use-dashboard-tite";
 
 function FarmerCooperativeSharedPage() {
+  useDashboardTitle("Cooperative");
   const { closeModal, openModal } = useModal();
   const router = useRouter();
   const [activeTab, setActiveTab] = useState("All Cooperative");

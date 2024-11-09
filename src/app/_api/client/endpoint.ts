@@ -2,6 +2,7 @@ const API_ENDPOINTS = {
   // auth
   LOGIN: "/auth/login",
   REGISTER: "/auth/register",
+  RESET_PASSWORD: "/auth/reset-password",
   SEND_OTP: "/users/send-otp",
   VERIFY_OTP: "/users/verify-otp",
   // users
