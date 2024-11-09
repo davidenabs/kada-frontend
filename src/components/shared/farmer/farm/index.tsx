@@ -3,6 +3,8 @@ import React from "react";
 import FarmInfo from "@/components/dashboards/farmer/farm-info";
 import { useParams } from "next/navigation";
 import { useGetFarmQuery } from "@/app/_api/farm";
+import { withAuth } from "@/components/common/auth";
+import { UserType } from "@/interface/user";
 
 interface NavigationItemProps {
   text: string;
@@ -58,4 +60,6 @@ function FarmSharedPage() {
   );
 }
 
-export default FarmSharedPage;
+export default withAuth(FarmSharedPage, {
+  allowedUserTypes: [UserType.FARMER],
+});

@@ -4,34 +4,72 @@ import Image from "next/image";
 import React, { useState } from "react";
 import cn from "@/utils/class-names";
 import { KadaButton } from "@/components/form/button";
+import { IUser } from "@/interface/user";
+import { useCreateRequestMutation } from "@/app/_api/request";
+import { RequestType } from "@/interface/request";
+import { useAtomValue } from "jotai";
+import { userAtom } from "@/stores/user";
+import { toast } from "sonner";
 
 interface CooperativeInfoModalProps {
   close: () => void;
+  cooperaative: IUser;
 }
 
-function CooperativeInfoModal({ close }: CooperativeInfoModalProps) {
-  const [activeTab, setActiveTab] = useState("about");
+const tabs = [
+  {
+    id: "about",
+    label: "About Cooperative",
+  },
+  {
+    id: "eligibility",
+    label: "Eligibility",
+  },
+  {
+    id: "services",
+    label: "Services",
+  },
+];
 
-  const tabs = [
-    {
-      id: "about",
-      label: "About Cooperative",
-    },
-    {
-      id: "eligibility",
-      label: "Eligibility",
-    },
-    {
-      id: "services",
-      label: "Services",
-    },
-  ];
+function CooperativeInfoModal({
+  close,
+  cooperaative,
+}: CooperativeInfoModalProps) {
+  const user = useAtomValue(userAtom);
+  const [activeTab, setActiveTab] = useState("about");
+  const { mutateAsync, isPending } = useCreateRequestMutation();
+
+  const handleJoin = () => {
+    toast.dismiss();
+    toast.loading("Sending request...");
+    mutateAsync(
+      {
+        data: {
+          requestType: RequestType.FARMER_TO_COOPERATIVE,
+          cooperativeId: cooperaative?.id,
+          farmerId: user.user?.id,
+        },
+      },
+      {
+        onSuccess: (response) => {
+          if (response.success) {
+            toast.dismiss();
+            toast.success("Request sent successfully");
+            close();
+          }
+        },
+      }
+    );
+  };
 
   return (
     <section className="flex overflow-hidden flex-col w-full rounded-[10px] max-md:max-w-full bg-white font-inter">
       <header className="flex items-center justify-between border-b px-6 py-2">
         <h4 className="text-base font-semibold">Cooperative Information</h4>
-        <CloseIcon className="w-4 h-4" />
+
+        <button onClick={close}>
+          <CloseIcon className="w-4 h-4" />
+        </button>
       </header>
 
       <div className="flex">
@@ -76,6 +114,18 @@ function CooperativeInfoModal({ close }: CooperativeInfoModalProps) {
                 rightIcon={
                   <ArrowRightIcon className="w-[18px] h-[18px] fill-white" />
                 }
+                onClick={() => {
+                  toast("Are you sure you want to join this cooperative?", {
+                    action: {
+                      label: "Confirm",
+                      onClick: () => handleJoin(),
+                    },
+                    dismissible: true,
+                    position: "top-center",
+                    closeButton: true,
+                    duration: 10000,
+                  });
+                }}
               >
                 Request to Join
               </KadaButton>

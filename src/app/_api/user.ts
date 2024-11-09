@@ -1,4 +1,8 @@
-import { IQueryParams, IResponse } from "@/interface/client";
+import {
+  IPaginatedResponse,
+  IQueryParams,
+  IResponse,
+} from "@/interface/client";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import userClient from "./client/user";
 import { IUser, IVerifyNinPayload } from "@/interface/user";
@@ -14,8 +18,11 @@ export const useVerifyNinMutation = () => {
   });
 };
 
-export const useUserQuery = ({ enabled = true, params = {} }: IQueryParams) => {
-  return useQuery<IResponse<IUser>, Error>({
+export const useGetUsersQuery = ({
+  enabled = true,
+  params = {},
+}: IQueryParams) => {
+  return useQuery<IResponse<IPaginatedResponse<IUser, "users">>, Error>({
     queryKey: [API_ENDPOINTS.GET_USERS],
     queryFn: () => userClient.getUsers(params),
     enabled: enabled !== undefined ? enabled : true,

@@ -118,7 +118,9 @@ function AddPhoto({ close, gallery, farmId }: Props) {
                 </div>
 
                 <div className="">
-                  <KadaButton className="!bg-black">Upload</KadaButton>
+                  <KadaButton type="button" className="!bg-black">
+                    Upload
+                  </KadaButton>
                 </div>
                 <Controller
                   control={control}
@@ -151,6 +153,33 @@ function AddPhoto({ close, gallery, farmId }: Props) {
                 error={errors.description?.message}
               />
             </div>
+          </div>
+
+          <div className="w-6/12">
+            {files && (
+              <div className="space-y-2">
+                <div className="flex items-center justify-between p-3 bg-gray-300 rounded-lg">
+                  <div className="flex items-center space-x-3">
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium truncate">
+                        {files.name}
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        {(files.size / 1024 / 1024).toFixed(2)} MB
+                      </p>
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setFiles(null);
+                    }}
+                  >
+                    <CloseIcon className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
 
           <div className="border border-[#ECF2F6] bg-[#FAFAFA] rounded-2xl p-4 mt-8">

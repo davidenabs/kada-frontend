@@ -106,7 +106,10 @@ const SignInForm: React.FC = () => {
         >
           Sign in
         </Button>
-        <Link href="#" className="self-end mt-2 text-sm font-light text-black">
+        <Link
+          href="/forgot-password"
+          className="self-end mt-2 text-sm font-light text-black"
+        >
           Forgot Password?
         </Link>
       </form>

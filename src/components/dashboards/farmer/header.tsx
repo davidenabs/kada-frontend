@@ -36,22 +36,24 @@ const Header: React.FC = () => {
         <div className="">
           <Dropdown placement="bottom-end">
             <Dropdown.Trigger>
-              {/* <Avatar
-                name="John Doe"
-                src="https://randomuser.me/api/portraits/women/40.jpg"
-                className="cursor-pointer"
-              /> */}
-
               <div className="flex gap-1 items-start my-auto">
-                <img
+                {/* <img
                   loading="lazy"
-                  src="/images/moses.png"
+                  src={user.user?.imagePath ?? "/images/avatar.png"}
                   alt="User avatar"
                   className="object-contain shrink-0 w-7 rounded-md aspect-square"
+                /> */}
+                <Avatar
+                  name={`${user.user?.firstName} ${user.user?.lastName}`}
+                  src={user.user?.imagePath ?? "/images/avatar.png"}
+                  className="cursor-pointer"
                 />
                 <div className="flex flex-col h-[29px]">
                   <div className="flex gap-1 items-end text-xs font-bold text-green-800">
-                    <div>John Emmanuel</div>
+                    <div>
+                      {user.user?.firstName} {user.user?.lastName}
+                    </div>
+
                     <img
                       loading="lazy"
                       src="https://cdn.builder.io/api/v1/image/assets/TEMP/a372f2dd9322a139bfecb23005028dcb756c8893933af728ae33b2b858380cfc?placeholderIfAbsent=true&apiKey=e3159558e3c24b7bb6f2db02f0873db3"
@@ -59,7 +61,11 @@ const Header: React.FC = () => {
                       className="object-contain shrink-0 w-3.5 aspect-square"
                     />
                   </div>
-                  <div className="text-xs font-light text-zinc-700">Admin</div>
+                  <div className="text-start">
+                    <span className="text-xs font-light text-zinc-700 capitalize">
+                      {user.user?.userType}
+                    </span>
+                  </div>
                 </div>
               </div>
             </Dropdown.Trigger>

@@ -1,11 +1,22 @@
 "use client";
+import { useGetUsersQuery } from "@/app/_api/user";
+import { withAuth } from "@/components/common/auth";
 import Catalog from "@/components/common/catalog";
 import VendorCard from "@/components/common/vendor-card";
 import Input from "@/components/form/input";
+import VendorCardSkeleton from "@/components/skeletons/vendor-card";
 import { SearchIcon } from "@/icons";
+import { UserType } from "@/interface/user";
 import React from "react";
+import { Empty, EmptyBoxIcon } from "rizzui";
 
 function FarmerVendorsSharedPage() {
+  const { data, isFetching, isRefetching } = useGetUsersQuery({
+    params: {
+      userType: UserType.VENDOR,
+    },
+  });
+
   return (
     <section className="flex gap-4">
       <div className="flex-1">
@@ -21,9 +32,33 @@ function FarmerVendorsSharedPage() {
         </div>
 
         <div className="border border-[#DFDFDF] p-6 bg-white rounded-2xl">
-          <div className="grid grid-cols-5">
+          {/* <div className="grid grid-cols-5">
             <VendorCard />
-          </div>
+          </div> */}
+
+          {isFetching || isRefetching ? (
+            <div className="grid grid-cols-5">
+              <VendorCardSkeleton />
+              <VendorCardSkeleton />
+            </div>
+          ) : data?.data?.total === 0 ? (
+            <>
+              <Empty text="No Vendor Data" />
+            </>
+          ) : (
+            <>
+              <div className="grid grid-cols-5">
+                {data?.data?.users.map((user) => (
+                  <VendorCard
+                  // closeModal={closeModal}
+                  // openModal={openModal}
+                  // router={router}
+                  // key={user.id}
+                  />
+                ))}
+              </div>
+            </>
+          )}
         </div>
       </div>
 
@@ -60,4 +95,6 @@ function FarmerVendorsSharedPage() {
   );
 }
 
-export default FarmerVendorsSharedPage;
+export default withAuth(FarmerVendorsSharedPage, {
+  allowedUserTypes: [UserType.FARMER],
+});

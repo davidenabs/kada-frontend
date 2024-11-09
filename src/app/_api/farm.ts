@@ -91,6 +91,7 @@ export const useGetFarmGalleryQuery = ({
 };
 
 export const useCreateFarmGalleryMutation = () => {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: ({
       data,
@@ -103,5 +104,10 @@ export const useCreateFarmGalleryMutation = () => {
       processError(error);
     },
     mutationKey: [API_ENDPOINTS.CREATE_FARM_GALLERY],
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({
+        queryKey: [API_ENDPOINTS.GET_FARM_GALLERY],
+      });
+    },
   });
 };

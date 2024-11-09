@@ -37,7 +37,9 @@ client.interceptors.response.use(
 
 export class ApiClient {
   static async get<T>(url: string, params?: IParams) {
-    const response = await client.get<T>(url, params);
+    const response = await client.get<T>(url, {
+      params,
+    });
     return response.data;
   }
 
