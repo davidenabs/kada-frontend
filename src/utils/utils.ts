@@ -14,3 +14,15 @@ export function objectToFormData<T extends Record<string, any>>(
 
   return formData;
 }
+
+export function parseGeoLocation(geoLocation: string): [number, number][] {
+  try {
+    const coordinates = JSON.parse(geoLocation)[0].map((coord: any[]) => [
+      coord[1],
+      coord[0],
+    ]);
+    return coordinates;
+  } catch (error) {
+    return [];
+  }
+}

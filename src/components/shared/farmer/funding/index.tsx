@@ -6,8 +6,10 @@ import React, { useState } from "react";
 import FundingTable from "./table";
 import { KadaButton } from "@/components/form/button";
 import { useRouter } from "next/navigation";
+import useDashboardTitle from "@/hooks/use-dashboard-tite";
 
 function FarmersFundingSharedPage() {
+  useDashboardTitle("Funding");
   const router = useRouter();
   const [activeTab, setActiveTab] = useState("Approved");
   const tabs = [

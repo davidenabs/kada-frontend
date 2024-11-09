@@ -1,14 +1,14 @@
 "use client";
-import { useSendOtpMutation } from "@/app/_api/auth";
+import { useResetPasswordMutation } from "@/app/_api/auth";
 import Button from "@/components/form/button";
 import Input from "@/components/form/input";
 import Password from "@/components/form/password";
-import { OtpType } from "@/interface/auth";
 import { ResetPasswordSchema, ResetPasswordSchemaType } from "@/schema/auth";
 import { appAtom } from "@/stores/app";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAtom } from "jotai";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React, { Fragment, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -21,8 +21,10 @@ const defaultValues = {
 };
 
 function ResetPassword() {
+  const router = useRouter();
   const [app, setApp] = useAtom(appAtom);
   const {
+    reset,
     register,
     handleSubmit,
     setValue,
@@ -32,24 +34,19 @@ function ResetPassword() {
     resolver: zodResolver(ResetPasswordSchema),
   });
 
-  const { mutateAsync, isPending } = useSendOtpMutation();
+  const { mutateAsync, isPending } = useResetPasswordMutation();
 
   const onSubmit = (data: ResetPasswordSchemaType) => {
-    console.log(data);
-    // const newData = {
-    //   ...data,
-    //   method: data.userId.includes("@") ? "email" : "phone",
-    // };
-
-    // mutateAsync(newData, {
-    //   onSuccess: (response) => {
-    //     toast.success("OTP sent successfully");
-
-    //     if (response.success) {
-    //       setApp({ ...app, userEmail: data.userId });
-    //     }
-    //   },
-    // });
+    mutateAsync(data, {
+      onSuccess: (response) => {
+        if (response.success) {
+          toast.success("Password reset successfully");
+          reset(defaultValues);
+          setApp({ ...app, userEmail: null });
+          router.push("/sign-in");
+        }
+      },
+    });
   };
 
   useEffect(() => {

@@ -242,7 +242,9 @@ function CreateFarmModal({ close }: { close: () => void }) {
             </div>
 
             <div className="">
-              <h2 className="text-xl font-bold text-green-800">Draw Farm</h2>
+              <label className="text-sm mb-2 inline-block">
+                Draw your Farm Coordinates
+              </label>
               <div className="h-[400px] w-full mb-4">
                 <MapContainer
                   center={userLocation || [6.5244, 3.3792]}
@@ -279,7 +281,7 @@ function CreateFarmModal({ close }: { close: () => void }) {
           </div>
         </div>
 
-        <div className="w-full">
+        <div className="w-full mt-4">
           <Button
             type="submit"
             className="!rounded-full !shadow-none"

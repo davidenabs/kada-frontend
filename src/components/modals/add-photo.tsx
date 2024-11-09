@@ -184,18 +184,14 @@ function AddPhoto({ close, gallery, farmId }: Props) {
 
           <div className="border border-[#ECF2F6] bg-[#FAFAFA] rounded-2xl p-4 mt-8">
             <h4>Your Photo Gallery</h4>
-            <div className="grid grid-cols-4 mt-6">
+            <div className="grid grid-cols-4 gap-4 mt-6">
               {gallery.map((image, index) => {
                 return (
                   <div className="" key={index}>
                     <div className="relative w-full h-[220px] border rounded">
                       <Image
-                        src={
-                          image.imagePath.startsWith("/")
-                            ? image.imagePath
-                            : `/${image.imagePath}`
-                        }
-                        alt="Farm Image"
+                        src={image.imagePath}
+                        alt={image?.description || "Gallery Image"}
                         fill
                         className="rounded-2xl object-cover"
                       />

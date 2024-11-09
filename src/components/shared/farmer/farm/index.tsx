@@ -5,6 +5,7 @@ import { useParams } from "next/navigation";
 import { useGetFarmQuery } from "@/app/_api/farm";
 import { withAuth } from "@/components/common/auth";
 import { UserType } from "@/interface/user";
+import useDashboardTitle from "@/hooks/use-dashboard-tite";
 
 interface NavigationItemProps {
   text: string;
@@ -32,6 +33,7 @@ const NavigationItem: React.FC<NavigationItemProps> = ({ text, active }) => {
 };
 
 function FarmSharedPage() {
+  useDashboardTitle("Farm");
   const { farmId } = useParams();
   const { data, isFetching } = useGetFarmQuery({
     enabled: true,

@@ -7,6 +7,7 @@ import { ForgotPasswordSchema, ForgotPasswordSchemaType } from "@/schema/auth";
 import { appAtom } from "@/stores/app";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAtom } from "jotai";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { Fragment } from "react";
 import { useForm } from "react-hook-form";
@@ -78,8 +79,17 @@ function ForgotPassword() {
           className="!py-3 mt-8 !rounded-full"
           loading={isSubmitting || isPending}
         >
-          Sign in
+          Submit
         </Button>
+
+        <div className="p-4">
+          <p className="text-sm text-gray-500">
+            Back to{" "}
+            <Link href="/sign-in" className="text-primary">
+              Sign in
+            </Link>
+          </p>
+        </div>
       </form>
     </Fragment>
   );

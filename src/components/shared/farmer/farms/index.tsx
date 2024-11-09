@@ -2,10 +2,12 @@
 import { useGetFarmsQuerry } from "@/app/_api/farm";
 import { withAuth } from "@/components/common/auth";
 import FarmCard from "@/components/common/cards/farm-caard";
+import useDashboardTitle from "@/hooks/use-dashboard-tite";
 import { UserType } from "@/interface/user";
 import React, { Fragment } from "react";
 
 function FarmerFarmsSharedPage() {
+  useDashboardTitle("Farms");
   const [loaded, setLoaded] = React.useState(false);
   const [page, setPage] = React.useState(1);
   const [limit, setLimit] = React.useState(10);

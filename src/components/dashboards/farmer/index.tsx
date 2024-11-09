@@ -36,7 +36,7 @@ function FarmerDashboardSharedPage() {
             <div className="flex gap-5 max-md:flex-col h-[188px]">
               <div className="flex flex-col w-[39%] max-md:ml-0 max-md:w-full">
                 <h2 className="self-stretch my-auto text-4xl font-bold leading-9 text-white max-md:mt-10">
-                  Farming to feed the nation
+                  Farming to feed <br /> the nation
                 </h2>
               </div>
 
@@ -58,7 +58,6 @@ function FarmerDashboardSharedPage() {
               </div>
             </div>
           </div>
-
           <CreateFarmCard />
         </section>
 

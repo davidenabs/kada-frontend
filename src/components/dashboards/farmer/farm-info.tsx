@@ -8,6 +8,34 @@ import AddPhoto from "@/components/modals/add-photo";
 import { IFarm } from "@/interface/farm";
 import { useGetFarmGalleryQuery } from "@/app/_api/farm";
 import FarmGalleySkeleton from "@/components/skeletons/farm-gallery";
+import { Map } from "@/components/common/map";
+import { parseGeoLocation } from "@/utils/utils";
+
+export function CoordinateDisplay({ geoLocation }: { geoLocation: string }) {
+  const coordinates = parseGeoLocation(geoLocation);
+  if (coordinates.length === 0) {
+    return <p className="text-red-500">Invalid coordinates</p>;
+  }
+
+  return (
+    <div className="space-y-2">
+      <h3 className="text-sm font-medium text-white">Farm Coordinates</h3>
+      <div className="grid gap-2 text-sm">
+        {coordinates.map(([longitude, latitude], index) => (
+          <div
+            key={index}
+            className="flex items-center gap-2 rounded-md text-white"
+          >
+            <span className="font-medium text-white">Point {index + 1}:</span>
+            <span>
+              {latitude.toFixed(4)}°N, {longitude.toFixed(4)}°E
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 function FarmInfo(farm: IFarm & { farmId: string }) {
   const { openModal, closeModal } = useModal();
@@ -124,29 +152,38 @@ function FarmInfo(farm: IFarm & { farmId: string }) {
 
           <div className="flex-1 space-y-[30px] min-w-0">
             <div className="">
-              <h4 className="text-lg font-bold">Farm Location (2)</h4>
+              <h4 className="text-lg font-bold">Farm Location</h4>
               <div className="h-[318px] w-full relative rounded-[20px]">
-                <div className="absolute bottom-0 right-0 h-[163px] w-[311.02px]">
-                  <div className="w-full bg-[#3865E0] h-[104px] rounded-[14px] p-6">
-                    <div className="flex justify-between text-[18px] text-white font-inter">
+                <Map coordinates={farm.geoLocation as any} />
+                <div className="absolute bottom-0 right-0 h-[163px] w-fit z-[9999]">
+                  <div className="w-full bg-[#3865E0] h-full rounded-[14px] p-4">
+                    {/* <div className="flex justify-between text-[18px] text-white font-inter">
                       <span className="font-light">Longitude:</span>
                       <span className="font-bold">10.5247° N</span>
                     </div>
                     <div className="flex justify-between text-[18px] text-white font-inter">
                       <span className="font-light">Latitude:</span>
                       <span className="font-bold">10.5247° N</span>
+                    </div> */}
+
+                    <div className="">
+                      <CoordinateDisplay
+                        geoLocation={farm.geoLocation as any}
+                      />
                     </div>
                   </div>
-
-                  <button className="w-full bg-white flex items-center justify-center h-[72px] relative bottom-4 rounded-[14px]">
+                  {/* <button className="w-full bg-white flex items-center justify-center h-[72px] relative bottom-4 rounded-[14px]">
                     <span>Get Direction</span>
-                  </button>
+                  </button> */}
                 </div>
               </div>
             </div>
 
             <div className="min-w-0">
-              <h4 className="text-lg font-bold">Product Photos (2)</h4>
+              <h4 className="text-lg font-bold">
+                Product Photos {""}
+                <span>({data?.data?.length || 0})</span>
+              </h4>
 
               <div className="flex gap-8 mt-2">
                 <div className="flex-1 min-w-0 rounded-[20px]">
@@ -154,10 +191,16 @@ function FarmInfo(farm: IFarm & { farmId: string }) {
                     <FarmGalleySkeleton />
                   ) : data?.data?.length ? (
                     <Gallery images={data?.data} />
-                  ) : null}
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center bg-[#ECF2F6] rounded-[20px]">
+                      <p className="text-[#333543] text-sm font-inter">
+                        No photos available
+                      </p>
+                    </div>
+                  )}
                 </div>
 
-                <div className="w-[321px] border border-[#ECF2F6] p-8 flex flex-col rounded-[20px] h-[318px] justify-between items-center">
+                <div className="flex-1 lg:flex-none w-[321px] border border-[#ECF2F6] p-8 flex flex-col rounded-[20px] h-[318px] justify-between items-center">
                   <CameraIcon className="w-12 h-12" />
                   <div className="text-center">
                     <h4 className="text-[#343A3F] text-2xl">Add Photo</h4>
@@ -179,8 +222,6 @@ function FarmInfo(farm: IFarm & { farmId: string }) {
           </div>
         </div>
       </section>
-
-      {/* <Gallery /> */}
     </Fragment>
   );
 }

@@ -40,27 +40,24 @@ const FarmerForm: React.FC = () => {
   const onSubmit = (data: RegisterSchemaType) => {
     const { confirmPassword, ...newData } = data;
 
-    setApp({ ...app, userEmail: data.email });
-    router.push("/account-setup/verify-account?type=farmer");
-
-    // mutateAsync(data, {
-    //   onSuccess: (response) => {
-    //     console.log(response);
-    //     if (response.success) {
-    //       toast.success(response.message);
-    //       setApp({ ...app, userEmail: data.email });
-    //       router.push("/account-setup/verify-account?type=farmer");
-    //     } else {
-    //       toast.error(response.message);
-    //     }
-    //   },
-    //   onError: (error) => {},
-    // });
+    mutateAsync(data, {
+      onSuccess: (response) => {
+        console.log(response);
+        if (response.success) {
+          toast.success(response.message);
+          setApp({ ...app, userEmail: data.email });
+          router.push("/account-setup/verify-account?type=farmer");
+        } else {
+          toast.error(response.message);
+        }
+      },
+      onError: (error) => {},
+    });
   };
 
   return (
     <form
-      className="flex flex-col items-start lg:px-8 mt20 max-md:pl-=5 max-md:mt-10 w-full"
+      className="flex flex-col items-start lg:px-8 w-full"
       onSubmit={handleSubmit(onSubmit)}
     >
       <div className="flex flex-col">
@@ -70,7 +67,7 @@ const FarmerForm: React.FC = () => {
         </p>
       </div>
 
-      <div className="space-y-4 w-full">
+      <div className="space-y-4 w-full mt-9">
         <Input
           label="Email"
           placeholder="Enter your email"

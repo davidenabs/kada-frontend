@@ -42,7 +42,6 @@ export const useCreateFarmMutation = () => {
   return useMutation({
     mutationFn: ({ data, farmerId }: { data: any; farmerId: any }) =>
       farmClient.createFarm(data, farmerId),
-
     onSuccess: (data) => {
       queryClient.invalidateQueries({
         queryKey: [API_ENDPOINTS.GET_FARMS],

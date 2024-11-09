@@ -37,12 +37,6 @@ const Header: React.FC = () => {
           <Dropdown placement="bottom-end">
             <Dropdown.Trigger>
               <div className="flex gap-1 items-start my-auto">
-                {/* <img
-                  loading="lazy"
-                  src={user.user?.imagePath ?? "/images/avatar.png"}
-                  alt="User avatar"
-                  className="object-contain shrink-0 w-7 rounded-md aspect-square"
-                /> */}
                 <Avatar
                   name={`${user.user?.firstName} ${user.user?.lastName}`}
                   src={user.user?.imagePath ?? "/images/avatar.png"}

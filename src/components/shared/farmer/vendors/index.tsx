@@ -5,12 +5,14 @@ import Catalog from "@/components/common/catalog";
 import VendorCard from "@/components/common/vendor-card";
 import Input from "@/components/form/input";
 import VendorCardSkeleton from "@/components/skeletons/vendor-card";
+import useDashboardTitle from "@/hooks/use-dashboard-tite";
 import { SearchIcon } from "@/icons";
 import { UserType } from "@/interface/user";
 import React from "react";
-import { Empty, EmptyBoxIcon } from "rizzui";
+import { Empty } from "rizzui";
 
 function FarmerVendorsSharedPage() {
+  useDashboardTitle("Vendors");
   const { data, isFetching, isRefetching } = useGetUsersQuery({
     params: {
       userType: UserType.VENDOR,
@@ -31,7 +33,7 @@ function FarmerVendorsSharedPage() {
           />
         </div>
 
-        <div className="border border-[#DFDFDF] p-6 bg-white rounded-2xl">
+        <div className="border border-[#DFDFDF] p-6 bg-white rounded-2xl mt-4">
           {/* <div className="grid grid-cols-5">
             <VendorCard />
           </div> */}
