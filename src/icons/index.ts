@@ -27,3 +27,12 @@ export { default as VerifiedIcon } from "./verified.svg";
 export { default as CameraIcon } from "./camera.svg";
 export { default as ArrowRight } from "./arrow-rightt.svg";
 export { default as ArrowLeft } from "./arrow-left.svg";
+
+export { default as BadgeTag } from "./barge-tag.svg";
+export { default as Brick } from "./brick.svg";
+export { default as PriceMarketIcon } from "./price-market.svg";
+export { default as PriceHighIcon } from "./price-high.svg";
+export { default as PriceLowIcon } from "./price-low.svg";
+export { default as MapNavIcon } from "./map-nav.svg";
+export { default as DoubleCheckIcon } from "./double-check.svg";
+export { default as XCloseIcon } from "./x-close.svg";
