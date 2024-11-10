@@ -22,12 +22,8 @@ export function withAuth<T extends object>(
     const [loaded, setLoaded] = useState(false);
 
     useEffect(() => {
-      setLoaded(true);
-    }, []);
-
-    useEffect(() => {
       const checkAuth = () => {
-        if (!loaded) return;
+        // if (!loaded) return;
         if (!user.authenticated || !user.token) {
           router.push("/sign-in");
           return;
@@ -35,16 +31,19 @@ export function withAuth<T extends object>(
 
         if (!allowedUserTypes) {
           setIsAuthorized(true);
+          setLoaded(true);
           return;
         }
 
         const userType = user.user?.userType;
         if (!allowedUserTypes.includes(userType!)) {
           setIsAuthorized(false);
+          setLoaded(true);
           return;
         }
 
         setIsAuthorized(true);
+        setLoaded(true);
       };
 
       checkAuth();

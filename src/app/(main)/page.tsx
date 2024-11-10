@@ -38,16 +38,11 @@ const Home = () => {
     <>
       <MainHero />
       <OurMandate />
-
       <WhatWeStandFor {...whatWeStandForData} />
-
       <AboutKada />
-
       <FosteringSection />
-
       <Statistics />
       <Highlights />
-
       <ContactUs />
     </>
   );

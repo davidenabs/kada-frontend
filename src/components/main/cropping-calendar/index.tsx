@@ -45,8 +45,10 @@ function CroppingCalendar() {
   }, [debouncedSearch]);
 
   useEffect(() => {
-    console.log(results);
-  }, [results]);
+    if (!debouncedSearch) {
+      setResults([]);
+    }
+  }, [debouncedSearch]);
 
   return (
     <Fragment>
@@ -122,7 +124,7 @@ function CroppingCalendar() {
                   label="Search for crop"
                   suffix={
                     <div className="rounded-full bg-[#367B62] w-10 h-10 flex items-center justify-center">
-                      <SearchIcon className="stroke-white" />
+                      <SearchIcon className="fill-white" />
                     </div>
                   }
                   inputClassName="h-[50px]"
@@ -131,6 +133,7 @@ function CroppingCalendar() {
                   onClear={() => {
                     setSearch("");
                     setResults([]);
+                    setCurrentIndex(0);
                   }}
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
