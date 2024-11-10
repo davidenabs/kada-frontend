@@ -2,7 +2,7 @@
 import { appAtom } from "@/stores/app";
 import { userAtom } from "@/stores/user";
 import { useAtom } from "jotai";
-import React from "react";
+import React, { startTransition } from "react";
 import { Avatar, Dropdown, Text } from "rizzui";
 import { toast } from "sonner";
 
@@ -12,7 +12,9 @@ const Header: React.FC = () => {
 
   const handleLogout = () => {
     toast.success("Logging out...");
-    setUser({ ...user, user: null, token: null, authenticated: false });
+    startTransition(() => {
+      setUser({ ...user, user: null, token: null, authenticated: false });
+    });
   };
 
   return (
@@ -63,7 +65,7 @@ const Header: React.FC = () => {
                 </div>
               </div>
             </Dropdown.Trigger>
-            <Dropdown.Menu className="w-56 divide-y text-gray-600">
+            <Dropdown.Menu className="w-56 divide-y text-gray-600 bg-white">
               <div className="mb-2">
                 <Dropdown.Item className="hover:bg-gray-900 hover:text-gray-50">
                   Account Settings

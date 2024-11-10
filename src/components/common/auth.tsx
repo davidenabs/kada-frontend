@@ -1,5 +1,5 @@
 "use client";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect, useState, startTransition } from "react";
 import { UserType } from "@/interface/user";
 import { useRouter } from "next/navigation";
 import { useAtomValue } from "jotai";
@@ -23,31 +23,36 @@ export function withAuth<T extends object>(
 
     useEffect(() => {
       const checkAuth = () => {
-        // if (!loaded) return;
         if (!user.authenticated || !user.token) {
           router.push("/sign-in");
           return;
         }
 
         if (!allowedUserTypes) {
-          setIsAuthorized(true);
-          setLoaded(true);
+          startTransition(() => {
+            setIsAuthorized(true);
+            setLoaded(true);
+          });
           return;
         }
 
         const userType = user.user?.userType;
         if (!allowedUserTypes.includes(userType!)) {
-          setIsAuthorized(false);
-          setLoaded(true);
+          startTransition(() => {
+            setIsAuthorized(false);
+            setLoaded(true);
+          });
           return;
         }
 
-        setIsAuthorized(true);
-        setLoaded(true);
+        startTransition(() => {
+          setIsAuthorized(true);
+          setLoaded(true);
+        });
       };
 
       checkAuth();
-    }, [router, loaded, user]);
+    }, [router, user, allowedUserTypes]);
 
     if (!loaded) {
       return <FullPageLoader />;

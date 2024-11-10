@@ -1,3 +1,5 @@
+import CryptoJS from "crypto-js";
+
 export function objectToFormData<T extends Record<string, any>>(
   obj: T
 ): FormData {
@@ -26,3 +28,14 @@ export function parseGeoLocation(geoLocation: string): [number, number][] {
     return [];
   }
 }
+
+const SECRET_KEY = process.env.NEXT_PUBLIC_SECRET_KEY || "default_secret_key";
+
+export const encryptData = (data: string) => {
+  return CryptoJS.AES.encrypt(data, SECRET_KEY).toString();
+};
+
+export const decryptData = (ciphertext: string) => {
+  const bytes = CryptoJS.AES.decrypt(ciphertext, SECRET_KEY);
+  return bytes.toString(CryptoJS.enc.Utf8);
+};

@@ -4,7 +4,7 @@ import Input from "@/components/form/input";
 import Password from "@/components/form/password";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useTransition } from "react";
 import { Title } from "rizzui";
 import { useForm } from "react-hook-form";
 import LoginSchema, { LoginSchemaType } from "@/schema/auth";
@@ -19,6 +19,7 @@ const SignInForm: React.FC = () => {
   const router = useRouter();
   const [user, setUser] = useAtom(userAtom);
   const loginMutation = useLoginMutation();
+  const [loading, startTransition] = useTransition();
 
   const {
     register,
@@ -40,41 +41,45 @@ const SignInForm: React.FC = () => {
       password: data.password,
     };
 
-    loginMutation.mutate(newData, {
-      onSuccess: (response) => {
-        const { data, message } = response;
-        setUser({
-          ...user,
-          user: data.user,
-          token: data.token,
-          authenticated: true,
-        });
-        toast.dismiss();
-        toast.success("Login successful");
+    startTransition(() => {
+      loginMutation.mutate(newData, {
+        onSuccess: (response) => {
+          const { data, message } = response;
+          setUser({
+            ...user,
+            user: data.user,
+            token: data.token,
+            authenticated: true,
+          });
 
-        const userType = data.user.userType;
+          const userType = data.user.userType;
 
-        switch (userType) {
-          case UserType.FARMER:
-            router.push("/dashboard/farmer");
-            break;
-          case UserType.COOPERATIVE:
-            router.push("/dashboard/cooperative");
-            break;
-          default:
-            break;
-        }
-      },
-      onError: (error) => {
-        toast.dismiss();
-      },
+          switch (userType) {
+            case UserType.FARMER:
+              router.push("/dashboard/farmer");
+              break;
+            case UserType.COOPERATIVE:
+              router.push("/dashboard/cooperative");
+              break;
+            default:
+              break;
+          }
+          toast.dismiss();
+          toast.success("Login successful");
+        },
+        onError: (error) => {
+          toast.dismiss();
+        },
+      });
     });
   };
 
   return (
     <div className="my-auto bg-white md:px-12 px-1 py-10 rounded-lg self-center shadow-lg">
       <div className="flex flex-col items-center space-y-2">
-        <img src="/images/logo.svg" alt="" className="w-[66px]" />
+        <Link href="/">
+          <img src="/images/logo.svg" alt="" className="w-[66px]" />
+        </Link>
         <Title as="h4">Welcome Back to KADA!</Title>
       </div>
 
@@ -94,6 +99,7 @@ const SignInForm: React.FC = () => {
           inputClassName=""
           {...register("email")}
           error={errors.email?.message}
+          disabled={loading}
         />
 
         <Password
@@ -103,12 +109,13 @@ const SignInForm: React.FC = () => {
           className="mt-4"
           {...register("password")}
           error={errors.password?.message}
+          disabled={loading}
         />
 
         <Button
           type="submit"
           className="!py-3 mt-8 !rounded-full"
-          loading={isSubmitting || loginMutation.isPending}
+          loading={loading}
         >
           Sign in
         </Button>

@@ -1,9 +1,6 @@
 import { IParams } from "@/interface/client";
-import { userAtom } from "@/stores/user";
+import { decryptData } from "@/utils/utils";
 import axios from "axios";
-import { createStore } from "jotai";
-
-const store = createStore();
 
 const client = axios.create({
   baseURL: process.env.NEXT_PUBLIC_BASE_URL,
@@ -13,7 +10,9 @@ const client = axios.create({
 });
 
 client.interceptors.request.use((config) => {
-  const data = localStorage.getItem("kada-user");
+  const encryptedData = localStorage.getItem("kada-user");
+  const data = encryptedData ? decryptData(encryptedData) : null;
+
   const user = data && JSON.parse(data);
   const token = user && user.token;
 

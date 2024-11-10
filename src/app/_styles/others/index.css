@@ -11,3 +11,6 @@
 .rizzui-select-options {
   @apply !bg-white;
 }
+.rizzui-multi-select-options {
+  @apply !bg-white;
+}

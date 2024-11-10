@@ -45,7 +45,7 @@ const FarmerForm: React.FC = () => {
         console.log(response);
         if (response.success) {
           toast.success(response.message);
-          setApp({ ...app, userEmail: data.email });
+          setApp({ ...app, userEmail: data.phoneNumber });
           router.push("/account-setup/verify-account?type=farmer");
         } else {
           toast.error(response.message);

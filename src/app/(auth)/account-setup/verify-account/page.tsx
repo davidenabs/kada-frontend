@@ -111,7 +111,7 @@ const EmailVerificationPage: React.FC = () => {
           </h1>
 
           <p className="mt-7 font-thin leading-6 text-center text-zinc-500">
-            You are almost there! We sent an email to testjerry@gmail.com
+            You are almost there! We sent an otp to your phone number
           </p>
 
           {/* <p className="self-stretch mt-2.5 font-thin leading-6 text-center text-zinc-500">
