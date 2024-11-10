@@ -183,7 +183,7 @@ function VendroServiceSharedPage() {
           </div>
 
           <div className="">
-            <Gallery />
+            <Gallery images={[]} />
           </div>
         </div>
       </div>

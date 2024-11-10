@@ -25,7 +25,7 @@ interface Props {
 
 const defaultValues = {
   description: "",
-  file: null,
+  file: new File([], ""),
 };
 
 function AddPhoto({ close, gallery, farmId }: Props) {
