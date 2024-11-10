@@ -1,5 +1,5 @@
 "use client";
-import cn from "@/utils/class-names";
+import { cn } from "rizzui";
 import React from "react";
 import { Password as RizzPassword } from "rizzui";
 import type { PasswordProps } from "rizzui";

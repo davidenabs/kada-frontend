@@ -13,6 +13,7 @@ import { useLoginMutation } from "@/app/_api/auth";
 import { toast } from "sonner";
 import { useAtom } from "jotai";
 import { userAtom } from "@/stores/user";
+import { UserType } from "@/interface/user";
 
 const SignInForm: React.FC = () => {
   const router = useRouter();
@@ -53,10 +54,15 @@ const SignInForm: React.FC = () => {
 
         const userType = data.user.userType;
 
-        if (userType === "FARMER") {
-          router.push("/dashboard/farmer");
-        } else if (userType === "COOPERATIVE") {
-          router.push("/dashboard/cooperative");
+        switch (userType) {
+          case UserType.FARMER:
+            router.push("/dashboard/farmer");
+            break;
+          case UserType.COOPERATIVE:
+            router.push("/dashboard/cooperative");
+            break;
+          default:
+            break;
         }
       },
       onError: (error) => {

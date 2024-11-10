@@ -1,14 +1,20 @@
 "use client";
+import Breadcrumb from "@/components/common/breadcrumb";
 import Upload from "@/components/common/upload";
 import { KadaButton } from "@/components/form/button";
+import DatePicker from "@/components/form/date-picker";
 import Input from "@/components/form/input";
 import useDashboardTitle from "@/hooks/use-dashboard-tite";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import React from "react";
 
 function AdminPricingSharedPage() {
-  useDashboardTitle("Setup- Product Pricing information");
+  useDashboardTitle("Tools");
+  const basePath = "/admin";
+  const pathname = usePathname();
   const fileInputRef = React.useRef<HTMLInputElement>(null);
+  const [startDate, setStartDate] = React.useState<Date>();
 
   const handleClick = () => {
     fileInputRef.current?.click();
@@ -17,26 +23,46 @@ function AdminPricingSharedPage() {
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      // Handle the file upload here
-      console.log("File selected:", file.name);
-      // You can add your file upload logic here
     }
   };
 
   return (
     <section>
+      <Breadcrumb
+        className="mb-4"
+        items={[
+          { label: "Tools", link: basePath + "/tools" },
+          { label: "Price Calculator" },
+        ]}
+      />
+
       <div className="flex gap-5">
         <div className="border rounded-2xl p-6 flex-1 space-y-4 bg-white">
-          <div className="relative h-[107px] w-full">
+          <h4 className="text-lg font-semibold">
+            Setup- Product Pricing information
+          </h4>
+          <div className="relative h-[107px] w-full rounded-xl">
             <Image
               src="/images/bdo.png"
               alt="bdo"
               fill
-              className="object-cover"
+              className="object-cover rounded-lg"
             />
           </div>
 
-          <Input placeholder="Select Date" type="date" />
+          <div className="">
+            <DatePicker
+              selected={startDate}
+              onChange={(date: Date) => setStartDate(date)}
+              placeholderText="Select Date"
+              maxDate={new Date()}
+              wrapperClassName="w-full"
+              inputProps={{
+                inputClassName: "!rounded-full border-primary border-[.5px]",
+                label: "Select Date",
+              }}
+            />
+          </div>
 
           <div className="">
             <label className="">Upload Price List</label>

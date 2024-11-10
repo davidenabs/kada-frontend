@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import cn from "@/utils/class-names";
+import { cn } from "rizzui";
 import { Suspense } from "react";
 import GlobalModal from "@/components/modal";
 import { inter, oxygen } from "./fonts";
@@ -27,7 +27,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={cn(oxygen.variable, inter.variable, "font-oxygen")}>
+      <body className={`${oxygen.variable} ${inter.variable} font-oxygen`}>
         <ReactQueryProvider>
           <PreviousPathnameProvider>
             <Suspense fallback={<div className="">Loading...</div>}>

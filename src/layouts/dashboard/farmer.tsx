@@ -46,7 +46,6 @@ export default function FarmerDahboardLayout({
         <Header />
         <main className="mb-6 w-full max-md:px-5 max-md:max-w-full">
           <Navigation />
-
           <div className="mt-4 w-full px-8">
             <div className="gap-5">{children}</div>
           </div>

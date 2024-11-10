@@ -1,5 +1,5 @@
 "use client";
-import cn from "@/utils/class-names";
+import { cn } from "rizzui";
 import React, { FC, ReactNode } from "react";
 import { Loader } from "rizzui";
 

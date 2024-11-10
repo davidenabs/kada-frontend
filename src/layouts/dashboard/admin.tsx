@@ -1,0 +1,44 @@
+"use client";
+import NextProgress from "@/components/common/next-progress";
+import BottomNavigation from "@/components/dashboards/cooperative/bottom-nav";
+import Header from "@/components/dashboards/header";
+import Sidebar from "@/components/dashboards/sidebar";
+import AppLoader from "@/components/shared/loader";
+import React, { Suspense } from "react";
+
+export default function AdminDahboardLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <>
+      <Suspense
+        fallback={
+          <div className="my-auto">
+            <AppLoader />
+          </div>
+        }
+      >
+        <NextProgress />
+        <div className="flex flex-col">
+          <div className="flex overflow-hidden w-full bg-[#F9F9F9]">
+            <Sidebar />
+            <div className="w-full ml-[254px] max-md:ml-0 min-h-screen overflow-auto">
+              <Header />
+              <div className="w-full py-8 px-10 max-md:max-w-full max-md:px-5">
+                <div className="flex flex-col w-full">
+                  <div className="flex flex-col self-stretch my-auto w-full max-md:mt-1 max-md:max-w-full">
+                    {children}
+                    <div className="max-md:py-10"></div>
+                    <BottomNavigation />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Suspense>
+    </>
+  );
+}

@@ -1,6 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 import type { Config } from "tailwindcss";
 import plugin from "tailwindcss/plugin";
+import colors from "tailwindcss/colors";
 import typography from "./theme/typography";
 
 const config: Config = {
@@ -25,6 +26,7 @@ const config: Config = {
       },
 
       colors: {
+        muted: colors.gray[200],
         background: "var(--background)",
         foreground: "var(--foreground)",
         border: {},

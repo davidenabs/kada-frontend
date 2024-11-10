@@ -5,7 +5,7 @@ import Image from "next/image";
 import { ModalSize } from "rizzui";
 import { ArrowRightIcon, MapPinIcon, UsersListIcon } from "@/icons";
 import { KadaButton } from "@/components/form/button";
-import cn from "@/utils/class-names";
+import { cn } from "rizzui";
 import { IUser } from "@/interface/user";
 
 function CooperativeCard({

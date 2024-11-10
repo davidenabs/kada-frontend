@@ -1,5 +1,5 @@
 import { ArrowRightIcon } from "@/icons";
-import cn from "@/utils/class-names";
+import { cn } from "rizzui";
 import Image from "next/image";
 import React from "react";
 

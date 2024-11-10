@@ -2,7 +2,7 @@
 import { ArrowRightIcon, CloseIcon, MapPinIcon, UsersListIcon } from "@/icons";
 import Image from "next/image";
 import React, { useState } from "react";
-import cn from "@/utils/class-names";
+import { cn } from "rizzui";
 import { KadaButton } from "@/components/form/button";
 import { IUser } from "@/interface/user";
 import { useCreateRequestMutation } from "@/app/_api/request";
@@ -57,6 +57,9 @@ function CooperativeInfoModal({
             toast.success("Request sent successfully");
             close();
           }
+        },
+        onError: (error) => {
+          toast.dismiss();
         },
       }
     );

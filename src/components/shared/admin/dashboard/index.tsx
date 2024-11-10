@@ -53,7 +53,7 @@ function AdminDashboardSharedPage() {
 
       <Overview />
 
-      <div className="border mt-10 p-4 space-y-4 rounded-2xl">
+      <div className="border mt-10 p-4 space-y-4 rounded-2xl bg-white">
         <h5 className="font-bold text-lg">Users</h5>
 
         <div className="flex items-center justify-between">

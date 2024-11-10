@@ -7,7 +7,7 @@ import {
   ProfileIcon,
   StorefrontIcon,
 } from "@/icons";
-import cn from "@/utils/class-names";
+import { cn } from "rizzui";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React, { Fragment, useState } from "react";

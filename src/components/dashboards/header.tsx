@@ -1,6 +1,8 @@
 "use client";
 import useScreenSize from "@/hooks/use-screen-size";
 import { appAtom } from "@/stores/app";
+import { ChevronDoubleDownIcon } from "@heroicons/react/16/solid";
+import { ArrowDownIcon } from "@heroicons/react/20/solid";
 import { useAtom } from "jotai";
 import { usePathname } from "next/navigation";
 import React from "react";
@@ -53,34 +55,43 @@ const Header: React.FC = () => {
     );
   else
     return (
-      <header className="flex flex-wrap gap-5 justify-between items-start pr-16 pt-3.5 pb-7 w-full leading-tight bg-white max-md:px-5 max-md:max-w-full">
-        {/* <h1 className="mt-3.5 text-base font-bold text-zinc-700">Dashboard</h1> */}
-        {app.dashboardTitle && (
-          <h1 className="mt-3.5 text-base font-bold text-zinc-700">
-            {app.dashboardTitle}
-          </h1>
-        )}
+      <header className="flex flex-wrap gap-5 justify-between items-center w-full leading-tight bg-white py-4 px-10 border-b">
+        <div className="">
+          {app.dashboardTitle && (
+            <h1 className="text-base font-bold text-[#333543]">
+              {app.dashboardTitle}
+            </h1>
+          )}
+        </div>
         <div className="flex gap-1 justify-center items-center self-stretch">
           <Dropdown placement="bottom-end">
             <Dropdown.Trigger>
-              <Avatar
-                name="John Doe"
-                src="/images/moses.png"
-                className="cursor-pointer"
-                rounded="sm"
-              />
+              <div className="flex gap-1 items-start my-auto">
+                <Avatar
+                  name="John Doe"
+                  src={"/images/avatar.png"}
+                  className="cursor-pointer"
+                />
+                <div className="flex flex-col h-[29px]">
+                  <div className="flex gap-1 items-end text-xs font-bold text-green-800">
+                    <div>John Emmanuel</div>
+                    <img
+                      loading="lazy"
+                      src="https://cdn.builder.io/api/v1/image/assets/TEMP/a372f2dd9322a139bfecb23005028dcb756c8893933af728ae33b2b858380cfc?placeholderIfAbsent=true&apiKey=e3159558e3c24b7bb6f2db02f0873db3"
+                      alt=""
+                      className="object-contain shrink-0 w-3.5 aspect-square"
+                    />
+                  </div>
+                  <div className="text-start">
+                    <span className="text-xs font-light text-zinc-700 capitalize">
+                      Admin
+                    </span>
+                  </div>
+                </div>
+              </div>
             </Dropdown.Trigger>
             <Dropdown.Menu className="w-56 divide-y text-gray-600">
-              <Dropdown.Item className="hover:bg-transparent">
-                <Avatar name="John Doe" src="/images/moses.png" rounded="sm" />
-                <span className="ml-2 text-start">
-                  <Text className="text-gray-900 font-medium leading-tight">
-                    Mary Hoops
-                  </Text>
-                  <Text>maryhe@demo.io</Text>
-                </span>
-              </Dropdown.Item>
-              <div className="mt-3 mb-2 pt-2">
+              <div className="mb-2">
                 <Dropdown.Item className="hover:bg-gray-900 hover:text-gray-50">
                   Account Settings
                 </Dropdown.Item>
@@ -98,13 +109,6 @@ const Header: React.FC = () => {
               </div>
             </Dropdown.Menu>
           </Dropdown>
-
-          <div className="flex flex-col text-sm text-green-800">
-            <div className="flex gap-1 items-end font-bold text-green-800">
-              <span>John Emmanuel</span>
-            </div>
-            <div className="font-light text-zinc-700">Admin</div>
-          </div>
         </div>
       </header>
     );
