@@ -10,12 +10,14 @@ import { UserType } from "@/interface/user";
 import { useAtomValue } from "jotai";
 import { userAtom } from "@/stores/user";
 
-
 function CooperativeDashboardPage() {
   useDashboardTitle("Dashboard");
   const user = useAtomValue(userAtom);
   console.log(user.user?.cooperativeProfile);
-  const cooperativeName = user.user?.cooperativeProfile?.name == null ? 'Set up your profile' : user.user?.cooperativeProfile?.name;
+  const cooperativeName =
+    user.user?.cooperativeProfile?.name == null
+      ? "Set up your profile"
+      : user.user?.cooperativeProfile?.name;
 
   return (
     <>
@@ -32,7 +34,7 @@ function CooperativeDashboardPage() {
             className="!py-2.5 !px-3 !border border-tertiary-700"
             options={[]}
             value={"Import"}
-            setValue={() => { }}
+            setValue={() => {}}
           />
         </div>
       </div>
@@ -47,4 +49,3 @@ function CooperativeDashboardPage() {
 export default withAuth(CooperativeDashboardPage, {
   allowedUserTypes: [UserType.COOPERATIVE],
 });
-

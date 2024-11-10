@@ -9,7 +9,7 @@ function AdminRequestSharedPage() {
   useDashboardTitle("Requests");
   return (
     <>
-      <section className="space-y-3 border rounded-2xl p-4">
+      <section className="space-y-3 border rounded-2xl p-4 bg-white">
         <h4 className="text-sm font-bold text-zinc-700">License Requests</h4>
 
         <div className="">

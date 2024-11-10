@@ -1,4 +1,4 @@
-import cn from "@/utils/class-names";
+import { cn } from "rizzui";
 import React from "react";
 
 const PricingTabs: React.FC<{

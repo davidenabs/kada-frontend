@@ -1,5 +1,5 @@
 "use client";
-import cn from "@/utils/class-names";
+import { cn } from "rizzui";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useRef, useState } from "react";

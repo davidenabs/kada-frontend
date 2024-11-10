@@ -18,28 +18,19 @@ body {
   @apply font-oxygen;
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
-}
-
-.app_container {
-  @apply w-full px-3 sm:px-4 lg:px-11 xl:px-20 2xl:px-32 mx-auto;
-}
-
-.dashboard_container {
-  @apply w-full px-3 sm:px-4 xl:px-5 2xl:px-6 mx-auto;
-}
-
 @layer base {
-  input[type="number"]::-webkit-inner-spin-button,
-  input[type="number"]::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-
-  .toaster-container {
-    @apply !z-[99999];
-  }
+  @import "./base/index.css";
 }
+
+@layer components {
+  @import "./components/index.css";
+}
+
+@layer utilities {
+  @import "./utils/index.css";
+}
+
+/*
+  Other CSS files
+*/
+@import "./others/index.css";

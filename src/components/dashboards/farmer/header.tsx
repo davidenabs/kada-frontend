@@ -64,7 +64,7 @@ const Header: React.FC = () => {
               </div>
             </Dropdown.Trigger>
             <Dropdown.Menu className="w-56 divide-y text-gray-600">
-              <div className="mt-3 mb-2 pt-2">
+              <div className="mb-2">
                 <Dropdown.Item className="hover:bg-gray-900 hover:text-gray-50">
                   Account Settings
                 </Dropdown.Item>

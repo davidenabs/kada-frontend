@@ -6,7 +6,7 @@ import Button from "@/components/form/button";
 import useScreenSize from "@/hooks/use-screen-size";
 import { useAtom, useSetAtom } from "jotai";
 import { appAtom, openNavDrawerAtom } from "@/stores/app";
-import cn from "@/utils/class-names";
+import { cn } from "rizzui";
 import { usePathname, useRouter } from "next/navigation";
 import { Bars3Icon } from "@heroicons/react/16/solid";
 
@@ -73,7 +73,7 @@ const Navbar: React.FC = () => {
           onClick={handleCloseNavDrawer}
         />
       )}
-      <header className="fixed w-full z-[999]">
+      <header className="fixed w-full z-[999] top-0">
         <div className="flex justify-between items-center h-[90px] lg:h-[121px] app_container relative z-[999] leading-tight bg-[#F2F9F5] !backdrop-blur-lg">
           {/* Logo */}
           <Logo

@@ -1,6 +1,10 @@
-import CooperativeDashboardSharedPage from "@/components/shared/admin/dashboard";
-import React from "react";
+import { Metadata } from "next";
+import { redirect } from "next/navigation";
 
-export default function AdminDashboardPage() {
-  return <CooperativeDashboardSharedPage />;
+export const metadata: Metadata = {
+  title: "Admin Dashboard",
+};
+
+export default function Admin() {
+  return redirect("/admin/dashboard");
 }

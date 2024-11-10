@@ -2,7 +2,7 @@
 import ProfileTypeSelector from "@/components/auth/create-account/profile-selector";
 import useScreenSize from "@/hooks/use-screen-size";
 import useUserType from "@/hooks/use-user-type";
-import cn from "@/utils/class-names";
+import { cn } from "rizzui";
 import Link from "next/link";
 import React, { Fragment } from "react";
 

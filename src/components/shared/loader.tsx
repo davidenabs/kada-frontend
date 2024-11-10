@@ -19,7 +19,7 @@ const FullPageLoader = () => {
 const AppLoader = () => {
   return (
     <Fragment>
-      <div className="flex items-center justify-center min-hscreen my-auto ">
+      <div className="flex items-center justify-center my-auto ">
         <div className="relative flex items-center justify-center w-[163px] h-[163px] bg-white rounded-full">
           {/* Loading Spinner */}
           <div className="absolute inset-0 flex items-center justify-center rounded-full">

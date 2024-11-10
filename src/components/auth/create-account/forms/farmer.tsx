@@ -69,6 +69,17 @@ const FarmerForm: React.FC = () => {
 
       <div className="space-y-4 w-full mt-9">
         <Input
+          label="Phone Number"
+          prefix={"+234"}
+          type="tel"
+          id="phone"
+          placeholder="08012345678"
+          className=""
+          {...register("phoneNumber")}
+          error={errors.phoneNumber?.message}
+        />
+
+        <Input
           label="Email"
           placeholder="Enter your email"
           className=""
@@ -92,17 +103,6 @@ const FarmerForm: React.FC = () => {
           className=""
           {...register("lastName")}
           error={errors.lastName?.message}
-        />
-
-        <Input
-          label="Phone Number"
-          prefix={"+234"}
-          type="tel"
-          id="phone"
-          placeholder="08012345678"
-          className=""
-          {...register("phoneNumber")}
-          error={errors.phoneNumber?.message}
         />
 
         <Password

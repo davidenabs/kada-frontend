@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { Drawer } from "rizzui";
 import { useDrawer } from "@/hooks/use-drawer";
-import cn from "@/utils/class-names";
+import { cn } from "rizzui";
 
 export default function GlobalDrawer() {
   const {

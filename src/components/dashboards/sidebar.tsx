@@ -2,15 +2,21 @@
 import React from "react";
 import { usePathname } from "next/navigation";
 import useScreenSize from "@/hooks/use-screen-size";
-import cn from "@/utils/class-names";
+import { cn } from "rizzui";
 import Link from "next/link";
 import { Badge } from "rizzui";
 import { ArrowLeftEndOnRectangleIcon } from "@heroicons/react/16/solid";
 import {
   BriefcaseIcon,
+  ChartIcon,
   DashboardIcon,
+  GridIcon,
+  HandCoins,
+  LotusIcon,
   ProfileIcon,
+  SealIcon,
   StorefrontIcon,
+  TreeIcon,
   UsersListIcon,
 } from "@/icons";
 
@@ -26,28 +32,42 @@ const adminBasePath = "/admin";
 
 // Admin Menu
 const adminMenuItems: MenuItem[] = [
-  { icon: DashboardIcon, label: "Dashboard", href: adminBasePath },
-  // {
-  //   icon: "/images/home-icon.svg",
-  //   label: "Farmers",
-  //   href: `${adminBasePath}/members`,
-  // },
-  // {
-  //   icon: "/images/home-icon.svg",
-  //   label: "Cooperative",
-  //   href: `${adminBasePath}/cooperative`,
-  // },
-  // {
-  //   icon: "/images/home-icon.svg",
-  //   label: "Requests",
-  //   href: `${adminBasePath}/requests`,
-  //   addons: "3",
-  // },
-  // {
-  //   icon: "/images/home-icon.svg",
-  //   label: "Insight",
-  //   href: `${adminBasePath}/insight`,
-  // },
+  {
+    icon: DashboardIcon,
+    label: "Dashboard",
+    href: `${adminBasePath}/dashboard`,
+  },
+  { icon: LotusIcon, label: "Farmers", href: `${adminBasePath}/farmers` },
+  {
+    icon: HandCoins,
+    label: "Cooperatives",
+    href: `${adminBasePath}/cooperatives`,
+  },
+  {
+    icon: TreeIcon,
+    label: "Requests",
+    href: `${adminBasePath}/requests`,
+  },
+  {
+    icon: ChartIcon,
+    label: "Insights",
+    href: `${adminBasePath}/insight`,
+  },
+  {
+    icon: GridIcon,
+    label: "Tools",
+    href: `${adminBasePath}/tools`,
+  },
+  {
+    icon: SealIcon,
+    label: "Certificates",
+    href: `${adminBasePath}/certificates`,
+  },
+  {
+    icon: ProfileIcon,
+    label: "Profile",
+    href: `${adminBasePath}/profile`,
+  },
 ];
 
 // Regular User Menu
@@ -124,7 +144,8 @@ const Sidebar: React.FC = () => {
         </h2>
 
         {itemsToRender.map((item, index) => {
-          const isActive = pathname === item.href; // Check if the current path matches the item's href.
+          // const isActive = pathname === item.href;
+          const isActive = pathname.startsWith(item.href);
           const Icon: any = item.icon;
 
           return (
@@ -140,7 +161,7 @@ const Sidebar: React.FC = () => {
               <Icon
                 className={cn(
                   "w-5 h-5",
-                  isActive ? "fill-[#0BCE6B]" : "fill-[#343330]"
+                  isActive ? "fill-white" : "fill-[#343330]"
                 )}
               />
 
