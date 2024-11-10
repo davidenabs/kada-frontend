@@ -55,7 +55,7 @@ function VendorProductServiceSharedPage() {
                 <Input
                   type="search"
                   placeholder="Search here..."
-                  inputClassName="!rounded-[10px]"
+                  inputClassName="rounded-[10px]"
                   className="!w-[500px]"
                   prefix={<SearchIcon />}
                 />

@@ -2,7 +2,8 @@
 import Image from "next/image";
 import React, { Fragment } from "react";
 import { KadaButton } from "../form/button";
-import { ArrowRightIcon } from "@/icons";
+import { ArrowRightIcon } from "@heroicons/react/16/solid";
+// import { ArrowRightIcon } from "@/icons";
 
 type OpportunitiesCardProps = {
   onClick: () => void;
@@ -37,8 +38,10 @@ function OpportunitiesCard({
         <p className="text-xs text-[#676E77] mt-3">Posted {posted} ago</p>
 
         <KadaButton
-          className="w-full rounded-full mt-4"
-          rightIcon={<ArrowRightIcon className="w-4 h-4 ml-2" />}
+          className="w-full rounded-full mt-4 !bg-[#E2E4E3] hover:!bg-primary !text-[#333543] hover:!text-white group"
+          rightIcon={
+            <ArrowRightIcon className="w-4 h-4 ml-2 fill-black group-hover:fill-white" />
+          }
           onClick={onClick}
         >
           Apply Now

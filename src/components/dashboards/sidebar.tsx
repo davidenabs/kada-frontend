@@ -27,7 +27,8 @@ interface MenuItem {
   addons?: string;
 }
 
-const basePath = "/dashboard/cooperative";
+const cooperativePath = "/dashboard/cooperative";
+const vendorPath = "/dashboard/vendor";
 const adminBasePath = "/admin";
 
 // Admin Menu
@@ -71,41 +72,64 @@ const adminMenuItems: MenuItem[] = [
 ];
 
 // Regular User Menu
-const menuItems: MenuItem[] = [
+const cooperativeItems: MenuItem[] = [
   {
     icon: DashboardIcon,
     label: "Dashboard",
-    href: basePath,
+    href: cooperativePath,
   },
   {
     icon: UsersListIcon,
     label: "Members",
-    href: `${basePath}/members`,
+    href: `${cooperativePath}/members`,
   },
   // {
   //   icon: DashboardIcon,
   //   label: "Events",
-  //   href: `${basePath}/events`,
+  //   href: `${cooperativePath}/events`,
   // },
   {
     icon: BriefcaseIcon,
     label: "Opportunities",
-    href: `${basePath}/opportunities`,
+    href: `${cooperativePath}/opportunities`,
   },
   {
     icon: DashboardIcon,
     label: "Funding",
-    href: `${basePath}/funding`,
+    href: `${cooperativePath}/funding`,
   },
   {
     icon: StorefrontIcon,
     label: "Vendors",
-    href: `${basePath}/vendors`,
+    href: `${cooperativePath}/vendors`,
   },
   {
     icon: ProfileIcon,
     label: "Profile",
-    href: `${basePath}/profile`,
+    href: `${cooperativePath}/profile`,
+  },
+];
+
+const vendorItems: MenuItem[] = [
+  {
+    icon: DashboardIcon,
+    label: "Dashboard",
+    href: vendorPath,
+  },
+  {
+    icon: UsersListIcon,
+    label: "Product/Service",
+    href: `${vendorPath}/product-service`,
+  },
+  {
+    icon: BriefcaseIcon,
+    label: "Opportunities",
+    href: `${vendorPath}/opportunities`,
+  },
+  {
+    icon: ProfileIcon,
+    label: "Profile",
+    href: `${vendorPath}/profile`,
   },
 ];
 
@@ -113,11 +137,21 @@ const Sidebar: React.FC = () => {
   const pathname = usePathname();
   const { width } = useScreenSize();
 
-  // Determine if the current route is for admin or regular user
   const isAdminRoute = pathname.startsWith(adminBasePath);
+  const isCooperativeRoute = pathname.startsWith(cooperativePath);
+  const isVendorRoute = pathname.startsWith(vendorPath);
 
-  // Choose the correct menu items based on the current route
-  const itemsToRender = isAdminRoute ? adminMenuItems : menuItems;
+  let itemsToRender: MenuItem[] = [];
+
+  if (isAdminRoute) {
+    itemsToRender = adminMenuItems;
+  } else if (isCooperativeRoute) {
+    itemsToRender = cooperativeItems;
+  } else if (isVendorRoute) {
+    itemsToRender = vendorItems;
+  } else {
+    itemsToRender = [];
+  }
 
   if (width < 992) return null; // Hide sidebar on smaller screens
 
@@ -144,8 +178,8 @@ const Sidebar: React.FC = () => {
         </h2>
 
         {itemsToRender.map((item, index) => {
-          // const isActive = pathname === item.href;
-          const isActive = pathname.startsWith(item.href);
+          const isActive =
+            pathname.startsWith(item.href) && pathname == item.href;
           const Icon: any = item.icon;
 
           return (
