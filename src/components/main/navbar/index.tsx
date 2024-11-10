@@ -29,7 +29,7 @@ const NavItem: React.FC<NavItemProps> = ({ text, isActive, route }) => {
         {text}
       </Link>
       {isActive && (
-        <div className="h-1.5 w-1.5 bg-primary-default rounded-full mt-1" />
+        <div className="h-1.5 w-1.5 bg-primary-700 rounded-full mt-1" />
       )}
     </div>
   );
@@ -39,7 +39,7 @@ const navItems: NavItemProps[] = [
   { text: "Home", route: "/" },
   { text: "About Kada", route: "/about-kada" },
   { text: "Our Services", route: "/services" },
-  { text: "Pricing Information", route: "/pricing" },
+  { text: "Pricing Information", route: "/pricing-information" },
   { text: "Contact Us", route: "/contact" },
 ];
 
