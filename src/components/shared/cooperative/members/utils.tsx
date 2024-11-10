@@ -1,4 +1,4 @@
-import dayjs from "dayjs";
+import { format } from "date-fns";
 import { Avatar, AvatarProps, Badge, cn, Text } from "rizzui";
 
 interface AvatarCardProps {
@@ -68,10 +68,10 @@ export function DateCell({
 
 export function formatDate(
   date?: Date,
-  format: string = "DD MMM, YYYY"
+  formatStr: string = "dd MMM, yyyy"
 ): string {
   if (!date) return "";
-  return dayjs(date).format(format);
+  return format(date, formatStr);
 }
 
 export function getStatusBadge(status: string) {

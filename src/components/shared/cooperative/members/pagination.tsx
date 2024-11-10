@@ -1,5 +1,4 @@
 import { ActionIcon, Select, SelectOption, Text } from "rizzui";
-import { type Table as ReactTableType } from "@tanstack/react-table";
 import {
   ChevronDoubleLeftIcon,
   ChevronDoubleRightIcon,
@@ -17,7 +16,7 @@ const options = [
 export default function TablePagination<TData extends Record<string, any>>({
   table,
 }: {
-  table: ReactTableType<TData>;
+  table: any;
 }) {
   return (
     <div className="flex w-full items-center justify-between @container">
