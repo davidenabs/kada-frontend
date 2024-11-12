@@ -5,8 +5,24 @@ import { VerifiedIcon } from "@/icons";
 import { PencilIcon } from "@heroicons/react/16/solid";
 import Input from "@/components/form/input";
 import { KadaButton } from "@/components/form/button";
+import { useModal } from "@/hooks/use-modal";
+import EditCooperaativeProfile from "@/components/modals/edit-profile/cooperative";
+import { withAuth } from "@/components/common/auth";
+import { UserType } from "@/interface/user";
+import { useAtomValue } from "jotai";
+import { userAtom } from "@/stores/user";
 
 function CooperativeProfileSharedPage() {
+  const { closeModal, openModal } = useModal();
+  const { user } = useAtomValue(userAtom);
+
+  const handleEditClick = () => {
+    openModal({
+      view: <EditCooperaativeProfile close={closeModal} />,
+      customSize: "50%",
+    });
+  };
+
   return (
     <div className="flex justify-stretch items-stretch gap-8">
       <div className="flex-1 space-y-6">
@@ -22,7 +38,9 @@ function CooperativeProfileSharedPage() {
             </div>
 
             <div className="">
-              <h4 className="text-[18px] font-bold">Ismail Abdulkadir</h4>
+              <h4 className="text-[18px] font-bold">
+                {user?.cooperativeProfile?.name || "N/A"}
+              </h4>
               <div className="flex items-center space-x-2">
                 <VerifiedIcon className="w-4 h-4" />
                 <span>Verified</span>
@@ -35,7 +53,7 @@ function CooperativeProfileSharedPage() {
           <div className="flex justify-between">
             <span className="text-[#00A551] text-lg">Bio</span>
 
-            <button>
+            <button onClick={handleEditClick}>
               <PencilIcon className="w-4 h-4 fill-[#00A551]" />
             </button>
           </div>
@@ -52,7 +70,7 @@ function CooperativeProfileSharedPage() {
             <span className="text-lg">Email</span>
 
             <div className="flex">
-              <span className="text-[#878D96]">20 Dec, 2023</span>
+              <span className="text-[#878D96]">{user?.email || "N/A"}</span>
             </div>
           </div>
 
@@ -60,7 +78,9 @@ function CooperativeProfileSharedPage() {
             <span className="text-lg">Phone</span>
 
             <div className="flex">
-              <span className="text-[#878D96]">+234 814 26584 12</span>
+              <span className="text-[#878D96]">
+                {user?.phoneNumber || "N/A"}
+              </span>
             </div>
           </div>
 
@@ -68,10 +88,7 @@ function CooperativeProfileSharedPage() {
             <span className="text-lg">Address</span>
 
             <div className="flex">
-              <span className="text-[#878D96]">
-                GreenSprout Agro Mart 12 Independence Way, Kawo, Kaduna, Kaduna
-                State, Nigeria.
-              </span>
+              <span className="text-[#878D96]">{user?.address || "N/A"}</span>
             </div>
           </div>
 
@@ -121,4 +138,6 @@ function CooperativeProfileSharedPage() {
   );
 }
 
-export default CooperativeProfileSharedPage;
+export default withAuth(CooperativeProfileSharedPage, {
+  allowedUserTypes: [UserType.COOPERATIVE],
+});

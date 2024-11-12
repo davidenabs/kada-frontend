@@ -1,8 +1,10 @@
 "use client";
+import { withAuth } from "@/components/common/auth";
 import ExploreOpportunityDraewr from "@/components/drawers/cooperative/explore-opportunity";
 import { KadaButton } from "@/components/form/button";
 import useDashboardTitle from "@/hooks/use-dashboard-tite";
 import { useDrawer } from "@/hooks/use-drawer";
+import { UserType } from "@/interface/user";
 import { ArrowRightIcon } from "@heroicons/react/20/solid";
 import Image from "next/image";
 import React from "react";
@@ -51,4 +53,6 @@ function CooperativeOpportunitiesSharedPage() {
   );
 }
 
-export default CooperativeOpportunitiesSharedPage;
+export default withAuth(CooperativeOpportunitiesSharedPage, {
+  allowedUserTypes: [UserType.COOPERATIVE],
+});

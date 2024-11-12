@@ -3,7 +3,7 @@ import { decryptData, encryptData } from "@/utils/utils";
 import { atom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
 
-interface UserState {
+export interface UserState {
   user: IUser | null;
   token: string | null;
   role: string | null;

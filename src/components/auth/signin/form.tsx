@@ -61,6 +61,9 @@ const SignInForm: React.FC = () => {
             case UserType.COOPERATIVE:
               router.push("/dashboard/cooperative");
               break;
+            case UserType.VENDOR:
+              router.push("/dashboard/vendor");
+              break;
             default:
               break;
           }

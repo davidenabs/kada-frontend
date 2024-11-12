@@ -8,6 +8,9 @@ const API_ENDPOINTS = {
   // users
   GET_USERS: "/users",
   VERIFY_NIN: "/verification/nin",
+  UPDATE_USER: "/users",
+  FORCE_UPDATE: "/users/force-update",
+  GET_PROFILE: "/users/get-user",
 
   // farm
   GET_FARMS: "/farms",

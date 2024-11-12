@@ -4,6 +4,8 @@ import Input from "@/components/form/input";
 import { SearchIcon } from "@/icons";
 import VendorCard from "@/components/common/vendor-card";
 import Catalog from "@/components/common/catalog";
+import { withAuth } from "@/components/common/auth";
+import { UserType } from "@/interface/user";
 
 function CooperativeVendorsSharedPage() {
   return (
@@ -60,4 +62,6 @@ function CooperativeVendorsSharedPage() {
   );
 }
 
-export default CooperativeVendorsSharedPage;
+export default withAuth(CooperativeVendorsSharedPage, {
+  allowedUserTypes: [UserType.COOPERATIVE],
+});

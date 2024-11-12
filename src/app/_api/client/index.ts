@@ -53,7 +53,7 @@ export class ApiClient {
   }
 
   static async patch<T>(url: string, data: unknown, options?: any) {
-    const response = await client.patch<T>(url, data);
+    const response = await client.patch<T>(url, data, options);
     return response.data;
   }
 

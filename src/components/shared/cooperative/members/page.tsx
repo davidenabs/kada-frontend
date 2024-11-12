@@ -12,6 +12,8 @@ import MembershipRequestModal from "@/components/modals/cooperative/membership-r
 import AddMemberModal from "@/components/modals/cooperative/add-member";
 import { ClipboardIcon } from "@heroicons/react/16/solid";
 import ImportMemberModal from "@/components/modals/cooperative/import-member";
+import { withAuth } from "@/components/common/auth";
+import { UserType } from "@/interface/user";
 
 function CooperativeMembersPage() {
   useDashboardTitle("Members");
@@ -98,4 +100,6 @@ function CooperativeMembersPage() {
   );
 }
 
-export default CooperativeMembersPage;
+export default withAuth(CooperativeMembersPage, {
+  allowedUserTypes: [UserType.COOPERATIVE],
+});

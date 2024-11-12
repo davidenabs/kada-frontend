@@ -15,6 +15,8 @@ import { KadaButton } from "@/components/form/button";
 import { ChatBubbleLeftIcon } from "@heroicons/react/20/solid";
 import Gallery from "@/components/dashboards/farmer/gallery";
 import Tab from "@/components/common/tab";
+import { withAuth } from "@/components/common/auth";
+import { UserType } from "@/interface/user";
 
 function CooperativeVendorsServiceSharedPage() {
   const [activeTab, setActiveTab] = useState("Our Services");
@@ -192,4 +194,6 @@ function CooperativeVendorsServiceSharedPage() {
   );
 }
 
-export default CooperativeVendorsServiceSharedPage;
+export default withAuth(CooperativeVendorsServiceSharedPage, {
+  allowedUserTypes: [UserType.COOPERATIVE],
+});
