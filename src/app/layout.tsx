@@ -10,15 +10,9 @@ import PreviousPathnameProvider from "@/provider/previous-pathname";
 import "./_styles/globals.css";
 import { Toaster } from "@/components/common/toast";
 import LoaderProvider from "@/provider/loader";
+import { baseMetadata } from "./_templates/metadata";
 
-export const metadata: Metadata = {
-  title: {
-    default: "KADA",
-    template: "%s - KADA",
-  },
-  description:
-    "Transforming Kaduna through Food Security and National Development",
-};
+export const metadata: Metadata = baseMetadata;
 
 export default function RootLayout({
   children,

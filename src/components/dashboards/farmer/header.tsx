@@ -69,6 +69,23 @@ const Header: React.FC = () => {
               </div>
             </Dropdown.Trigger>
             <Dropdown.Menu className="w-56 divide-y text-gray-600 bg-white">
+              <Dropdown.Item className="hover:bg-transparentx">
+                <Avatar
+                  name={`${user.user?.firstName} ${user.user?.lastName}`}
+                  src={user.user?.imagePath ?? "/images/avatar.png"}
+                />
+                <span className="ml-2 text-start">
+                  <Text className="text-gray-900 font-medium leading-tight">
+                    {user.user?.firstName} {user.user?.lastName}
+                  </Text>
+
+                  <div className="whitespace-nowrap">
+                    <span className=" text-gray-500 whitespace-nowrap text-ellipsis">
+                      {user.user?.email || user.user?.phoneNumber || "N/A"}
+                    </span>
+                  </div>
+                </span>
+              </Dropdown.Item>
               <div className="mb-2">
                 <Dropdown.Item className="hover:bg-gray-900 hover:text-gray-50">
                   Account Settings

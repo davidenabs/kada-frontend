@@ -23,11 +23,16 @@ export function withAuth<T extends object>(
 
     useEffect(() => {
       const checkAuth = () => {
+        if (!user) return;
+
+        // *if user is not authenticated or token is not set, redirect to sign-in page
         if (!user.authenticated || !user.token) {
+          setLoaded(false);
           router.push("/sign-in");
           return;
         }
 
+        // *if no allowed user types are set, allow all user types
         if (!allowedUserTypes) {
           startTransition(() => {
             setIsAuthorized(true);
@@ -37,6 +42,7 @@ export function withAuth<T extends object>(
         }
 
         const userType = user.user?.userType;
+        // *if user type is not allowed, show to unauthorized page
         if (!allowedUserTypes.includes(userType!)) {
           startTransition(() => {
             setIsAuthorized(false);
@@ -45,6 +51,7 @@ export function withAuth<T extends object>(
           return;
         }
 
+        // *if user type is allowed, show the component
         startTransition(() => {
           setIsAuthorized(true);
           setLoaded(true);
