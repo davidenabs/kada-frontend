@@ -11,6 +11,7 @@ import "./_styles/globals.css";
 import { Toaster } from "@/components/common/toast";
 import LoaderProvider from "@/provider/loader";
 import { baseMetadata } from "./_templates/metadata";
+import { Provider as JotaiProvider } from "jotai";
 
 export const metadata: Metadata = baseMetadata;
 
@@ -23,18 +24,20 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${oxygen.variable} ${inter.variable} font-oxygen`}>
         <ReactQueryProvider>
-          <PreviousPathnameProvider>
-            <Suspense fallback={<div className="">Loading...</div>}>
-              <main className="relative">
-                <LoaderProvider>
-                  <Toaster />
-                  {children}
-                  <GlobalModal />
-                  <GlobalDrawer />
-                </LoaderProvider>
-              </main>
-            </Suspense>
-          </PreviousPathnameProvider>
+          <JotaiProvider>
+            <PreviousPathnameProvider>
+              <Suspense fallback={<div className="">Loading...</div>}>
+                <main className="relative">
+                  <LoaderProvider>
+                    <Toaster />
+                    {children}
+                    <GlobalModal />
+                    <GlobalDrawer />
+                  </LoaderProvider>
+                </main>
+              </Suspense>
+            </PreviousPathnameProvider>
+          </JotaiProvider>
         </ReactQueryProvider>
       </body>
     </html>

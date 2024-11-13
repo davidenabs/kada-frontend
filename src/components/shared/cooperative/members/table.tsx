@@ -4,8 +4,13 @@ import { sampleMembers } from "./data";
 import { KadaButton } from "@/components/form/button";
 import { EyeIcon } from "@heroicons/react/16/solid";
 import Image from "next/image";
+import { IUser } from "@/interface/user";
 
-function MembersTable() {
+type MemberTableProps = {
+  members: IUser[];
+};
+
+function MembersTable({ members }: MemberTableProps) {
   return (
     <Fragment>
       <Table variant="elegant">
@@ -22,15 +27,15 @@ function MembersTable() {
 
         <Table.Body>
           {sampleMembers.map((member) => (
-            <Table.Row>
+            <Table.Row key={member.id + member.name}>
               <Table.Cell>
                 <div className="flex gap-2 items-center">
                   <div className="relative w-[40px] h-[40px]">
                     <Image
                       src={member.avatar}
                       alt="avatar"
-                      layout="fill"
                       objectFit="cover"
+                      fill
                       className="rounded-full"
                     />
                   </div>

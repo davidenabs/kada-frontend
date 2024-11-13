@@ -66,7 +66,7 @@ function RequestMember({
             <Image
               src={request.farmer?.imagePath || "/images/avatar.png"}
               alt="avatar"
-              layout="fill"
+              fill
               objectFit="cover"
               className="rounded-full"
             />

@@ -11,6 +11,7 @@ import { withAuth } from "@/components/common/auth";
 import { UserType } from "@/interface/user";
 import { useAtomValue } from "jotai";
 import { userAtom } from "@/stores/user";
+import { format } from "date-fns";
 
 function CooperativeProfileSharedPage() {
   const { closeModal, openModal } = useModal();
@@ -62,7 +63,9 @@ function CooperativeProfileSharedPage() {
             <span className="text-lg">Joined</span>
 
             <div className="flex">
-              <span className="text-[#878D96]">20 Dec, 2023</span>
+              <span className="text-[#878D96]">
+                {format(user?.createdAt || new Date(), "dd MMM, yyyy")}
+              </span>
             </div>
           </div>
 

@@ -25,6 +25,17 @@ export const useGetUsersQuery = ({
   });
 };
 
+export const useGetCooperativeFarmersQuery = ({
+  enabled = true,
+  params = {},
+}: IQueryParams) => {
+  return useQuery<IResponse<IPaginatedResponse<IUser, "users">>, Error>({
+    queryKey: [API_ENDPOINTS.GET_COOPERATIVE_FARMERS, params],
+    queryFn: () => userClient.getCooperativeFarmers(params),
+    enabled,
+  });
+};
+
 export const useForceUpdateMutation = () => {
   const queryClient = useQueryClient();
   return useMutation({

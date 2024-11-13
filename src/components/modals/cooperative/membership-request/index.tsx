@@ -21,9 +21,9 @@ function MembershipRequestModal({ close }: MembershipRequestModalProps) {
 
   const { data, isFetching, isRefetching } = useGetRequests({
     enabled: loaded, // *Enable the query when the component is loaded
-    // params: {
-    //   requestType: "pending",
-    // },
+    params: {
+      filter: "pending",
+    },
   });
 
   // *Set requests when data is fetched

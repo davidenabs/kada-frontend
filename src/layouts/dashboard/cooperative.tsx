@@ -7,8 +7,10 @@ import BottomNavigation from "@/components/dashboards/cooperative/bottom-nav";
 import NextProgress from "@/components/common/next-progress";
 import useCheckUserFields from "@/hooks/user-field";
 import { useGetProfileQuery } from "@/app/_api/user";
-import { useSetAtom } from "jotai";
+import { useAtom, useSetAtom } from "jotai";
 import { userAtom } from "@/stores/user";
+import { useModal } from "@/hooks/use-modal";
+import EditCooperaativeProfile from "@/components/modals/edit-profile/cooperative";
 
 export default function CooperativeDahboardLayout({
   children,
@@ -23,9 +25,9 @@ export default function CooperativeDahboardLayout({
       condition: (value) => value === false,
     },
   ]);
-
   const [loaded, setLoaded] = React.useState(false);
-  const setUser = useSetAtom(userAtom);
+  const [user, setUser] = useAtom(userAtom);
+  const { closeModal, openModal } = useModal();
 
   const { isFetching, isRefetching, data } = useGetProfileQuery({
     enabled: loaded,
@@ -40,6 +42,20 @@ export default function CooperativeDahboardLayout({
   React.useEffect(() => {
     setLoaded(true);
   }, []);
+
+  // * open modal to edit profile if user has not set up their profile
+  React.useEffect(() => {
+    if (loaded && user.user?.cooperativeProfile?.name == null) {
+      openModal({
+        view: <EditCooperaativeProfile close={() => {}} />,
+        customSize: "50%",
+      });
+    }
+
+    if (loaded && user.user?.cooperativeProfile?.name) {
+      closeModal();
+    }
+  }, [loaded, user.user?.cooperativeProfile?.name]);
 
   if (!loaded || isFetching || isRefetching) {
     return <FullPageLoader />;

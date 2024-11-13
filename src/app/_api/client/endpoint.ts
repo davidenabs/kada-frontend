@@ -7,6 +7,7 @@ const API_ENDPOINTS = {
   VERIFY_OTP: "/users/verify-otp",
   // users
   GET_USERS: "/users",
+  GET_COOPERATIVE_FARMERS: "/users/cooperative-farmers",
   VERIFY_NIN: "/verification/nin",
   UPDATE_USER: "/users",
   FORCE_UPDATE: "/users/force-update",
