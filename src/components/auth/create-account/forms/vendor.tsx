@@ -19,11 +19,11 @@ const defaultValues = {
   phoneNumber: "",
   password: "",
   confirmPassword: "",
-  userType: UserType.COOPERATIVE,
+  userType: UserType.VENDOR,
   acceptTerms: false,
 };
 
-const CooperativeForm: React.FC = () => {
+const VendorForm: React.FC = () => {
   const router = useRouter();
   const { mutateAsync, isPending } = useRegisterMutation();
   const [app, setApp] = useAtom(appAtom);
@@ -57,11 +57,11 @@ const CooperativeForm: React.FC = () => {
 
   return (
     <form
-      className="flex flex-col items-start lg:px-8 mt20 max-md:mt-10"
       onSubmit={handleSubmit(onSubmit)}
+      className="flex flex-col items-start lg:px-8 mt20 max-md:mt-10"
     >
       <div className="flex flex-col">
-        <h2 className="text-base font-bold text-teal-700">Cooperative</h2>
+        <h2 className="text-base font-bold text-teal-700">Vendor</h2>
         <p className="mt-1 text-sm font-medium text-zinc-500">
           Please complete the form to get started
         </p>
@@ -69,15 +69,15 @@ const CooperativeForm: React.FC = () => {
 
       <div className="w-full space-y-4">
         <Input
-          label="Email"
           placeholder="Enter your email"
           className=""
+          label="Email"
           {...register("email")}
           error={errors.email?.message}
         />
 
         <Input
-          label="Cooperative Name"
+          label="Company Name"
           id="firstName"
           placeholder="What is your company name"
           className=""
@@ -147,4 +147,4 @@ const CooperativeForm: React.FC = () => {
   );
 };
 
-export default CooperativeForm;
+export default VendorForm;

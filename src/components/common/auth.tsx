@@ -23,10 +23,12 @@ export function withAuth<T extends object>(
 
     useEffect(() => {
       const checkAuth = () => {
+        console.log("checking auth");
         if (!user) return;
 
         // *if user is not authenticated or token is not set, redirect to sign-in page
         if (!user.authenticated || !user.token) {
+          console.log("not authenticated ===> redirecting to sign-in");
           setLoaded(false);
           router.push("/sign-in");
           return;

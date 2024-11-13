@@ -35,7 +35,7 @@ function CooperativeVendorsSharedPage() {
 
           <div className="space-y-4 mt-6">
             <Catalog
-              type="service"
+              type="services"
               image="/images/bdo.png"
               name="HarvestPeak Fertilizers"
               price="10,000"
@@ -50,7 +50,7 @@ function CooperativeVendorsSharedPage() {
 
           <div className="space-y-4 mt-6">
             <Catalog
-              type="product"
+              type="products"
               image="/images/bdo.png"
               name="HarvestPeak Fertilizers"
               price="10,000"

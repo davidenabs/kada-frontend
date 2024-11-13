@@ -11,57 +11,41 @@ import { useAtom, useSetAtom } from "jotai";
 import { userAtom } from "@/stores/user";
 import { useModal } from "@/hooks/use-modal";
 import EditCooperaativeProfile from "@/components/modals/edit-profile/cooperative";
-import { withAuth } from "@/components/common/auth";
-import { UserType } from "@/interface/user";
 
-export default function CooperativeDahboardLayout({
+export default function VendorDahboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   // Check if user has verified their account
-  useCheckUserFields([
-    {
-      field: "verified",
-      redirectTo: "/account-setup/verify-account",
-      condition: (value) => value === false,
-    },
-  ]);
+  //   useCheckUserFields([
+  //     {
+  //       field: "verified",
+  //       redirectTo: "/account-setup/verify-account",
+  //       condition: (value) => value === false,
+  //     },
+  //   ]);
   const [loaded, setLoaded] = React.useState(false);
   const [user, setUser] = useAtom(userAtom);
   const { closeModal, openModal } = useModal();
 
-  const { isFetching, isRefetching, data } = useGetProfileQuery({
-    enabled: loaded,
-  });
+  //   const { isFetching, isRefetching, data } = useGetProfileQuery({
+  //     enabled: loaded,
+  //   });
 
-  React.useEffect(() => {
-    if (data?.data && data.success && !isFetching && !isRefetching) {
-      setUser((prevUser) => ({ ...prevUser, user: data.data }));
-    }
-  }, [data, isFetching, isRefetching, setUser]);
+  //   React.useEffect(() => {
+  //     if (data?.data && data.success && !isFetching && !isRefetching) {
+  //       setUser((prevUser) => ({ ...prevUser, user: data.data }));
+  //     }
+  //   }, [data, isFetching, isRefetching, setUser]);
 
   React.useEffect(() => {
     setLoaded(true);
   }, []);
 
-  // * open modal to edit profile if user has not set up their profile
-  // React.useEffect(() => {
-  //   if (loaded && user.user?.cooperativeProfile?.name == null) {
-  //     openModal({
-  //       view: <EditCooperaativeProfile close={() => {}} />,
-  //       customSize: "50%",
-  //     });
+  //   if (!loaded || isFetching || isRefetching) {
+  //     return <FullPageLoader />;
   //   }
-
-  //   if (loaded && user.user?.cooperativeProfile?.name) {
-  //     closeModal();
-  //   }
-  // }, [loaded, user.user?.cooperativeProfile?.name]);
-
-  if (!loaded || isFetching || isRefetching) {
-    return <FullPageLoader />;
-  }
 
   return (
     <>
@@ -93,7 +77,3 @@ export default function CooperativeDahboardLayout({
     </>
   );
 }
-
-// export default withAuth(CooperativeDahboardLayout, {
-//   allowedUserTypes: [UserType.COOPERATIVE],
-// });

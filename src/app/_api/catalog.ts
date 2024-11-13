@@ -1,22 +1,26 @@
-import { IQueryParams, IResponse } from "@/interface/client";
+import {
+  IPaginatedResponse,
+  IQueryParams,
+  IResponse,
+} from "@/interface/client";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import API_ENDPOINTS from "./client/endpoint";
 import catalogClient from "./client/catalog";
 import {
+  ICatalog,
   ICreateCategoryPayload,
   ICreateProductPayload,
 } from "@/interface/catalog";
 
 // products & services
-
 export const useGetProducts = ({
   enabled = true,
   params = {},
 }: IQueryParams) => {
-  return useQuery<IResponse<any>, Error>({
+  return useQuery<IResponse<IPaginatedResponse<ICatalog, "products">>, Error>({
     queryKey: [API_ENDPOINTS.CATALOG_GET_PRODUCTS, params],
     queryFn: () => catalogClient.getProducts(params),
-    enabled: enabled !== undefined ? enabled : true,
+    enabled: enabled,
   });
 };
 
@@ -28,7 +32,7 @@ export const useGetProduct = ({
   return useQuery<IResponse<any>, Error>({
     queryKey: [API_ENDPOINTS.CATALOG_GET_PRODUCT, params, id],
     queryFn: () => catalogClient.getProduct(params, id),
-    enabled: enabled !== undefined ? enabled : true,
+    enabled: enabled,
   });
 };
 
@@ -64,7 +68,7 @@ export const useGetCategories = ({
   return useQuery<IResponse<any>, Error>({
     queryKey: [API_ENDPOINTS.CATALOG_GET_PRODUCT_CATEGORIES, params],
     queryFn: () => catalogClient.getCategories(params),
-    enabled: enabled !== undefined ? enabled : true,
+    enabled: enabled,
   });
 };
 

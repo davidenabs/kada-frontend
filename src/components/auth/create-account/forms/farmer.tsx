@@ -38,9 +38,9 @@ const FarmerForm: React.FC = () => {
   });
 
   const onSubmit = (data: RegisterSchemaType) => {
-    const { confirmPassword, ...newData } = data;
+    const { confirmPassword, acceptTerms, ...rest } = data;
 
-    mutateAsync(data, {
+    mutateAsync(rest, {
       onSuccess: (response) => {
         console.log(response);
         if (response.success) {

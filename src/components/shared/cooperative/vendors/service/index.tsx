@@ -123,7 +123,11 @@ function CooperativeVendorsServiceSharedPage() {
             </div>
           </div>
 
-          {activeTab === "Our Services" ? <Services /> : <Products />}
+          {activeTab === "Our Services" ? (
+            <Services products={[]} />
+          ) : (
+            <Products />
+          )}
         </div>
       </div>
 

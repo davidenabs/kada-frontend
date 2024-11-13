@@ -1,4 +1,4 @@
-import CooperativeDahboardLayout from "@/layouts/dashboard/cooperative";
+import VendorDahboardLayout from "@/layouts/dashboard/vendor";
 import React from "react";
 
 const MainDashboardLayout: React.FC<{ children: React.ReactNode }> = ({
@@ -6,7 +6,7 @@ const MainDashboardLayout: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   return (
     <>
-      <CooperativeDahboardLayout>{children}</CooperativeDahboardLayout>
+      <VendorDahboardLayout>{children}</VendorDahboardLayout>
     </>
   );
 };

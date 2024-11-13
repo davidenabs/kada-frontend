@@ -54,6 +54,11 @@ const API_ENDPOINTS = {
   CREATE_FARM_PRODUCT: "/farm-products",
   UPDATE_FARM_PRODUCT: "/farm-products/:productId",
   DELETE_FARM_PRODUCT: "/farm-products/:productId",
+
+  // overview
+  GET_COOPERATIVE_OVERVIEW: "/overview/cooperative",
+  GET_VENDOR_OVERVIEW: "/overview/vendor",
+  GET_ADMIN_OVERVIEW: "/overview/admin",
 };
 
 export default API_ENDPOINTS;
