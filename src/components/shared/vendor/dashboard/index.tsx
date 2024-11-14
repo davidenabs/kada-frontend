@@ -7,9 +7,32 @@ import Input from "@/components/form/input";
 import Services from "../../farmer/vendors/service/services";
 import Products from "../../farmer/vendors/service/products";
 import AddProductServiceButton from "../add-button";
+import { useGetProducts } from "@/app/_api/catalog";
+import { Empty } from "rizzui";
+import { ICatalog } from "@/interface/catalog";
 
 function VendorDashboardSharedPage() {
+  const [loaded, setLoaded] = useState(false);
   const [activeTab, setActiveTab] = useState("Our Services");
+  const [page, setPage] = useState(1);
+  const [search, setSearch] = useState("");
+  const [limit, setLimit] = useState(10);
+  const [products, setProducts] = useState<ICatalog[]>([]);
+  const { data, isFetching, isRefetching, isError } = useGetProducts({
+    enabled: loaded,
+    params: {
+      page,
+      search,
+      limit,
+      // type: activeTab === "Our Services" ? "services" : "products",
+    },
+  });
+
+  React.useEffect(() => {
+    if (!isFetching && !isRefetching && data?.success && data?.data) {
+      setProducts(data.data.products);
+    }
+  }, [data, isFetching, isRefetching]);
 
   const tabs = [
     {
@@ -25,6 +48,10 @@ function VendorDashboardSharedPage() {
       icon: BriefcaseIcon,
     },
   ];
+
+  React.useEffect(() => {
+    setLoaded(true);
+  }, []);
 
   return (
     <>
@@ -68,7 +95,15 @@ function VendorDashboardSharedPage() {
               </div>
             </div>
 
-            {activeTab === "Our Services" ? <Services /> : <Products />}
+            {isFetching || isRefetching ? (
+              <div className="">loading...</div>
+            ) : isError ? (
+              <div className="">error...</div>
+            ) : data?.data?.products?.length === 0 ? (
+              <Empty className="" text="No product available" />
+            ) : (
+              <Services products={products} />
+            )}
           </div>
         </div>
 

@@ -1,25 +1,32 @@
 import Catalog from "@/components/common/catalog";
+import { ICatalog } from "@/interface/catalog";
 import React from "react";
 
-function Services() {
+type ServicesProps = {
+  products: ICatalog[];
+};
+
+function Services({ products }: ServicesProps) {
   return (
     <div className="space-y-4">
       <h4 className="font-bold text-lg font-inter">Our services</h4>
 
       <div className="grid md:grid-cols-2 gap-6">
-        <Catalog
-          type="service"
-          image="/images/bdo.png"
-          name="HarvestPeak Fertilizers"
-          price="10,000"
-        />
+        {products?.map((product) => (
+          <Catalog
+            type={product.type}
+            image="/images/bdo.png"
+            name={product.name}
+            price={product.amount}
+          />
+        ))}
 
-        <Catalog
+        {/* <Catalog
           type="service"
           image="/images/bdo.png"
           name="HarvestPeak Fertilizers"
           price="10,000"
-        />
+        /> */}
       </div>
     </div>
   );

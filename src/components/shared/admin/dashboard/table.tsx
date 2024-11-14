@@ -29,7 +29,7 @@ function UsersTable() {
                     <Image
                       src={member.avatar}
                       alt="avatar"
-                      layout="fill"
+                      fill
                       objectFit="cover"
                       className="rounded-full"
                     />

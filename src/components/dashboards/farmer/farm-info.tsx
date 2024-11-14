@@ -19,7 +19,9 @@ export function CoordinateDisplay({ geoLocation }: { geoLocation: string }) {
 
   return (
     <div className="space-y-2">
-      <h3 className="text-sm font-medium text-white">Farm Coordinates</h3>
+      <h3 className="text-sm font-medium text-white">
+        Farm Coordinates ({coordinates.length})
+      </h3>
       <div className="grid gap-2 text-sm">
         {coordinates.map(([longitude, latitude], index) => (
           <div
@@ -156,7 +158,7 @@ function FarmInfo(farm: IFarm & { farmId: string }) {
               <div className="h-[318px] w-full relative rounded-[20px]">
                 <Map coordinates={farm.geoLocation as any} />
                 <div className="absolute bottom-0 right-0 h-[163px] w-fit z-[9999]">
-                  <div className="w-full bg-[#3865E0] h-full rounded-[14px] p-4">
+                  <div className="w-full bg-[#3865E0] h-full rounded-[14px] p-4 overflow-y-scroll">
                     {/* <div className="flex justify-between text-[18px] text-white font-inter">
                       <span className="font-light">Longitude:</span>
                       <span className="font-bold">10.5247° N</span>

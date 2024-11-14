@@ -40,8 +40,9 @@ export interface IFarmerProfile {
 
 export interface ICooperativeProfile {
   id: number;
-  name?: string | null;
-  about?: string | null;
-  eligibility?: string | null;
-  registrationNumber?: string | null;
+  name: string | null;
+  about: string | null;
+  eligibility: string | null;
+  registrationNumber: string | null;
+  isVerified: boolean;
 }

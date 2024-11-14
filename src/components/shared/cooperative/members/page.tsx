@@ -1,21 +1,43 @@
 "use client";
-import FarmerTable from "@/components/dashboards/cooperative/members/farm-table";
 import { KadaButton } from "@/components/form/button";
 import Input from "@/components/form/input";
 import useDashboardTitle from "@/hooks/use-dashboard-tite";
 import { SearchIcon } from "@/icons";
 import React from "react";
-import { Badge, Popover } from "rizzui";
+import { Badge, Empty, Popover } from "rizzui";
 import MembersTable from "./table";
 import { useModal } from "@/hooks/use-modal";
 import MembershipRequestModal from "@/components/modals/cooperative/membership-request";
 import AddMemberModal from "@/components/modals/cooperative/add-member";
 import { ClipboardIcon } from "@heroicons/react/16/solid";
 import ImportMemberModal from "@/components/modals/cooperative/import-member";
+import { withAuth } from "@/components/common/auth";
+import { IUser, UserType } from "@/interface/user";
+import { useGetCooperativeFarmersQuery } from "@/app/_api/user";
+import MembersTableSkeleton from "@/components/skeletons/table/member";
 
 function CooperativeMembersPage() {
   useDashboardTitle("Members");
   const { openModal, closeModal } = useModal();
+  const [loaded, setLoaded] = React.useState(false);
+  const [members, setMembers] = React.useState<IUser[]>([]);
+
+  const { data, isFetching, isRefetching } = useGetCooperativeFarmersQuery({
+    enabled: loaded, // *Enable the query when the component is loaded
+  });
+
+  // *Set members when data is fetched
+  React.useEffect(() => {
+    if (data?.data && data.success && !isFetching && !isRefetching) {
+      setMembers(data.data.users);
+    }
+  }, [data, isFetching, isRefetching]);
+
+  // *Set loaded to true when component mounts
+  React.useEffect(() => {
+    setLoaded(true);
+    return () => setLoaded(false);
+  }, []);
 
   return (
     <>
@@ -91,11 +113,26 @@ function CooperativeMembersPage() {
         </div>
 
         <div className="border-x mt-3">
-          <MembersTable />
+          {
+            // *Show loading skeleton when fetching data
+            isFetching || isRefetching ? (
+              <MembersTableSkeleton />
+            ) : members.length > 0 ? (
+              <MembersTable members={members} />
+            ) : (
+              <Empty
+                className="mt-6"
+                text="No members found"
+                textClassName="mt-2"
+              />
+            )
+          }
         </div>
       </div>
     </>
   );
 }
 
-export default CooperativeMembersPage;
+export default withAuth(CooperativeMembersPage, {
+  allowedUserTypes: [UserType.COOPERATIVE],
+});

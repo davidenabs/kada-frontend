@@ -8,7 +8,7 @@ export const useGetFarmProductsQuery = ({
   params = {},
 }: IQueryParams) => {
   return useQuery({
-    queryKey: [API_ENDPOINTS.GET_FARM_PRODUCTS],
+    queryKey: [API_ENDPOINTS.GET_FARM_PRODUCTS, params],
     queryFn: () => farmProductsClient.getFarmProducts(params),
     enabled: enabled !== undefined ? enabled : true,
   });

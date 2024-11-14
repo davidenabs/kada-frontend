@@ -1,7 +1,7 @@
 "use client";
 import { withAuth } from "@/components/common/auth";
 import Overview from "@/components/dashboards/cooperative/overview";
-import QuickActions from "@/components/dashboards/cooperative/quick-action";
+// import QuickActions from "@/components/dashboards/cooperative/quick-action";
 import useDashboardTitle from "@/hooks/use-dashboard-tite";
 import React from "react";
 import Button from "@/components/form/button";
@@ -9,15 +9,30 @@ import Select from "@/components/form/select";
 import { UserType } from "@/interface/user";
 import { useAtomValue } from "jotai";
 import { userAtom } from "@/stores/user";
+import { useRouter } from "next/navigation";
+import { useModal } from "@/hooks/use-modal";
+import EditCooperaativeProfile from "@/components/modals/edit-profile/cooperative";
 
 function CooperativeDashboardPage() {
   useDashboardTitle("Dashboard");
   const user = useAtomValue(userAtom);
-  console.log(user.user?.cooperativeProfile);
-  const cooperativeName =
-    user.user?.cooperativeProfile?.name == null
-      ? "Set up your profile"
-      : user.user?.cooperativeProfile?.name;
+  const router = useRouter();
+  const { closeModal, openModal } = useModal();
+
+  const handleEditClick = () => {
+    openModal({
+      view: <EditCooperaativeProfile close={closeModal} />,
+      customSize: "50%",
+    });
+  };
+
+  const cooperativeName = React.useMemo(() => {
+    return user.user?.cooperativeProfile?.name == null ? (
+      <button onClick={handleEditClick}> Set up your profile </button>
+    ) : (
+      user.user?.cooperativeProfile?.name
+    );
+  }, [user.user?.cooperativeProfile?.name]);
 
   return (
     <>
@@ -40,7 +55,6 @@ function CooperativeDashboardPage() {
       </div>
 
       <Overview />
-      {/* <QuickActions /> */}
     </>
   );
 }

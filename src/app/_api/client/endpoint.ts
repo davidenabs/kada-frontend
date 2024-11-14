@@ -7,7 +7,11 @@ const API_ENDPOINTS = {
   VERIFY_OTP: "/users/verify-otp",
   // users
   GET_USERS: "/users",
+  GET_COOPERATIVE_FARMERS: "/users/cooperative-farmers",
   VERIFY_NIN: "/verification/nin",
+  UPDATE_USER: "/users",
+  FORCE_UPDATE: "/users/force-update",
+  GET_PROFILE: "/users/get-user",
 
   // farm
   GET_FARMS: "/farms",
@@ -50,6 +54,11 @@ const API_ENDPOINTS = {
   CREATE_FARM_PRODUCT: "/farm-products",
   UPDATE_FARM_PRODUCT: "/farm-products/:productId",
   DELETE_FARM_PRODUCT: "/farm-products/:productId",
+
+  // overview
+  GET_COOPERATIVE_OVERVIEW: "/overview/cooperative",
+  GET_VENDOR_OVERVIEW: "/overview/vendor",
+  GET_ADMIN_OVERVIEW: "/overview/admin",
 };
 
 export default API_ENDPOINTS;

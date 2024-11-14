@@ -1,4 +1,5 @@
 "use client";
+import { UserType } from "@/interface/user";
 import { appAtom } from "@/stores/app";
 import { userAtom } from "@/stores/user";
 import { useAtom } from "jotai";
@@ -21,15 +22,17 @@ const Header: React.FC = () => {
     <header className="flex overflow-hidden flex-col w-full bg-white max-md:max-w-full">
       <div className="flex flex-wrap gap-5 justify-between px-11 py-2.5 w-full leading-tight bg-white border-b border-zinc-100 max-md:px-5 max-md:max-w-full">
         <div className="flex gap-10 font-bold whitespace-nowrap text-zinc-700">
-          <div className="flex gap-1 text-sm">
-            <img
-              loading="lazy"
-              src="/images/logo.svg"
-              alt=""
-              className="object-contain shrink-0 aspect-square w-[39px]"
-            />
-            <div className="my-auto">KADA</div>
-          </div>
+          {user?.user?.userType === UserType.FARMER && (
+            <div className="flex gap-1 text-sm">
+              <img
+                loading="lazy"
+                src="/images/logo.svg"
+                alt=""
+                className="object-contain shrink-0 aspect-square w-[39px]"
+              />
+              <div className="my-auto">KADA</div>
+            </div>
+          )}
           {app.dashboardTitle && (
             <div className="my-auto text-base">{app.dashboardTitle}</div>
           )}
@@ -66,6 +69,23 @@ const Header: React.FC = () => {
               </div>
             </Dropdown.Trigger>
             <Dropdown.Menu className="w-56 divide-y text-gray-600 bg-white">
+              <Dropdown.Item className="hover:bg-transparentx">
+                <Avatar
+                  name={`${user.user?.firstName} ${user.user?.lastName}`}
+                  src={user.user?.imagePath ?? "/images/avatar.png"}
+                />
+                <span className="ml-2 text-start">
+                  <Text className="text-gray-900 font-medium leading-tight">
+                    {user.user?.firstName} {user.user?.lastName}
+                  </Text>
+
+                  <div className="whitespace-nowrap">
+                    <span className=" text-gray-500 whitespace-nowrap text-ellipsis">
+                      {user.user?.email || user.user?.phoneNumber || "N/A"}
+                    </span>
+                  </div>
+                </span>
+              </Dropdown.Item>
               <div className="mb-2">
                 <Dropdown.Item className="hover:bg-gray-900 hover:text-gray-50">
                   Account Settings

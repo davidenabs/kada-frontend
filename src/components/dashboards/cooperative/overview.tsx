@@ -1,3 +1,4 @@
+import { useGetCooperativeOverviewQuery } from "@/app/_api/overview";
 import React from "react";
 
 interface OverviewItem {
@@ -41,6 +42,15 @@ const overviewItems: OverviewItem[] = [
 ];
 
 const Overview: React.FC = () => {
+  const [loaded, setLoaded] = React.useState(false);
+  const { data, isFetching, isRefetching } = useGetCooperativeOverviewQuery({
+    enabled: loaded,
+  });
+
+  React.useEffect(() => {
+    setLoaded(true);
+  }, []);
+
   return (
     <section className="mt-6 space-y-3">
       <h2 className="text-lg leading-tight text-black font-bold">Overview</h2>

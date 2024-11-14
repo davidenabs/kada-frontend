@@ -4,7 +4,7 @@ import Image from "next/image";
 import React from "react";
 
 interface CatalogProps {
-  type: "service" | "product";
+  type: "services" | "products";
   image: string;
   name: string;
   price: string;
@@ -33,7 +33,7 @@ function Catalog({ type, image, name, price }: CatalogProps) {
             <span
               className={cn(
                 "text-[#A2A9B0] text-base",
-                type === "product" && "hidden"
+                type === "products" && "hidden"
               )}
             >
               From

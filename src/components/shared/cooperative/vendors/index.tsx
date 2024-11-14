@@ -4,6 +4,8 @@ import Input from "@/components/form/input";
 import { SearchIcon } from "@/icons";
 import VendorCard from "@/components/common/vendor-card";
 import Catalog from "@/components/common/catalog";
+import { withAuth } from "@/components/common/auth";
+import { UserType } from "@/interface/user";
 
 function CooperativeVendorsSharedPage() {
   return (
@@ -33,7 +35,7 @@ function CooperativeVendorsSharedPage() {
 
           <div className="space-y-4 mt-6">
             <Catalog
-              type="service"
+              type="services"
               image="/images/bdo.png"
               name="HarvestPeak Fertilizers"
               price="10,000"
@@ -48,7 +50,7 @@ function CooperativeVendorsSharedPage() {
 
           <div className="space-y-4 mt-6">
             <Catalog
-              type="product"
+              type="products"
               image="/images/bdo.png"
               name="HarvestPeak Fertilizers"
               price="10,000"
@@ -60,4 +62,6 @@ function CooperativeVendorsSharedPage() {
   );
 }
 
-export default CooperativeVendorsSharedPage;
+export default withAuth(CooperativeVendorsSharedPage, {
+  allowedUserTypes: [UserType.COOPERATIVE],
+});

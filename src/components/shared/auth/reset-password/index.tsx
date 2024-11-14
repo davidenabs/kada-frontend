@@ -37,7 +37,8 @@ function ResetPassword() {
   const { mutateAsync, isPending } = useResetPasswordMutation();
 
   const onSubmit = (data: ResetPasswordSchemaType) => {
-    mutateAsync(data, {
+    const { confirmPassword, ...rest } = data;
+    mutateAsync(rest, {
       onSuccess: (response) => {
         if (response.success) {
           toast.success("Password reset successfully");
@@ -105,7 +106,7 @@ function ResetPassword() {
           className="!py-3 mt-8 !rounded-full"
           loading={isSubmitting || isPending}
         >
-          Sign in
+          Submit
         </Button>
 
         <div className="mt-4">
