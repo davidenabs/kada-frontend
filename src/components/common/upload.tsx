@@ -2,13 +2,24 @@ import { CloudArrowUpIcon } from "@heroicons/react/16/solid";
 import React, { Fragment } from "react";
 import { KadaButton } from "../form/button";
 
-type UploadProps = {
-  handleClick: () => void;
-  handleFileChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  fileInputRef: React.RefObject<HTMLInputElement>;
-};
+// type UploadProps = {
+//   handleClick: () => void;
+//   handleFileChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+//   fileInputRef: React.RefObject<HTMLInputElement>;
+// };
 
-function Upload({ handleClick, handleFileChange, fileInputRef }: UploadProps) {
+interface UploadProps extends React.HTMLProps<HTMLInputElement> {
+  handleClick: () => void;
+  // handleFileChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  fileInputRef: React.RefObject<HTMLInputElement>;
+}
+
+function Upload({
+  handleClick,
+  // handleFileChange,
+  fileInputRef,
+  ...prop
+}: UploadProps) {
   return (
     <Fragment>
       <div
@@ -35,8 +46,9 @@ function Upload({ handleClick, handleFileChange, fileInputRef }: UploadProps) {
           type="file"
           className="hidden"
           ref={fileInputRef}
-          onChange={handleFileChange}
+          // onChange={handleFileChange}
           accept=".svg,.png,.jpg,.jpeg,.gif"
+          {...prop}
         />
       </div>
     </Fragment>

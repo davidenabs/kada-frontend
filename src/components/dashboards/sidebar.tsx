@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { startTransition } from "react";
 import { usePathname } from "next/navigation";
 import useScreenSize from "@/hooks/use-screen-size";
 import { cn } from "rizzui";
@@ -19,6 +19,9 @@ import {
   TreeIcon,
   UsersListIcon,
 } from "@/icons";
+import { toast } from "sonner";
+import { defaultUser, userAtom } from "@/stores/user";
+import { useSetAtom } from "jotai";
 
 interface MenuItem {
   icon: string;
@@ -136,6 +139,14 @@ const vendorItems: MenuItem[] = [
 const Sidebar: React.FC = () => {
   const pathname = usePathname();
   const { width } = useScreenSize();
+  const setUser = useSetAtom(userAtom);
+
+  const handleLogout = () => {
+    toast.success("Logging out...");
+    startTransition(() => {
+      setUser(defaultUser);
+    });
+  };
 
   const isAdminRoute = pathname.startsWith(adminBasePath);
   const isCooperativeRoute = pathname.startsWith(cooperativePath);
@@ -212,14 +223,13 @@ const Sidebar: React.FC = () => {
         })}
 
         <div className="mt-16">
-          <Link
-            href={"/portal"}
+          <button
             className="flex items-center gap-2 my-3 px-5 w-full rounded-full"
+            onClick={handleLogout}
           >
             <ArrowLeftEndOnRectangleIcon className="w-4 text-zinc-700" />
-
-            <div>Logout</div>
-          </Link>
+            <span>Logout</span>
+          </button>
         </div>
       </nav>
     </aside>

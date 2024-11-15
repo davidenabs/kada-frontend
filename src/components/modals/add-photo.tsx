@@ -59,7 +59,6 @@ function AddPhoto({ close, gallery, farmId }: Props) {
   });
 
   const onSubmit = (data: CreateGallerySchemaType) => {
-    console.log(data);
     mutateAsync(
       {
         data: {
@@ -70,7 +69,6 @@ function AddPhoto({ close, gallery, farmId }: Props) {
       },
       {
         onSuccess: (response) => {
-          console.log(response);
           if (response.success) {
             toast.success("Gallery created successfully");
             reset(defaultValues);

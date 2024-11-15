@@ -8,9 +8,10 @@ interface CatalogProps {
   image: string;
   name: string;
   price: string;
+  description: string;
 }
 
-function Catalog({ type, image, name, price }: CatalogProps) {
+function Catalog({ type, image, name, price, description }: CatalogProps) {
   return (
     <div className="flex items-center gap-5">
       <div className="relative w-[116px] h-[104px] rounded-xl">
@@ -24,8 +25,8 @@ function Catalog({ type, image, name, price }: CatalogProps) {
 
       <div className="flex-1">
         <div className="font-inter">
-          <h4 className="text-sm font-semibold">{name}</h4>
-          <p className="text-[#929292] text-sm">Ferterlizer Provider</p>
+          <h4 className="text-sm font-semibold capitalize">{name}</h4>
+          <p className="text-[#929292] text-sm">{description}</p>
         </div>
 
         <div className="flex justify-between mt-4">

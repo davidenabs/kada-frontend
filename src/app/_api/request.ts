@@ -30,8 +30,9 @@ export const useCreateRequestMutation = () => {
       requestClient.createRequest(data),
     mutationKey: [API_ENDPOINTS.CREATE_REQUEST],
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [API_ENDPOINTS.GET_REQUESTS] });
       queryClient.invalidateQueries({
-        queryKey: [API_ENDPOINTS.GET_REQUESTS],
+        queryKey: [API_ENDPOINTS.GET_COOPERATIVE_FARMERS],
       });
     },
   });
@@ -44,9 +45,7 @@ export const useUpdateRequestMutation = () => {
       requestClient.updateRequest(data, id),
     mutationKey: [API_ENDPOINTS.UPDATE_REQUEST],
     onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: [API_ENDPOINTS.GET_REQUESTS],
-      });
+      queryClient.invalidateQueries({ queryKey: [API_ENDPOINTS.GET_REQUESTS] });
     },
   });
 };

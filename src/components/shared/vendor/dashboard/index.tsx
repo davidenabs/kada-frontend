@@ -10,6 +10,7 @@ import AddProductServiceButton from "../add-button";
 import { useGetProducts } from "@/app/_api/catalog";
 import { Empty } from "rizzui";
 import { ICatalog } from "@/interface/catalog";
+import CatalogSkeleton from "@/components/skeletons/catalog";
 
 function VendorDashboardSharedPage() {
   const [loaded, setLoaded] = useState(false);
@@ -24,9 +25,12 @@ function VendorDashboardSharedPage() {
       page,
       search,
       limit,
-      // type: activeTab === "Our Services" ? "services" : "products",
     },
   });
+
+  const active = React.useMemo(() => {
+    return activeTab === "Our Services" ? "services" : "products";
+  }, [activeTab]);
 
   React.useEffect(() => {
     if (!isFetching && !isRefetching && data?.success && data?.data) {
@@ -96,13 +100,13 @@ function VendorDashboardSharedPage() {
             </div>
 
             {isFetching || isRefetching ? (
-              <div className="">loading...</div>
+              <CatalogSkeleton />
             ) : isError ? (
               <div className="">error...</div>
             ) : data?.data?.products?.length === 0 ? (
               <Empty className="" text="No product available" />
             ) : (
-              <Services products={products} />
+              <Services products={products} activeTab={active} />
             )}
           </div>
         </div>

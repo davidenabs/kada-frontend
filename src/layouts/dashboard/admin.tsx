@@ -1,16 +1,70 @@
 "use client";
 import NextProgress from "@/components/common/next-progress";
+import Unauthorized from "@/components/common/unauthorized";
 import BottomNavigation from "@/components/dashboards/cooperative/bottom-nav";
 import Header from "@/components/dashboards/header";
 import Sidebar from "@/components/dashboards/sidebar";
-import AppLoader from "@/components/shared/loader";
-import React, { Suspense } from "react";
+import AppLoader, { FullPageLoader } from "@/components/shared/loader";
+import { UserType } from "@/interface/user";
+import { userAtom } from "@/stores/user";
+import { useAtomValue } from "jotai";
+import { useRouter } from "next/navigation";
+import React, { startTransition, Suspense, useEffect, useState } from "react";
 
 export default function AdminDahboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const router = useRouter();
+  const user = useAtomValue(userAtom);
+  const [isAuthorized, setIsAuthorized] = useState(false);
+  const [loaded, setLoaded] = useState(false);
+  const [isLoading, setIsLoading] = useState(false); // *is DOM loading
+
+  useEffect(() => {
+    const checkAuth = () => {
+      if (!user || !isLoading) return;
+
+      // *if user is not authenticated or token is not set, redirect to sign-in page
+      if (!user.authenticated || !user.token) {
+        setLoaded(false);
+        router.push("/admin/auth");
+        return;
+      }
+
+      const userType = user.user?.userType;
+      // *if user type is not allowed, show to unauthorized page
+      if (userType !== UserType.SUPERADMIN) {
+        startTransition(() => {
+          setIsAuthorized(false);
+          setLoaded(true);
+        });
+        return;
+      }
+
+      // *if user type is allowed, show the component
+      startTransition(() => {
+        setIsAuthorized(true);
+        setLoaded(true);
+      });
+    };
+
+    checkAuth();
+  }, [router, user, isLoading]);
+
+  useEffect(() => {
+    setIsLoading(true);
+  }, []);
+
+  if (!loaded) {
+    return <FullPageLoader />;
+  }
+
+  if (!isAuthorized) {
+    return <Unauthorized />;
+  }
+
   return (
     <>
       <Suspense

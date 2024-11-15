@@ -1,3 +1,4 @@
+"use client";
 import React, { Fragment } from "react";
 import AddProductServiceButton from "../add-button";
 import { BriefcaseIcon } from "@heroicons/react/16/solid";
@@ -6,31 +7,66 @@ import Input from "@/components/form/input";
 import { SearchIcon } from "@/icons";
 import Services from "../../farmer/vendors/service/services";
 import Products from "../../farmer/vendors/service/products";
+import { ICatalog } from "@/interface/catalog";
+import { useGetProducts } from "@/app/_api/catalog";
+import useDebounce from "@/hooks/use-debounce";
+import { Empty } from "rizzui";
+import CatalogSkeleton from "@/components/skeletons/catalog";
 
 function VendorProductServiceSharedPage() {
+  const [loaded, setLoaded] = React.useState(false);
   const [activeTab, setActiveTab] = React.useState("Our Services");
+  const [page, setPage] = React.useState(1);
+  const [search, setSearch] = React.useState("");
+  const debouncedSearchQuery = useDebounce(search);
+  const [limit, setLimit] = React.useState(10);
+  const [products, setProducts] = React.useState<ICatalog[]>([]);
+  const { data, isFetching, isRefetching, isError } = useGetProducts({
+    enabled: loaded,
+    params: {
+      page,
+      search: debouncedSearchQuery,
+      limit,
+    },
+  });
 
-  const tabs = [
-    {
-      id: "our-services",
-      label: "Our Services",
-      badge: 3,
-      icon: BriefcaseIcon,
-    },
-    {
-      id: "products",
-      label: "Products",
-      badge: 0,
-      icon: BriefcaseIcon,
-    },
-  ];
+  const active = React.useMemo(() => {
+    return activeTab === "Our Services" ? "services" : "products";
+  }, [activeTab]);
+
+  React.useEffect(() => {
+    if (!isFetching && !isRefetching && data?.success && data?.data) {
+      setProducts(data.data.products);
+    }
+  }, [data, isFetching, isRefetching]);
+
+  const tabs = React.useMemo(
+    () => [
+      {
+        id: "our-services",
+        label: "Our Services",
+        badge: 3,
+        icon: BriefcaseIcon,
+      },
+      {
+        id: "products",
+        label: "Products",
+        badge: 0,
+        icon: BriefcaseIcon,
+      },
+    ],
+    []
+  );
+
+  React.useEffect(() => {
+    setLoaded(true);
+  }, []);
 
   return (
     <Fragment>
       <section className="space-y-4">
         <div className="flex justify-between items-center">
           <h4 className="text-2xl font-bold">Available Services/Products</h4>
-
           <AddProductServiceButton />
         </div>
 
@@ -58,11 +94,20 @@ function VendorProductServiceSharedPage() {
                   inputClassName="rounded-[10px]"
                   className="!w-[500px]"
                   prefix={<SearchIcon />}
+                  onChange={(e) => setSearch(e.target.value)}
+                  clearable
+                  onClear={() => setSearch("")}
+                  value={search}
                 />
               </div>
             </div>
 
-            {activeTab === "Our Services" ? <Services /> : <Products />}
+            <Services
+              products={products}
+              activeTab={active}
+              loading={isFetching || isRefetching}
+              isError={isError}
+            />
           </div>
         </div>
       </section>

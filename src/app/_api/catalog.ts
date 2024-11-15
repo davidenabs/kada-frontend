@@ -3,7 +3,7 @@ import {
   IQueryParams,
   IResponse,
 } from "@/interface/client";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import API_ENDPOINTS from "./client/endpoint";
 import catalogClient from "./client/catalog";
 import {
@@ -37,10 +37,16 @@ export const useGetProduct = ({
 };
 
 export const useCreateProductMutation = () => {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: ({ data }: { data: ICreateProductPayload }) =>
       catalogClient.createProduct(data),
     mutationKey: [API_ENDPOINTS.CATALOG_CREATE_PRODUCT],
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [API_ENDPOINTS.CATALOG_GET_PRODUCTS],
+      });
+    },
   });
 };
 
@@ -60,12 +66,11 @@ export const useDeleteProductMutation = () => {
 };
 
 // category
-
 export const useGetCategories = ({
   enabled = true,
   params = {},
 }: IQueryParams) => {
-  return useQuery<IResponse<any>, Error>({
+  return useQuery<IResponse<any[]>, Error>({
     queryKey: [API_ENDPOINTS.CATALOG_GET_PRODUCT_CATEGORIES, params],
     queryFn: () => catalogClient.getCategories(params),
     enabled: enabled,

@@ -45,14 +45,14 @@ const SignInForm: React.FC = () => {
       loginMutation.mutate(newData, {
         onSuccess: (response) => {
           const { data, message } = response;
+          const userType = data.user.userType;
           setUser({
             ...user,
+            role: userType,
             user: data.user,
             token: data.token,
             authenticated: true,
           });
-
-          const userType = data.user.userType;
 
           switch (userType) {
             case UserType.FARMER:

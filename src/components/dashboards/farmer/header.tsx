@@ -1,7 +1,7 @@
 "use client";
 import { UserType } from "@/interface/user";
 import { appAtom } from "@/stores/app";
-import { userAtom } from "@/stores/user";
+import { defaultUser, userAtom } from "@/stores/user";
 import { useAtom } from "jotai";
 import React, { startTransition } from "react";
 import { Avatar, Dropdown, Text } from "rizzui";
@@ -14,7 +14,7 @@ const Header: React.FC = () => {
   const handleLogout = () => {
     toast.success("Logging out...");
     startTransition(() => {
-      setUser({ ...user, user: null, token: null, authenticated: false });
+      setUser(defaultUser);
     });
   };
 
