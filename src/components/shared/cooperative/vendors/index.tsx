@@ -39,6 +39,7 @@ function CooperativeVendorsSharedPage() {
               image="/images/bdo.png"
               name="HarvestPeak Fertilizers"
               price="10,000"
+              description="This is a description"
             />
           </div>
         </div>
@@ -54,6 +55,7 @@ function CooperativeVendorsSharedPage() {
               image="/images/bdo.png"
               name="HarvestPeak Fertilizers"
               price="10,000"
+              description="This is a description"
             />
           </div>
         </div>

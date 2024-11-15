@@ -14,12 +14,7 @@ interface UploadProps extends React.HTMLProps<HTMLInputElement> {
   fileInputRef: React.RefObject<HTMLInputElement>;
 }
 
-function Upload({
-  handleClick,
-  // handleFileChange,
-  fileInputRef,
-  ...prop
-}: UploadProps) {
+function Upload({ handleClick, fileInputRef, ...prop }: UploadProps) {
   return (
     <Fragment>
       <div

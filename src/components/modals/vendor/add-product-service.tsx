@@ -9,6 +9,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { createCatalogSchema, CreateCatalogSchemaType } from "@/schema";
 import { useCreateProductMutation } from "@/app/_api/catalog";
 import ProductForm from "./prodcut";
+import { toast } from "sonner";
 
 type AddProductServiceModalProps = {
   close: () => void;
@@ -41,10 +42,6 @@ function AddProductServiceModal({ close }: AddProductServiceModalProps) {
     resolver: zodResolver(createCatalogSchema),
   });
 
-  // useEffect(() => {
-  //   console.log(errors);
-  // }, [errors]);
-
   const watchType = watch("type");
 
   const onSubmit = (data: CreateCatalogSchemaType) => {
@@ -62,16 +59,14 @@ function AddProductServiceModal({ close }: AddProductServiceModalProps) {
       amount: Number(amount),
     };
 
-    console.log(newData);
-
     mutateAsync(
       { data: newData },
       {
         onSuccess: (response) => {
-          console.log(response);
           if (response.success) {
-            // reset(defaultValues);
-            // close();
+            reset(defaultValues);
+            toast.success("Product added successfully");
+            close();
           }
         },
       }
