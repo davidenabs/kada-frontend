@@ -93,7 +93,7 @@ function VendorProductServiceSharedPage() {
                   placeholder="Search here..."
                   inputClassName="rounded-[10px]"
                   className="!w-[500px]"
-                  prefix={<SearchIcon />}
+                  prefix={<SearchIcon className="fill-black" />}
                   onChange={(e) => setSearch(e.target.value)}
                   clearable
                   onClear={() => setSearch("")}

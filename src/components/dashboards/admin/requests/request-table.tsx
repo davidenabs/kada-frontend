@@ -1,7 +1,7 @@
-import Input from '@/components/form/input';
-import { SearchIcon } from '@/icons';
-import Link from 'next/link';
-import React from 'react';
+import Input from "@/components/form/input";
+import { SearchIcon } from "@/icons";
+import Link from "next/link";
+import React from "react";
 
 interface RequestData {
   id: number;
@@ -17,7 +17,7 @@ const vendorData: RequestData[] = [
     vendorName: "ABCD Agro Enterprise",
     dateRequested: "03 Jan 2024",
     amountPaid: "NGN 20,000.00",
-    description: "Request License/Cert"
+    description: "Request License/Cert",
   },
   // Add more vendor data objects here...
 ];
@@ -27,7 +27,10 @@ const RequestTable: React.FC = () => {
     <section className="mt-10 w-full leading-tight max-w[1023px] text-zinc-700 max-md:max-w-full">
       <div className="flex justify-between items-center w-full mt-2.5">
         <h2 className="text-base">Request Information</h2>
-        <Input placeholder="Search for a vendor" prefix={<SearchIcon />} />
+        <Input
+          placeholder="Search for a vendor"
+          prefix={<SearchIcon className="fill-black" />}
+        />
       </div>
 
       <table className="w-full mt-3.5 border-collapse border border-gray-200 text-sm max-md:max-w-full overflow-auto">
@@ -53,7 +56,9 @@ const RequestTable: React.FC = () => {
                 <div className="flex gap-4">
                   <button className="text-green-700">Approve</button>
                   <button className="text-red-600">Reject</button>
-                  <Link href="/admin/submissions/vendor" className="underline">View Submission</Link>
+                  <Link href="/admin/submissions/vendor" className="underline">
+                    View Submission
+                  </Link>
                 </div>
               </td>
             </tr>

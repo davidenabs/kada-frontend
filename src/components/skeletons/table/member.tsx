@@ -6,19 +6,8 @@ function MembersTableSkeleton() {
   return (
     <Fragment>
       <Table variant="elegant">
-        <Table.Header>
-          <Table.Row>
-            <Table.Head>Farmer’s Name</Table.Head>
-            <Table.Head>Phone Number</Table.Head>
-            <Table.Head>Type</Table.Head>
-            <Table.Head>Location</Table.Head>
-            <Table.Head>Category</Table.Head>
-            <Table.Head>Actions</Table.Head>
-          </Table.Row>
-        </Table.Header>
-
         <Table.Body>
-          {[...Array(5)].map((_, index) => (
+          {[...Array(3)].map((_, index) => (
             <Table.Row key={index}>
               <Table.Cell>
                 <div className="flex gap-2 items-center">

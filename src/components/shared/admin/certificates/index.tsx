@@ -67,7 +67,7 @@ function CertificatesSharedPage() {
   };
 
   return (
-    <section className="grid grid-cols-2 gap-5">
+    <section className="grid grid-cols-1 lg:grid-cols-2 gap-5">
       <div className="space-y-5">
         <div className="overflow-hidden bg-white rounded-lg">
           <div className="flex justify-between items-center p-4 bg-[#F0F0F0]">

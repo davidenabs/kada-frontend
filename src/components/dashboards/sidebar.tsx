@@ -28,6 +28,7 @@ interface MenuItem {
   label: string;
   href: string;
   addons?: string;
+  matchSubPath?: boolean;
 }
 
 const cooperativePath = "/dashboard/cooperative";
@@ -61,11 +62,12 @@ const adminMenuItems: MenuItem[] = [
     icon: GridIcon,
     label: "Tools",
     href: `${adminBasePath}/tools`,
+    matchSubPath: true,
   },
   {
-    icon: SealIcon,
-    label: "Certificates",
-    href: `${adminBasePath}/certificates`,
+    icon: BriefcaseIcon,
+    label: "Opportunities",
+    href: `${adminBasePath}/opportunities`,
   },
   {
     icon: ProfileIcon,
@@ -86,11 +88,6 @@ const cooperativeItems: MenuItem[] = [
     label: "Members",
     href: `${cooperativePath}/members`,
   },
-  // {
-  //   icon: DashboardIcon,
-  //   label: "Events",
-  //   href: `${cooperativePath}/events`,
-  // },
   {
     icon: BriefcaseIcon,
     label: "Opportunities",
@@ -189,8 +186,14 @@ const Sidebar: React.FC = () => {
         </h2>
 
         {itemsToRender.map((item, index) => {
-          const isActive =
-            pathname.startsWith(item.href) && pathname == item.href;
+          let isActive;
+          // const isActive =
+          //   pathname.startsWith(item.href) && pathname == item.href;
+          if (item.matchSubPath) {
+            isActive = pathname.startsWith(item.href);
+          } else {
+            isActive = pathname == item.href;
+          }
           const Icon: any = item.icon;
 
           return (
@@ -198,8 +201,8 @@ const Sidebar: React.FC = () => {
               key={index}
               href={item.href}
               className={cn(
-                "flex items-center gap-2 my-3 px-5 w-full rounded-full",
-                isActive ? "text-white bg-[#197A53] py-2.5" : "text-zinc-700",
+                "flex items-center gap-2 my-1 px-5 w-full rounded-full py-2.5",
+                isActive ? "text-white bg-[#197A53]" : "text-zinc-700",
                 "max-md:ml-2.5"
               )}
             >

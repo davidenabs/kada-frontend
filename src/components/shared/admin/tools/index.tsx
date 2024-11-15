@@ -2,6 +2,7 @@
 import Input from "@/components/form/input";
 import useDashboardTitle from "@/hooks/use-dashboard-tite";
 import { SearchIcon } from "@/icons";
+import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import React from "react";
 
@@ -27,6 +28,13 @@ const tools = [
     color: "#5A96EA",
     link: "/market-information",
   },
+  {
+    name: "Certificate Issuance",
+    description:
+      "Access real-time market insights and trends to make informed purchasing and selling decisions",
+    color: "#5A96EA",
+    link: "/certificate-issuance",
+  },
 ];
 
 function ToolsSharedPage() {
@@ -45,12 +53,12 @@ function ToolsSharedPage() {
             placeholder="Search here..."
             inputClassName="!rounded-[10px] !h-[36px]"
             className="!w-[500px]"
-            prefix={<SearchIcon />}
+            prefix={<SearchIcon className="fill-black" />}
           />
         </div>
       </div>
 
-      <div className="grid grid-cols-4 gap-[30px]">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols- xl:grid-cols-4">
         {tools.map((tool) => (
           <div
             key={tool.name}
@@ -69,12 +77,12 @@ function ToolsSharedPage() {
             </div>
 
             <div className="mt-14">
-              <button
+              <Link
+                href={pathname + tool.link}
                 className="hover:underline underline-offset-4 text-base"
-                onClick={() => router.push(pathname + tool.link)}
               >
                 Explore
-              </button>
+              </Link>
             </div>
           </div>
         ))}

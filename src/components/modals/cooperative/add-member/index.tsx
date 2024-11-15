@@ -84,7 +84,7 @@ function AddMemberModal({ close }: AddMemberModalProps) {
             placeholder="Search here..."
             inputClassName="!rounded-[10px] !h-[40px]"
             className="!w-full"
-            prefix={<SearchIcon />}
+            prefix={<SearchIcon className="fill-black" />}
             type="search"
             clearable
             label="Search for a registered member"

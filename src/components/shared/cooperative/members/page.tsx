@@ -93,7 +93,7 @@ function CooperativeMembersPage() {
             placeholder="Search here..."
             inputClassName="!rounded-[10px] !h-[36px]"
             className="!w-[500px]"
-            prefix={<SearchIcon />}
+            prefix={<SearchIcon className="fill-black" />}
           />
 
           <Popover shadow="sm" placement="bottom-end">

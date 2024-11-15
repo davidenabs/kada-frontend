@@ -1,20 +1,27 @@
 "use client";
 import useScreenSize from "@/hooks/use-screen-size";
 import { appAtom } from "@/stores/app";
+import { defaultUser, userAtom } from "@/stores/user";
 import { ChevronDoubleDownIcon } from "@heroicons/react/16/solid";
 import { ArrowDownIcon } from "@heroicons/react/20/solid";
 import { useAtom } from "jotai";
 import { usePathname } from "next/navigation";
-import React from "react";
+import React, { startTransition } from "react";
 import { Avatar, Dropdown, Text } from "rizzui";
+import { toast } from "sonner";
 
 const Header: React.FC = () => {
   const { width } = useScreenSize();
   const [app] = useAtom(appAtom);
+  const [user, setUser] = useAtom(userAtom);
   const pathname = usePathname();
 
-  // Determine if the current route is for admin or regular user
-  const isAdminRoute = pathname.startsWith("/admin");
+  const handleLogout = () => {
+    toast.success("Logging out...");
+    startTransition(() => {
+      setUser(defaultUser);
+    });
+  };
 
   if (width < 992)
     return (
@@ -68,13 +75,15 @@ const Header: React.FC = () => {
             <Dropdown.Trigger>
               <div className="flex gap-1 items-start my-auto">
                 <Avatar
-                  name="John Doe"
-                  src={"/images/avatar.png"}
+                  name={`${user.user?.firstName} ${user.user?.lastName}`}
+                  src={user.user?.imagePath ?? "/images/avatar.png"}
                   className="cursor-pointer"
                 />
                 <div className="flex flex-col h-[29px]">
                   <div className="flex gap-1 items-end text-xs font-bold text-green-800">
-                    <div>John Emmanuel</div>
+                    <div>
+                      {user.user?.firstName} {user.user?.lastName}
+                    </div>
                     <img
                       loading="lazy"
                       src="https://cdn.builder.io/api/v1/image/assets/TEMP/a372f2dd9322a139bfecb23005028dcb756c8893933af728ae33b2b858380cfc?placeholderIfAbsent=true&apiKey=e3159558e3c24b7bb6f2db02f0873db3"
@@ -84,13 +93,13 @@ const Header: React.FC = () => {
                   </div>
                   <div className="text-start">
                     <span className="text-xs font-light text-zinc-700 capitalize">
-                      Admin
+                      {user.user?.userType}
                     </span>
                   </div>
                 </div>
               </div>
             </Dropdown.Trigger>
-            <Dropdown.Menu className="w-56 divide-y text-gray-600">
+            <Dropdown.Menu className="w-56 divide-y text-gray-600 bg-white">
               <div className="mb-2">
                 <Dropdown.Item className="hover:bg-gray-900 hover:text-gray-50">
                   Account Settings
@@ -103,7 +112,11 @@ const Header: React.FC = () => {
                 </Dropdown.Item>
               </div>
               <div className="mt-2 pt-2">
-                <Dropdown.Item className="hover:bg-gray-900 hover:text-gray-50">
+                <Dropdown.Item
+                  className="hover:bg-gray-900 hover:text-gray-50"
+                  as="button"
+                  onClick={handleLogout}
+                >
                   Sign Out
                 </Dropdown.Item>
               </div>

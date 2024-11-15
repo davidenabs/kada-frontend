@@ -52,7 +52,7 @@ function VendorOpportunitiesServicePage() {
               placeholder="Search here..."
               inputClassName="!rounded-[10px] !h-[36px]"
               className=""
-              prefix={<SearchIcon />}
+              prefix={<SearchIcon className="fill-black" />}
             />
           </div>
 

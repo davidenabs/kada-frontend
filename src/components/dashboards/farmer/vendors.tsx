@@ -74,7 +74,7 @@ const VendorList: React.FC = () => {
         <Input
           placeholder="Search for service provider"
           className="self-stretch !w-[333px] !py-3"
-          suffix={<SearchIcon />}
+          suffix={<SearchIcon className="fill-black" />}
         />
         <div className="self-stretch overflow-auto max-h-[552px]">
           {vendors.map((vendor, index) => (
