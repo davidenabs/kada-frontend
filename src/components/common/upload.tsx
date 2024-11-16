@@ -14,7 +14,12 @@ interface UploadProps extends React.HTMLProps<HTMLInputElement> {
   fileInputRef: React.RefObject<HTMLInputElement>;
 }
 
-function Upload({ handleClick, fileInputRef, ...prop }: UploadProps) {
+function Upload({
+  handleClick,
+  fileInputRef,
+  accept = ".svg,.png,.jpg,.jpeg,.gif",
+  ...prop
+}: UploadProps) {
   return (
     <Fragment>
       <div
@@ -41,8 +46,7 @@ function Upload({ handleClick, fileInputRef, ...prop }: UploadProps) {
           type="file"
           className="hidden"
           ref={fileInputRef}
-          // onChange={handleFileChange}
-          accept=".svg,.png,.jpg,.jpeg,.gif"
+          accept={accept}
           {...prop}
         />
       </div>

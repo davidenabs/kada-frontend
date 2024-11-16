@@ -32,6 +32,7 @@
     "react-hook-form": "^7.53.1",
     "react-leaflet": "^4.2.1",
     "react-leaflet-draw": "^0.20.4",
+    "react-quill": "^2.0.0",
     "react-rating": "^2.0.5",
     "rizzui": "^0.8.7",
     "sonner": "^1.7.0",

@@ -1,14 +1,17 @@
 "use client";
 import { useGetCmsPostsQuery } from "@/app/_api/cms";
+import KadaTable from "@/components/common/table";
 import { KadaButton } from "@/components/form/button";
 import PostOpportunityModal from "@/components/modals/admin/opportunities";
+import MembersTableSkeleton from "@/components/skeletons/table/member";
 import useDashboardTitle from "@/hooks/use-dashboard-tite";
 import useDebounce from "@/hooks/use-debounce";
 import { useModal } from "@/hooks/use-modal";
 import { SearchIcon } from "@/icons";
 import { PlusIcon } from "@heroicons/react/16/solid";
 import React, { Fragment } from "react";
-import { Input } from "rizzui";
+import { Empty, Input } from "rizzui";
+import columns from "./columns";
 
 function AdminOpportunitiesPage() {
   useDashboardTitle("Cooperatives");
@@ -35,9 +38,11 @@ function AdminOpportunitiesPage() {
     });
   };
 
-  //   React.useEffect(() => {
-  //     setLoaded(true);
-  //   }, []);
+  React.useEffect(() => {
+    setLoaded(true);
+  }, []);
+
+  if (!loaded) return null;
 
   return (
     <Fragment>
@@ -67,6 +72,30 @@ function AdminOpportunitiesPage() {
             onChange={(e) => setSearch(e.target.value)}
             onClear={() => setSearch("")}
           />
+        </div>
+
+        <div className="">
+          {isFetching || isLoading ? (
+            <MembersTableSkeleton />
+          ) : isError ? (
+            <div>Failed to fetch data</div>
+          ) : data?.data?.posts?.length === 0 ? (
+            <Empty />
+          ) : (
+            <KadaTable
+              data={data?.data?.posts || []}
+              columns={columns}
+              renderActions={(item) => (
+                <div className="flex items-center">
+                  <button className="text-xs text-blue-600">View</button>
+                </div>
+              )}
+              itemsPerPage={limit}
+              totalItems={data?.data?.total || 0}
+              page={page}
+              onPageChange={(page) => setPage(page)}
+            />
+          )}
         </div>
       </section>
     </Fragment>

@@ -8,7 +8,10 @@ import { LinkIcon } from "@heroicons/react/16/solid";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React, { Fragment } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { Input } from "rizzui";
+import { cn } from "rizzui";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+import Input from "@/components/form/input";
 
 type PostOpportunityModalProps = {
   close: () => void;
@@ -102,12 +105,50 @@ function PostOpportunityModal({ close }: PostOpportunityModalProps) {
               </p>
             </div>
 
-            <Input
-              label="Opportunity Description"
-              placeholder="Describe this opportunity"
-              {...register("content")}
-              error={errors.content?.message}
-            />
+            {/* dipaly uploaded file */}
+            {file && (
+              <div className="flex items-center gap-2">
+                {/* image */}
+                <img
+                  src={URL.createObjectURL(file)}
+                  alt="file"
+                  className="w-10 h-10 object-cover rounded-md"
+                />
+                <span>{file.name}</span>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setFile(null);
+                    setValue("file", new File([], ""));
+                  }}
+                >
+                  <CloseIcon className="w-4 h-4" />
+                </button>
+              </div>
+            )}
+
+            <div className="">
+              <label className="text-xs">Opportunity Descriptiion</label>
+              <Controller
+                control={control}
+                name="content"
+                render={({ field }) => (
+                  <ReactQuill
+                    theme="snow"
+                    value={field.value}
+                    onChange={field.onChange}
+                    className={cn(
+                      "rounded-md h-[200px] mb-4",
+                      errors.content && "border border-red-500"
+                    )}
+                  />
+                )}
+              />
+
+              <p className="text-red-500 text-xs mt-1">
+                {errors.content?.message}
+              </p>
+            </div>
 
             <Input
               label="Application Url"
@@ -115,6 +156,7 @@ function PostOpportunityModal({ close }: PostOpportunityModalProps) {
               prefix={<LinkIcon className="w-4 h-4" />}
               {...register("cta")}
               error={errors.cta?.message}
+              className="!mt-16"
             />
 
             <Select
