@@ -107,10 +107,10 @@ export default function CooperativeDahboardLayout({
         }
       >
         <NextProgress />
-        <div className="flex flex-col">
+        <div className="flex flex-col transition-all duration-300 ease-in-out">
           <div className="flex overflow-hidden w-full bg-white">
             <Sidebar />
-            <div className="w-full lg:ml-[254px] max-md:ml-0 ">
+            <div className="w-full lg:ml-[254px] max-md:ml-0 transition-all duration-300 ease-in-out">
               <Header />
               <div className="z-10 mt-0 w-full pt-8 max-md:max-w-full max-md:px-5">
                 <div className="flex flex-col w-full">

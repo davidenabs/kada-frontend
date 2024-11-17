@@ -1,14 +1,16 @@
 "use client";
+import { Hamburger } from "@/icons";
 import { UserType } from "@/interface/user";
 import { appAtom } from "@/stores/app";
 import { defaultUser, userAtom } from "@/stores/user";
 import { useAtom } from "jotai";
+import Image from "next/image";
 import React, { startTransition } from "react";
-import { Avatar, Dropdown, Text } from "rizzui";
+import { Avatar, cn, Dropdown, Text } from "rizzui";
 import { toast } from "sonner";
 
 const Header: React.FC = () => {
-  const [app] = useAtom(appAtom);
+  const [app, setApp] = useAtom(appAtom);
   const [user, setUser] = useAtom(userAtom);
 
   const handleLogout = () => {
@@ -18,11 +20,25 @@ const Header: React.FC = () => {
     });
   };
 
+  const isFarmer = React.useMemo(
+    () => user?.user?.userType === UserType.FARMER,
+    [user]
+  );
+
+  const handleSidebarToggle = () => {
+    setApp((prev) => ({ ...prev, isSidebarOpen: !prev.isSidebarOpen }));
+  };
+
   return (
     <header className="flex overflow-hidden flex-col w-full bg-white max-md:max-w-full">
       <div className="flex flex-wrap gap-5 justify-between px-11 py-2.5 w-full leading-tight bg-white border-b border-zinc-100 max-md:px-5 max-md:max-w-full">
-        <div className="flex gap-10 font-bold whitespace-nowrap text-zinc-700">
-          {user?.user?.userType === UserType.FARMER && (
+        <div
+          className={cn(
+            "flex gap-10 font-bold whitespace-nowrap text-zinc-700",
+            isFarmer ? "" : "hidden lg:flex"
+          )}
+        >
+          {isFarmer && (
             <div className="flex gap-1 text-sm">
               <img
                 loading="lazy"
@@ -37,6 +53,16 @@ const Header: React.FC = () => {
             <div className="my-auto text-base">{app.dashboardTitle}</div>
           )}
         </div>
+
+        {!isFarmer && (
+          <div className="flex gap-[14px] lg:hidden">
+            <button onClick={handleSidebarToggle}>
+              <Hamburger className="fill-[#344054]" />
+            </button>
+
+            <Image src="/images/logo.svg" alt="logo" width={30} height={30} />
+          </div>
+        )}
 
         <div className="">
           <Dropdown placement="bottom-end">
