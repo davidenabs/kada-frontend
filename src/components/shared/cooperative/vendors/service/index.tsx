@@ -123,11 +123,11 @@ function CooperativeVendorsServiceSharedPage() {
             </div>
           </div>
 
-          {activeTab === "Our Services" ? (
+          {/* {activeTab === "Our Services" ? (
             <Services products={[]} />
           ) : (
             <Products />
-          )}
+          )} */}
         </div>
       </div>
 
@@ -198,6 +198,4 @@ function CooperativeVendorsServiceSharedPage() {
   );
 }
 
-export default withAuth(CooperativeVendorsServiceSharedPage, {
-  allowedUserTypes: [UserType.COOPERATIVE],
-});
+export default CooperativeVendorsServiceSharedPage;

@@ -12,6 +12,7 @@ interface KadaTableProps<T> {
   data: T[];
   columns: Column<T>[];
   renderActions?: (item: T) => React.ReactNode;
+  renderTitle?: React.ReactNode | string;
   itemsPerPage?: number;
   totalItems: number;
   page: number;
@@ -36,6 +37,7 @@ function KadaTable<T extends Record<string, any>>({
   data,
   columns,
   renderActions,
+  renderTitle,
   itemsPerPage = 10,
   totalItems,
   page,
@@ -54,7 +56,9 @@ function KadaTable<T extends Record<string, any>>({
               {columns.map((col) => (
                 <Table.Head key={String(col.key)}>{col.label}</Table.Head>
               ))}
-              {renderActions && <Table.Head>Actions</Table.Head>}
+              {renderActions && (
+                <Table.Head>{renderTitle || "Actions"}</Table.Head>
+              )}
             </Table.Row>
           </Table.Header>
 
@@ -75,17 +79,19 @@ function KadaTable<T extends Record<string, any>>({
         </Table>
       </div>
 
-      <div className="flex max-md:flex-col justify-between items-center mt-4">
-        <p className="text-sm text-gray-500">
-          Showing {startIndex + 1} to {Math.min(endIndex, totalItems)} of{" "}
-          {totalItems} entries
-        </p>
-        <Pagination
-          currentPage={page}
-          totalPages={totalPages}
-          onPageChange={onPageChange}
-        />
-      </div>
+      {data.length > 0 && (
+        <div className="flex max-md:flex-col justify-between items-center mt-4">
+          <p className="text-sm text-gray-500">
+            Showing {startIndex + 1} to {Math.min(endIndex, totalItems)} of{" "}
+            {totalItems} entries
+          </p>
+          <Pagination
+            currentPage={page}
+            totalPages={totalPages}
+            onPageChange={onPageChange}
+          />
+        </div>
+      )}
     </Fragment>
   );
 }

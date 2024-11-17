@@ -9,19 +9,20 @@ import { ArrowLeftEndOnRectangleIcon } from "@heroicons/react/16/solid";
 import {
   BriefcaseIcon,
   ChartIcon,
+  CloseIcon,
   DashboardIcon,
   GridIcon,
   HandCoins,
   LotusIcon,
   ProfileIcon,
-  SealIcon,
   StorefrontIcon,
   TreeIcon,
   UsersListIcon,
 } from "@/icons";
 import { toast } from "sonner";
 import { defaultUser, userAtom } from "@/stores/user";
-import { useSetAtom } from "jotai";
+import { useAtom, useSetAtom } from "jotai";
+import { appAtom } from "@/stores/app";
 
 interface MenuItem {
   icon: string;
@@ -137,12 +138,19 @@ const Sidebar: React.FC = () => {
   const pathname = usePathname();
   const { width } = useScreenSize();
   const setUser = useSetAtom(userAtom);
+  const [app, setApp] = useAtom(appAtom);
+
+  const isLargeScreen = React.useMemo(() => width > 992, [width]);
 
   const handleLogout = () => {
     toast.success("Logging out...");
     startTransition(() => {
       setUser(defaultUser);
     });
+  };
+
+  const handleSidebarClose = () => {
+    setApp((prev) => ({ ...prev, isSidebarOpen: false }));
   };
 
   const isAdminRoute = pathname.startsWith(adminBasePath);
@@ -161,24 +169,33 @@ const Sidebar: React.FC = () => {
     itemsToRender = [];
   }
 
-  if (width < 992) return null; // Hide sidebar on smaller screens
+  React.useEffect(() => {
+    if (!isLargeScreen) {
+      handleSidebarClose();
+    }
+  }, [isLargeScreen]);
 
   return (
     <aside
       className={cn(
-        "flex flex-col w-[254px] max-md:ml-0 max-md:w-full pr- min-h-screen border-r-[.4px] h-full fixed bg-white",
-        isAdminRoute,
-        "border-[#33354354]"
+        "flex flex-col w-[254px] min-h-screen border-r-[.4px] h-full fixed bg-white border-[#33354354] transition-all duration-300 ease-in-out z-50",
+        !isLargeScreen && !app.isSidebarOpen ? "-translate-x-[254px]" : ""
       )}
     >
       <nav className="flex overflow-hidden flex-col items-start px-6 pt-5 pb-64 mx-auto w-full leading-tight bg-white border-r-0 border-zinc-700 border-opacity-30 max-md:px-5 max-md:pb-24 max-md:mt-10">
-        <div className="flex gap-2 text-sm font-bold whitespace-nowrap text-zinc-700 w-[81px]">
-          <img
-            src="/images/logo.svg"
-            alt="Logo"
-            className="object-contain shrink-0 aspect-[0.97] w-[39px]"
-          />
-          <div className="my-auto">KADA</div>
+        <div className="flex justify-between w-full">
+          <div className="flex gap-2 text-sm font-bold whitespace-nowrap text-zinc-700 w-[81px]">
+            <img
+              src="/images/logo.svg"
+              alt="Logo"
+              className="object-contain shrink-0 aspect-[0.97] w-[39px]"
+            />
+            <div className="my-auto">KADA</div>
+          </div>
+
+          <button className="block lg:hidden" onClick={handleSidebarClose}>
+            <CloseIcon className="w-3 h-3 text-zinc-700" />
+          </button>
         </div>
 
         <h2 className="mt-10 mb-5 text-sm font- text-neutral-700 max-md:mt-10">
@@ -205,6 +222,11 @@ const Sidebar: React.FC = () => {
                 isActive ? "text-white bg-[#197A53]" : "text-zinc-700",
                 "max-md:ml-2.5"
               )}
+              onClick={() => {
+                if (!isLargeScreen) {
+                  handleSidebarClose();
+                }
+              }}
             >
               <Icon
                 className={cn(

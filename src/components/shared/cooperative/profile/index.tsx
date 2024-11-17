@@ -141,6 +141,4 @@ function CooperativeProfileSharedPage() {
   );
 }
 
-export default withAuth(CooperativeProfileSharedPage, {
-  allowedUserTypes: [UserType.COOPERATIVE],
-});
+export default CooperativeProfileSharedPage;

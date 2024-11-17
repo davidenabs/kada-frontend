@@ -53,6 +53,4 @@ function CooperativeOpportunitiesSharedPage() {
   );
 }
 
-export default withAuth(CooperativeOpportunitiesSharedPage, {
-  allowedUserTypes: [UserType.COOPERATIVE],
-});
+export default CooperativeOpportunitiesSharedPage;

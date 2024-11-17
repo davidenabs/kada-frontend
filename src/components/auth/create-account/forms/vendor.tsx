@@ -3,7 +3,7 @@ import Button from "@/components/form/button";
 import Input from "@/components/form/input";
 import Password from "@/components/form/password";
 import { UserType } from "@/interface/user";
-import { RegisterSchema, RegisterSchemaType } from "@/schema/auth";
+import { VendorSchema, VendorSchemaType } from "@/schema/auth";
 import { appAtom } from "@/stores/app";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAtom } from "jotai";
@@ -13,8 +13,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
 const defaultValues = {
-  firstName: "",
-  lastName: "llll",
+  vendorName: "",
   email: "",
   phoneNumber: "",
   password: "",
@@ -34,10 +33,10 @@ const VendorForm: React.FC = () => {
     formState: { errors, isSubmitting },
   } = useForm({
     defaultValues,
-    resolver: zodResolver(RegisterSchema),
+    resolver: zodResolver(VendorSchema),
   });
 
-  const onSubmit = (data: RegisterSchemaType) => {
+  const onSubmit = (data: VendorSchemaType) => {
     const { confirmPassword, acceptTerms, ...rest } = data;
 
     mutateAsync(rest, {
@@ -46,7 +45,7 @@ const VendorForm: React.FC = () => {
         if (response.success) {
           toast.success(response.message);
           setApp({ ...app, userEmail: data.email });
-          router.push("/account-setup/verify-account?type=cooperative");
+          router.push("/account-setup/verify-account?type=vendor");
         } else {
           toast.error(response.message);
         }
@@ -81,8 +80,8 @@ const VendorForm: React.FC = () => {
           id="firstName"
           placeholder="What is your company name"
           className=""
-          {...register("firstName")}
-          error={errors.firstName?.message}
+          {...register("vendorName")}
+          error={errors.vendorName?.message}
         />
 
         <Input

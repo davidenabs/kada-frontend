@@ -1,7 +1,5 @@
 "use client";
 import React from "react";
-import { withAuth } from "@/components/common/auth";
-import { UserType } from "@/interface/user";
 import CreateFarmCard from "@/components/dashboards/farmer/create-farm-card";
 import JoinCooperative from "@/components/dashboards/farmer/join-cooperative";
 import VendorList from "@/components/dashboards/farmer/vendors";
@@ -71,6 +69,4 @@ function FarmerDashboardSharedPage() {
   );
 }
 
-export default withAuth(FarmerDashboardSharedPage, {
-  allowedUserTypes: [UserType.FARMER],
-});
+export default FarmerDashboardSharedPage;

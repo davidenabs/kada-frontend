@@ -24,10 +24,10 @@ export default function AdminDahboardLayout({
 
   useEffect(() => {
     const checkAuth = () => {
-      if (!user || !isLoading) return;
+      if (!isLoading) return;
 
       // *if user is not authenticated or token is not set, redirect to sign-in page
-      if (!user.authenticated || !user.token) {
+      if (!user || !user.authenticated || !user.token) {
         setLoaded(false);
         router.push("/admin/auth");
         return;
@@ -61,31 +61,26 @@ export default function AdminDahboardLayout({
     return <FullPageLoader />;
   }
 
-  if (!isAuthorized) {
-    return <Unauthorized />;
-  }
-
   return (
     <>
       <Suspense
         fallback={
           <div className="my-auto">
-            <AppLoader />
+            <FullPageLoader />
           </div>
         }
       >
         <NextProgress />
-        <div className="flex flex-col">
-          <div className="flex overflow-hidden w-full bg-[#F9F9F9]">
+        <div className="flex flex-col transition-all duration-300 ease-in-out">
+          <div className="flex w-full bg-[#F9F9F9]">
             <Sidebar />
-            <div className="w-full ml-[254px] max-md:ml-0 min-h-screen overflow-auto">
+            <div className="w-full ml-[254px] max-lg:ml-0 min-h-screen overflow-auto transition-all duration-300 ease-in-out">
               <Header />
               <div className="w-full py-8 px-10 max-md:max-w-full max-md:px-5">
                 <div className="flex flex-col w-full">
                   <div className="flex flex-col self-stretch my-auto w-full max-md:mt-1 max-md:max-w-full">
-                    {children}
+                    {!isAuthorized ? <Unauthorized /> : children}
                     <div className="max-md:py-10"></div>
-                    <BottomNavigation />
                   </div>
                 </div>
               </div>

@@ -13,36 +13,45 @@ export type LoginSchemaType = z.infer<typeof LoginSchema>;
 
 export default LoginSchema;
 
+// *password schema
+const passwordSchema = z
+  .string()
+  .min(1, { message: "Password is required" })
+  .min(6, { message: "Password must be at least 6 characters" })
+  .regex(/[A-Z]/, {
+    message: "Password must contain at least one capital letter",
+  })
+  .regex(/[a-z]/, {
+    message: "Password must contain at least one small letter",
+  })
+  .regex(/[0-9]/, { message: "Password must contain at least one number" })
+  .regex(/[^a-zA-Z0-9]/, {
+    message: "Password must contain at least one special character",
+  });
+
+// *base register schema
+const baseRegisterSchema = {
+  email: z
+    .string()
+    .min(1, { message: "Email is required" })
+    .email({ message: "Invalid email address" }),
+  phoneNumber: z.string().min(1, { message: "Phone number is required" }),
+  password: passwordSchema,
+  confirmPassword: z
+    .string()
+    .min(1, { message: "Confirm password is required" }),
+  acceptTerms: z.boolean().refine((data) => data === true, {
+    message: "You must accept the terms and conditions",
+  }),
+  userType: z.string().min(1, { message: "User type is required" }),
+};
+
+// *register schema
 export const RegisterSchema = z
   .object({
     firstName: z.string().min(1, { message: "First name is required" }),
     lastName: z.string().min(1, { message: "Last name is required" }),
-    email: z
-      .string()
-      .min(1, { message: "Email is required" })
-      .email({ message: "Invalid email address" }),
-    phoneNumber: z.string().min(1, { message: "Phone number is required" }),
-    password: z
-      .string()
-      .min(1, { message: "Password is required" })
-      .min(6, { message: "Password must be at least 6 characters" })
-      .regex(/[A-Z]/, {
-        message: "Password must contain at least one capital letter",
-      })
-      .regex(/[a-z]/, {
-        message: "Password must contain at least one small letter",
-      })
-      .regex(/[0-9]/, { message: "Password must contain at least one number" })
-      .regex(/[^a-zA-Z0-9]/, {
-        message: "Password must contain at least one special character",
-      }),
-    confirmPassword: z
-      .string()
-      .min(1, { message: "Confirm password is required" }),
-    acceptTerms: z.boolean().refine((data) => data === true, {
-      message: "You must accept the terms and conditions",
-    }),
-    userType: z.string().min(1, { message: "User type is required" }),
+    ...baseRegisterSchema,
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords don't match",
@@ -50,6 +59,34 @@ export const RegisterSchema = z
   });
 
 export type RegisterSchemaType = z.infer<typeof RegisterSchema>;
+
+// *cooperative schema
+export const CooperativeSchema = z
+  .object({
+    cooperativeName: z
+      .string()
+      .min(1, { message: "Cooperative name is required" }),
+    ...baseRegisterSchema,
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords don't match",
+    path: ["confirmPassword"],
+  });
+
+export type CooperativeSchemaType = z.infer<typeof CooperativeSchema>;
+
+// *vendor schema
+export const VendorSchema = z
+  .object({
+    vendorName: z.string().min(1, { message: "Vendor name is required" }),
+    ...baseRegisterSchema,
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords don't match",
+    path: ["confirmPassword"],
+  });
+
+export type VendorSchemaType = z.infer<typeof VendorSchema>;
 
 // forgot password schema
 export const ForgotPasswordSchema = z.object({

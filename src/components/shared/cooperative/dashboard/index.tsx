@@ -1,12 +1,10 @@
 "use client";
-import { withAuth } from "@/components/common/auth";
 import Overview from "@/components/dashboards/cooperative/overview";
 // import QuickActions from "@/components/dashboards/cooperative/quick-action";
 import useDashboardTitle from "@/hooks/use-dashboard-tite";
 import React from "react";
 import Button from "@/components/form/button";
 import Select from "@/components/form/select";
-import { UserType } from "@/interface/user";
 import { useAtomValue } from "jotai";
 import { userAtom } from "@/stores/user";
 import { useRouter } from "next/navigation";
@@ -49,7 +47,7 @@ function CooperativeDashboardPage() {
             className="!py-2.5 !px-3 !border border-tertiary-700"
             options={[]}
             value={"Import"}
-            setValue={() => {}}
+            // setValue={() => {}}
           />
         </div>
       </div>
@@ -59,7 +57,4 @@ function CooperativeDashboardPage() {
   );
 }
 
-// export default CooperativeDashboardPage;
-export default withAuth(CooperativeDashboardPage, {
-  allowedUserTypes: [UserType.COOPERATIVE],
-});
+export default CooperativeDashboardPage;

@@ -102,6 +102,4 @@ function FarmerCooperativeSharedPage() {
   );
 }
 
-export default withAuth(FarmerCooperativeSharedPage, {
-  allowedUserTypes: [UserType.FARMER],
-});
+export default FarmerCooperativeSharedPage;

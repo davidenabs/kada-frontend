@@ -1,6 +1,5 @@
 "use client";
 import { useGetUsersQuery } from "@/app/_api/user";
-import { withAuth } from "@/components/common/auth";
 import Catalog from "@/components/common/catalog";
 import VendorCard from "@/components/common/vendor-card";
 import Input from "@/components/form/input";
@@ -70,10 +69,11 @@ function FarmerVendorsSharedPage() {
 
           <div className="space-y-4 mt-6">
             <Catalog
-              type="service"
+              type="services"
               image="/images/bdo.png"
               name="HarvestPeak Fertilizers"
               price="10,000"
+              description="Lorem ipsum dolor"
             />
           </div>
         </div>
@@ -85,10 +85,11 @@ function FarmerVendorsSharedPage() {
 
           <div className="space-y-4 mt-6">
             <Catalog
-              type="product"
+              type="products"
               image="/images/bdo.png"
               name="HarvestPeak Fertilizers"
               price="10,000"
+              description="Lorem ipsum dolor"
             />
           </div>
         </div>
@@ -97,6 +98,4 @@ function FarmerVendorsSharedPage() {
   );
 }
 
-export default withAuth(FarmerVendorsSharedPage, {
-  allowedUserTypes: [UserType.FARMER],
-});
+export default FarmerVendorsSharedPage;

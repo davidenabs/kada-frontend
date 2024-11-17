@@ -133,6 +133,4 @@ function CooperativeMembersPage() {
   );
 }
 
-export default withAuth(CooperativeMembersPage, {
-  allowedUserTypes: [UserType.COOPERATIVE],
-});
+export default CooperativeMembersPage;

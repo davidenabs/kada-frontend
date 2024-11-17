@@ -120,7 +120,7 @@ function VendroServiceSharedPage() {
             </div>
           </div>
 
-          {activeTab === "Our Services" ? <Services /> : <Products />}
+          {/* {activeTab === "Our Services" ? <Services /> : <Products />} */}
         </div>
       </div>
 

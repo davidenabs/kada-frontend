@@ -40,7 +40,9 @@ function Upload({
         </div>
 
         <div className="">
-          <KadaButton className="!bg-black">Upload</KadaButton>
+          <KadaButton type="button" className="!bg-black">
+            Upload
+          </KadaButton>
         </div>
         <input
           type="file"

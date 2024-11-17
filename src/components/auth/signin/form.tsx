@@ -46,6 +46,18 @@ const SignInForm: React.FC = () => {
         onSuccess: (response) => {
           const { data, message } = response;
           const userType = data.user.userType;
+          if (
+            userType !== UserType.FARMER &&
+            userType !== UserType.COOPERATIVE &&
+            userType !== UserType.VENDOR
+          ) {
+            toast.dismiss();
+            toast.error("Unathorized", {
+              description: "Invalid user type",
+            });
+            return;
+          }
+
           setUser({
             ...user,
             role: userType,
