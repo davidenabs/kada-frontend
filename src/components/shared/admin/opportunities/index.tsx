@@ -34,7 +34,7 @@ function AdminOpportunitiesPage() {
   const handleAddProductService = () => {
     openModal({
       view: <PostOpportunityModal close={closeModal} />,
-      customSize: "500px",
+      size: "lg",
     });
   };
 
@@ -80,7 +80,7 @@ function AdminOpportunitiesPage() {
           ) : isError ? (
             <div>Failed to fetch data</div>
           ) : data?.data?.posts?.length === 0 ? (
-            <Empty />
+            <Empty text="No data found" />
           ) : (
             <KadaTable
               data={data?.data?.posts || []}

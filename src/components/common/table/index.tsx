@@ -1,5 +1,5 @@
 import React, { Fragment, useState } from "react";
-import { Table } from "rizzui";
+import { Empty, Table } from "rizzui";
 import { Pagination } from "./pagination";
 
 export interface Column<T> {
@@ -63,18 +63,29 @@ function KadaTable<T extends Record<string, any>>({
           </Table.Header>
 
           <Table.Body>
-            {data.map((item, idx) => (
-              <Table.Row key={idx}>
-                {columns.map((col) => (
-                  <Table.Cell key={String(col.key)}>
-                    {col.render ? col.render(item) : item[col.key]}
-                  </Table.Cell>
-                ))}
-                {renderActions && (
-                  <Table.Cell>{renderActions(item)}</Table.Cell>
-                )}
+            {data.length === 0 ? (
+              <Table.Row>
+                <Table.Cell
+                  colSpan={columns.length + 1}
+                  className="text-center"
+                >
+                  <Empty text="No data found" />
+                </Table.Cell>
               </Table.Row>
-            ))}
+            ) : (
+              data.map((item, idx) => (
+                <Table.Row key={idx}>
+                  {columns.map((col) => (
+                    <Table.Cell key={String(col.key)}>
+                      {col.render ? col.render(item) : item[col.key]}
+                    </Table.Cell>
+                  ))}
+                  {renderActions && (
+                    <Table.Cell>{renderActions(item)}</Table.Cell>
+                  )}
+                </Table.Row>
+              ))
+            )}
           </Table.Body>
         </Table>
       </div>

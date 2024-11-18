@@ -1,12 +1,12 @@
 import { Column } from "@/components/common/table";
-import { IUser } from "@/interface/user";
+import { IUser, UserType } from "@/interface/user";
 import { format } from "date-fns";
 import Image from "next/image";
 
 const columns: Column<Partial<IUser>>[] = [
   {
     label: "Name",
-    key: "firstName",
+    key: "id",
     render: (item) => (
       <div className="flex gap-2 items-center">
         <div className="relative w-[40px] h-[40px]">
@@ -21,7 +21,11 @@ const columns: Column<Partial<IUser>>[] = [
 
         <div>
           <p className="font-medium text-sm">
-            {item?.cooperativeProfile?.cooperativeName}
+            {item.userType === UserType.FARMER
+              ? item?.firstName + " " + item?.lastName
+              : item.userType === UserType.COOPERATIVE
+              ? item?.cooperativeProfile?.cooperativeName
+              : item?.vendorProfile?.vendorName}
           </p>
           <p className="text-xs text-gray-500">
             {format(item?.createdAt || new Date(), "dd MMM, yyyy")}
@@ -33,12 +37,12 @@ const columns: Column<Partial<IUser>>[] = [
   {
     label: "Email",
     key: "email",
-    render: (item) => item.email,
+    render: (item) => item.phoneNumber,
   },
   {
     label: "Phone",
     key: "phoneNumber",
-    render: (item) => item.phoneNumber,
+    render: (item) => item.userType,
   },
   {
     label: "Type",

@@ -20,13 +20,13 @@ export default function CooperativeDahboardLayout({
   children: React.ReactNode;
 }) {
   // Check if user has verified their account
-  useCheckUserFields([
-    {
-      field: "verified",
-      redirectTo: "/account-setup/verify-account",
-      condition: (value) => value === false,
-    },
-  ]);
+  // useCheckUserFields([
+  //   {
+  //     field: "verified",
+  //     redirectTo: "/account-setup/verify-account",
+  //     condition: (value) => value === false,
+  //   },
+  // ]);
   const router = useRouter();
   const [user, setUser] = useAtom(userAtom);
   const { closeModal, openModal } = useModal();
@@ -77,17 +77,17 @@ export default function CooperativeDahboardLayout({
 
   // * open modal to edit profile if user has not set up their profile
   React.useEffect(() => {
-    if (loaded && user.user?.cooperativeProfile?.name == null) {
+    if (loaded && user.user?.cooperativeProfile?.cooperativeName == null) {
       openModal({
         view: <EditCooperaativeProfile close={() => {}} />,
         customSize: "50%",
       });
     }
 
-    if (loaded && user.user?.cooperativeProfile?.name) {
+    if (loaded && user.user?.cooperativeProfile?.cooperativeName) {
       closeModal();
     }
-  }, [loaded, user.user?.cooperativeProfile?.name]);
+  }, [loaded, user.user?.cooperativeProfile?.cooperativeName]);
 
   React.useEffect(() => {
     setIsLoading(true);

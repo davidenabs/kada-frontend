@@ -52,6 +52,7 @@ const NimcVerification: React.FC = () => {
   });
 
   const onSubmit = (data: nimcVwrifySchemaType) => {
+    const { nin, dob } = data;
     mutateAsync(data, {
       onSuccess: (response) => {
         if (response.success) {

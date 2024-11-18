@@ -25,12 +25,12 @@ function CooperativeDashboardPage() {
   };
 
   const cooperativeName = React.useMemo(() => {
-    return user.user?.cooperativeProfile?.name == null ? (
+    return user.user?.cooperativeProfile?.cooperativeName == null ? (
       <button onClick={handleEditClick}> Set up your profile </button>
     ) : (
-      user.user?.cooperativeProfile?.name
+      user.user?.cooperativeProfile?.cooperativeName
     );
-  }, [user.user?.cooperativeProfile?.name]);
+  }, [user.user?.cooperativeProfile?.cooperativeName]);
 
   return (
     <>

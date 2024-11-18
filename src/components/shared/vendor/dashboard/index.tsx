@@ -111,7 +111,7 @@ function VendorDashboardSharedPage() {
           </div>
         </div>
 
-        <div className="w-[275px] h-[444px]">
+        <div className="w-[275px] h-[444px] max-lg:hidden">
           <div className="relative rounded-xl bg-[url('/images/vendor-banner.png')] bg-center bg-cover bg-no-repeat h-full overflow-hidden z-10 p-6 flex flex-col justify-between">
             <div className="absolute inset-0 bg-custom-gradient z-[-1]"></div>
             <h4 className="text-2xl font-bold text-white text-center">

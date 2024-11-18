@@ -40,7 +40,7 @@ function CooperativeProfileSharedPage() {
 
             <div className="">
               <h4 className="text-[18px] font-bold">
-                {user?.cooperativeProfile?.name || "N/A"}
+                {user?.cooperativeProfile?.cooperativeName || "N/A"}
               </h4>
               <div className="flex items-center space-x-2">
                 <VerifiedIcon className="w-4 h-4" />

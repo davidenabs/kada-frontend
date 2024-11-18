@@ -1,13 +1,19 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import farmProductsClient from "./client/farm-products";
-import { IQueryParams } from "@/interface/client";
+import {
+  IPaginatedResponse,
+  IQueryParams,
+  IResponse,
+} from "@/interface/client";
 import API_ENDPOINTS from "./client/endpoint";
+import { IRequest } from "@/interface/request";
 
 export const useGetFarmProductsQuery = ({
   enabled = true,
   params = {},
 }: IQueryParams) => {
-  return useQuery({
+  return useQuery<IResponse<IPaginatedResponse<IRequest, "items">>, Error>({
+    // return useQuery({
     queryKey: [API_ENDPOINTS.GET_FARM_PRODUCTS, params],
     queryFn: () => farmProductsClient.getFarmProducts(params),
     enabled: enabled !== undefined ? enabled : true,

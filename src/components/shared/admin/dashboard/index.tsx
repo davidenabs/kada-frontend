@@ -14,6 +14,8 @@ import { useGetUsersQuery } from "@/app/_api/user";
 import { IUser, UserType } from "@/interface/user";
 import MembersTableSkeleton from "@/components/skeletons/table/member";
 import useDebounce from "@/hooks/use-debounce";
+import columns from "./columns";
+import KadaTable from "@/components/common/table";
 
 const tabs = [
   {
@@ -44,6 +46,15 @@ function AdminDashboardSharedPage() {
   const [search, setSearch] = React.useState("");
   const [limit, setLimit] = React.useState(10);
   const [page, setPage] = React.useState(1);
+  const [stats, setStats] = React.useState<{
+    totalFarmers: number;
+    totalVendors: number;
+    totalCooperatives: number;
+  }>({
+    totalFarmers: 0,
+    totalVendors: 0,
+    totalCooperatives: 0,
+  });
   const debouncedSearchQuery = useDebounce(search);
 
   const userType = React.useMemo(() => {
@@ -63,6 +74,43 @@ function AdminDashboardSharedPage() {
       limit,
     },
   });
+
+  React.useEffect(() => {
+    if (data?.data && data.success && !isFetching) {
+      const stats = (data.data as unknown as any).stats;
+
+      if (stats) {
+        setStats({
+          totalFarmers: stats.totalFarmers,
+          totalVendors: stats.totalVendors,
+          totalCooperatives: stats.totalCooperatives,
+        });
+      }
+    }
+  }, [data, isFetching]);
+
+  const tabs = React.useMemo(() => {
+    return [
+      {
+        id: "farmer",
+        label: "Farmer",
+        badge: stats?.totalFarmers || 0,
+        icon: BriefcaseIcon,
+      },
+      {
+        id: "vendor",
+        label: "Vendor",
+        badge: stats?.totalVendors || 0,
+        icon: BriefcaseIcon,
+      },
+      {
+        id: "cooperative",
+        label: "Cooperative",
+        badge: stats?.totalCooperatives || 0,
+        icon: BriefcaseIcon,
+      },
+    ];
+  }, [stats]);
 
   React.useEffect(() => {
     setLoaded(true);
@@ -109,6 +157,10 @@ function AdminDashboardSharedPage() {
             inputClassName="rounded-[10px] h-[36px]"
             className="w-full lg:w-[500px]"
             prefix={<SearchIcon className="fill-black" />}
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            clearable
+            onClear={() => setSearch("")}
           />
         </div>
 
@@ -117,7 +169,19 @@ function AdminDashboardSharedPage() {
         ) : isError ? (
           <div className="text-center">An error occurred</div>
         ) : (
-          <UsersTable users={data?.data?.users || []} type={activeTab} />
+          <KadaTable
+            data={data?.data?.users || []}
+            columns={columns}
+            renderActions={(item) => (
+              <div className="flex">
+                <button className="text-xs text-blue-600">View</button>
+              </div>
+            )}
+            itemsPerPage={limit}
+            totalItems={data?.data?.total || 0}
+            page={page}
+            onPageChange={(page) => setPage(page)}
+          />
         )}
       </div>
     </>

@@ -2,6 +2,7 @@ import { ArrowRightIcon } from "@/icons";
 import { cn } from "rizzui";
 import Image from "next/image";
 import React from "react";
+import Link from "next/link";
 
 interface CatalogProps {
   type: "services" | "products";
@@ -9,11 +10,19 @@ interface CatalogProps {
   name: string;
   price: string;
   description: string;
+  href?: string;
 }
 
-function Catalog({ type, image, name, price, description }: CatalogProps) {
+function Catalog({
+  type,
+  image,
+  name,
+  price,
+  description,
+  href,
+}: CatalogProps) {
   return (
-    <div className="flex items-center gap-5">
+    <Link href={href ?? "#"} className="flex items-center gap-5">
       <div className="relative w-[116px] h-[104px] rounded-xl">
         <Image
           src={image}
@@ -44,7 +53,7 @@ function Catalog({ type, image, name, price, description }: CatalogProps) {
           <ArrowRightIcon className="w-5 h-5 fill-[#C1C7CD]" />
         </div>
       </div>
-    </div>
+    </Link>
   );
 }
 

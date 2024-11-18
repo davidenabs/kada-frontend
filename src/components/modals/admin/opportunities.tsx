@@ -8,10 +8,14 @@ import { LinkIcon } from "@heroicons/react/16/solid";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React, { Fragment } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { cn } from "rizzui";
+import { cn, Switch } from "rizzui";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import Input from "@/components/form/input";
+import DatePicker from "@/components/form/date-picker";
+import { TagInput } from "./tag-input";
+import { useCreateCmsPostMutation } from "@/app/_api/cms";
+import { toast } from "sonner";
 
 type PostOpportunityModalProps = {
   close: () => void;
@@ -22,25 +26,20 @@ const defaultValues: OpportunitySchemaType = {
   content: "",
   shortDescription: "",
   cta: "",
-  userType: UserType.FARMER,
-  hasComment: false,
+  userType: "" as any,
   isPublished: false,
-  isFeatured: false,
   type: "opportunity",
-  categoryId: null,
-
   keywords: [],
-  seoTitle: "",
-  seoDescription: "",
-
-  date: "",
-  file: new File([], ""),
+  dueDate: "" as any,
+  featuredImage: new File([], ""),
 };
 
 function PostOpportunityModal({ close }: PostOpportunityModalProps) {
   const fileInputRef = React.useRef<HTMLInputElement>(null);
   const handleClick = () => fileInputRef.current?.click();
   const [file, setFile] = React.useState<File | null>(null);
+  const [startDate, setStartDate] = React.useState<Date>();
+  const { mutateAsync, isPending } = useCreateCmsPostMutation();
 
   const {
     reset,
@@ -60,12 +59,38 @@ function PostOpportunityModal({ close }: PostOpportunityModalProps) {
   };
 
   const onSubmit = (data: OpportunitySchemaType) => {
-    console.log(data);
+    const { keywords, dueDate, featuredImage, ...rest } = data;
+    const newData = {
+      ...rest,
+      dueDate: dueDate.toISOString(),
+      meta: {
+        keywords,
+      },
+    };
+    mutateAsync(
+      { data: newData },
+      {
+        onSuccess: (response) => {
+          console.log(response);
+          if (response.success) {
+            toast.success("Opportunity created successfully");
+            reset(defaultValues);
+            close();
+          }
+        },
+        onError: (error) => {
+          // toast.error("Failed to create opportunity");
+        },
+      }
+    );
   };
 
   return (
     <Fragment>
-      <section className="w-full bg-white rounded-xl">
+      <form
+        className="w-full bg-white rounded-xl"
+        onSubmit={handleSubmit(onSubmit)}
+      >
         <header className="flex items-center justify-between border-b px-6 py-4 bg-[#F9F9F9] rounded-t-xl">
           <h4 className="text-base font-semibold">Publish Opportunities</h4>
 
@@ -74,7 +99,7 @@ function PostOpportunityModal({ close }: PostOpportunityModalProps) {
           </button>
         </header>
 
-        <form className="" onSubmit={handleSubmit(onSubmit)}>
+        <div className="h-[calc(80vh)] overflow-y-scroll">
           <div className="space-y-4 p-6">
             <Input
               label="Originating Organisation"
@@ -85,7 +110,7 @@ function PostOpportunityModal({ close }: PostOpportunityModalProps) {
             <div className="">
               <Controller
                 control={control}
-                name="file"
+                name="featuredImage"
                 render={({ field: { value, onChange } }) => (
                   <Upload
                     fileInputRef={fileInputRef}
@@ -101,7 +126,7 @@ function PostOpportunityModal({ close }: PostOpportunityModalProps) {
               />
 
               <p className="text-red-500 text-xs mt-1">
-                {errors?.file?.message}
+                {errors?.featuredImage?.message}
               </p>
             </div>
 
@@ -119,13 +144,35 @@ function PostOpportunityModal({ close }: PostOpportunityModalProps) {
                   type="button"
                   onClick={() => {
                     setFile(null);
-                    setValue("file", new File([], ""));
+                    setValue("featuredImage", new File([], ""));
                   }}
                 >
                   <CloseIcon className="w-4 h-4" />
                 </button>
               </div>
             )}
+
+            <Input
+              label="Short Description"
+              {...register("shortDescription")}
+              error={errors.shortDescription?.message}
+            />
+
+            {/* is published */}
+            <div className="flex items-center gap-4">
+              <Controller
+                control={control}
+                name="isPublished"
+                render={({ field: { value, onChange } }) => (
+                  <Switch
+                    label="Publish"
+                    checked={value}
+                    onChange={onChange}
+                    error={errors.isPublished?.message}
+                  />
+                )}
+              />
+            </div>
 
             <div className="">
               <label className="text-xs">Opportunity Descriptiion</label>
@@ -157,26 +204,92 @@ function PostOpportunityModal({ close }: PostOpportunityModalProps) {
               {...register("cta")}
               error={errors.cta?.message}
               className="!mt-16"
+              placeholder="https://"
             />
 
-            <Select
-              label="Publish to"
-              options={[
-                { label: "Farmers", value: UserType.FARMER },
-                { label: "Vendors", value: UserType.VENDOR },
-                { label: "Cooperatives", value: UserType.COOPERATIVE },
-              ]}
-              value={watch("userType")}
-              {...register("userType")}
-              error={errors.userType?.message}
+            <Controller
+              control={control}
+              name="userType"
+              render={({
+                field: { value, onChange },
+                fieldState: { error },
+              }) => (
+                <Select
+                  label="Publish to"
+                  options={[
+                    { label: "All", value: "ALL" },
+                    { label: "Farmers", value: UserType.FARMER },
+                    { label: "Vendors", value: UserType.VENDOR },
+                    { label: "Cooperatives", value: UserType.COOPERATIVE },
+                  ]}
+                  value={value}
+                  onChange={(v: any) => onChange(v.value)}
+                  error={errors.userType?.message}
+                />
+              )}
             />
 
+            {/* due date */}
             <div className="">
-              <KadaButton className="!w-full rounded-full">Publish</KadaButton>
+              <Controller
+                control={control}
+                name="dueDate"
+                render={({ field: { value, onChange } }) => (
+                  <DatePicker
+                    selected={startDate}
+                    onChange={(date: Date) => {
+                      setStartDate(date);
+                      onChange(date);
+                    }}
+                    placeholderText="Due Date"
+                    // maxDate={new Date()}
+                    minDate={new Date()}
+                    wrapperClassName="w-full"
+                    inputProps={{
+                      inputClassName:
+                        "!rounded-full border-primary border-[.5px]",
+                      label: "Select Date",
+                    }}
+                  />
+                )}
+              />
+
+              <p className="text-red-500 text-xs mt-1">
+                {errors.dueDate?.message}
+              </p>
+            </div>
+
+            {/* tags */}
+            <div className="">
+              <Controller
+                control={control}
+                name="keywords"
+                render={({
+                  field: { value, onChange },
+                  fieldState: { error },
+                }) => (
+                  <TagInput
+                    placeholder="Add tags (e.g., technology, programming)"
+                    maxTags={5}
+                    error={!!error}
+                    tags={value}
+                    onTagChange={onChange}
+                  />
+                )}
+              />
             </div>
           </div>
-        </form>
-      </section>
+        </div>
+        <div className="px-6 pb-6">
+          <KadaButton
+            type="submit"
+            loading={isPending || isSubmitting}
+            className="!w-full rounded-full"
+          >
+            Publish
+          </KadaButton>
+        </div>
+      </form>
     </Fragment>
   );
 }
