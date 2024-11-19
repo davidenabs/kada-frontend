@@ -15,9 +15,14 @@ const columns: Column<any>[] = [
     ),
   },
   {
-    label: "No of Stages/Ranges",
+    label: "No of Stages",
     key: "title",
-    render: (item) => <div className="">3</div>,
+    render: (item) => <div className="">{item.stages.length}</div>,
+  },
+  {
+    label: "No of Seasons",
+    key: "title",
+    render: (item) => <div className="">{item.seasons.length}</div>,
   },
 ];
 

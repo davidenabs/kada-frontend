@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import farmProductsClient from "./client/farm-products";
 import {
   IPaginatedResponse,
@@ -13,7 +13,6 @@ export const useGetFarmProductsQuery = ({
   params = {},
 }: IQueryParams) => {
   return useQuery<IResponse<IPaginatedResponse<IRequest, "items">>, Error>({
-    // return useQuery({
     queryKey: [API_ENDPOINTS.GET_FARM_PRODUCTS, params],
     queryFn: () => farmProductsClient.getFarmProducts(params),
     enabled: enabled !== undefined ? enabled : true,
@@ -21,32 +20,41 @@ export const useGetFarmProductsQuery = ({
 };
 
 export const useCreateFarmProductMutation = () => {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (data: any) => farmProductsClient.createFarmProduct(data),
-    onError: (error: any) => {
-      console.error(error);
-    },
     mutationKey: [API_ENDPOINTS.CREATE_FARM_PRODUCT],
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [API_ENDPOINTS.GET_FARM_PRODUCTS],
+      });
+    },
   });
 };
 
 export const useUpdateFarmProductMutation = () => {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: ({ data, id }: { data: any; id: string }) =>
       farmProductsClient.updateFarmProduct(data, id),
-    onError: (error: any) => {
-      console.error(error);
-    },
     mutationKey: [API_ENDPOINTS.UPDATE_FARM_PRODUCT],
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [API_ENDPOINTS.GET_FARM_PRODUCTS],
+      });
+    },
   });
 };
 
 export const useDeleteFarmProductMutation = () => {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (id: string) => farmProductsClient.deleteFarmProduct(id),
-    onError: (error: any) => {
-      console.error(error);
-    },
     mutationKey: [API_ENDPOINTS.DELETE_FARM_PRODUCT],
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [API_ENDPOINTS.GET_FARM_PRODUCTS],
+      });
+    },
   });
 };

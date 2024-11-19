@@ -123,14 +123,14 @@ function AdminDashboardSharedPage() {
           👍🏾 Welcome Back, {user?.firstName}
         </div>
 
-        <div className="flex">
+        {/* <div className="flex">
           <KadaButton
             className="rounded-full"
             leftIcon={<PlusIcon className="w-4 h-4 fill-white mr-1" />}
           >
             Add User
           </KadaButton>
-        </div>
+        </div> */}
       </div>
 
       <Overview />

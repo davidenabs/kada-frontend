@@ -56,7 +56,7 @@ export const Pagination: React.FC<PaginationProps> = ({
 
   const baseButtonStyles =
     "h-8 px-3 flex items-center justify-center rounded-lg transition-colors duration-200";
-  const activeButtonStyles = "bg-primary-600 text-white hover:bg-indigo-700";
+  const activeButtonStyles = "bg-primary-600 text-white hover:bg-primary-700";
   const inactiveButtonStyles = "text-gray-600 hover:bg-gray-100";
   const disabledButtonStyles =
     "text-gray-300 cursor-not-allowed hover:bg-transparent";

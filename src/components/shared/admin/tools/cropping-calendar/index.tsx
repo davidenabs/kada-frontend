@@ -4,14 +4,21 @@ import Breadcrumb from "@/components/common/breadcrumb";
 import KadaTable from "@/components/common/table";
 import { KadaButton } from "@/components/form/button";
 import Input from "@/components/form/input";
-import FarmGalleySkeleton from "@/components/skeletons/farm-gallery";
 import MembersTableSkeleton from "@/components/skeletons/table/member";
 import useDashboardTitle from "@/hooks/use-dashboard-tite";
 import useDebounce from "@/hooks/use-debounce";
 import { SearchIcon } from "@/icons";
 import React, { Fragment } from "react";
 import columns from "./columns";
-import { PlusIcon } from "@heroicons/react/16/solid";
+import {
+  EyeIcon,
+  InformationCircleIcon,
+  PencilIcon,
+  PlusIcon,
+  TrashIcon,
+} from "@heroicons/react/16/solid";
+import CreateCroppingInfoModal from "@/components/modals/admin/cropping";
+import { Dropdown } from "rizzui";
 
 function CroppingCalendarPage() {
   useDashboardTitle("Tools");
@@ -20,6 +27,8 @@ function CroppingCalendarPage() {
   const [limit, setLimit] = React.useState(10);
   const [page, setPage] = React.useState(1);
   const debouncedSearchQuery = useDebounce(search);
+  const [open, setOpen] = React.useState(false);
+  const [selected, setSelected] = React.useState<any | null>(null);
 
   const { data, isFetching, isRefetching, isError } = useGetFarmProductsQuery({
     enabled: loaded,
@@ -30,16 +39,31 @@ function CroppingCalendarPage() {
     },
   });
 
+  const toggleModal = () => setOpen(!open);
+
   React.useEffect(() => {
     setLoaded(true);
   }, []);
 
   return (
     <Fragment>
+      {open && (
+        <CreateCroppingInfoModal
+          open={open}
+          selected={selected}
+          close={() => {
+            toggleModal();
+            setSelected(null);
+          }}
+        />
+      )}
       <section className="space-y-3">
         <Breadcrumb
           className="mb-4"
-          items={[{ label: "Tools", link: "" }, { label: "Cropping Calendar" }]}
+          items={[
+            { label: "Tools", link: "/admin/tools" },
+            { label: "Cropping Calendar" },
+          ]}
         />
 
         <div className="flex justify-between items-start">
@@ -50,7 +74,7 @@ function CroppingCalendarPage() {
           <KadaButton
             className="rounded-full"
             leftIcon={<PlusIcon className="w-4 h-4 fill-white mr-1" />}
-            //   onClick={handleAddProductService}
+            onClick={toggleModal}
           >
             Add Crop Infomation
           </KadaButton>
@@ -81,8 +105,38 @@ function CroppingCalendarPage() {
                   data={data?.data?.items || []}
                   columns={columns}
                   renderActions={(item) => (
-                    <div className="flex items-center">
-                      <button className="text-xs text-blue-600">View</button>
+                    <div className="ml-4">
+                      <Dropdown placement="bottom">
+                        <Dropdown.Trigger>
+                          <InformationCircleIcon className="fill-black h-4 w-4" />
+                        </Dropdown.Trigger>
+                        <Dropdown.Menu className="divide-y bg-white">
+                          <div className="mb-1">
+                            <Dropdown.Item
+                              className="text-xs"
+                              onClick={() => {
+                                setSelected(item);
+                                toggleModal();
+                              }}
+                            >
+                              <PencilIcon className="mr-2 h-4 w-4" />
+                              Edit
+                            </Dropdown.Item>
+                          </div>
+                          <div className="mb-1 pt-1">
+                            <Dropdown.Item className="text-xs">
+                              <EyeIcon className="mr-2 h-4 w-4" />
+                              View
+                            </Dropdown.Item>
+                          </div>
+                          <div className="mt-1 pt-1">
+                            <Dropdown.Item className="text-xs">
+                              <TrashIcon className="mr-2 h-4 w-4" />
+                              Delete
+                            </Dropdown.Item>
+                          </div>
+                        </Dropdown.Menu>
+                      </Dropdown>
                     </div>
                   )}
                   itemsPerPage={limit}

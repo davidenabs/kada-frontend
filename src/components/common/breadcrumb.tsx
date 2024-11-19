@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React, { Fragment } from "react";
 import { cn } from "rizzui";
 
@@ -20,12 +21,12 @@ function Breadcrumb({ items, className }: BreadcrumbProps) {
             <li key={index}>
               {item.link ? (
                 <span>
-                  <a
+                  <Link
                     href={item.link}
                     className="text-sm font-medium text-gray-500 hover:text-gray-900"
                   >
                     {item.label}
-                  </a>
+                  </Link>
                 </span>
               ) : (
                 <span

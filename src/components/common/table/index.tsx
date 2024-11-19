@@ -54,7 +54,12 @@ function KadaTable<T extends Record<string, any>>({
           <Table.Header>
             <Table.Row>
               {columns.map((col) => (
-                <Table.Head key={String(col.key)}>{col.label}</Table.Head>
+                <Table.Head
+                  className="text-center"
+                  key={`header-${String(col.key)}`}
+                >
+                  {col.label}
+                </Table.Head>
               ))}
               {renderActions && (
                 <Table.Head>{renderTitle || "Actions"}</Table.Head>
@@ -74,9 +79,9 @@ function KadaTable<T extends Record<string, any>>({
               </Table.Row>
             ) : (
               data.map((item, idx) => (
-                <Table.Row key={idx}>
+                <Table.Row key={`row-${String(idx)}`}>
                   {columns.map((col) => (
-                    <Table.Cell key={String(col.key)}>
+                    <Table.Cell key={`cell-${String(col.key)}`}>
                       {col.render ? col.render(item) : item[col.key]}
                     </Table.Cell>
                   ))}
