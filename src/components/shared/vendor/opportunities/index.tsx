@@ -14,19 +14,15 @@ import OpportunitySkeleton from "@/components/skeletons/opportunity";
 function VendorOpportunitiesServicePage() {
   const [loaded, setLoaded] = React.useState(false);
   const [opportunities, setOpportunities] = React.useState<IPost[]>([]);
-  const { closeDrawer, openDrawer } = useDrawer();
+  const [open, setOpen] = React.useState(false);
+  const [post, setPost] = React.useState<IPost | null>(null);
 
   const { data, isFetching, isRefetching, isError } = useGetCmsPostsQuery({
     enabled: loaded,
   });
 
-  const handleClick = () => {
-    openDrawer({
-      view: <ExploreOpportunityDraewr close={closeDrawer} />,
-      placement: "right",
-      size: "lg",
-      conatainerClassName: "rounded-l-xl",
-    });
+  const toggleDrawer = () => {
+    setOpen(!open);
   };
 
   React.useEffect(() => {
@@ -41,6 +37,14 @@ function VendorOpportunitiesServicePage() {
 
   return (
     <Fragment>
+      {open && (
+        <ExploreOpportunityDraewr
+          close={toggleDrawer}
+          open={open}
+          data={post}
+        />
+      )}
+
       <section className="space-y-4">
         <h4 className="text-2xl font-bold">
           Opportunities ({opportunities.length})
@@ -56,7 +60,7 @@ function VendorOpportunitiesServicePage() {
             />
           </div>
 
-          <div className="">
+          {/* <div className="">
             <Popover shadow="sm" placement="bottom-end">
               <Popover.Trigger>
                 <KadaButton className="" variant="outline">
@@ -71,25 +75,25 @@ function VendorOpportunitiesServicePage() {
                 </>
               </Popover.Content>
             </Popover>
-          </div>
+          </div> */}
         </div>
 
         <div className="">
           {isFetching || isRefetching ? (
             <OpportunitySkeleton />
           ) : isError ? (
-            <div className="">error...</div>
+            <div className="">An error occurred, please try again</div>
           ) : data?.data?.posts?.length === 0 ? (
             <Empty className="" text="No opportunities available" />
           ) : (
-            <div className="grid grid-cols-3">
+            <div className="grid grid-cols-3 gap-4">
               {opportunities.map((opportunity) => (
                 <OpportunitiesCard
-                  image="/images/bdo.png"
-                  title="United Nation’s Food Programme 2024"
-                  description="Share an exciting opportunity with your network"
-                  posted="2days"
-                  onClick={handleClick}
+                  data={opportunity}
+                  onClick={() => {
+                    setPost(opportunity);
+                    toggleDrawer();
+                  }}
                 />
               ))}
             </div>

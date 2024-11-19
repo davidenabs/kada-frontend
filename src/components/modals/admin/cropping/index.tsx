@@ -37,7 +37,6 @@ function CreateCroppingInfoModal({
   selected,
   close,
 }: CreateCroppingInfoProps) {
-  console.log("CreateCroppingInfoModal");
   const [loaded, setLoaded] = useState(false);
   const { mutateAsync, isPending } = useCreateFarmProductMutation();
   const updateMutation = useUpdateFarmProductMutation();

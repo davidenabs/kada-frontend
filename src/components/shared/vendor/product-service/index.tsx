@@ -6,12 +6,9 @@ import Tab from "@/components/common/tab";
 import Input from "@/components/form/input";
 import { SearchIcon } from "@/icons";
 import Services from "../../farmer/vendors/service/services";
-import Products from "../../farmer/vendors/service/products";
 import { ICatalog } from "@/interface/catalog";
 import { useGetProducts } from "@/app/_api/catalog";
 import useDebounce from "@/hooks/use-debounce";
-import { Empty } from "rizzui";
-import CatalogSkeleton from "@/components/skeletons/catalog";
 
 function VendorProductServiceSharedPage() {
   const [loaded, setLoaded] = React.useState(false);
@@ -21,22 +18,26 @@ function VendorProductServiceSharedPage() {
   const debouncedSearchQuery = useDebounce(search);
   const [limit, setLimit] = React.useState(10);
   const [products, setProducts] = React.useState<ICatalog[]>([]);
-  const { data, isFetching, isRefetching, isError } = useGetProducts({
-    enabled: loaded,
-    params: {
-      page,
-      search: debouncedSearchQuery,
-      limit,
-    },
-  });
+  const [stats, setStats] = React.useState<any>({});
 
   const active = React.useMemo(() => {
     return activeTab === "Our Services" ? "services" : "products";
   }, [activeTab]);
 
+  const { data, isFetching, isRefetching, isError } = useGetProducts({
+    enabled: loaded,
+    params: {
+      page,
+      search: debouncedSearchQuery,
+      type: active,
+      limit,
+    },
+  });
+
   React.useEffect(() => {
     if (!isFetching && !isRefetching && data?.success && data?.data) {
       setProducts(data.data.products);
+      setStats((data.data as any).stats);
     }
   }, [data, isFetching, isRefetching]);
 
@@ -45,17 +46,17 @@ function VendorProductServiceSharedPage() {
       {
         id: "our-services",
         label: "Our Services",
-        badge: 3,
+        badge: stats?.totalServices || 0,
         icon: BriefcaseIcon,
       },
       {
         id: "products",
         label: "Products",
-        badge: 0,
+        badge: stats?.totalProducts || 0,
         icon: BriefcaseIcon,
       },
     ],
-    []
+    [stats]
   );
 
   React.useEffect(() => {
@@ -92,7 +93,7 @@ function VendorProductServiceSharedPage() {
                   type="search"
                   placeholder="Search here..."
                   inputClassName="rounded-[10px]"
-                  className="!w-[500px]"
+                  className="w-[500px] max-lg:w-full"
                   prefix={<SearchIcon className="fill-black" />}
                   onChange={(e) => setSearch(e.target.value)}
                   clearable

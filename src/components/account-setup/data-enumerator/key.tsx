@@ -3,11 +3,21 @@ import { useGetCategories } from "@/app/_api/catalog";
 import { useUpdateUserMutation } from "@/app/_api/user";
 import Button from "@/components/form/button";
 import Select from "@/components/form/select";
+import useCheckUserFields from "@/hooks/user-field";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { toast } from "sonner";
 
 const KeyValueArea: React.FC = () => {
+  // Check if vendor product service is set
+  useCheckUserFields([
+    {
+      field: "vendorProfile.productService",
+      redirectTo: "/account-setup/profile/vendor/welcome",
+      condition: (value) => value !== null,
+    },
+  ]);
+
   const router = useRouter();
   const [loaded, setLoaded] = React.useState(false);
   const [options, setOptions] = React.useState<

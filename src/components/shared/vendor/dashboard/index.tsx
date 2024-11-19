@@ -11,6 +11,7 @@ import { useGetProducts } from "@/app/_api/catalog";
 import { Empty } from "rizzui";
 import { ICatalog } from "@/interface/catalog";
 import CatalogSkeleton from "@/components/skeletons/catalog";
+import useDebounce from "@/hooks/use-debounce";
 
 function VendorDashboardSharedPage() {
   const [loaded, setLoaded] = useState(false);
@@ -19,39 +20,47 @@ function VendorDashboardSharedPage() {
   const [search, setSearch] = useState("");
   const [limit, setLimit] = useState(10);
   const [products, setProducts] = useState<ICatalog[]>([]);
-  const { data, isFetching, isRefetching, isError } = useGetProducts({
-    enabled: loaded,
-    params: {
-      page,
-      search,
-      limit,
-    },
-  });
+  const [stats, setStats] = React.useState<any>({});
+  const debouncedSearchQuery = useDebounce(search);
 
   const active = React.useMemo(() => {
     return activeTab === "Our Services" ? "services" : "products";
   }, [activeTab]);
 
+  const { data, isFetching, isRefetching, isError } = useGetProducts({
+    enabled: loaded,
+    params: {
+      page,
+      search: debouncedSearchQuery,
+      limit,
+      type: active,
+    },
+  });
+
   React.useEffect(() => {
     if (!isFetching && !isRefetching && data?.success && data?.data) {
       setProducts(data.data.products);
+      setStats((data.data as any).stats);
     }
   }, [data, isFetching, isRefetching]);
 
-  const tabs = [
-    {
-      id: "our-services",
-      label: "Our Services",
-      badge: 3,
-      icon: BriefcaseIcon,
-    },
-    {
-      id: "products",
-      label: "Products",
-      badge: 0,
-      icon: BriefcaseIcon,
-    },
-  ];
+  const tabs = React.useMemo(
+    () => [
+      {
+        id: "our-services",
+        label: "Our Services",
+        badge: stats?.totalServices || 0,
+        icon: BriefcaseIcon,
+      },
+      {
+        id: "products",
+        label: "Products",
+        badge: stats?.totalProducts || 0,
+        icon: BriefcaseIcon,
+      },
+    ],
+    [stats]
+  );
 
   React.useEffect(() => {
     setLoaded(true);

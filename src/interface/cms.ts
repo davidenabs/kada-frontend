@@ -1,5 +1,24 @@
 export interface IPost {
   id: string;
   title: string;
+  slug: string;
   content: string;
+  shortDescription: string;
+  featuredImage: string | null;
+  authorId: number;
+  cta: string;
+  userType: string;
+  likes: number;
+  views: number;
+  clickCount: number;
+  hasComment: boolean;
+  isPublished: boolean;
+  isFeatured: boolean;
+  type: string;
+  meta: any;
+  dueDate: string;
+  createdAt: string;
+  updatedAt: string;
+  comments: any[];
+  category: any;
 }
