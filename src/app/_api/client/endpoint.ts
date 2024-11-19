@@ -63,6 +63,9 @@ const API_ENDPOINTS = {
   // cms
   CMS_GET_POSTS: "/cms/posts",
   CMS_CREATE_POST: "/cms/posts",
+
+  // payment
+  PAYMENT_INITIATE: "/payments",
 };
 
 export default API_ENDPOINTS;

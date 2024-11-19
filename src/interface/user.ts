@@ -16,7 +16,7 @@ export interface IUser {
   otpCreatedAt: string | null;
   farmerProfile: IFarmerProfile | null;
   cooperativeProfile: ICooperativeProfile | null;
-  vendorProfile: any | null;
+  vendorProfile: IVendorProfile | null;
 }
 
 export enum UserType {
@@ -46,4 +46,17 @@ export interface ICooperativeProfile {
   eligibility: string | null;
   registrationNumber: string | null;
   isVerified: boolean;
+}
+
+export interface IVendorProfile {
+  id: number;
+  vendorName: string | null;
+  about: string | null;
+  productService: string | null;
+  registrationNumber: string | null;
+  hasCAC: boolean;
+  dateEstablished: string | null;
+  hasPaid: boolean;
+  isVerified: boolean;
+  verificationStatusUpdatedAt: string | null;
 }

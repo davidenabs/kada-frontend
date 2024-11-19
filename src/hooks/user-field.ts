@@ -16,12 +16,13 @@ function getNestedValue(obj: any, path: string): any {
 function useCheckUserFields(conditions: UseCheckUserFieldParams[]) {
   const [loaded, setLoaded] = React.useState(false);
   const router = useRouter();
-  const { user } = useAtomValue(userAtom);
+  const user = useAtomValue(userAtom);
 
   useEffect(() => {
-    if (!user || !loaded) return;
+    const userData = user?.user;
+    if (!userData || !loaded) return;
     for (const { field, condition, redirectTo } of conditions) {
-      const fieldValue = getNestedValue(user, field);
+      const fieldValue = getNestedValue(userData, field);
       if (fieldValue === undefined) return;
       if (condition(fieldValue)) {
         router.push(redirectTo);

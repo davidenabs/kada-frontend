@@ -93,7 +93,7 @@ function VendorDashboardSharedPage() {
                 <Input
                   placeholder="Search here..."
                   inputClassName="!rounded-[10px]"
-                  className="!w-[500px]"
+                  className="w-[500px] max-lg:w-full"
                   prefix={<SearchIcon className="fill-black" />}
                 />
               </div>

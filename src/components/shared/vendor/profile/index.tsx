@@ -7,8 +7,6 @@ import Input from "@/components/form/input";
 import { KadaButton } from "@/components/form/button";
 import { useModal } from "@/hooks/use-modal";
 import EditCooperaativeProfile from "@/components/modals/edit-profile/cooperative";
-import { withAuth } from "@/components/common/auth";
-import { UserType } from "@/interface/user";
 import { useAtomValue } from "jotai";
 import { userAtom } from "@/stores/user";
 import { format } from "date-fns";
@@ -141,6 +139,4 @@ function VendorProfileSharedPage() {
   );
 }
 
-export default withAuth(VendorProfileSharedPage, {
-  allowedUserTypes: [UserType.VENDOR],
-});
+export default VendorProfileSharedPage;

@@ -37,11 +37,12 @@ const Overview: React.FC = () => {
         label: "Verified",
       },
     ],
-    [data]
+    [stats]
   );
 
   React.useEffect(() => {
     if (!isFetching && !isRefetching && data?.success && data?.data) {
+      console.log(data.data);
       setStats(data.data?.userStatistics);
     }
   }, [data, isFetching, isRefetching]);

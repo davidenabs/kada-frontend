@@ -47,7 +47,7 @@ function ProductForm({
 
   React.useEffect(() => {
     if (data?.data && !isFetching && !isRefetching && !isError) {
-      const newOptions = data.data.map((category) => ({
+      const newOptions = data.data.items.map((category) => ({
         label: category.name,
         value: String(category.id),
       }));

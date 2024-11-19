@@ -20,11 +20,11 @@ export function withAuth<T extends object>(
     const user = useAtomValue(userAtom);
     const [isAuthorized, setIsAuthorized] = useState(false);
     const [loaded, setLoaded] = useState(false);
+    const [domLoaded, setDomLoaded] = useState(false);
 
     useEffect(() => {
       const checkAuth = () => {
-        console.log("checking auth");
-        if (!user) return;
+        if (!user || !domLoaded) return;
 
         // *if user is not authenticated or token is not set, redirect to sign-in page
         if (!user.authenticated || !user.token) {
@@ -61,9 +61,13 @@ export function withAuth<T extends object>(
       };
 
       checkAuth();
-    }, [router, user, allowedUserTypes]);
+    }, [router, user, allowedUserTypes, domLoaded]);
 
-    if (!loaded) {
+    useEffect(() => {
+      setDomLoaded(true);
+    }, []);
+
+    if (!loaded || !domLoaded) {
       return <FullPageLoader />;
     }
 

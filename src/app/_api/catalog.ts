@@ -70,7 +70,7 @@ export const useGetCategories = ({
   enabled = true,
   params = {},
 }: IQueryParams) => {
-  return useQuery<IResponse<any[]>, Error>({
+  return useQuery<IResponse<IPaginatedResponse<any, "items">>, Error>({
     queryKey: [API_ENDPOINTS.CATALOG_GET_PRODUCT_CATEGORIES, params],
     queryFn: () => catalogClient.getCategories(params),
     enabled: enabled,

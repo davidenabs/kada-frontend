@@ -50,7 +50,6 @@ const VendorForm: React.FC = () => {
           toast.error(response.message);
         }
       },
-      onError: (error) => {},
     });
   };
 
