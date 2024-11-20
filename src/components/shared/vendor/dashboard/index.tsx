@@ -5,15 +5,16 @@ import { BriefcaseIcon, SearchIcon } from "@/icons";
 import Tab from "@/components/common/tab";
 import Input from "@/components/form/input";
 import Services from "../../farmer/vendors/service/services";
-import Products from "../../farmer/vendors/service/products";
 import AddProductServiceButton from "../add-button";
 import { useGetProducts } from "@/app/_api/catalog";
 import { Empty } from "rizzui";
 import { ICatalog } from "@/interface/catalog";
 import CatalogSkeleton from "@/components/skeletons/catalog";
 import useDebounce from "@/hooks/use-debounce";
+import useDashboardTitle from "@/hooks/use-dashboard-tite";
 
 function VendorDashboardSharedPage() {
+  useDashboardTitle("Dashboard");
   const [loaded, setLoaded] = useState(false);
   const [activeTab, setActiveTab] = useState("Our Services");
   const [page, setPage] = useState(1);

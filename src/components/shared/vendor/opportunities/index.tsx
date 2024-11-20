@@ -2,16 +2,16 @@
 import React, { Fragment } from "react";
 import OpportunitiesCard from "@/components/common/opportunities-card";
 import ExploreOpportunityDraewr from "@/components/drawers/cooperative/explore-opportunity";
-import { useDrawer } from "@/hooks/use-drawer";
 import Input from "@/components/form/input";
 import { SearchIcon } from "@/icons";
-import { Empty, Popover } from "rizzui";
-import { KadaButton } from "@/components/form/button";
+import { Empty } from "rizzui";
 import { useGetCmsPostsQuery } from "@/app/_api/cms";
 import { IPost } from "@/interface/cms";
 import OpportunitySkeleton from "@/components/skeletons/opportunity";
+import useDashboardTitle from "@/hooks/use-dashboard-tite";
 
 function VendorOpportunitiesServicePage() {
+  useDashboardTitle("Opportunities");
   const [loaded, setLoaded] = React.useState(false);
   const [opportunities, setOpportunities] = React.useState<IPost[]>([]);
   const [open, setOpen] = React.useState(false);

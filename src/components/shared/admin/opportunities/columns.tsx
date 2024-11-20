@@ -18,7 +18,6 @@ const columns: Column<any>[] = [
     key: "content",
     render: (item) => (
       <div className="">
-        {/* html content */}
         <div dangerouslySetInnerHTML={{ __html: item.content }} />
       </div>
     ),

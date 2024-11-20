@@ -25,6 +25,19 @@ const Header: React.FC = () => {
     [user]
   );
 
+  const displayName = React.useMemo(() => {
+    switch (user?.user?.userType) {
+      case UserType.FARMER:
+        return user.user?.firstName + " " + user.user?.lastName;
+      case UserType.COOPERATIVE:
+        return user?.user?.cooperativeProfile?.cooperativeName;
+      case UserType.VENDOR:
+        return user.user?.vendorProfile?.vendorName;
+      default:
+        return "User";
+    }
+  }, [user]);
+
   const handleSidebarToggle = () => {
     setApp((prev) => ({ ...prev, isSidebarOpen: !prev.isSidebarOpen }));
   };
@@ -69,16 +82,15 @@ const Header: React.FC = () => {
             <Dropdown.Trigger>
               <div className="flex gap-1 items-start my-auto">
                 <Avatar
-                  name={`${user.user?.firstName} ${user.user?.lastName}`}
+                  name={displayName ?? "User"}
                   src={user.user?.imagePath ?? "/images/avatar.png"}
                   className="cursor-pointer"
                 />
                 <div className="flex flex-col h-[29px]">
                   <div className="flex gap-1 items-end text-xs font-bold text-green-800">
-                    <div>
-                      {user.user?.firstName} {user.user?.lastName}
+                    <div className="w-[70px] whitespace-nowrap truncate">
+                      {displayName}
                     </div>
-
                     <img
                       loading="lazy"
                       src="https://cdn.builder.io/api/v1/image/assets/TEMP/a372f2dd9322a139bfecb23005028dcb756c8893933af728ae33b2b858380cfc?placeholderIfAbsent=true&apiKey=e3159558e3c24b7bb6f2db02f0873db3"
@@ -100,17 +112,17 @@ const Header: React.FC = () => {
                   name={`${user.user?.firstName} ${user.user?.lastName}`}
                   src={user.user?.imagePath ?? "/images/avatar.png"}
                 />
-                <span className="ml-2 text-start">
-                  <Text className="text-gray-900 font-medium leading-tight">
-                    {user.user?.firstName} {user.user?.lastName}
-                  </Text>
+                <div className="ml-2 text-start w-full truncate">
+                  <span className="text-gray-900 font-medium leading-tight">
+                    {displayName}
+                  </span>
 
-                  <div className="whitespace-nowrap">
+                  <div className="">
                     <span className=" text-gray-500 whitespace-nowrap text-ellipsis">
                       {user.user?.email || user.user?.phoneNumber || "N/A"}
                     </span>
                   </div>
-                </span>
+                </div>
               </Dropdown.Item>
               <div className="mb-2">
                 <Dropdown.Item className="hover:bg-gray-900 hover:text-gray-50">
