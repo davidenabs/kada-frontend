@@ -47,7 +47,6 @@ function CooperativeDashboardPage() {
             className="!py-2.5 !px-3 !border border-tertiary-700"
             options={[]}
             value={"Import"}
-            // setValue={() => {}}
           />
         </div>
       </div>
