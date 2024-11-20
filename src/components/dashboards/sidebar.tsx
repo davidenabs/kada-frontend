@@ -54,11 +54,11 @@ const adminMenuItems: MenuItem[] = [
     label: "Requests",
     href: `${adminBasePath}/requests`,
   },
-  {
-    icon: ChartIcon,
-    label: "Insights",
-    href: `${adminBasePath}/insight`,
-  },
+  // {
+  //   icon: ChartIcon,
+  //   label: "Insights",
+  //   href: `${adminBasePath}/insight`,
+  // },
   {
     icon: GridIcon,
     label: "Tools",
@@ -94,11 +94,11 @@ const cooperativeItems: MenuItem[] = [
     label: "Opportunities",
     href: `${cooperativePath}/opportunities`,
   },
-  {
-    icon: DashboardIcon,
-    label: "Funding",
-    href: `${cooperativePath}/funding`,
-  },
+  // {
+  //   icon: DashboardIcon,
+  //   label: "Funding",
+  //   href: `${cooperativePath}/funding`,
+  // },
   {
     icon: StorefrontIcon,
     label: "Vendors",

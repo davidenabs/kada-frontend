@@ -16,6 +16,13 @@ const userClient = {
     ApiClient.get(API_ENDPOINTS.GET_PROFILE),
   updateUser: (data: any): Promise<IResponse<any>> =>
     ApiClient.put(API_ENDPOINTS.UPDATE_USER, data),
+  addFarmersFromCsv: (data: FormData): Promise<IResponse<any>> => {
+    return ApiClient.post(API_ENDPOINTS.ADD_FARMERS_FROM_CSV, data, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+  },
+  addFarmer: (data: { farmerId: string }): Promise<IResponse<any>> =>
+    ApiClient.post(API_ENDPOINTS.ADD_FARMER, data),
 };
 
 export default userClient;

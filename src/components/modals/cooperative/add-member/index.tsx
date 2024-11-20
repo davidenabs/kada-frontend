@@ -1,11 +1,12 @@
 "use client";
-import { useGetUsersQuery } from "@/app/_api/user";
+import { useAddFarmerMutation, useGetUsersQuery } from "@/app/_api/user";
 import { KadaButton } from "@/components/form/button";
 import Input from "@/components/form/input";
 import Select from "@/components/form/select";
 import { CloseIcon, SearchIcon } from "@/icons";
 import { IUser, UserType } from "@/interface/user";
 import React, { useState } from "react";
+import { toast } from "sonner";
 
 type AddMemberModalProps = {
   close: () => void;
@@ -15,6 +16,7 @@ function AddMemberModal({ close }: AddMemberModalProps) {
   const [loaded, setLoaded] = React.useState(false);
   const [search, setSearch] = React.useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
+  const [value, setValue] = React.useState(null);
   const [farmers, setFarmers] = React.useState<
     { label: string; value: string }[]
   >([]);
@@ -26,6 +28,7 @@ function AddMemberModal({ close }: AddMemberModalProps) {
       search: debouncedSearch,
     },
   });
+  const mutation = useAddFarmerMutation();
 
   // * debounce search
   React.useEffect(() => {
@@ -48,7 +51,7 @@ function AddMemberModal({ close }: AddMemberModalProps) {
             "(" +
             farmer.phoneNumber +
             ")",
-          value: String(farmer.id),
+          value: String(farmer.phoneNumber),
         }))
       );
     }
@@ -59,6 +62,24 @@ function AddMemberModal({ close }: AddMemberModalProps) {
       setLoaded(true);
     }
   }, [debouncedSearch]);
+
+  const handleAddMember = () => {
+    if (!value) return;
+
+    mutation.mutateAsync(
+      {
+        farmerId: (value as any).value,
+      },
+      {
+        onSuccess: (response) => {
+          if (response.success) {
+            toast.success("Member added successfully");
+            close();
+          }
+        },
+      }
+    );
+  };
 
   return (
     <section className="flex overflow-hidden flex-col w-full rounded-[10px] bg-white font-inter">
@@ -72,15 +93,25 @@ function AddMemberModal({ close }: AddMemberModalProps) {
 
       <div className=" bg-white p-6">
         <div className="space-y-6">
-          {/* <Select
-            label="Select"
-            options={options}
+          <Select
+            label="Search for a registered member"
+            searchable={true}
+            options={farmers}
             value={value}
             onChange={setValue}
             clearable={value !== null}
-            onClear={() => setValue(null)}
-          /> */}
-          <Input
+            onClear={() => {
+              setValue(null);
+              setSearch("");
+            }}
+            onSearchChange={(e) => {
+              setSearch(e);
+            }}
+            disableDefaultFilter
+            searchPlaceHolder="Search here..."
+            searchPrefix={<SearchIcon className="fill-black" />}
+          />
+          {/* <Input
             placeholder="Search here..."
             inputClassName="!rounded-[10px] !h-[40px]"
             className="!w-full"
@@ -88,37 +119,16 @@ function AddMemberModal({ close }: AddMemberModalProps) {
             type="search"
             clearable
             label="Search for a registered member"
-          />
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            onClear={() => setSearch("")}
+          /> */}
 
-          <Input
-            placeholder="Enter member’s name"
-            inputClassName="!rounded-[10px] !h-[40px]"
-            type="text"
-            label="Name"
-          />
-
-          <Input
-            placeholder="08012345678"
-            inputClassName="!rounded-[10px] !h-[40px]"
-            type="text"
-            label="Phone Number"
-          />
-
-          <Input
-            placeholder="Enter Your email"
-            inputClassName="!rounded-[10px] !h-[40px]"
-            type="text"
-            label="Email"
-          />
-
-          <Input
-            placeholder="Enter or select categories"
-            inputClassName="!rounded-[10px] !h-[40px]"
-            type="text"
-            label="Categories"
-          />
-
-          <KadaButton className="!w-full rounded-full" onClick={close}>
+          <KadaButton
+            className="!w-full rounded-full"
+            onClick={handleAddMember}
+            loading={mutation.isPending}
+          >
             Add Member
           </KadaButton>
         </div>
