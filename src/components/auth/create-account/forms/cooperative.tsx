@@ -3,7 +3,12 @@ import Button from "@/components/form/button";
 import Input from "@/components/form/input";
 import Password from "@/components/form/password";
 import { UserType } from "@/interface/user";
-import { RegisterSchema, RegisterSchemaType } from "@/schema/auth";
+import {
+  CooperativeSchema,
+  CooperativeSchemaType,
+  RegisterSchema,
+  RegisterSchemaType,
+} from "@/schema/auth";
 import { appAtom } from "@/stores/app";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAtom } from "jotai";
@@ -13,8 +18,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
 const defaultValues = {
-  firstName: "",
-  lastName: "llll",
+  cooperativeName: "",
   email: "",
   phoneNumber: "",
   password: "",
@@ -34,10 +38,10 @@ const CooperativeForm: React.FC = () => {
     formState: { errors, isSubmitting },
   } = useForm({
     defaultValues,
-    resolver: zodResolver(RegisterSchema),
+    resolver: zodResolver(CooperativeSchema),
   });
 
-  const onSubmit = (data: RegisterSchemaType) => {
+  const onSubmit = (data: CooperativeSchemaType) => {
     const { confirmPassword, acceptTerms, ...rest } = data;
 
     mutateAsync(rest, {
@@ -81,8 +85,8 @@ const CooperativeForm: React.FC = () => {
           id="firstName"
           placeholder="What is your company name"
           className=""
-          {...register("firstName")}
-          error={errors.firstName?.message}
+          {...register("cooperativeName")}
+          error={errors.cooperativeName?.message}
         />
 
         <Input

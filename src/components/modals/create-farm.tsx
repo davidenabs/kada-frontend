@@ -90,7 +90,7 @@ function CreateFarmModal({ close }: { close: () => void }) {
   useEffect(() => {
     if ((!isFetching || !isRefetching) && data) {
       const tempProducts: any[] = [];
-      data.data.forEach((d: any) => {
+      data.data.items.forEach((d: any) => {
         tempProducts.push({ label: d.name, value: d.id });
       });
 

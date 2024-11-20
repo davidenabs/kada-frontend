@@ -61,7 +61,7 @@ function EditCooperaativeProfile({ close }: EditCooperaativeProfileProps) {
 
   useEffect(() => {
     reset({
-      name: user?.user?.cooperativeProfile?.name || "",
+      name: user?.user?.cooperativeProfile?.cooperativeName || "",
       about: user?.user?.cooperativeProfile?.about || "",
       eligibility: user?.user?.cooperativeProfile?.eligibility || "",
       address: user?.user?.address || "",

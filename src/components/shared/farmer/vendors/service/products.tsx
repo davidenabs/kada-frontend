@@ -8,14 +8,16 @@ function Products() {
 
       <div className="grid md:grid-cols-2 gap-6">
         <Catalog
-          type="service"
+          description="This is a description"
+          type="products"
           image="/images/bdo.png"
           name="HarvestPeak Fertilizers"
           price="10,000"
         />
 
         <Catalog
-          type="service"
+          description="This is a description"
+          type="services"
           image="/images/bdo.png"
           name="HarvestPeak Fertilizers"
           price="10,000"

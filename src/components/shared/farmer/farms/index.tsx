@@ -53,6 +53,4 @@ function FarmerFarmsSharedPage() {
   );
 }
 
-export default withAuth(FarmerFarmsSharedPage, {
-  allowedUserTypes: [UserType.FARMER],
-});
+export default FarmerFarmsSharedPage;

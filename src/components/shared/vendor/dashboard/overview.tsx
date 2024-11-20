@@ -1,5 +1,7 @@
 import { useGetVendorOverviewQuery } from "@/app/_api/overview";
 import OverviewSkeleton from "@/components/skeletons/overview";
+import { userAtom } from "@/stores/user";
+import { useAtomValue } from "jotai";
 import Link from "next/link";
 import React, { Fragment } from "react";
 
@@ -15,6 +17,7 @@ const Overview: React.FC = () => {
     useGetVendorOverviewQuery({
       enabled: loaded,
     });
+  const { user } = useAtomValue(userAtom);
 
   const overviewItems: OverviewItem[] = React.useMemo(
     () => [
@@ -41,8 +44,6 @@ const Overview: React.FC = () => {
     ],
     [data]
   );
-
-  // productsAndServices.totalProducts, productsAndServices.totalServices,
 
   React.useEffect(() => {
     setLoaded(true);
@@ -86,12 +87,19 @@ const Overview: React.FC = () => {
               className={`flex flex-col items-center px-9 py-7 rounded-md h-[178px] max-md:px-5 border border-[#ECF2F6] bg-white`}
             >
               <div className="mt-5 text-2xl font-bold leading-tight">
-                Verified
+                {user?.vendorProfile?.isVerified ? "Verified" : "Not Verified"}
               </div>
               <div className="font-medium leading-5 text-sm text-center">
-                <span className="underline">
-                  <a className="text-teal-700">See License</a>
-                </span>
+                {user?.vendorProfile?.isVerified && (
+                  <span className="underline">
+                    <Link
+                      href="/dashboard/vendor/license"
+                      className="text-teal-700"
+                    >
+                      See License
+                    </Link>
+                  </span>
+                )}
               </div>
             </div>
           </Fragment>

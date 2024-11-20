@@ -50,15 +50,22 @@ const API_ENDPOINTS = {
   UPLOAD_PRODUCTS_FROM_SHEETS: "/market/upload-products-from-sheet",
 
   // farm products
-  GET_FARM_PRODUCTS: "/farm-products",
-  CREATE_FARM_PRODUCT: "/farm-products",
-  UPDATE_FARM_PRODUCT: "/farm-products/:productId",
-  DELETE_FARM_PRODUCT: "/farm-products/:productId",
+  GET_FARM_PRODUCTS: "/farm-crops",
+  CREATE_FARM_PRODUCT: "/farm-crops",
+  UPDATE_FARM_PRODUCT: "/farm-crops/:productId",
+  DELETE_FARM_PRODUCT: "/farm-crops/:productId",
 
   // overview
   GET_COOPERATIVE_OVERVIEW: "/overview/cooperative",
   GET_VENDOR_OVERVIEW: "/overview/vendor",
   GET_ADMIN_OVERVIEW: "/overview/admin",
+
+  // cms
+  CMS_GET_POSTS: "/cms/posts",
+  CMS_CREATE_POST: "/cms/posts",
+
+  // payment
+  PAYMENT_INITIATE: "/payments",
 };
 
 export default API_ENDPOINTS;

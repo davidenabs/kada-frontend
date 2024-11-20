@@ -18,7 +18,7 @@ function CooperativeVendorsSharedPage() {
             placeholder="Search here..."
             inputClassName="!rounded-[10px]"
             className="!w-[500px]"
-            prefix={<SearchIcon />}
+            prefix={<SearchIcon className="fill-black" />}
           />
         </div>
 
@@ -39,6 +39,7 @@ function CooperativeVendorsSharedPage() {
               image="/images/bdo.png"
               name="HarvestPeak Fertilizers"
               price="10,000"
+              description="This is a description"
             />
           </div>
         </div>
@@ -54,6 +55,7 @@ function CooperativeVendorsSharedPage() {
               image="/images/bdo.png"
               name="HarvestPeak Fertilizers"
               price="10,000"
+              description="This is a description"
             />
           </div>
         </div>
@@ -62,6 +64,4 @@ function CooperativeVendorsSharedPage() {
   );
 }
 
-export default withAuth(CooperativeVendorsSharedPage, {
-  allowedUserTypes: [UserType.COOPERATIVE],
-});
+export default CooperativeVendorsSharedPage;

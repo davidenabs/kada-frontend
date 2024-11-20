@@ -28,21 +28,21 @@ const navItems = [
     label: "Vendors",
     path: "/dashboard/farmer/vendors",
   },
-  {
-    icon: MoneyIcon,
-    label: "Funding",
-    path: "/dashboard/farmer/funding",
-  },
+  // {
+  //   icon: MoneyIcon,
+  //   label: "Funding",
+  //   path: "/dashboard/farmer/funding",
+  // },
   {
     label: "Cooperative",
     icon: HandCoins,
     path: "/dashboard/farmer/cooperative",
   },
-  {
-    label: "Events",
-    icon: StorefrontIcon,
-    path: "/dashboard/farmer/events",
-  },
+  // {
+  //   label: "Events",
+  //   icon: StorefrontIcon,
+  //   path: "/dashboard/farmer/events",
+  // },
   {
     label: "Profile",
     icon: ProfileIcon,

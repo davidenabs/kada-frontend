@@ -8,6 +8,7 @@ import {
 } from "@/interface/catalog";
 
 const headers = { "Content-Type": "multipart/form-data" };
+
 const catalogClient = {
   // Products & Services
   getProducts: (params: IParams): Promise<any> =>
@@ -18,10 +19,13 @@ const catalogClient = {
       params
     ),
   createProduct: (data: ICreateProductPayload): Promise<any> => {
+    const { file, ...rest } = data;
     const formData = objectToFormData(data);
-    return ApiClient.post(API_ENDPOINTS.CATALOG_CREATE_PRODUCT, formData, {
-      headers,
-    });
+    // return ApiClient.post(API_ENDPOINTS.CATALOG_CREATE_PRODUCT, formData, {
+    //   headers,
+    // });
+
+    return ApiClient.post(API_ENDPOINTS.CATALOG_CREATE_PRODUCT, rest);
   },
   updateProduct: (data: any, id: string): Promise<any> => {
     const formData = objectToFormData(data);

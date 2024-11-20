@@ -2,28 +2,53 @@
 import React, { Fragment } from "react";
 import OpportunitiesCard from "@/components/common/opportunities-card";
 import ExploreOpportunityDraewr from "@/components/drawers/cooperative/explore-opportunity";
-import { useDrawer } from "@/hooks/use-drawer";
 import Input from "@/components/form/input";
 import { SearchIcon } from "@/icons";
-import { Popover } from "rizzui";
-import { KadaButton } from "@/components/form/button";
+import { Empty } from "rizzui";
+import { useGetCmsPostsQuery } from "@/app/_api/cms";
+import { IPost } from "@/interface/cms";
+import OpportunitySkeleton from "@/components/skeletons/opportunity";
+import useDashboardTitle from "@/hooks/use-dashboard-tite";
 
 function VendorOpportunitiesServicePage() {
-  const { closeDrawer, openDrawer } = useDrawer();
+  useDashboardTitle("Opportunities");
+  const [loaded, setLoaded] = React.useState(false);
+  const [opportunities, setOpportunities] = React.useState<IPost[]>([]);
+  const [open, setOpen] = React.useState(false);
+  const [post, setPost] = React.useState<IPost | null>(null);
 
-  const handleClick = () => {
-    openDrawer({
-      view: <ExploreOpportunityDraewr close={closeDrawer} />,
-      placement: "right",
-      size: "lg",
-      conatainerClassName: "rounded-l-xl",
-    });
+  const { data, isFetching, isRefetching, isError } = useGetCmsPostsQuery({
+    enabled: loaded,
+  });
+
+  const toggleDrawer = () => {
+    setOpen(!open);
   };
+
+  React.useEffect(() => {
+    if (!isFetching && !isRefetching && data?.success && data?.data) {
+      setOpportunities(data.data.posts);
+    }
+  }, [data, isFetching, isRefetching]);
+
+  React.useEffect(() => {
+    setLoaded(true);
+  }, []);
 
   return (
     <Fragment>
+      {open && (
+        <ExploreOpportunityDraewr
+          close={toggleDrawer}
+          open={open}
+          data={post}
+        />
+      )}
+
       <section className="space-y-4">
-        <h4 className="text-2xl font-bold">Opportunities (24)</h4>
+        <h4 className="text-2xl font-bold">
+          Opportunities ({opportunities.length})
+        </h4>
         <div className="flex gap-4">
           <div className="flex-1">
             <Input
@@ -31,11 +56,11 @@ function VendorOpportunitiesServicePage() {
               placeholder="Search here..."
               inputClassName="!rounded-[10px] !h-[36px]"
               className=""
-              prefix={<SearchIcon />}
+              prefix={<SearchIcon className="fill-black" />}
             />
           </div>
 
-          <div className="">
+          {/* <div className="">
             <Popover shadow="sm" placement="bottom-end">
               <Popover.Trigger>
                 <KadaButton className="" variant="outline">
@@ -50,16 +75,29 @@ function VendorOpportunitiesServicePage() {
                 </>
               </Popover.Content>
             </Popover>
-          </div>
+          </div> */}
         </div>
-        <div className="grid grid-cols-3">
-          <OpportunitiesCard
-            image="/images/bdo.png"
-            title="United Nation’s Food Programme 2024"
-            description="Share an exciting opportunity with your network"
-            posted="2days"
-            onClick={handleClick}
-          />
+
+        <div className="">
+          {isFetching || isRefetching ? (
+            <OpportunitySkeleton />
+          ) : isError ? (
+            <div className="">An error occurred, please try again</div>
+          ) : data?.data?.posts?.length === 0 ? (
+            <Empty className="" text="No opportunities available" />
+          ) : (
+            <div className="grid grid-cols-3 gap-4">
+              {opportunities.map((opportunity) => (
+                <OpportunitiesCard
+                  data={opportunity}
+                  onClick={() => {
+                    setPost(opportunity);
+                    toggleDrawer();
+                  }}
+                />
+              ))}
+            </div>
+          )}
         </div>
       </section>
     </Fragment>

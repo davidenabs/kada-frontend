@@ -118,16 +118,16 @@ function CooperativeVendorsServiceSharedPage() {
                 placeholder="Search here..."
                 inputClassName="!rounded-[10px]"
                 className="!w-[500px]"
-                prefix={<SearchIcon />}
+                prefix={<SearchIcon className="fill-black" />}
               />
             </div>
           </div>
 
-          {activeTab === "Our Services" ? (
+          {/* {activeTab === "Our Services" ? (
             <Services products={[]} />
           ) : (
             <Products />
-          )}
+          )} */}
         </div>
       </div>
 
@@ -198,6 +198,4 @@ function CooperativeVendorsServiceSharedPage() {
   );
 }
 
-export default withAuth(CooperativeVendorsServiceSharedPage, {
-  allowedUserTypes: [UserType.COOPERATIVE],
-});
+export default CooperativeVendorsServiceSharedPage;

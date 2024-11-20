@@ -1,4 +1,10 @@
 import CryptoJS from "crypto-js";
+import {
+  differenceInDays,
+  differenceInHours,
+  differenceInMinutes,
+  differenceInSeconds,
+} from "date-fns";
 
 export function objectToFormData<T extends Record<string, any>>(
   obj: T
@@ -38,4 +44,27 @@ export const encryptData = (data: string) => {
 export const decryptData = (ciphertext: string) => {
   const bytes = CryptoJS.AES.decrypt(ciphertext, SECRET_KEY);
   return bytes.toString(CryptoJS.enc.Utf8);
+};
+
+export const getTimeAgo = (date: Date | string): string => {
+  const targetDate = new Date(date);
+  const now = new Date();
+
+  const seconds = differenceInSeconds(now, targetDate);
+  if (seconds < 60) {
+    return `${seconds} second${seconds !== 1 ? "s" : ""} ago`;
+  }
+
+  const minutes = differenceInMinutes(now, targetDate);
+  if (minutes < 60) {
+    return `${minutes} minute${minutes !== 1 ? "s" : ""} ago`;
+  }
+
+  const hours = differenceInHours(now, targetDate);
+  if (hours < 24) {
+    return `${hours} hour${hours !== 1 ? "s" : ""} ago`;
+  }
+
+  const days = differenceInDays(now, targetDate);
+  return `${days} day${days !== 1 ? "s" : ""} ago`;
 };

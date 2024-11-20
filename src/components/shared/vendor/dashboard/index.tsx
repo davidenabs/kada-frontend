@@ -5,49 +5,63 @@ import { BriefcaseIcon, SearchIcon } from "@/icons";
 import Tab from "@/components/common/tab";
 import Input from "@/components/form/input";
 import Services from "../../farmer/vendors/service/services";
-import Products from "../../farmer/vendors/service/products";
 import AddProductServiceButton from "../add-button";
 import { useGetProducts } from "@/app/_api/catalog";
 import { Empty } from "rizzui";
 import { ICatalog } from "@/interface/catalog";
+import CatalogSkeleton from "@/components/skeletons/catalog";
+import useDebounce from "@/hooks/use-debounce";
+import useDashboardTitle from "@/hooks/use-dashboard-tite";
 
 function VendorDashboardSharedPage() {
+  useDashboardTitle("Dashboard");
   const [loaded, setLoaded] = useState(false);
   const [activeTab, setActiveTab] = useState("Our Services");
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [limit, setLimit] = useState(10);
   const [products, setProducts] = useState<ICatalog[]>([]);
+  const [stats, setStats] = React.useState<any>({});
+  const debouncedSearchQuery = useDebounce(search);
+
+  const active = React.useMemo(() => {
+    return activeTab === "Our Services" ? "services" : "products";
+  }, [activeTab]);
+
   const { data, isFetching, isRefetching, isError } = useGetProducts({
     enabled: loaded,
     params: {
       page,
-      search,
+      search: debouncedSearchQuery,
       limit,
-      // type: activeTab === "Our Services" ? "services" : "products",
+      type: active,
     },
   });
 
   React.useEffect(() => {
     if (!isFetching && !isRefetching && data?.success && data?.data) {
       setProducts(data.data.products);
+      setStats((data.data as any).stats);
     }
   }, [data, isFetching, isRefetching]);
 
-  const tabs = [
-    {
-      id: "our-services",
-      label: "Our Services",
-      badge: 3,
-      icon: BriefcaseIcon,
-    },
-    {
-      id: "products",
-      label: "Products",
-      badge: 0,
-      icon: BriefcaseIcon,
-    },
-  ];
+  const tabs = React.useMemo(
+    () => [
+      {
+        id: "our-services",
+        label: "Our Services",
+        badge: stats?.totalServices || 0,
+        icon: BriefcaseIcon,
+      },
+      {
+        id: "products",
+        label: "Products",
+        badge: stats?.totalProducts || 0,
+        icon: BriefcaseIcon,
+      },
+    ],
+    [stats]
+  );
 
   React.useEffect(() => {
     setLoaded(true);
@@ -89,25 +103,25 @@ function VendorDashboardSharedPage() {
                 <Input
                   placeholder="Search here..."
                   inputClassName="!rounded-[10px]"
-                  className="!w-[500px]"
-                  prefix={<SearchIcon />}
+                  className="w-[500px] max-lg:w-full"
+                  prefix={<SearchIcon className="fill-black" />}
                 />
               </div>
             </div>
 
             {isFetching || isRefetching ? (
-              <div className="">loading...</div>
+              <CatalogSkeleton />
             ) : isError ? (
               <div className="">error...</div>
             ) : data?.data?.products?.length === 0 ? (
               <Empty className="" text="No product available" />
             ) : (
-              <Services products={products} />
+              <Services products={products} activeTab={active} />
             )}
           </div>
         </div>
 
-        <div className="w-[275px] h-[444px]">
+        <div className="w-[275px] h-[444px] max-lg:hidden">
           <div className="relative rounded-xl bg-[url('/images/vendor-banner.png')] bg-center bg-cover bg-no-repeat h-full overflow-hidden z-10 p-6 flex flex-col justify-between">
             <div className="absolute inset-0 bg-custom-gradient z-[-1]"></div>
             <h4 className="text-2xl font-bold text-white text-center">

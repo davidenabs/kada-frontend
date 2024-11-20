@@ -1,9 +1,9 @@
 export interface ICreateProductPayload {
   name: string;
-  amount: string;
+  amount: number | string;
   description: string;
   type: "products" | "services";
-  userId: number;
+  // userId: number;
   file?: File | null;
 }
 
