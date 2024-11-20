@@ -106,37 +106,22 @@ function FarmerVendorsSharedPage() {
             ) : productsData?.data?.products?.length === 0 ? (
               <Empty className="" text="No service available" />
             ) : (
-              productsData?.data?.products.map((product) => (
-                <Catalog
-                  type={product.type}
-                  image={product.imagePath ?? "/images/bdo.png"}
-                  name={product.name}
-                  price={product.amount}
-                  description={product.description}
-                  key={product.id + product.name + product.amount}
-                  href={`vendors/${product.id}`}
-                />
-              ))
+              productsData?.data?.products
+                .slice(0, 3)
+                .map((product) => (
+                  <Catalog
+                    type={product.type}
+                    image={product.imagePath ?? "/images/bdo.png"}
+                    name={product.name}
+                    price={product.amount}
+                    description={product.description}
+                    key={product.id + product.name + product.amount}
+                    href={`vendors/${product.id}`}
+                  />
+                ))
             )}
           </div>
         </div>
-
-        {/* <div className="">
-          <h4 className="text-lg font-inter font-bold mt-4">
-            Popular Products
-          </h4>
-
-          <div className="space-y-4 mt-6">
-            <Catalog
-              type="products"
-              image="/images/bdo.png"
-              name="HarvestPeak Fertilizers"
-              price="10,000"
-              description="Lorem ipsum dolor"
-              href={`vendors/${1}`}
-            />
-          </div>
-        </div> */}
       </div>
     </section>
   );
