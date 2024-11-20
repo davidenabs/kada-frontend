@@ -39,7 +39,7 @@ function CooperativeDashboardPage() {
           👍🏾 Welcome Back, {cooperativeName}
         </div>
 
-        <div className="flex">
+        {/* <div className="flex">
           <Button className="!w-fit !py-2.5 text-white !bg-green-600 !rounded-full !shadow-none ">
             Add Member
           </Button>
@@ -48,7 +48,7 @@ function CooperativeDashboardPage() {
             options={[]}
             value={"Import"}
           />
-        </div>
+        </div> */}
       </div>
 
       <Overview />

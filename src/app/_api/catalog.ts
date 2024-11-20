@@ -29,7 +29,7 @@ export const useGetProduct = ({
   params = {},
   id,
 }: IQueryParams & { id: string }) => {
-  return useQuery<IResponse<any>, Error>({
+  return useQuery<IResponse<ICatalog>, Error>({
     queryKey: [API_ENDPOINTS.CATALOG_GET_PRODUCT, params, id],
     queryFn: () => catalogClient.getProduct(params, id),
     enabled: enabled,

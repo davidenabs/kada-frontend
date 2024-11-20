@@ -66,6 +66,8 @@ const API_ENDPOINTS = {
 
   // payment
   PAYMENT_INITIATE: "/payments",
+  ADD_FARMERS_FROM_CSV: "/cooperatives/add-farmers-from-csv",
+  ADD_FARMER: "/cooperatives/add-farmer/:farmerId",
 };
 
 export default API_ENDPOINTS;

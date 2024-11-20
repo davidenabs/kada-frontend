@@ -10,13 +10,15 @@ import {
 } from "@heroicons/react/16/solid";
 import Image from "next/image";
 import React, { useState } from "react";
-import Services from "./services";
-import Products from "./products";
 import { KadaButton } from "@/components/form/button";
 import Gallery from "@/components/dashboards/farmer/gallery";
+import { useGetProduct } from "@/app/_api/catalog";
+import { useParams } from "next/navigation";
 
 function VendroServiceSharedPage() {
+  const { serviceId } = useParams();
   const [activeTab, setActiveTab] = useState("Our Services");
+  const [loaded, setLoaded] = useState(false);
   const tabs = [
     {
       id: "our-services",
@@ -31,6 +33,16 @@ function VendroServiceSharedPage() {
       icon: BriefcaseIcon,
     },
   ];
+
+  const { data, isFetching, isRefetching, isError } = useGetProduct({
+    enabled: loaded,
+    // params: {},
+    id: serviceId as string,
+  });
+
+  React.useEffect(() => {
+    setLoaded(true);
+  }, []);
 
   return (
     <section className="flex gap-x-[270px]">

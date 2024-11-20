@@ -67,3 +67,15 @@ export const useUpdateUserMutation = () => {
     },
   });
 };
+
+export const useAddFarmersFromCsvMutation = () => {
+  return useMutation({
+    mutationFn: (data: FormData) => userClient.addFarmersFromCsv(data),
+  });
+};
+
+export const useAddFarmerMutation = () => {
+  return useMutation({
+    mutationFn: (data: { farmerId: string }) => userClient.addFarmer(data),
+  });
+};

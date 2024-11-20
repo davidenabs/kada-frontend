@@ -127,7 +127,17 @@ const VendorList: React.FC = () => {
           ) : data?.data?.total === 0 ? (
             <Empty text="No vendors found" />
           ) : (
-            vendors.map((vendor, index) => <Vendor key={index} {...vendor} />)
+            <>
+              {/* vendors.map((vendor, index) => <Vendor key={index} {...vendor} />) */}
+              {data?.data?.users.map((vendor, index) => (
+                <Vendor
+                  key={index}
+                  name={vendor.vendorProfile?.vendorName!}
+                  description={vendor.vendorProfile?.about!}
+                  imageUrl={vendor.imagePath ?? "/images/avatar.png"}
+                />
+              ))}
+            </>
           )}
         </div>
       </div>
