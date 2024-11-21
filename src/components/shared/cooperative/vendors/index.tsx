@@ -4,10 +4,9 @@ import Input from "@/components/form/input";
 import { SearchIcon } from "@/icons";
 import VendorCard from "@/components/common/vendor-card";
 import Catalog from "@/components/common/catalog";
-import { UserType } from "@/interface/user";
 import useDashboardTitle from "@/hooks/use-dashboard-tite";
 import useDebounce from "@/hooks/use-debounce";
-import { useGetUsersQuery } from "@/app/_api/user";
+import { useGetVendorsQuery } from "@/app/_api/user";
 import { useGetProducts } from "@/app/_api/catalog";
 import { Empty } from "rizzui";
 import VendorCardSkeleton from "@/components/skeletons/vendor-card";
@@ -21,10 +20,9 @@ function CooperativeVendorsSharedPage() {
   const [search, setSearch] = React.useState("");
   const debouncedSearchQuery = useDebounce(search);
 
-  const { data, isFetching, isRefetching } = useGetUsersQuery({
+  const { data, isFetching, isRefetching } = useGetVendorsQuery({
     enabled: loaded,
     params: {
-      userType: UserType.VENDOR,
       page,
       limit,
       search: debouncedSearchQuery,
@@ -77,14 +75,9 @@ function CooperativeVendorsSharedPage() {
             </>
           ) : (
             <>
-              <div className="grid grid-cols-5">
+              <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
                 {data?.data?.users.map((user) => (
-                  <VendorCard
-                  // closeModal={closeModal}
-                  // openModal={openModal}
-                  // router={router}
-                  // key={user.id}
-                  />
+                  <VendorCard vendor={user} key={user.id + user.email} />
                 ))}
               </div>
             </>

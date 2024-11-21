@@ -5,7 +5,7 @@ import { BriefcaseIcon, SearchIcon } from "@/icons";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useModal } from "@/hooks/use-modal";
-import { useGetUsersQuery } from "@/app/_api/user";
+import { useGetCooperativesQuery, useGetUsersQuery } from "@/app/_api/user";
 import { UserType } from "@/interface/user";
 import CooperativeCard from "@/components/common/cards/cooperative";
 import { Empty } from "rizzui";
@@ -40,10 +40,9 @@ function FarmerCooperativeSharedPage() {
   const [limit, setLimit] = useState(10);
   const debounceSearchQuery = useDebounce(search);
 
-  const { data, isFetching, isRefetching } = useGetUsersQuery({
+  const { data, isFetching, isRefetching } = useGetCooperativesQuery({
     enabled: loaded,
     params: {
-      userType: UserType.COOPERATIVE,
       page,
       limit,
       search: debounceSearchQuery,

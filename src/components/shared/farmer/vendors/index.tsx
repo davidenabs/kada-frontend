@@ -1,6 +1,6 @@
 "use client";
 import { useGetProducts } from "@/app/_api/catalog";
-import { useGetUsersQuery } from "@/app/_api/user";
+import { useGetUsersQuery, useGetVendorsQuery } from "@/app/_api/user";
 import Catalog from "@/components/common/catalog";
 import VendorCard from "@/components/common/vendor-card";
 import Input from "@/components/form/input";
@@ -21,10 +21,9 @@ function FarmerVendorsSharedPage() {
   const [search, setSearch] = React.useState("");
   const debouncedSearchQuery = useDebounce(search);
 
-  const { data, isFetching, isRefetching } = useGetUsersQuery({
+  const { data, isFetching, isRefetching } = useGetVendorsQuery({
     enabled: loaded,
     params: {
-      userType: UserType.VENDOR,
       page,
       limit,
       search: debouncedSearchQuery,
@@ -78,14 +77,9 @@ function FarmerVendorsSharedPage() {
             </>
           ) : (
             <>
-              <div className="grid grid-cols-5">
+              <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
                 {data?.data?.users.map((user) => (
-                  <VendorCard
-                  // closeModal={closeModal}
-                  // openModal={openModal}
-                  // router={router}
-                  // key={user.id}
-                  />
+                  <VendorCard key={user.id + user.email} vendor={user} />
                 ))}
               </div>
             </>

@@ -46,6 +46,9 @@ export const useUpdateRequestMutation = () => {
     mutationKey: [API_ENDPOINTS.UPDATE_REQUEST],
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [API_ENDPOINTS.GET_REQUESTS] });
+      queryClient.invalidateQueries({
+        queryKey: [API_ENDPOINTS.GET_COOPERATIVE_FARMERS],
+      });
     },
   });
 };

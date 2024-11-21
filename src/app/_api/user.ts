@@ -25,6 +25,50 @@ export const useGetUsersQuery = ({
   });
 };
 
+export const useGetUserQuery = ({
+  enabled = true,
+  id,
+}: IQueryParams & { id: string }) => {
+  return useQuery<IResponse<IUser>, Error>({
+    queryKey: [API_ENDPOINTS.GET_USER, id],
+    queryFn: () => userClient.getUser(id),
+    enabled,
+  });
+};
+
+export const useGetVendorsQuery = ({
+  enabled = true,
+  params = {},
+}: IQueryParams) => {
+  return useQuery<IResponse<IPaginatedResponse<IUser, "users">>, Error>({
+    queryKey: [API_ENDPOINTS.GET_VENDORS, params],
+    queryFn: () => userClient.getVendors(params),
+    enabled,
+  });
+};
+
+export const useGetFarmersQuery = ({
+  enabled = true,
+  params = {},
+}: IQueryParams) => {
+  return useQuery<IResponse<IPaginatedResponse<IUser, "users">>, Error>({
+    queryKey: [API_ENDPOINTS.GET_FARMERS, params],
+    queryFn: () => userClient.getFarmers(params),
+    enabled,
+  });
+};
+
+export const useGetCooperativesQuery = ({
+  enabled = true,
+  params = {},
+}: IQueryParams) => {
+  return useQuery<IResponse<IPaginatedResponse<IUser, "users">>, Error>({
+    queryKey: [API_ENDPOINTS.GET_COOPERATIVES, params],
+    queryFn: () => userClient.getCooperatives(params),
+    enabled,
+  });
+};
+
 export const useGetCooperativeFarmersQuery = ({
   enabled = true,
   params = {},
@@ -69,13 +113,25 @@ export const useUpdateUserMutation = () => {
 };
 
 export const useAddFarmersFromCsvMutation = () => {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (data: FormData) => userClient.addFarmersFromCsv(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [API_ENDPOINTS.GET_COOPERATIVE_FARMERS],
+      });
+    },
   });
 };
 
 export const useAddFarmerMutation = () => {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (data: { farmerId: string }) => userClient.addFarmer(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [API_ENDPOINTS.GET_COOPERATIVE_FARMERS],
+      });
+    },
   });
 };

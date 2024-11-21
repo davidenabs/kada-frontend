@@ -1,8 +1,13 @@
 "use client";
-import { useAddFarmerMutation, useGetUsersQuery } from "@/app/_api/user";
+import {
+  useAddFarmerMutation,
+  useGetFarmersQuery,
+  useGetUsersQuery,
+} from "@/app/_api/user";
 import { KadaButton } from "@/components/form/button";
 import Input from "@/components/form/input";
 import Select from "@/components/form/select";
+import useDebounce from "@/hooks/use-debounce";
 import { CloseIcon, SearchIcon } from "@/icons";
 import { IUser, UserType } from "@/interface/user";
 import React, { useState } from "react";
@@ -15,29 +20,22 @@ type AddMemberModalProps = {
 function AddMemberModal({ close }: AddMemberModalProps) {
   const [loaded, setLoaded] = React.useState(false);
   const [search, setSearch] = React.useState("");
-  const [debouncedSearch, setDebouncedSearch] = useState("");
+  const debouncedSearchQuery = useDebounce(search);
   const [value, setValue] = React.useState(null);
   const [farmers, setFarmers] = React.useState<
     { label: string; value: string }[]
   >([]);
 
-  const { data, isFetching, isRefetching } = useGetUsersQuery({
-    enabled: debouncedSearch.length > 0 && loaded,
+  const { data, isFetching, isRefetching } = useGetFarmersQuery({
+    enabled: debouncedSearchQuery.length > 0 && loaded,
     params: {
-      userType: UserType.FARMER,
-      search: debouncedSearch,
+      // page,
+      // limit,
+      search: debouncedSearchQuery,
     },
   });
+
   const mutation = useAddFarmerMutation();
-
-  // * debounce search
-  React.useEffect(() => {
-    const timeout = setTimeout(() => {
-      setDebouncedSearch(search);
-    }, 300);
-
-    return () => clearTimeout(timeout);
-  }, [search]);
 
   // * Set farmers when data is fetched
   React.useEffect(() => {
@@ -58,13 +56,13 @@ function AddMemberModal({ close }: AddMemberModalProps) {
   }, [data, isFetching, isRefetching]);
 
   React.useEffect(() => {
-    if (debouncedSearch) {
-      setLoaded(true);
-    }
-  }, [debouncedSearch]);
+    setLoaded(true);
+  }, []);
 
   const handleAddMember = () => {
-    if (!value) return;
+    if (!value) {
+      return toast.error("Please select a member to add");
+    }
 
     mutation.mutateAsync(
       {
@@ -72,6 +70,7 @@ function AddMemberModal({ close }: AddMemberModalProps) {
       },
       {
         onSuccess: (response) => {
+          console.log(response);
           if (response.success) {
             toast.success("Member added successfully");
             close();
@@ -98,7 +97,9 @@ function AddMemberModal({ close }: AddMemberModalProps) {
             searchable={true}
             options={farmers}
             value={value}
-            onChange={setValue}
+            onChange={(e: any) => {
+              setValue(e);
+            }}
             clearable={value !== null}
             onClear={() => {
               setValue(null);
@@ -111,18 +112,6 @@ function AddMemberModal({ close }: AddMemberModalProps) {
             searchPlaceHolder="Search here..."
             searchPrefix={<SearchIcon className="fill-black" />}
           />
-          {/* <Input
-            placeholder="Search here..."
-            inputClassName="!rounded-[10px] !h-[40px]"
-            className="!w-full"
-            prefix={<SearchIcon className="fill-black" />}
-            type="search"
-            clearable
-            label="Search for a registered member"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            onClear={() => setSearch("")}
-          /> */}
 
           <KadaButton
             className="!w-full rounded-full"

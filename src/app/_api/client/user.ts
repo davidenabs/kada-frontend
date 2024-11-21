@@ -8,6 +8,14 @@ const userClient = {
     ApiClient.post(API_ENDPOINTS.VERIFY_NIN, data),
   getUsers: (params: IParams): Promise<IResponse<any>> =>
     ApiClient.get(API_ENDPOINTS.GET_USERS, params),
+  getUser: (id: string): Promise<IResponse<any>> =>
+    ApiClient.get(API_ENDPOINTS.GET_USER.replace(":id", id)),
+  getVendors: (params: IParams): Promise<IResponse<any>> =>
+    ApiClient.get(API_ENDPOINTS.GET_VENDORS, params),
+  getFarmers: (params: IParams): Promise<IResponse<any>> =>
+    ApiClient.get(API_ENDPOINTS.GET_FARMERS, params),
+  getCooperatives: (params: IParams): Promise<IResponse<any>> =>
+    ApiClient.get(API_ENDPOINTS.GET_COOPERATIVES, params),
   getCooperativeFarmers: (params: IParams): Promise<IResponse<any>> =>
     ApiClient.get(API_ENDPOINTS.GET_COOPERATIVE_FARMERS, params),
   forceUpdate: (data: any): Promise<IResponse<any>> =>
