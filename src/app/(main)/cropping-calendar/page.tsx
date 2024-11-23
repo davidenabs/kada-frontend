@@ -6,8 +6,6 @@ export const metadata: Metadata = {
   title: "Cropping Calendar",
 };
 
-const Calendar = () => {
+export default function Calendar() {
   return <CroppingCalendar />;
-};
-
-export default Calendar;
+}

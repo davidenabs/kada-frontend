@@ -21,6 +21,8 @@ import { Dropdown, Empty } from "rizzui";
 import columns from "./columns";
 import ConfirmModal from "@/components/modals/confim-modal";
 import { toast } from "sonner";
+import { useDrawer } from "@/hooks/use-drawer";
+import ViewMarketDrawer from "@/components/drawers/admin/market/view";
 
 function MarketsPages() {
   useDashboardTitle("Markets");
@@ -31,6 +33,7 @@ function MarketsPages() {
   const [search, setSearch] = React.useState("");
   const [limit, setLimit] = React.useState(10);
   const [page, setPage] = React.useState(1);
+  const [drawerOpen, setDrawerOpen] = React.useState(false);
   const debouncedSearchQuery = useDebounce(search);
 
   const { data, isFetching, isLoading, isError } = useGetMarketsQuery({
@@ -86,6 +89,17 @@ function MarketsPages() {
           onConfirm={handleDelete}
         />
       )}
+
+      {drawerOpen && (
+        <ViewMarketDrawer
+          open={drawerOpen}
+          close={() => {
+            setDrawerOpen(false);
+            setMarket(null);
+          }}
+          market={market}
+        />
+      )}
       <section className="space-y-3">
         <div className="flex justify-between items-start">
           <h4 className="text-sm font-bold text-zinc-700">Markets</h4>
@@ -131,6 +145,18 @@ function MarketsPages() {
                         <EllipsisVerticalIcon className="fill-black h-4 w-4" />
                       </Dropdown.Trigger>
                       <Dropdown.Menu className="divide-y bg-white">
+                        <div className={"mb-1"}>
+                          <Dropdown.Item
+                            className="text-xs"
+                            onClick={() => {
+                              setMarket(item);
+                              setDrawerOpen(true);
+                            }}
+                          >
+                            <EyeIcon className="mr-2 h-4 w-4" />
+                            View
+                          </Dropdown.Item>
+                        </div>
                         <div className={"mb-1"}>
                           <Dropdown.Item
                             className="text-xs"

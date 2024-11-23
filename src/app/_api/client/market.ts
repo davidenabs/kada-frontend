@@ -23,7 +23,7 @@ const marketClient = {
   getProductTemplate: (params: IParams): Promise<any> =>
     ApiClient.get(API_ENDPOINTS.GET_PRODUCT_TEMPLATE, params),
   uploadProductsFromSheet: (data: FormData): Promise<any> => {
-    return ApiClient.post(API_ENDPOINTS.GET_MARKETS, data, {
+    return ApiClient.post(API_ENDPOINTS.UPLOAD_PRODUCTS_FROM_SHEETS, data, {
       headers: { "Content-Type": "multipart/form-data" },
     });
   },

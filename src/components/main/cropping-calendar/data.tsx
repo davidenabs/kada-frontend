@@ -1,17 +1,18 @@
 import { Crop } from "@/lib/crop-data";
 import { cn } from "rizzui";
 import React, { useState } from "react";
+import { ICrop } from "@/interface/crop";
 
 type SidebarDataProps = {
   type: "date-range" | "cropping-stage";
-  data: Crop;
+  data: ICrop;
   currentIndex: number;
   handleSelect: (index: number) => void;
 };
 
 type DetailDataProps = {
   type: "date-range" | "cropping-stage";
-  data: Crop;
+  data: ICrop | null;
   currentIndex: number;
   handleSelect: (index: number) => void;
 };
@@ -94,8 +95,8 @@ const Attribute = ({ label, value }: { label: string; value: string }) => (
 
 function DetailData({ data, type, currentIndex }: DetailDataProps) {
   const isDateRange = type === "date-range";
-  const currentStage = data.stages?.[currentIndex] || {};
-  const currentSeason = data.seasons?.[currentIndex] || {};
+  const currentStage = data?.stages?.[currentIndex];
+  const currentSeason = data?.seasons?.[currentIndex];
 
   return (
     <section className="">
@@ -103,25 +104,27 @@ function DetailData({ data, type, currentIndex }: DetailDataProps) {
         <span className="text-[#4D5358]">
           Showing Crop information by date ranges
         </span>
-        <span className="font-bold text-[#00A551] text-sm">{data.name}</span>
+        <span className="font-bold text-[#00A551] text-sm">{data?.name}</span>
         <span>January-February, 2024</span>
       </div>
       {/* Main Details */}
       <div className="border-l-2 border-[#0BCE6B] px-10 py-6 space-y-3">
         <div>
-          <h4 className="text-2xl font-semibold text-[#697077]">{data.name}</h4>
-          <h6 className={`text-[#697077] text-sm`}>{data.description}</h6>
+          <h4 className="text-2xl font-semibold text-[#697077]">
+            {data?.name}
+          </h4>
+          <h6 className={`text-[#697077] text-sm`}>{data?.description}</h6>
         </div>
 
         {/* Attributes */}
         <div className="flex gap-10">
-          <Attribute label="Scientific Name" value={data.scientificName} />
-          <Attribute label="Ideal Temperature" value={data.idealTemperature} />
+          <Attribute label="Scientific Name" value={data!.scientificName} />
+          <Attribute label="Ideal Temperature" value={data!.idealTemperature} />
           <Attribute
             label="Water Requirements"
-            value={data.waterRequirements}
+            value={data!.waterRequirements}
           />
-          <Attribute label="Soil Type" value={data.soilType} />
+          <Attribute label="Soil Type" value={data!.soilType} />
         </div>
       </div>
 
@@ -131,9 +134,9 @@ function DetailData({ data, type, currentIndex }: DetailDataProps) {
             <div>
               <h6 className={`text-[#697077] text-sm`}>Activities</h6>
               <ul className="list-disc list-inside text-sm">
-                {currentSeason.activities?.map((activity, idx) => (
+                {currentSeason?.activities?.map((activity, idx) => (
                   <li key={idx} className={`text-[#4D5358] text-sm`}>
-                    {activity}
+                    {activity.description}
                   </li>
                 ))}
               </ul>
@@ -141,15 +144,15 @@ function DetailData({ data, type, currentIndex }: DetailDataProps) {
           </>
         ) : (
           <div className="space-y-4">
-            <Attribute label="Name" value={currentStage.name} />
-            <Attribute label="Description" value={currentStage.description} />
-            <Attribute label="Duration" value={currentStage.duration} />
+            <Attribute label="Name" value={currentStage!.name} />
+            <Attribute label="Description" value={currentStage!.description} />
+            <Attribute label="Duration" value={currentStage!.duration} />
             <div>
               <h6 className={`text-[#697077] text-sm`}>Tasks</h6>
               <ul className="list-disc list-inside text-sm">
-                {currentStage.tasks?.map((task, idx) => (
+                {currentStage?.tasks?.map((task, idx) => (
                   <li key={idx} className={`text-[#4D5358] text-sm`}>
-                    {task}
+                    {task.description}
                   </li>
                 ))}
               </ul>
