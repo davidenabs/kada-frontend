@@ -25,7 +25,13 @@ export default function VendorDahboardLayout({
       redirectTo: "/account-setup/verify-account",
       condition: (value) => value === false,
     },
+    {
+      field: "vendorProfile.isVerified",
+      redirectTo: "/account-setup/profile/vendor",
+      condition: (value) => value === false,
+    },
   ]);
+
   const router = useRouter();
   const [user, setUser] = useAtom(userAtom);
   const { closeModal, openModal } = useModal();
