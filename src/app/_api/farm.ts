@@ -7,6 +7,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import API_ENDPOINTS from "./client/endpoint";
 import farmClient from "./client/farm";
 import {
+  CreateFarmCroppingPayload,
   ICreateFarmGalleryPayload,
   IFarm,
   IFarmGallery,
@@ -92,5 +93,24 @@ export const useCreateFarmGalleryMutation = () => {
         queryKey: [API_ENDPOINTS.GET_FARM_GALLERY],
       });
     },
+  });
+};
+
+export const useCreateFarmCroppingMutation = () => {
+  return useMutation({
+    mutationFn: (data: CreateFarmCroppingPayload) =>
+      farmClient.createFarmCropping(data),
+    mutationKey: [API_ENDPOINTS.CREATE_FARM_CROPPING],
+  });
+};
+
+export const useGetFarmCroppingNotificationQuery = ({
+  enabled = true,
+  farmId,
+}: IQueryParams & { farmId: string }) => {
+  return useQuery<IResponse<any>, Error>({
+    queryKey: [API_ENDPOINTS.GET_FARM_CROPPING_NOTIFICATION, farmId],
+    queryFn: () => farmClient.getFarmCroppingNotification(farmId),
+    enabled: enabled !== undefined ? enabled : true,
   });
 };

@@ -7,12 +7,13 @@ import {
 } from "@/interface/client";
 import API_ENDPOINTS from "./client/endpoint";
 import { IRequest } from "@/interface/request";
+import { ICrop } from "@/interface/crop";
 
 export const useGetFarmProductsQuery = ({
   enabled = true,
   params = {},
 }: IQueryParams) => {
-  return useQuery<IResponse<IPaginatedResponse<IRequest, "items">>, Error>({
+  return useQuery<IResponse<IPaginatedResponse<ICrop, "items">>, Error>({
     queryKey: [API_ENDPOINTS.GET_FARM_PRODUCTS, params],
     queryFn: () => farmProductsClient.getFarmProducts(params),
     enabled: enabled !== undefined ? enabled : true,

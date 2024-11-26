@@ -50,7 +50,7 @@ function MembershipRequestModal({ close }: MembershipRequestModalProps) {
       </header>
 
       <div className="flex bg-[#F7F7F7] h-[600px]">
-        <div className="w-[300px] md:w-[400px] lg:w-[500px] bg-white space-y-1 overflow-y-scroll pt-1">
+        <div className="w-[200px] md:w-[400px] lg:w-[500px] bg-white space-y-1 overflow-y-scroll pt-1">
           {isFetching || isRefetching ? (
             Array.from({ length: 3 }).map((_, i) => (
               <RequestMemberSkeleton key={i} />
@@ -67,6 +67,7 @@ function MembershipRequestModal({ close }: MembershipRequestModalProps) {
                 selected={selectedRequest?.id === request.id}
                 setRequesting={setRequesting}
                 requesting={requesting}
+                setSelectedRequest={setSelectedRequest}
               />
             ))
           ) : (

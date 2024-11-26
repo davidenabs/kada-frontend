@@ -10,6 +10,7 @@ interface AppState {
   isProfileMdaSetup: boolean;
   isSidebarOpen: boolean;
   userEmail: string | null;
+  selectedMarket: any | null;
 }
 
 export const defaultApp: AppState = {
@@ -21,6 +22,7 @@ export const defaultApp: AppState = {
   isProfileMdaSetup: false,
   isSidebarOpen: false,
   userEmail: null,
+  selectedMarket: null,
 };
 
 // export const appAtom = atomWithStorage("gsp-app", defaultApp);

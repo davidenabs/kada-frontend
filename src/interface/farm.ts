@@ -3,6 +3,12 @@ export interface ICreateFarmGalleryPayload {
   file: File;
 }
 
+export interface CreateFarmCroppingPayload {
+  farmId: string;
+  cropId: string;
+  plantingDate: string | Date;
+}
+
 export interface IGeoLocation {
   type: "Polygon";
   coordinates: [
@@ -24,7 +30,7 @@ export interface IFarm {
   landArea: number;
   location?: string;
   activeSeason: string;
-  products?: {
+  crops?: {
     id: string;
     name: string;
     description: string | null;

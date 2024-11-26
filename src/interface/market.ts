@@ -12,3 +12,20 @@ export interface ICreateMarketPayload {
 export interface IUploadProductsFromSheetPayload {
   file: File;
 }
+
+export interface IMarket {
+  id: number;
+  name: string;
+  address: string;
+  localGovernmentArea: string;
+  ward: string | null;
+  coordinates: string;
+  size: "Small" | "Medium" | "Large";
+  openingDays: string;
+  openingTime: string;
+  marketCode: string;
+  imagePath: string | null;
+  createdAt: string;
+  updatedAt: string;
+  products: any[];
+}

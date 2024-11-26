@@ -2,6 +2,7 @@ import { IParams } from "@/interface/client";
 import { ApiClient } from ".";
 import API_ENDPOINTS from "./endpoint";
 import {
+  CreateFarmCroppingPayload,
   ICreateFarmGalleryPayload,
   ICreateFarmPayload,
 } from "@/interface/farm";
@@ -34,6 +35,12 @@ const farmClient = {
       { headers: { "Content-Type": "multipart/form-data" } }
     );
   },
+  createFarmCropping: (data: CreateFarmCroppingPayload): Promise<any> =>
+    ApiClient.post(API_ENDPOINTS.CREATE_FARM_CROPPING, data),
+  getFarmCroppingNotification: (farmId: string): Promise<any> =>
+    ApiClient.get(
+      API_ENDPOINTS.GET_FARM_CROPPING_NOTIFICATION.replace(":farmId", farmId)
+    ),
 };
 
 export default farmClient;

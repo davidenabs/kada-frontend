@@ -6,6 +6,9 @@ import { useGetFarmQuery } from "@/app/_api/farm";
 import { withAuth } from "@/components/common/auth";
 import { UserType } from "@/interface/user";
 import useDashboardTitle from "@/hooks/use-dashboard-tite";
+import { KadaButton } from "@/components/form/button";
+import { useModal } from "@/hooks/use-modal";
+import NotificationsModal from "@/components/modals/farmer/notifications";
 
 interface NavigationItemProps {
   text: string;
@@ -39,6 +42,7 @@ function FarmSharedPage() {
     enabled: true,
     id: farmId as string,
   });
+  const { closeModal, openModal } = useModal();
 
   const navigationItems = [
     { text: "Dashboard", active: false },
@@ -52,11 +56,24 @@ function FarmSharedPage() {
 
   return (
     <div className="">
-      <nav className="flex gap-3 justifybetween max-w-full text-xs font-light text-neutral-700 w[262px]">
-        {navigationItems.map((item, index) => (
-          <NavigationItem key={index} text={item.text} active={item.active} />
-        ))}
-      </nav>
+      <div className="flex justify-between items-center">
+        <nav className="flex gap-3 justifybetween max-w-full text-xs font-light text-neutral-700 w[262px]">
+          {navigationItems.map((item, index) => (
+            <NavigationItem key={index} text={item.text} active={item.active} />
+          ))}
+        </nav>
+
+        <div className="">
+          <KadaButton
+            className="!rounded-full h-[30px]"
+            onClick={() =>
+              openModal({ view: <NotificationsModal close={closeModal} /> })
+            }
+          >
+            Notifications
+          </KadaButton>
+        </div>
+      </div>
       <FarmInfo {...data?.data} farmId={farmId} />
     </div>
   );

@@ -4,7 +4,7 @@ import React, { Fragment } from "react";
 const FullPageLoader = () => {
   return (
     <Fragment>
-      <section className="fixed top-0 left-0 right-0 bottom-0 h-screen flex items-center justify-center bg-white flex-col space-y-6">
+      <section className="fixed top-0 left-0 right-0 bottom-0 h-screen flex items-center justify-center bg-white flex-col space-y-6 z-[999]">
         <div className="relative w-[100px] h-[100px] flex items-center justify-center">
           <div className="absolute inset-0 flex items-center justify-center rounded-full border">
             <div className="w-full h-full border-[8px] border-[#D7F5E5] border-t-[#0BCE6B] rounded-full animate-spin-slow"></div>

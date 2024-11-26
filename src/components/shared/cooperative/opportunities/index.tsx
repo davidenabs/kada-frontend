@@ -2,12 +2,9 @@
 import { useGetCmsPostsQuery } from "@/app/_api/cms";
 import OpportunitiesCard from "@/components/common/opportunities-card";
 import ExploreOpportunityDraewr from "@/components/drawers/cooperative/explore-opportunity";
-import { KadaButton } from "@/components/form/button";
 import OpportunitySkeleton from "@/components/skeletons/opportunity";
 import useDashboardTitle from "@/hooks/use-dashboard-tite";
 import { IPost } from "@/interface/cms";
-import { ArrowRightIcon } from "@heroicons/react/20/solid";
-import Image from "next/image";
 import React, { Fragment } from "react";
 import { Empty } from "rizzui";
 

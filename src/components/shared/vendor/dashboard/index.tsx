@@ -7,9 +7,7 @@ import Input from "@/components/form/input";
 import Services from "../../farmer/vendors/service/services";
 import AddProductServiceButton from "../add-button";
 import { useGetProducts } from "@/app/_api/catalog";
-import { Empty } from "rizzui";
 import { ICatalog } from "@/interface/catalog";
-import CatalogSkeleton from "@/components/skeletons/catalog";
 import useDebounce from "@/hooks/use-debounce";
 import useDashboardTitle from "@/hooks/use-dashboard-tite";
 
@@ -105,19 +103,20 @@ function VendorDashboardSharedPage() {
                   inputClassName="!rounded-[10px]"
                   className="w-[500px] max-lg:w-full"
                   prefix={<SearchIcon className="fill-black" />}
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  clearable
+                  onClear={() => setSearch("")}
                 />
               </div>
             </div>
 
-            {isFetching || isRefetching ? (
-              <CatalogSkeleton />
-            ) : isError ? (
-              <div className="">error...</div>
-            ) : data?.data?.products?.length === 0 ? (
-              <Empty className="" text="No product available" />
-            ) : (
-              <Services products={products} activeTab={active} />
-            )}
+            <Services
+              products={products}
+              activeTab={active}
+              isError={isError}
+              loading={isFetching || isRefetching}
+            />
           </div>
         </div>
 

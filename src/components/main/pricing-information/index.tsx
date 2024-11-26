@@ -1,81 +1,94 @@
 "use client";
-import Button from "@/components/form/button";
+import Button, { KadaButton } from "@/components/form/button";
 import Select from "@/components/form/select";
 import { BadgeTag, Brick, SearchIcon } from "@/icons";
 import PriceChangeIndicator from "./price-change-indicator";
 import PriceCard from "./price-card";
-import { useState } from "react";
-
-const priceCardsData = [
-  {
-    title: "Maize",
-    price: "105,000",
-    location: "Kasuwa Bichi",
-    lastUpdated: "Last Updated 12:06PM",
-    percentageChange: "3% rise",
-    comparisonText: "Compared to yesterday",
-  },
-  {
-    title: "Maize",
-    price: "96,000",
-    location: "Sabo Market",
-    lastUpdated: "Last Updated 12:06PM",
-    percentageChange: "3% rise",
-    comparisonText: "Compared to yesterday",
-  },
-  {
-    title: "Maize",
-    price: "102,000",
-    location: "Riga Chickun Market",
-    lastUpdated: "Last Updated 12:06PM",
-    percentageChange: "3% rise",
-    comparisonText: "Compared to yesterday",
-  },
-  {
-    title: "Maize",
-    price: "104,000",
-    location: "Kasuwa Bichi",
-    lastUpdated: "Last Updated 12:06PM",
-    percentageChange: "3% rise",
-    comparisonText: "Compared to yesterday",
-  },
-  {
-    title: "Maize II",
-    price: "104,000",
-    location: "Kasuwa Bichi",
-    lastUpdated: "Last Updated 12:06PM",
-    percentageChange: "3% rise",
-    comparisonText: "Compared to yesterday",
-  },
-];
+import React, { useState } from "react";
+import { useGetMarketsQuery, useGetProductsQuery } from "@/app/_api/market";
+import useDebounce from "@/hooks/use-debounce";
+import DatePicker from "@/components/form/date-picker";
+import { format } from "date-fns";
 
 function PricingInformation() {
-  const options = [
-    {
-      label: "Maize",
-      value: "maize",
-    },
-    {
-      label: "Rice",
-      value: "rice",
-    },
-  ];
-
-  const marketOptions = [
-    {
-      label: "All Market",
-      value: "all",
-    },
-    {
-      label: "Kasuwa Market",
-      value: "kasuwa",
-    },
-    {
-      label: "Sabo Market",
-      value: "sabo",
-    },
-  ];
+  const [products, setProducts] = useState<any[]>([]);
   const [showDetails, setShowDetails] = useState(false);
+  const [loaded, setLoaded] = useState(false);
+  const [search, setSearch] = useState("");
+  const [searchMarket, setSearchMarket] = useState("");
+  const [limit, setLimit] = useState(10);
+  const [page, setPage] = useState(1);
+  const [markets, setMarkets] = React.useState<any[]>([]);
+  const [value, setValue] = React.useState(null);
+  const [startDate, setStartDate] = React.useState<Date | null | undefined>(
+    undefined
+  );
+  const debouncedSearchQuery = useDebounce(search);
+  const debouncedSearchMarketQuery = useDebounce(searchMarket);
+  const [showAllMarkets, setShowAllMarkets] = useState(false);
+
+  const { data, isFetching, isLoading, isError } = useGetProductsQuery({
+    enabled: showDetails && loaded,
+    params: {
+      ...(debouncedSearchQuery.length > 0 && { search: debouncedSearchQuery }),
+      page,
+      limit,
+      ...(startDate && { date: format(startDate, "yyyy-MM-dd") }),
+    },
+  });
+
+  const {
+    data: marketData,
+    isFetching: marketIsFetching,
+    isRefetching: marketIsRefetching,
+    isError: marketIsError,
+  } = useGetMarketsQuery({
+    enabled: loaded,
+    params: {
+      search: debouncedSearchMarketQuery,
+      page: 1,
+      limit: 10,
+    },
+  });
+
+  React.useEffect(() => {
+    if (
+      marketData?.data &&
+      marketData.success &&
+      !marketIsFetching &&
+      !marketIsRefetching
+    ) {
+      setProducts(
+        marketData.data.markets.map((market) => ({
+          label: market.name,
+          value: market.id,
+          data: market,
+        }))
+      );
+    }
+  }, [data, marketIsFetching, marketIsRefetching]);
+
+  React.useEffect(() => {
+    if (data?.data && data.success && !isFetching && !isLoading) {
+      // const combinedProducts = data.data.markets.flatMap((market) =>
+      //   market.products.map((product) => ({
+      //     ...product,
+      //     marketId: market.id,
+      //     marketName: market.name,
+      //     marketAddress: market.address,
+      //     marketCode: market.marketCode,
+      //     marketSize: market.size,
+      //   }))
+      // );
+
+      setProducts((data.data as any).items);
+    }
+  }, [data, isFetching, isLoading]);
+
+  React.useEffect(() => {
+    setLoaded(true);
+  }, []);
+
   return (
     <>
       <div className="h-full w-full bg-[#F2F9F5]">
@@ -98,22 +111,35 @@ function PricingInformation() {
                       Get insight on product pricing
                     </p>
                   </div>
-                  <form className="grid grid-cols-3 flex-wrap gap-6 items-start mt-10 w-full">
-                    <Select
+                  <form className="grid grid-cols-2 flex-wrap gap-6 items-start mt-10 w-full">
+                    {/* <Select
                       label="Product"
                       options={options}
                       value={"Select Product"}
                       onChange={() => {}}
                       className="px-5 py-6"
-                    />
+                    /> */}
 
                     <div className="flex flex-col flex-1 shrink basis-0 min-h-[109px] min-w-[240px]">
                       <Select
-                        label="Market"
-                        value="Select Market"
-                        options={marketOptions}
-                        onChange={() => {}}
-                        className="px-5 py-6  self-stretch "
+                        label="Select Market"
+                        searchable={true}
+                        options={products}
+                        value={value}
+                        onChange={(e: any) => {
+                          setValue(e);
+                        }}
+                        clearable={value !== null}
+                        onClear={() => {
+                          setValue(null);
+                          setSearchMarket("");
+                        }}
+                        onSearchChange={(e) => {
+                          setSearchMarket(e);
+                        }}
+                        disableDefaultFilter
+                        searchPlaceHolder="Search here..."
+                        searchPrefix={<SearchIcon className="fill-black" />}
                       />
 
                       <div className="flex gap-2 items-center self-start mt-3">
@@ -122,6 +148,13 @@ function PricingInformation() {
                             type="checkbox"
                             id="searchAllMarkets"
                             className="w-4 h-4 rounded-sm border border-gray-300"
+                            checked={showAllMarkets}
+                            onChange={(e) => {
+                              if (e.target.checked) {
+                                setValue(null);
+                              }
+                              setShowAllMarkets(e.target.checked);
+                            }}
                           />
                         </div>
                         <label
@@ -134,28 +167,42 @@ function PricingInformation() {
                     </div>
 
                     <div className="flex flex-col">
-                      <label className="font-medium text-neutral-700 text-sm">
-                        {"Date"}
-                      </label>
-                      <div className="grid grid-cols-2 gap-5">
-                        <Select
-                          // label="Date"
-                          options={options}
-                          value={"Select Date"}
-                          onChange={() => {}}
-                          className="px-5 py-6  self-stretch "
-                        />
-
-                        <Button
-                          handleClick={() => setShowDetails(true)}
+                      <DatePicker
+                        selected={startDate}
+                        onChange={(date: Date) => setStartDate(date)}
+                        placeholderText="Select Date"
+                        maxDate={new Date()}
+                        wrapperClassName="w-full"
+                        inputProps={{
+                          inputClassName:
+                            "!rounded-full border-primary border-[.5px]",
+                          label: "Select Date",
+                        }}
+                      />
+                      <div className="">
+                        {/* reset date */}
+                        <KadaButton
+                          onClick={() => setStartDate(undefined)}
                           className="w-fit h-fit rounded-full gap-3"
+                          variant="outline"
+                          type="button"
                         >
-                          <SearchIcon className="fill-yellow-500" />
-                          Search
-                        </Button>
+                          Reset Date
+                        </KadaButton>
                       </div>
                     </div>
                   </form>
+
+                  <div className="text-center mt-8">
+                    <KadaButton
+                      onClick={() => setShowDetails(true)}
+                      className="w-[300px] h-[40px] rounded-full gap-2"
+                      type="button"
+                    >
+                      <SearchIcon className="fill-yellow-500" />
+                      Search
+                    </KadaButton>
+                  </div>
                 </div>
               </div>
             </div>
@@ -176,32 +223,74 @@ function PricingInformation() {
               </div>
             ) : (
               <>
-                <div className="flex flex-wrap gap-1 items-center w-full max-md:max-w-full">
-                  <div className="flex flex-col flex-1 shrink self-stretch my-auto basis-0 min-w-[240px] max-md:max-w-full">
-                    <h2 className="text-2xl text-green-600 uppercase max-md:max-w-full">
-                      RESULT ({"24"})
-                    </h2>
-                    <div className="flex flex-wrap gap-3 items-start mt-1 w-full text-base text-neutral-700 max-md:max-w-full">
-                      <span className="uppercase">
-                        {"Product price across all market"}
-                      </span>
-                      <span className="shrink-0 w-0 border border-solid border-zinc-500 h-[19px]" />
-                      <time className="underline decoration-auto decoration-solid underline-offset-auto">
-                        {"28th October, 2024"}
-                      </time>
+                {isFetching || isLoading ? (
+                  <div className="flex items-center justify-center">
+                    <div className="flex flex-col items-center self-center max-w-full leading-tight w-[472px]">
+                      <Brick className="w-[136.5px] h-[136.5px]" />
+                      <h2 className="mt-1 text-lg font-semibold text-[#205B42]">
+                        Loading...
+                      </h2>
+                      <p className="mt-1 text-sm text-center text-neutral-700 max-md:max-w-full">
+                        Fetching data
+                      </p>
                     </div>
                   </div>
-                  <div className="flex flex-col self-stretch my-auto text-sm text-neutral-700 w-[120px]">
-                    <PriceChangeIndicator type="increase" />
-                    <PriceChangeIndicator type="reduction" />
+                ) : isError ? (
+                  <div className="flex items-center justify-center">
+                    <div className="flex flex-col items-center self-center max-w-full leading-tight w-[472px]">
+                      <Brick className="w-[136.5px] h-[136.5px]" />
+                      <h2 className="mt-1 text-lg font-semibold text-[#205B42]">
+                        Failed to fetch data
+                      </h2>
+                      <p className="mt-1 text-sm text-center text-neutral-700 max-md:max-w-full">
+                        An error occurred while fetching data
+                      </p>
+                    </div>
                   </div>
-                </div>
+                ) : products?.length === 0 ? (
+                  <div className="flex items-center justify-center">
+                    <div className="flex flex-col items-center self-center max-w-full leading-tight w-[472px]">
+                      <Brick className="w-[136.5px] h-[136.5px]" />
+                      <h2 className="mt-1 text-lg font-semibold text-[#205B42]">
+                        No data found
+                      </h2>
+                      <p className="mt-1 text-sm text-center text-neutral-700 max-md:max-w-full">
+                        No market data found
+                      </p>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="">
+                    <div className="flex flex-wrap gap-1 items-center w-full max-md:max-w-full">
+                      <div className="flex flex-col flex-1 shrink self-stretch my-auto basis-0 min-w-[240px] max-md:max-w-full">
+                        <h2 className="text-2xl text-green-600 uppercase max-md:max-w-full">
+                          RESULT ({"24"})
+                        </h2>
+                        <div className="flex flex-wrap gap-3 items-start mt-1 w-full text-base text-neutral-700 max-md:max-w-full">
+                          <span className="uppercase">
+                            {"Product price across all market"}
+                          </span>
+                          <span className="shrink-0 w-0 border border-solid border-zinc-500 h-[19px]" />
+                          <time className=" decoration-auto decoration-solid underline-offset-auto">
+                            {/* {"28th October, 2024"} */}
 
-                <div className="flex flex-wrap flex-1 shrink gap-6 items-center self-stretch my-auto w-full basis-0 min-w-[240px] max-md:max-w-full mt-3">
-                  {priceCardsData.map((cardData, index) => (
-                    <PriceCard key={index} {...cardData} />
-                  ))}
-                </div>
+                            {format(startDate ?? new Date(), "dd MMMM, yyyy")}
+                          </time>
+                        </div>
+                      </div>
+                      <div className="flex flex-col self-stretch my-auto text-sm text-neutral-700 w-[120px]">
+                        <PriceChangeIndicator type="increase" />
+                        <PriceChangeIndicator type="reduction" />
+                      </div>
+                    </div>
+
+                    <div className="flex flex-wrap flex-1 shrink gap-6 items-center self-stretch my-auto w-full basis-0 min-w-[240px] max-md:max-w-full mt-3">
+                      {products?.map((product, index) => (
+                        <PriceCard key={index} {...product} />
+                      ))}
+                    </div>
+                  </div>
+                )}
               </>
             )}
           </section>

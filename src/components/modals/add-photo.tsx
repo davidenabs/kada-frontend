@@ -59,6 +59,10 @@ function AddPhoto({ close, gallery, farmId }: Props) {
   });
 
   const onSubmit = (data: CreateGallerySchemaType) => {
+    const formData = new FormData();
+    formData.append("description", data.description);
+    formData.append("file", data.file);
+
     mutateAsync(
       {
         data: {

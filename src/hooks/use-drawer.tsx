@@ -1,5 +1,5 @@
 "use client";
-import { atom, useAtomValue, useSetAtom } from "jotai";
+import { atom, useAtom, useAtomValue, useSetAtom } from "jotai";
 import { useEffect } from "react";
 import type { DrawerSize } from "rizzui";
 
@@ -26,8 +26,7 @@ const drawerAtom = atom<DrawerTypes>({
 });
 
 export function useDrawer() {
-  const state = useAtomValue(drawerAtom);
-  const setState = useSetAtom(drawerAtom);
+  const [state, setState] = useAtom(drawerAtom);
 
   const openDrawer = ({
     view,

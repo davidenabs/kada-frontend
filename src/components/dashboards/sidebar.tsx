@@ -51,14 +51,14 @@ const adminMenuItems: MenuItem[] = [
   },
   {
     icon: TreeIcon,
-    label: "Requests",
+    label: "Vendors",
     href: `${adminBasePath}/requests`,
   },
-  // {
-  //   icon: ChartIcon,
-  //   label: "Insights",
-  //   href: `${adminBasePath}/insight`,
-  // },
+  {
+    icon: ChartIcon,
+    label: "Markets",
+    href: `${adminBasePath}/markets`,
+  },
   {
     icon: GridIcon,
     label: "Tools",
