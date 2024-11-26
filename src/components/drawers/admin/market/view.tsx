@@ -1,4 +1,6 @@
+import { useGetMarketProductsQuery } from "@/app/_api/market";
 import { CloseIcon } from "@/icons";
+import { format } from "date-fns";
 import React, { Fragment } from "react";
 import { cn, Drawer, Table } from "rizzui";
 
@@ -9,6 +11,17 @@ type ViewMarketDrawerProps = {
 };
 
 function ViewMarketDrawer({ open, close, market }: ViewMarketDrawerProps) {
+  const [loaded, setLoaded] = React.useState(false);
+  const { data, isFetching, isRefetching } = useGetMarketProductsQuery({
+    enabled: loaded,
+    marketId: market?.id,
+  });
+
+  React.useEffect(() => {
+    if (market?.id) {
+      setLoaded(true);
+    }
+  }, [market?.id]);
   return (
     <Fragment>
       <Drawer
@@ -79,20 +92,34 @@ function ViewMarketDrawer({ open, close, market }: ViewMarketDrawerProps) {
                   </Table.Row>
                 </Table.Header>
 
-                <Table.Body>
-                  {market?.products.map((product: any) => (
-                    <Table.Row key={product.id}>
-                      {/* <Table.Cell className="text-center">
-                        <Checkbox />
-                      </Table.Cell> */}
-                      <Table.Cell>{product.name}</Table.Cell>
-                      <Table.Cell>{product.price}</Table.Cell>
-                      <Table.Cell>{product.quantity}</Table.Cell>
-                      <Table.Cell>{product.unit || "N/A"}</Table.Cell>
-                      <Table.Cell>{product.currentPriceDate}</Table.Cell>
-                    </Table.Row>
-                  ))}
-                </Table.Body>
+                {isFetching || isRefetching ? (
+                  <div className="">Loading....</div>
+                ) : data?.data?.products ? (
+                  <>
+                    <Table.Body>
+                      {data?.data?.products?.map((product: any) => (
+                        <Table.Row key={product.id}>
+                          {/* <Table.Cell className="text-center">
+                              <Checkbox />
+                            </Table.Cell> */}
+                          <Table.Cell>{product.name}</Table.Cell>
+                          <Table.Cell>{product.price}</Table.Cell>
+                          <Table.Cell>{product.quantity}</Table.Cell>
+                          <Table.Cell>{product.unit || "N/A"}</Table.Cell>
+                          <Table.Cell>
+                            {format(product.currentPriceDate, "PP")}
+                          </Table.Cell>
+                        </Table.Row>
+                      ))}
+                    </Table.Body>
+                  </>
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center bg-[#ECF2F6] rounded-[20px]">
+                    <p className="text-[#333543] text-sm font-inter">
+                      No Product available
+                    </p>
+                  </div>
+                )}
               </Table>
             </div>
           </div>

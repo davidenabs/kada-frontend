@@ -23,6 +23,17 @@ export const useGetMarketsQuery = ({
   });
 };
 
+export const useGetProductsQuery = ({
+  enabled = true,
+  params = {},
+}: IQueryParams) => {
+  return useQuery<IResponse<any>, Error>({
+    queryKey: [API_ENDPOINTS.GET_PRODUCTS],
+    queryFn: () => marketClient.getProducts(params),
+    enabled: enabled,
+  });
+};
+
 export const useGetMarket = ({
   enabled = true,
   params = {},
@@ -70,13 +81,14 @@ export const useDeleteMarketMutation = () => {
   });
 };
 
-export const useGetMarketProducts = ({
+export const useGetMarketProductsQuery = ({
   enabled = true,
   params = {},
-}: IQueryParams) => {
-  return useQuery<IResponse<any>, Error>({
+  marketId,
+}: IQueryParams & { marketId: string }) => {
+  return useQuery<IResponse<IPaginatedResponse<any, "products">>, Error>({
     queryKey: [API_ENDPOINTS.GET_MARKET_PRODUCTS],
-    queryFn: () => marketClient.getMarketProducts(params),
+    queryFn: () => marketClient.getMarketProducts(params, marketId),
     enabled: enabled,
   });
 };

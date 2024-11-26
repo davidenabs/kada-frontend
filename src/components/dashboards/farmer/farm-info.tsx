@@ -1,4 +1,4 @@
-import Button from "@/components/form/button";
+import Button, { KadaButton } from "@/components/form/button";
 import { CameraIcon } from "@/icons";
 import Image from "next/image";
 import React, { Fragment } from "react";
@@ -10,6 +10,8 @@ import { useGetFarmGalleryQuery } from "@/app/_api/farm";
 import FarmGalleySkeleton from "@/components/skeletons/farm-gallery";
 import { Map } from "@/components/common/map";
 import { parseGeoLocation } from "@/utils/utils";
+import { Tooltip } from "rizzui";
+import NotifyModal from "@/components/modals/farmer/notify";
 
 export function CoordinateDisplay({ geoLocation }: { geoLocation: string }) {
   const coordinates = parseGeoLocation(geoLocation);
@@ -44,6 +46,7 @@ function FarmInfo(farm: IFarm & { farmId: string }) {
   const { data, isFetching, isRefetching } = useGetFarmGalleryQuery({
     farmId: farm.farmId,
   });
+  const [notify, setNotify] = React.useState(false);
 
   const handleOpenModal = () => {
     openModal({
@@ -60,6 +63,13 @@ function FarmInfo(farm: IFarm & { farmId: string }) {
 
   return (
     <Fragment>
+      {notify && (
+        <NotifyModal
+          open={notify}
+          close={() => setNotify(false)}
+          crops={farm.crops!}
+        />
+      )}
       <section className="mt-6 p-2 border border-teal-700 border-opacity-30 rounded-[20px]">
         <div className="flex gap-4">
           <div className="bg-white rounded-3xl shadow-[0px_0px_40px_0px_#C6C5C545] h-[682px] w-[269px] p-3">
@@ -82,18 +92,18 @@ function FarmInfo(farm: IFarm & { farmId: string }) {
               </p>
             </div>
 
-            <div className="text-center">
+            {/* <div className="text-center">
               <button className="px-5 py-2.5 mt-6 mb-0 text-sm font-medium border-zinc-700 rounded-[60px] border-[0.5px]">
                 Edit Info
               </button>
-            </div>
+            </div> */}
 
             <div className="mt-4">
-              <h4 className="text-[14px]">Produce</h4>
-              <div className="flex flex-wrap gap-[6px] justify-center text-sm font-thin mt-5 w-full text-black/85 whitespace-nowrap">
-                {farm?.products?.map((crop, index) => (
+              <h4 className="text-[14px]">Crop(s)</h4>
+              <div className="flex flex-wrap gap-[6px] justify-center text-sm font-thin mt-2 w-full text-black/85 whitespace-nowrap">
+                {farm?.crops?.map((crop, index) => (
                   <span
-                    key={index}
+                    key={index + crop.name}
                     className="gap-2.5 self-stretch px-2.5 py-1 rounded border-zinc-200 border-[0.2px]"
                   >
                     {crop.name}
@@ -102,17 +112,20 @@ function FarmInfo(farm: IFarm & { farmId: string }) {
               </div>
             </div>
 
-            <div className="mt-4 space-y-4">
-              <h4 className="text-[14px] font-medium">Farm Direction</h4>
-              <div className="flex justify-between text-[#333543] text-sm mt-4">
-                <span className="font-light font-inter">Longitude:</span>
-                <span className="font-bold  text-sm">10.5247° N</span>
-              </div>
-
-              <div className="flex justify-between text-[#333543] text-sm">
-                <span className="font-light font-inter">Latitude:</span>
-                <span className="font-bold  text-sm">10.5247° N</span>
-              </div>
+            <div className="text-center mt-4">
+              <Tooltip
+                size="sm"
+                className="bg-white border-primary border"
+                content={"Get notified for your cropping stages"}
+              >
+                <KadaButton
+                  className="w-fit h-[30px]"
+                  variant="outline"
+                  onClick={() => setNotify(true)}
+                >
+                  Get Notified
+                </KadaButton>
+              </Tooltip>
             </div>
 
             <div className="mt-4 space-y-4">
@@ -159,24 +172,12 @@ function FarmInfo(farm: IFarm & { farmId: string }) {
                 <Map coordinates={farm.geoLocation as any} />
                 <div className="absolute bottom-0 right-0 h-[163px] w-fit z-[9999]">
                   <div className="w-full bg-[#3865E0] h-full rounded-[14px] p-4 overflow-y-scroll">
-                    {/* <div className="flex justify-between text-[18px] text-white font-inter">
-                      <span className="font-light">Longitude:</span>
-                      <span className="font-bold">10.5247° N</span>
-                    </div>
-                    <div className="flex justify-between text-[18px] text-white font-inter">
-                      <span className="font-light">Latitude:</span>
-                      <span className="font-bold">10.5247° N</span>
-                    </div> */}
-
                     <div className="">
                       <CoordinateDisplay
                         geoLocation={farm.geoLocation as any}
                       />
                     </div>
                   </div>
-                  {/* <button className="w-full bg-white flex items-center justify-center h-[72px] relative bottom-4 rounded-[14px]">
-                    <span>Get Direction</span>
-                  </button> */}
                 </div>
               </div>
             </div>

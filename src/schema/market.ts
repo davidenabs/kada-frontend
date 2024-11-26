@@ -8,7 +8,7 @@ export const marketSchema = z.object({
   coordinates: z.string().min(1, "Coordinates is required"),
   size: z.enum(["Small", "Medium", "Large"]),
   openingDays: z.string().min(1, "Opening days are required"),
-  openingTime: z.string().min(1, "Opening time is required"),
+  openingTime: z.string(),
 });
 
 export type marketSchemaType = z.infer<typeof marketSchema>;

@@ -51,7 +51,7 @@ const adminMenuItems: MenuItem[] = [
   },
   {
     icon: TreeIcon,
-    label: "Requests",
+    label: "Vendors",
     href: `${adminBasePath}/requests`,
   },
   {

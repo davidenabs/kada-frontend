@@ -3,15 +3,27 @@ import {
   useUpdateMarketMutation,
 } from "@/app/_api/market";
 import { KadaButton } from "@/components/form/button";
+import DatePicker from "@/components/form/date-picker";
 import Input from "@/components/form/input";
 import { CloseIcon } from "@/icons";
 import { IMarket } from "@/interface/market";
 import { marketSchema, marketSchemaType } from "@/schema/market";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { format } from "date-fns";
 import React, { Fragment } from "react";
-import { useForm } from "react-hook-form";
-import { Modal } from "rizzui";
+import { Controller, useForm } from "react-hook-form";
+import { Badge, cn, Modal } from "rizzui";
 import { toast } from "sonner";
+
+const days = [
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+  "Sunday",
+];
 
 type AddMarketModalProps = {
   open: boolean;
@@ -31,18 +43,25 @@ const defaultValues = {
 };
 
 function AddMarketModal({ open, market, close }: AddMarketModalProps) {
+  const [startDate, setStartDate] = React.useState<Date | null>(null);
+  const [endDate, setEndDate] = React.useState<Date | null>(null);
+  const [selectedDays, setSelectedDays] = React.useState<string[]>([]);
+
+  const createMutation = useCreateMarketMutation();
+  const updateMutation = useUpdateMarketMutation();
   const {
+    control,
     reset,
     register,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm({
     defaultValues: defaultValues,
     resolver: zodResolver(marketSchema),
   });
 
-  const createMutation = useCreateMarketMutation();
-  const updateMutation = useUpdateMarketMutation();
+  const watchDays = watch("openingDays");
 
   React.useEffect(() => {
     if (market) {
@@ -55,6 +74,16 @@ function AddMarketModal({ open, market, close }: AddMarketModalProps) {
   }, [createMutation.isPending, updateMutation.isPending]);
 
   const onSubmit = (data: marketSchemaType) => {
+    if (!startDate || !endDate) {
+      toast.error("Please select opening and closing time");
+      return;
+    }
+    const openingTime = `${format(startDate!, "H:mm aa")} - ${format(
+      endDate!,
+      "H:mm aa"
+    )}`;
+
+    data.openingTime = openingTime;
     if (market === null) {
       createMutation.mutateAsync(
         {
@@ -154,21 +183,92 @@ function AddMarketModal({ open, market, close }: AddMarketModalProps) {
                   disabled={isLoading}
                 />
 
-                <Input
-                  label="Opening Days"
-                  placeholder="Enter market opening days"
-                  error={errors.openingDays?.message}
-                  {...register("openingDays")}
-                  disabled={isLoading}
-                />
+                <div className="">
+                  <Input
+                    label="Opening Days"
+                    placeholder="Enter market opening days"
+                    error={errors.openingDays?.message}
+                    value={watchDays}
+                    disabled={true}
+                  />
+                  <div className="flex flex-wrap gap-1">
+                    <Controller
+                      control={control}
+                      name="openingDays"
+                      render={({ field: { value, onChange } }) => (
+                        <>
+                          {days.map((day, index) => (
+                            <Badge
+                              key={index}
+                              className={cn(
+                                "flex items-center gap-1 px-2 py-[1px] text-[10px] font-light cursor-pointer",
+                                selectedDays.includes(day)
+                                  ? "bg-primary text-white"
+                                  : "bg-gray-100 text-gray-500"
+                              )}
+                              color="primary"
+                              variant="outline"
+                              onClick={() => {
+                                if (selectedDays.includes(day)) {
+                                  setSelectedDays((prev) =>
+                                    prev.filter((d) => d !== day)
+                                  );
+                                  onChange(
+                                    value
+                                      .split(",")
+                                      .filter((d) => d !== day)
+                                      .join(",")
+                                  );
+                                } else {
+                                  setSelectedDays((prev) => [...prev, day]);
+                                  onChange(value ? `${value},${day}` : day);
+                                }
+                              }}
+                            >
+                              {day}
+                            </Badge>
+                          ))}
+                        </>
+                      )}
+                    />
+                  </div>
+                </div>
 
-                <Input
-                  label="Opening Time"
-                  placeholder="Enter market opening time"
-                  error={errors.openingTime?.message}
-                  {...register("openingTime")}
-                  disabled={isLoading}
-                />
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="">
+                    <DatePicker
+                      selected={startDate}
+                      onChange={(date: Date) => setStartDate(date)}
+                      dateFormat="h:mm aa"
+                      placeholderText="Select Time"
+                      showTimeSelect
+                      showTimeSelectOnly
+                      wrapperClassName="w-full"
+                      inputProps={{
+                        inputClassName:
+                          "!rounded-full border-primary border-[.5px]",
+                        label: "Opening Time",
+                      }}
+                    />
+                  </div>
+
+                  <div className="">
+                    <DatePicker
+                      selected={endDate}
+                      onChange={(date: Date) => setEndDate(date)}
+                      dateFormat="h:mm aa"
+                      placeholderText="Select Time"
+                      showTimeSelect
+                      showTimeSelectOnly
+                      wrapperClassName="w-full"
+                      inputProps={{
+                        inputClassName:
+                          "!rounded-full border-primary border-[.5px]",
+                        label: "Closing Time",
+                      }}
+                    />
+                  </div>
+                </div>
               </div>
             </div>
 

@@ -13,7 +13,7 @@ import { ICrop } from "@/interface/crop";
 function CroppingCalendar() {
   const [selectedOption, setSelectedOption] = useState<
     "date-range" | "cropping-stage"
-  >("date-range");
+  >("cropping-stage");
   const [search, setSearch] = useState("");
   const [results, setResults] = useState<Crop[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -67,7 +67,7 @@ function CroppingCalendar() {
           </h4>
 
           <div className="flex justify-center mt-[50px]">
-            <div className="flex items-center gap-3">
+            <div className="flex flex-row-reverse items-center gap-3">
               <button
                 className={cn(
                   "flex items-center gap-4 px-3 py-2 bg-[#E5E5E5] rounded-lg w-[210px]",

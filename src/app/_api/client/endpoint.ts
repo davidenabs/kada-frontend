@@ -25,6 +25,8 @@ const API_ENDPOINTS = {
   DELETE_FARM: "/farms/:farmId",
   GET_FARM_GALLERY: "/farms/gallery/:farmId",
   CREATE_FARM_GALLERY: "/farms/gallery/:farmId",
+  CREATE_FARM_CROPPING: "/farm-cropping",
+  GET_FARM_CROPPING_NOTIFICATION: "/farm-cropping/farm/notification/:farmId",
 
   // catalog
   CATALOG_GET_PRODUCTS: "/catalog/products",
@@ -51,6 +53,7 @@ const API_ENDPOINTS = {
   DELETE_MARKET: "/market/:id",
   GET_MARKET_PRODUCTS: "/market/:marketId/products",
   GET_PRODUCT_TEMPLATE: "/market/get-product-template",
+  GET_PRODUCTS: "/market/products",
   UPLOAD_PRODUCTS_FROM_SHEETS: "/market/upload-products-from-sheet",
 
   // farm products
