@@ -47,7 +47,7 @@ const PriceCard: React.FC<PriceCardProps> = (product: any) => {
               <p className="mt-1 text-xs leading-tight text-center text-zinc-600">
                 Last updated {""}
                 {formatDate(
-                  new Date(product?.createdAt),
+                  new Date(product?.createdAt ?? new Date()),
                   "dd MMM yyyy, hh:mm a"
                 )}
               </p>
