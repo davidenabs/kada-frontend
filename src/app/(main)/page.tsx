@@ -23,13 +23,13 @@ const Home = () => {
         iconSrc: "/images/vision.svg",
         title: "VISION",
         description:
-          "To ensure sustained growth in the agricultural Sector of Kaduna State through multi-Stakeholders' approach for attainment of food and nutrition security, meet industrial demand and stimulate employment",
+          "To make agri-business the leading contributor to the Kaduna State Economy",
       },
       {
         iconSrc: "/images/mission.svg",
         title: "MISSION",
         description:
-          "To ensure sustained growth in the agricultural Sector of Kaduna State through multi-Stakeholders' approach for attainment of food and nutrition security, meet industrial demand and stimulate employment",
+          "To provide an enabling environment for agri business development through the efficient management of abundant human and natural resources, deployment of improved technologies and market facilitation for an inclusive, sustainable and profitable agricultural enterprise",
         extraImage: "/images/vector-cloud.svg",
       },
     ],

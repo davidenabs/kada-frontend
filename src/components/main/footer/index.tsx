@@ -62,12 +62,12 @@ const Footer: React.FC = () => {
             <div className="flex flex-col items-start mt-16 max-md:mt-10">
               <div className="flex flex-col max-md:ml2.5">
                 <div className="flex flex-col text-sm text-zinc-700 w-[255px] max-w-full">
-                  <h3 className="text-base leading-tight">Head Office</h3>
+                  <h3 className="text-base leading-tight">Head Quarters</h3>
                   <p className="mt-5 font-bold tracking-wide leading-snug">
                     Kaduna
                   </p>
                   <p className="mt-5 tracking-wide leading-5 text-zinc-500">
-                    No 1, Aliyu Makama by Gashashi Road, Barnawa GRA P.M.B 2269,
+                    No 1, Gashashi Road, Aliyu Makama Barnawa GRA, P.M.B 2269,
                     Kaduna, Kaduna State.
                   </p>
                 </div>
@@ -90,7 +90,7 @@ const Footer: React.FC = () => {
                 alt=""
                 className="object-cover absolute inset-0 w-full h-full"
               />
-              <ContactInformation />
+              {/* <ContactInformation /> */}
               <SocialMediaLinks />
             </div>
           </div>
