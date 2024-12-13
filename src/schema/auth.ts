@@ -69,6 +69,9 @@ export const CooperativeSchema = z
     cooperativeName: z
       .string()
       .min(1, { message: "Cooperative name is required" }),
+    lga: z
+      .string()
+      .min(1, { message: "LGA is required" }),
     ...baseRegisterSchema,
   })
   .refine((data) => data.password === data.confirmPassword, {
@@ -90,6 +93,27 @@ export const VendorSchema = z
   });
 
 export type VendorSchemaType = z.infer<typeof VendorSchema>;
+
+// *cooperative schema
+export const EnumeratorSchema = z
+  .object({
+    firstName: z
+      .string()
+      .min(1, { message: "First name is required" }),
+    lastName: z
+      .string()
+      .min(1, { message: "Last name is required" }),
+    // lga: z
+    //   .string()
+    //   .min(1, { message: "LGA is required" }),
+    ...baseRegisterSchema,
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords don't match",
+    path: ["confirmPassword"],
+  });
+
+export type EnumeratorSchemaType = z.infer<typeof EnumeratorSchema>;
 
 // forgot password schema
 export const ForgotPasswordSchema = z.object({
@@ -136,3 +160,18 @@ export const ResetPasswordSchema = z
   });
 
 export type ResetPasswordSchemaType = z.infer<typeof ResetPasswordSchema>;
+
+// *enumerator register farmer schema
+export const EnumeratorRegisterFarmerSchema = z
+  .object({
+    firstName: z.string().min(1, { message: "First name is required" }),
+    lastName: z.string().min(1, { message: "Last name is required" }),
+    nin: z.string().min(1, { message: "NIN is required" }),
+    ...baseRegisterSchema,
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords don't match",
+    path: ["confirmPassword"],
+  });
+
+export type EnumeratorRegisterFarmerSchemaType = z.infer<typeof EnumeratorRegisterFarmerSchema>;

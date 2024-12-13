@@ -10,7 +10,7 @@ const Select = React.forwardRef<HTMLSelectElement, SelectProp>(
       <RizzSelect
         label={label}
         selectClassName={cn(
-          "ring-0 bg-[#F9F9F9] rounded-[60px] max-md:px-5 max-md:max-w-full border-0",
+          "ring-0 bg-[#F9F9F9] rounded-[60px] max-md:px-5 max-md:max-w-full border-[0.4px] border-primary",
           className
         )}
         ref={ref}

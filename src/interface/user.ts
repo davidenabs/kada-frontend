@@ -2,6 +2,7 @@ export interface IUser {
   createdAt: string;
   updatedAt: string;
   id: number;
+  publicId: string;
   firstName: string;
   lastName: string;
   email: string;
@@ -11,6 +12,9 @@ export interface IUser {
   password: string;
   userType: UserType;
   verified: boolean;
+  isSubscribed: boolean;
+  createdBy: string;
+  lga: string;
   verificationMethod: "EMAIL" | "PHONE" | "BOTH";
   otp: string;
   otpCreatedAt: string | null;
@@ -29,6 +33,9 @@ export enum UserType {
 
 export interface IVerifyNinPayload {
   nin: string;
+  phoneNumber?: string;
+  userId?: string;
+  dob?: string;
 }
 
 export interface IFarmerProfile {
@@ -37,6 +44,7 @@ export interface IFarmerProfile {
   ninData: any;
   isNinVerified: boolean;
   dob: string;
+  cooperative: ICooperativeProfile;
 }
 
 export interface ICooperativeProfile {
@@ -46,6 +54,11 @@ export interface ICooperativeProfile {
   eligibility: string | null;
   registrationNumber: string | null;
   isVerified: boolean;
+  bankName: string | null;
+  accountNumber: string | null;
+  accountName: string | null;
+  bankAddress: string | null;
+  joinAmount: number | null;
 }
 
 export interface IVendorProfile {

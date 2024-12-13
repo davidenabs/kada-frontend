@@ -20,6 +20,9 @@ export const createFarmSchema = z.object({
   }),
   activeSeason: z.string().min(1, { message: "Active season is required" }),
   products: z.array(z.any()).min(1, { message: "Minimum 1 item required!" }),
+  lga: z
+    .string()
+    .min(1, { message: "LGA is required" }),
 });
 
 export type CreateFarmSchemaType = z.infer<typeof createFarmSchema>;

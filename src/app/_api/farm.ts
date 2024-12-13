@@ -114,3 +114,19 @@ export const useGetFarmCroppingNotificationQuery = ({
     enabled: enabled !== undefined ? enabled : true,
   });
 };
+// 
+export const useUpdateFarmActivityLogMutation = () => {
+  return useMutation({
+    mutationFn: (data: { farmActivityLogId: string; }) =>
+      farmClient.updateFarmActivityLog(data),
+    mutationKey: [API_ENDPOINTS.UPDATE_FARM_ACTIVITY_LOG],
+  });
+};
+
+export const useVerifyFarmMutation = () => {
+  return useMutation({
+    mutationFn: ({ data, id, farmerId }: { data: any; id: string, farmerId: any }) =>
+      farmClient.verifyFarm(data, id, farmerId),
+    mutationKey: [API_ENDPOINTS.VERIFY_FARM],
+  });
+};

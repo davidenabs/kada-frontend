@@ -1,3 +1,5 @@
+import { Activity, ICrop } from "./crop";
+
 export interface ICreateFarmGalleryPayload {
   description: string;
   file: File;
@@ -30,15 +32,15 @@ export interface IFarm {
   landArea: number;
   location?: string;
   activeSeason: string;
-  crops?: {
-    id: string;
-    name: string;
-    description: string | null;
-  }[];
+  lga?: string;
+  crops?: ICrop[];
   geoLocation: IGeoLocation;
   imagePath: string;
   isVerified: boolean;
   farmerId: string;
+  activityLogs?: IActivityLog[];
+  createdAt?: string | Date | null;
+  updatedAt?: string | Date | null;
 }
 
 export interface IFarmGallery {
@@ -48,3 +50,17 @@ export interface IFarmGallery {
   createdAt: string | Date;
   updatedAt: string | Date;
 }
+
+export interface IActivityLog {
+  id: string;
+  status: boolean;
+  completedAt: string | null;
+  notificationCount: number;
+  createdAt: string;
+  expiredAt: string;
+  updatedAt: string;
+  activity: Activity;
+  crop?: ICrop;
+}
+
+

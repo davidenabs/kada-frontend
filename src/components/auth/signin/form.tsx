@@ -49,10 +49,11 @@ const SignInForm: React.FC = () => {
           if (
             userType !== UserType.FARMER &&
             userType !== UserType.COOPERATIVE &&
-            userType !== UserType.VENDOR
+            userType !== UserType.VENDOR &&
+            userType !== UserType.ENUMERATOR
           ) {
             toast.dismiss();
-            toast.error("Unathorized", {
+            toast.error("Unauthorized", {
               description: "Invalid user type",
             });
             return;
@@ -75,6 +76,9 @@ const SignInForm: React.FC = () => {
               break;
             case UserType.VENDOR:
               router.push("/dashboard/vendor");
+              break;
+            case UserType.ENUMERATOR:
+              router.push("/dashboard/enumerator");
               break;
             default:
               break;
@@ -130,7 +134,7 @@ const SignInForm: React.FC = () => {
         <Button
           type="submit"
           className="!py-3 mt-8 !rounded-full"
-          loading={loading}
+          loading={loading || isSubmitting}
         >
           Sign in
         </Button>

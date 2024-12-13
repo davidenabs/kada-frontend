@@ -68,3 +68,6 @@ export const getTimeAgo = (date: Date | string): string => {
   const days = differenceInDays(now, targetDate);
   return `${days} day${days !== 1 ? "s" : ""} ago`;
 };
+
+// Helper function to check for valid non-empty values
+export const isValidValue = (value: any) => value !== null && value !== undefined && value !== "";

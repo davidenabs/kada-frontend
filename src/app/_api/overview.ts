@@ -28,3 +28,11 @@ export const useGetVendorOverviewQuery = ({ enabled = true }: IQueryParams) => {
     enabled: enabled,
   });
 };
+
+export const useGetEnumeratorOverviewQuery = ({ enabled = true }: IQueryParams) => {
+  return useQuery<IResponse<any>, Error>({
+    queryKey: [API_ENDPOINTS.GET_ENUMERATOR_OVERVIEW],
+    queryFn: () => overviewClient.getEnumeratorOverview(),
+    enabled: enabled,
+  });
+};

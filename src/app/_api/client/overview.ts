@@ -11,6 +11,9 @@ const overviewClient = {
   getVendorOverview: (): Promise<any> => {
     return ApiClient.get(API_ENDPOINTS.GET_VENDOR_OVERVIEW);
   },
+  getEnumeratorOverview: (): Promise<any> => {
+    return ApiClient.get(API_ENDPOINTS.GET_ENUMERATOR_OVERVIEW);
+  },
 };
 
 export default overviewClient;

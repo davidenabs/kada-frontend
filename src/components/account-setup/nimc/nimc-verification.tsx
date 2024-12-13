@@ -5,27 +5,13 @@ import Button from "@/components/form/button";
 import Input from "@/components/form/input";
 import useCheckUserField from "@/hooks/user-field";
 import { UserType } from "@/interface/user";
+import { nimcVwrifySchema, nimcVwrifySchemaType } from "@/schema/user";
 import { userAtom } from "@/stores/user";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAtom } from "jotai";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { z } from "zod";
-
-const nimcVwrifySchema = z.object({
-  dob: z.string({ message: "Date of birth is required" }).trim().min(1, {
-    message: "Date of birth is required",
-  }),
-  nin: z
-    .string()
-    .trim()
-    .min(1, { message: "NIN is required" })
-    .length(11, { message: "NIN must be 11 characters long" })
-    .regex(/^\d+$/, { message: "NIN must be a number" }),
-});
-
-type nimcVwrifySchemaType = z.infer<typeof nimcVwrifySchema>;
 
 const NimcVerification: React.FC = () => {
   useCheckUserField([
