@@ -67,3 +67,9 @@ export const kadaLGA: KadaLGA = {
         ]
     }
 };
+
+// Map LGAs to options
+export const lgaOptions = kadaLGA.lgas.map((lga) => ({
+    value: lga,
+    label: lga,
+}));

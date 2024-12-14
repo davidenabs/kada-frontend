@@ -7,7 +7,7 @@ type ConfirmModalProps = {
   close: () => void;
   onConfirm: () => void;
   loading: boolean;
-  amount: number;
+  amount?: number;
 };
 
 const ConfirmModal: React.FC<ConfirmModalProps> = ({
@@ -35,7 +35,7 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
 
         <div className="flex flex-col gap-4 items-center justify-center h-full p-3">
           <h4 className="text-md font-semibold text-center">
-            Are you sure you want to proceed?<br></br>Please note that this action is irreversible and will require a payment of &#8358;{amount} to this cooperative
+            Are you sure you want to proceed?<br></br>{amount && `Please note that this action is irreversible and will require a payment of &#8358;${amount} to this cooperative`}
           </h4>
           {loading && (
             <div className="flex items-center justify-center">

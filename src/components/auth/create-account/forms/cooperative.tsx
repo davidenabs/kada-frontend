@@ -4,7 +4,7 @@ import Input from "@/components/form/input";
 import Password from "@/components/form/password";
 import Select from "@/components/form/select";
 import { UserType } from "@/interface/user";
-import { kadaLGA } from "@/lib/lga-data";
+import { kadaLGA, lgaOptions } from "@/lib/lga-data";
 import {
   CooperativeSchema,
   CooperativeSchemaType,
@@ -63,10 +63,10 @@ const CooperativeForm: React.FC = () => {
   };
 
   // Map LGAs to options
-  const lgaOptions = kadaLGA.lgas.map((lga) => ({
-    value: lga,
-    label: lga,
-  }));
+  // const lgaOptions = kadaLGA.lgas.map((lga) => ({
+  //   value: lga,
+  //   label: lga,
+  // }));
 
   return (
     <form

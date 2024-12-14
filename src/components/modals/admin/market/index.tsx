@@ -5,8 +5,10 @@ import {
 import { KadaButton } from "@/components/form/button";
 import DatePicker from "@/components/form/date-picker";
 import Input from "@/components/form/input";
+import Select from "@/components/form/select";
 import { CloseIcon } from "@/icons";
 import { IMarket } from "@/interface/market";
+import { lgaOptions } from "@/lib/lga-data";
 import { marketSchema, marketSchemaType } from "@/schema/market";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
@@ -34,9 +36,10 @@ type AddMarketModalProps = {
 const defaultValues = {
   name: "",
   address: "",
-  localGovernmentArea: "",
+  lga: "",
   ward: "",
   coordinates: "",
+  community: "",
   size: "" as "Small" | "Medium" | "Large",
   openingDays: "",
   openingTime: "",
@@ -46,6 +49,9 @@ function AddMarketModal({ open, market, close }: AddMarketModalProps) {
   const [startDate, setStartDate] = React.useState<Date | null>(null);
   const [endDate, setEndDate] = React.useState<Date | null>(null);
   const [selectedDays, setSelectedDays] = React.useState<string[]>([]);
+  const [localGovernmentArea, setLocalGovernmentArea] = React.useState("");
+  const [long, setLong] = React.useState();
+  const [lat, setLat] = React.useState();
 
   const createMutation = useCreateMarketMutation();
   const updateMutation = useUpdateMarketMutation();
@@ -66,6 +72,12 @@ function AddMarketModal({ open, market, close }: AddMarketModalProps) {
   React.useEffect(() => {
     if (market) {
       reset(market);
+      // get coordinates for long and lat
+      setLong(market.coordinates.split(",")[0]);
+      setLat(market.coordinates.split(",")[1]);
+
+      // set loc
+      setLocalGovernmentArea(market.lga?.name);
     }
   }, [market]);
 
@@ -74,6 +86,14 @@ function AddMarketModal({ open, market, close }: AddMarketModalProps) {
   }, [createMutation.isPending, updateMutation.isPending]);
 
   const onSubmit = (data: marketSchemaType) => {
+    if (!localGovernmentArea) {
+      toast.error("Please select a Local Government Area");
+      return;
+    }
+    if (!long || !lat) {
+      toast.error("Please input the coordinates of the market (Longitude and Latitude)");
+      return;
+    }
     if (!startDate || !endDate) {
       toast.error("Please select opening and closing time");
       return;
@@ -84,6 +104,11 @@ function AddMarketModal({ open, market, close }: AddMarketModalProps) {
     )}`;
 
     data.openingTime = openingTime;
+    data.lga = localGovernmentArea;
+    data.coordinates = `${long},${lat}`;
+
+    console.log(data);
+    
     if (market === null) {
       createMutation.mutateAsync(
         {
@@ -98,6 +123,7 @@ function AddMarketModal({ open, market, close }: AddMarketModalProps) {
         }
       );
     } else {
+      
       updateMutation.mutateAsync(
         {
           id: market.id,
@@ -117,7 +143,7 @@ function AddMarketModal({ open, market, close }: AddMarketModalProps) {
     <Fragment>
       <Modal
         isOpen={open}
-        onClose={() => {}}
+        onClose={() => { }}
         size={"lg"}
         overlayClassName="dark:bg-opacity-40 dark:backdrop-blur-sm"
         containerClassName="dark:bg-gray-100"
@@ -151,13 +177,17 @@ function AddMarketModal({ open, market, close }: AddMarketModalProps) {
                   disabled={isLoading}
                 />
 
-                <Input
-                  label="Local Government Area"
-                  placeholder="Enter market LGA"
-                  error={errors.localGovernmentArea?.message}
-                  {...register("localGovernmentArea")}
+                <Select
+                  label="Local Government Area (LGA)"
+                  id="localGovernmentArea"
+                  options={lgaOptions}
+                  value={localGovernmentArea}
+                  onChange={(e: any) => {
+                    setLocalGovernmentArea(e.value);
+                  }}
                   disabled={isLoading}
-                />
+                >
+                </Select>
 
                 <Input
                   label="Ward"
@@ -168,12 +198,33 @@ function AddMarketModal({ open, market, close }: AddMarketModalProps) {
                 />
 
                 <Input
-                  label="Coordinates"
-                  placeholder="Enter market coordinates"
-                  error={errors.coordinates?.message}
-                  {...register("coordinates")}
+                  label="Community"
+                  placeholder="Enter market community"
+                  error={errors.community?.message}
+                  {...register("community")}
                   disabled={isLoading}
                 />
+
+                <div className="grid grid-cols-2 gap-3">
+                  <Input
+                    label="Coordinates"
+                    placeholder="Longitude"
+                    type="number"
+                    error={errors.coordinates?.message}
+                    onChange={(e: any) => setLong(e.target.value)}
+                    value={long}
+                    disabled={isLoading}
+                  />
+                  <Input
+                    label="&nbsp;"
+                    placeholder="Latitude"
+                    type="number"
+                    error={errors.coordinates?.message}
+                    onChange={(e: any) => setLat(e.target.value)}
+                    value={lat}
+                    disabled={isLoading}
+                  />
+                </div>
 
                 <Input
                   label="Size"
