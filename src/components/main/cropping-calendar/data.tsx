@@ -2,6 +2,7 @@ import { Crop } from "@/lib/crop-data";
 import { cn } from "rizzui";
 import React, { useState } from "react";
 import { ICrop } from "@/interface/crop";
+import CropActivities from "./crop-activities";
 
 type SidebarDataProps = {
   type: "date-range" | "cropping-stage";
@@ -55,12 +56,12 @@ function SidebarData({
 }: SidebarDataProps) {
   return (
     <section className="px-3 py-6">
-      <h4 className="text-[#343A3F] text-base font-bold">
+      {/* <h4 className="text-[#343A3F] text-base font-bold">
         {type === "date-range" ? "Date Ranges" : "Cropping Stages"}
-      </h4>
+      </h4> */}
 
       <div className="">
-        <ul className="space-y-[14px]">
+        {/* <ul className="space-y-[14px]">
           {type === "date-range"
             ? data.seasons.map((season, index) => (
                 <SidebarItem
@@ -80,7 +81,7 @@ function SidebarData({
                   handleSelect={handleSelect}
                 />
               ))}
-        </ul>
+        </ul> */}
       </div>
     </section>
   );
@@ -95,17 +96,17 @@ const Attribute = ({ label, value }: { label: string; value: string }) => (
 
 function DetailData({ data, type, currentIndex }: DetailDataProps) {
   const isDateRange = type === "date-range";
-  const currentStage = data?.stages?.[currentIndex];
-  const currentSeason = data?.seasons?.[currentIndex];
+  // const currentStage = data?.stages?.[currentIndex];
+  // const currentSeason = data?.seasons?.[currentIndex];
 
   return (
     <section className="">
       <div className="bg-[#E7ECE8] border-l-2 border-[#205B42] flex gap-6 text-sm py-3 px-5">
         <span className="text-[#4D5358]">
-          Showing Crop information by date ranges
+          Showing Crop information  {/* by date ranges */}
         </span>
         <span className="font-bold text-[#00A551] text-sm">{data?.name}</span>
-        <span>January-February, 2024</span>
+        {/* <span>January-February, 2024</span> */}
       </div>
       {/* Main Details */}
       <div className="border-l-2 border-[#0BCE6B] px-10 py-6 space-y-3">
@@ -129,22 +130,37 @@ function DetailData({ data, type, currentIndex }: DetailDataProps) {
       </div>
 
       <div className="border-t border-[#ECF2F6] px-5 py-7">
+
+        <div>
+          <h6 className={`text-[#697077] text-lg`}>Crop Activities</h6>
+
+          <CropActivities activities={data?.activities} />
+
+          <ul className="list-disc list-inside text-sm">
+            {/* {currentSeason?.activities?.map((activity, idx) => (
+                  <li key={idx} className={`text-[#4D5358] text-sm`}>
+                    {activity.description}
+                  </li>
+                ))} */}
+          </ul>
+        </div>
+
         {isDateRange ? (
           <>
             <div>
               <h6 className={`text-[#697077] text-sm`}>Activities</h6>
               <ul className="list-disc list-inside text-sm">
-                {currentSeason?.activities?.map((activity, idx) => (
+                {/* {currentSeason?.activities?.map((activity, idx) => (
                   <li key={idx} className={`text-[#4D5358] text-sm`}>
                     {activity.description}
                   </li>
-                ))}
+                ))} */}
               </ul>
             </div>
           </>
         ) : (
           <div className="space-y-4">
-            <Attribute label="Name" value={currentStage!.name} />
+            {/* <Attribute label="Name" value={currentStage!.name} />
             <Attribute label="Description" value={currentStage!.description} />
             <Attribute label="Duration" value={currentStage!.duration} />
             <div>
@@ -156,7 +172,7 @@ function DetailData({ data, type, currentIndex }: DetailDataProps) {
                   </li>
                 ))}
               </ul>
-            </div>
+            </div> */}
           </div>
         )}
       </div>
