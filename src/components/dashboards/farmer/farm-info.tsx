@@ -17,6 +17,8 @@ import { DetailData, SidebarData } from "@/components/main/cropping-calendar/dat
 import ChooseCrop from "@/components/main/cropping-calendar/choose-crop";
 import CropDetails from "./cropping-info";
 import CreateFarmModal from "@/components/modals/create-farm";
+import { getAuthToken } from "@/app/api/auth";
+import CropActivities from "@/components/main/cropping-calendar/crop-activities";
 
 export function CoordinateDisplay({ geoLocation }: { geoLocation: string }) {
   const coordinates = parseGeoLocation(geoLocation);
@@ -24,6 +26,8 @@ export function CoordinateDisplay({ geoLocation }: { geoLocation: string }) {
     return <p className="text-red-500">Invalid coordinates</p>;
   }
 
+  const token = getAuthToken();
+  console.log(token)
   return (
     <div className="space-y-2">
       <h3 className="text-sm font-medium text-white">
@@ -94,7 +98,7 @@ function FarmInfo(farm: IFarm & { farmId: string }) {
                 {farm?.landArea} HECTRES
               </p>
               <p className="text-sm font-thin pt-2 max-w-[213px]">
-               LGA: {farm?.lga}
+                LGA: {farm?.lga}
               </p>
             </div>
 
@@ -232,17 +236,8 @@ function FarmInfo(farm: IFarm & { farmId: string }) {
         </div>
 
         {farm.crops!.map((crop) => {
-          // Filter the activity logs for the current crop
-          const cropActivityLogs = farm.activityLogs!.filter(
-            (log) => log.crop!.id === crop.id
-          );
-
           return (
-            <CropDetails
-              key={crop.id}
-              crop={crop}
-              activityLogs={cropActivityLogs}
-            />
+            <CropDetails crop={crop} activities={crop.activities} />
           );
         })}
 

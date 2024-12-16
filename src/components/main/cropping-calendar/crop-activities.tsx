@@ -36,9 +36,9 @@ function CropActivities({ activities }: { activities: Activity[] | undefined }) 
                             </tbody>
                         </table>
                     </div>
-                    {activity?.subtotal && activity?.subtotal > 0 && (<div className="text-sm font-bold text-right">
+                    {activity?.subtotal && activity?.subtotal > 0 ? (<div className="text-sm font-bold text-right">
                         Sub-Total  = &#8358;{activity?.subtotal}
-                    </div>)}
+                    </div>) : <></>}
                 </div>
             ))
             }
