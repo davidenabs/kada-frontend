@@ -13,12 +13,12 @@ const LocalGovernmentSelector: React.FC = () => {
       >
         Select Local Government
       </label>
-      <div className="flex flex-col mt-3 w-full text-black rounded-none maxw-[391px]">
+      <div className="flex flex-col mt-3 w-full text-black rounded-none max-w-[391px]">
         <Select
           options={[]}
           value={localGovernment}
           onChange={setLocalGovernment}
-          className="md:w-[391px] w-full !py-2"
+          className="md:max-w-[391px] w-full !py-2"
         ></Select>
       </div>
     </div>
