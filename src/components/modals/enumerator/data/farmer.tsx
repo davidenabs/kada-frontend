@@ -22,14 +22,16 @@ const FarmerData = ({ profile, close }: { profile: IUser, close: () => void }) =
         defaultValues: {
             dob: "",
             nin: "",
-            userId: profile?.id,
-            phoneNumber: profile?.phoneNumber,
         },
         resolver: zodResolver(nimcVwrifySchema),
     });
 
     const onSubmit = async (data: any) => {
+        data.userId = profile?.id;
+        data.phoneNumber = profile?.phoneNumber;
         try {
+            console.log(data);
+            
             const response = await mutateAsync(data);
             if (response.success) {
                 toast.success("User NIN verification was successful");
