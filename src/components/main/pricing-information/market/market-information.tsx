@@ -25,8 +25,8 @@ const MarketInformation: React.FC<MarketInformationProps> = ({
   });
 
   return (
-    <section className="flex flex-col ml-5 w-[59%] max-md:ml-0 max-md:w-full">
-      <div className="flex flex-col grow px-2.5 pt-2.5 leading-tight min-h-[638px] max-md:mt-7 max-md:max-w-full">
+    <section className="flex flex-col w-[59%] max-md:ml-0 max-md:w-full">
+      <div className="flex flex-col grow px-2.5 leading-tight min-h-[638px] max-md:mt-7 max-md:max-w-full">
         <h2 className="overflow-hidden p-6 w-full text-lg font-semibold text-green-600 uppercase bg-white rounded-t-2xl border border-solid border-slate-100 max-md:px-5 max-md:max-w-full">
           MARKET INFORMATION
         </h2>

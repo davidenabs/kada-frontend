@@ -194,7 +194,7 @@ function CroppingCalendar() {
                 ) : (
                   <div className="w-full h-full flex items-center justify-center overflow-y-scroll">
                     <div className="">
-                      <p>Nothing to display</p>
+                      {/* <p>Nothing to display</p> */}
                     </div>
                   </div>
                 )}

@@ -20,12 +20,10 @@ const MarketMap: React.FC<MarketMapProps> = ({ market }) => {
             {market?.address}
           </div>
           <button className="flex overflow-hidden flex-col justify-center px-px py-3 text-sm font-semibold leading-none text-center bg-gray-200 rounded-lg">
-            <div className="flex flex-col">
-              <div className="flex justify-between items-center w-full">
-                <div className="flex gap-2 justify-center items-center self-stretch my-auto min-w-[240px] w-[257px]">
-                  <span className="self-stretch my-auto">Get Direction</span>
-                  <MapNavIcon className="my-auto w-6 h-6" />
-                </div>
+            <div className="w-full">
+              <div className="flex justify-center my-auto mx-auto ">
+                <span className="self-stretch my-auto">Get Direction</span>
+                <MapNavIcon className="my-auto w-6 h-6" />
               </div>
             </div>
           </button>
