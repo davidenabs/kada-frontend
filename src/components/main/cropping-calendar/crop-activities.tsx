@@ -14,8 +14,8 @@ function CropActivities({ activities }: { activities: Activity[] | undefined }) 
                                 <tr className="bg-[#E7ECE8] border-l-2 border-[#205B42] text-sm">
                                     <th className="text-left p-2">Description</th>
                                     <th className="text-left p-2">Quantity</th>
-                                    <th className="text-left p-2">Unit Cost</th>
-                                    <th className="text-left p-2">Total Cost</th>
+                                    {/* <th className="text-left p-2">Unit Cost</th>
+                                    <th className="text-left p-2">Total Cost</th> */}
                                 </tr>
                             </thead>
                             <tbody>
@@ -25,20 +25,20 @@ function CropActivities({ activities }: { activities: Activity[] | undefined }) 
                                         <td className="p-2">
                                             {detail.quantity} {detail.unit}
                                         </td>
-                                        <td className="p-2">
+                                        {/* <td className="p-2">
                                             &#8358;{detail.unit_cost.toLocaleString()}
                                         </td>
                                         <td className="p-2">
                                             &#8358;{detail.total_cost.toLocaleString()}
-                                        </td>
+                                        </td> */}
                                     </tr>
                                 ))}
                             </tbody>
                         </table>
                     </div>
-                    {activity?.subtotal && activity?.subtotal > 0 ? (<div className="text-sm font-bold text-right">
+                    {/* {activity?.subtotal && activity?.subtotal > 0 ? (<div className="text-sm font-bold text-right">
                         Sub-Total  = &#8358;{activity?.subtotal}
-                    </div>) : <></>}
+                    </div>) : <></>} */}
                 </div>
             ))
             }

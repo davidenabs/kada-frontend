@@ -59,6 +59,7 @@ export interface ICooperativeProfile {
   accountName: string | null;
   bankAddress: string | null;
   joinAmount: number | null;
+  totalMembers: number | null;
 }
 
 export interface IVendorProfile {

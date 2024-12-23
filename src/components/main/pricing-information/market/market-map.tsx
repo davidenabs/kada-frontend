@@ -1,4 +1,5 @@
 import { MapNavIcon } from "@/icons";
+import Link from "next/link";
 import React from "react";
 
 interface MarketMapProps {
@@ -6,6 +7,8 @@ interface MarketMapProps {
 }
 
 const MarketMap: React.FC<MarketMapProps> = ({ market }) => {
+  const coordinates = market?.coordinates.split(",");
+  const googleMapsUrl = `https://www.google.com/maps?q=${coordinates[0]},${coordinates[1]}`;
   return (
     <div className="flex flex-col ml-5 w-[44%] max-md:ml-0 max-md:w-full">
       <div className="flex overflow-hidden flex-col justify-end p-px w-full rounded-lg border border-solid border-slate-100 text-neutral-700 max-md:mt-10">
@@ -21,10 +24,10 @@ const MarketMap: React.FC<MarketMapProps> = ({ market }) => {
           </div>
           <button className="flex overflow-hidden flex-col justify-center px-px py-3 text-sm font-semibold leading-none text-center bg-gray-200 rounded-lg">
             <div className="w-full">
-              <div className="flex justify-center my-auto mx-auto ">
+              <Link href={googleMapsUrl} target="_blank" className="flex justify-center my-auto mx-auto ">
                 <span className="self-stretch my-auto">Get Direction</span>
                 <MapNavIcon className="my-auto w-6 h-6" />
-              </div>
+              </Link>
             </div>
           </button>
         </div>

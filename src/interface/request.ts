@@ -22,7 +22,7 @@ export interface IRequest {
   description: string | null;
   status: string;
   requestType: RequestType;
-  meta: string | null;
+  meta: any | null;
   createdAt: string;
   updatedAt: string;
   farmer: IUser | null;

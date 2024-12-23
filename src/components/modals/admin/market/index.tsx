@@ -152,7 +152,7 @@ function AddMarketModal({ open, market, close }: AddMarketModalProps) {
         <section className="bg-white rounded-lg">
           <form onSubmit={handleSubmit(onSubmit)}>
             <header className="flex items-center justify-between border-b px-6 py-1 bg-[#F9F9F9] rounded-t-xl">
-              <h4 className="text-base font-semibold">Add a market</h4>
+              <h4 className="text-base font-semibold"> {market ? "Update" : "Add a"} market</h4>
 
               <button onClick={close} type="button">
                 <CloseIcon className="w-3 h-3" />

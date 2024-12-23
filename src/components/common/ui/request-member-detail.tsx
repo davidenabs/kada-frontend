@@ -98,6 +98,25 @@ function RequestMemberDetail({ request }: RequestMemberDetailProps) {
           </div>
         </div>
 
+        <div className="flex justify-between">
+          <span className="text-lg">Amount paid</span>
+
+          <div className="flex">
+            <span className="text-[#878D96]"> &#8358;{request.meta?.amountPaid || "0"}</span>
+          </div>
+        </div>
+
+        <div className="flex justify-between">
+          <span className="text-lg">Request Date</span>
+
+          <div className="flex">
+            <span className="text-[#878D96]">
+              {format(request!.createdAt || new Date(), "dd MMM, yyyy")}
+            </span>
+          </div>
+        </div>
+
+
         {/* <div className="flex justify-between">
           <span className="text-lg">Funding History</span>
 

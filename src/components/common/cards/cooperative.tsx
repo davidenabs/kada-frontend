@@ -69,7 +69,7 @@ function CooperativeCard({
 
                   <div className="flex items-center gap-2">
                     <UsersListIcon className="w-[19px] h-[11px] text-[#667185]" />
-                    <span className="text-xs">0 Members</span>
+                    <span className="text-xs">  {data?.cooperativeProfile?.totalMembers || 0} Member(s)</span>
                   </div>
                 </div>
 
