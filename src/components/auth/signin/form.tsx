@@ -45,14 +45,26 @@ const SignInForm: React.FC = () => {
       loginMutation.mutate(newData, {
         onSuccess: (response) => {
           const { data, message } = response;
+          const userType = data.user.userType;
+          if (
+            userType !== UserType.FARMER &&
+            userType !== UserType.COOPERATIVE &&
+            userType !== UserType.VENDOR
+          ) {
+            toast.dismiss();
+            toast.error("Unathorized", {
+              description: "Invalid user type",
+            });
+            return;
+          }
+
           setUser({
             ...user,
+            role: userType,
             user: data.user,
             token: data.token,
             authenticated: true,
           });
-
-          const userType = data.user.userType;
 
           switch (userType) {
             case UserType.FARMER:
@@ -60,6 +72,9 @@ const SignInForm: React.FC = () => {
               break;
             case UserType.COOPERATIVE:
               router.push("/dashboard/cooperative");
+              break;
+            case UserType.VENDOR:
+              router.push("/dashboard/vendor");
               break;
             default:
               break;

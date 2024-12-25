@@ -35,6 +35,7 @@ export { default as ListIcon } from "./list.svg";
 export { default as ChartIcon } from "./chart.svg";
 export { default as TreeIcon } from "./tree.svg";
 export { default as BuildingIcon } from "./building.svg";
+export { default as UserAddIcon } from "./add-user.svg";
 
 // illustration
 export { default as Block } from "./block.svg";

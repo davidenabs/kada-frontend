@@ -4,14 +4,21 @@ import { KadaButton } from "@/components/form/button";
 import { EyeIcon } from "@heroicons/react/16/solid";
 import Image from "next/image";
 import { sampleMembers } from "../../cooperative/members/data";
+import { IUser, UserType } from "@/interface/user";
+import { format } from "date-fns";
 
-function UsersTable() {
+type Props = {
+  users: IUser[];
+  type: string;
+};
+
+function UsersTable({ users, type }: Props) {
   return (
     <Fragment>
       <Table variant="elegant">
         <Table.Header>
           <Table.Row>
-            <Table.Head>Farmer’s Name</Table.Head>
+            <Table.Head>{type}’s Name</Table.Head>
             <Table.Head>Phone Number</Table.Head>
             <Table.Head>Type</Table.Head>
             <Table.Head>Location</Table.Head>
@@ -21,40 +28,44 @@ function UsersTable() {
         </Table.Header>
 
         <Table.Body>
-          {sampleMembers.map((member) => (
+          {users.map((user) => (
             <Table.Row>
               <Table.Cell>
                 <div className="flex gap-2 items-center">
                   <div className="relative w-[40px] h-[40px]">
                     <Image
-                      src={member.avatar}
+                      src={user.imagePath || "/images/avatar.png"}
                       alt="avatar"
-                      layout="fill"
+                      fill
                       objectFit="cover"
                       className="rounded-full"
                     />
                   </div>
 
                   <div>
-                    <p className="font-medium text-sm">{member.name}</p>
+                    <p className="font-medium text-sm">
+                      {user?.firstName + " " + user?.lastName}
+                    </p>
                     <p className="text-xs text-gray-500">
-                      {member.date_joined}
+                      {format(user?.createdAt || new Date(), "dd MMM, yyyy")}
                     </p>
                   </div>
                 </div>
               </Table.Cell>
               <Table.Cell className="max-w-[100px]">
-                <p>{member.phone}</p>
+                <p>{user?.phoneNumber}</p>
               </Table.Cell>
               <Table.Cell>
-                <p>{member.type}</p>
+                <p>{user?.userType}</p>
               </Table.Cell>
               <Table.Cell>
-                <p>{member.location}</p>
+                <p>{user?.address}</p>
               </Table.Cell>
+
               <Table.Cell>
                 <Badge variant="outline">Received</Badge>
               </Table.Cell>
+
               <Table.Cell>
                 <Popover shadow="sm" placement="bottom-end">
                   <Popover.Trigger>

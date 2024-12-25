@@ -5,13 +5,13 @@ import { EyeIcon } from "@heroicons/react/16/solid";
 import Image from "next/image";
 import { sampleMembers } from "../../cooperative/members/data";
 
-function RequestTable() {
+function FarmerTable() {
   return (
     <Fragment>
       <Table variant="elegant" className="rounded-lg">
         <Table.Header>
           <Table.Row>
-            <Table.Head>Vendor name</Table.Head>
+            <Table.Head>Farmer name</Table.Head>
             <Table.Head>Date Requested</Table.Head>
             <Table.Head>Amount Paid</Table.Head>
             <Table.Head>Description</Table.Head>
@@ -29,7 +29,7 @@ function RequestTable() {
                     <Image
                       src={member.avatar}
                       alt="avatar"
-                      layout="fill"
+                      fill
                       objectFit="cover"
                       className="rounded-full"
                     />
@@ -80,4 +80,4 @@ function RequestTable() {
   );
 }
 
-export default RequestTable;
+export default FarmerTable;

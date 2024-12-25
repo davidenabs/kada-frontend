@@ -7,7 +7,15 @@ const API_ENDPOINTS = {
   VERIFY_OTP: "/users/verify-otp",
   // users
   GET_USERS: "/users",
+  GET_USER: "/users/get-user/:id",
+  GET_COOPERATIVE_FARMERS: "/users/cooperative-farmers",
   VERIFY_NIN: "/verification/nin",
+  UPDATE_USER: "/users",
+  FORCE_UPDATE: "/users/force-update",
+  GET_PROFILE: "/users/get-user",
+  GET_VENDORS: "/users/vendors",
+  GET_FARMERS: "/users/farmers",
+  GET_COOPERATIVES: "/users/cooperatives",
 
   // farm
   GET_FARMS: "/farms",
@@ -17,6 +25,8 @@ const API_ENDPOINTS = {
   DELETE_FARM: "/farms/:farmId",
   GET_FARM_GALLERY: "/farms/gallery/:farmId",
   CREATE_FARM_GALLERY: "/farms/gallery/:farmId",
+  CREATE_FARM_CROPPING: "/farm-cropping",
+  GET_FARM_CROPPING_NOTIFICATION: "/farm-cropping/farm/notification/:farmId",
 
   // catalog
   CATALOG_GET_PRODUCTS: "/catalog/products",
@@ -43,13 +53,28 @@ const API_ENDPOINTS = {
   DELETE_MARKET: "/market/:id",
   GET_MARKET_PRODUCTS: "/market/:marketId/products",
   GET_PRODUCT_TEMPLATE: "/market/get-product-template",
+  GET_PRODUCTS: "/market/products",
   UPLOAD_PRODUCTS_FROM_SHEETS: "/market/upload-products-from-sheet",
 
   // farm products
-  GET_FARM_PRODUCTS: "/farm-products",
-  CREATE_FARM_PRODUCT: "/farm-products",
-  UPDATE_FARM_PRODUCT: "/farm-products/:productId",
-  DELETE_FARM_PRODUCT: "/farm-products/:productId",
+  GET_FARM_PRODUCTS: "/farm-crops",
+  CREATE_FARM_PRODUCT: "/farm-crops",
+  UPDATE_FARM_PRODUCT: "/farm-crops/:productId",
+  DELETE_FARM_PRODUCT: "/farm-crops/:productId",
+
+  // overview
+  GET_COOPERATIVE_OVERVIEW: "/overview/cooperative",
+  GET_VENDOR_OVERVIEW: "/overview/vendor",
+  GET_ADMIN_OVERVIEW: "/overview/admin",
+
+  // cms
+  CMS_GET_POSTS: "/cms/posts",
+  CMS_CREATE_POST: "/cms/posts",
+
+  // payment
+  PAYMENT_INITIATE: "/payments",
+  ADD_FARMERS_FROM_CSV: "/cooperatives/add-farmers-from-csv",
+  ADD_FARMER: "/cooperatives/add-farmer/:farmerId",
 };
 
 export default API_ENDPOINTS;

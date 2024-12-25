@@ -1,39 +1,97 @@
 "use client";
 import Tab from "@/components/common/tab";
 import Input from "@/components/form/input";
-import { CelebrateIcon, SearchIcon, StorefrontIcon } from "@/icons";
+import {
+  CelebrateIcon,
+  SearchIcon,
+  StorefrontIcon,
+  VerifiedIcon,
+} from "@/icons";
 import {
   BriefcaseIcon,
-  ChatBubbleLeftIcon,
   EnvelopeIcon,
   PhoneIcon,
 } from "@heroicons/react/16/solid";
 import Image from "next/image";
 import React, { useState } from "react";
-import Services from "./services";
-import Products from "./products";
-import { KadaButton } from "@/components/form/button";
 import Gallery from "@/components/dashboards/farmer/gallery";
+import { useGetProducts } from "@/app/_api/catalog";
+import { useParams } from "next/navigation";
+import { useGetUserQuery } from "@/app/_api/user";
+import { ICatalog } from "@/interface/catalog";
+import useDebounce from "@/hooks/use-debounce";
+import Services from "./services";
 
 function VendroServiceSharedPage() {
+  const { vendorId } = useParams();
   const [activeTab, setActiveTab] = useState("Our Services");
-  const tabs = [
-    {
-      id: "our-services",
-      label: "Our Services",
-      badge: 3,
-      icon: BriefcaseIcon,
+  const [loaded, setLoaded] = useState(false);
+  const [stats, setStats] = React.useState<any>({});
+  const [products, setProducts] = useState<ICatalog[]>([]);
+  const [search, setSearch] = useState("");
+  const debouncedSearchQuery = useDebounce(search);
+
+  const active = React.useMemo(() => {
+    return activeTab === "Our Services" ? "services" : "products";
+  }, [activeTab]);
+
+  const tabs = React.useMemo(
+    () => [
+      {
+        id: "our-services",
+        label: "Our Services",
+        badge: stats?.totalServices || 0,
+        icon: BriefcaseIcon,
+      },
+      {
+        id: "products",
+        label: "Products",
+        badge: stats?.totalProducts || 0,
+        icon: BriefcaseIcon,
+      },
+    ],
+    [stats]
+  );
+
+  const { data, isFetching, isRefetching, isError } = useGetUserQuery({
+    enabled: loaded,
+    id: vendorId as string,
+  });
+
+  const {
+    data: productsData,
+    isFetching: isProductFetching,
+    isRefetching: isProductRefetching,
+    isError: isProductError,
+  } = useGetProducts({
+    enabled: loaded,
+    params: {
+      page: 1,
+      limit: 10,
+      userId: vendorId as string,
+      type: active,
+      search: debouncedSearchQuery,
     },
-    {
-      id: "products",
-      label: "Products",
-      badge: 0,
-      icon: BriefcaseIcon,
-    },
-  ];
+  });
+
+  React.useEffect(() => {
+    if (
+      !isProductFetching &&
+      !isProductFetching &&
+      productsData?.success &&
+      productsData?.data
+    ) {
+      setProducts(productsData.data.products);
+      setStats((productsData.data as any).stats);
+    }
+  }, [productsData, isProductFetching, isProductRefetching]);
+
+  React.useEffect(() => {
+    setLoaded(true);
+  }, []);
 
   return (
-    <section className="flex gap-x-[270px]">
+    <section className="flex max-lg:flex-col gap-x-[270px]">
       <div className="flex-1 space-y-4">
         <div className="border bg-white rounded-2xl border-[#ECF2F6] p-4">
           <div className="flex justify-between">
@@ -49,48 +107,26 @@ function VendroServiceSharedPage() {
 
               <div className="">
                 <h4 className="text-[#101928] text-[20px] font-semibold">
-                  GreenSprout Seeds Co
+                  {data?.data?.vendorProfile?.vendorName}
                 </h4>
                 <p className="text-[#1D2739] text-xs">
-                  Seed/Planting Materials
+                  {data?.data?.vendorProfile?.productService ||
+                    "No description"}
                 </p>
-                <div className="flex">
-                  <span className="text-sm">(91)</span>
+                <div className="flex mt-4">
+                  <span className="text-xs italic">
+                    {data?.data?.vendorProfile?.about || "No description"}
+                  </span>
                 </div>
               </div>
             </div>
 
-            <div className="flex items-center">
-              <svg
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  opacity="0.2"
-                  d="M5.10562 18.8944C4.24312 18.0319 4.815 16.2197 4.37625 15.1584C3.92062 14.0625 2.25 13.1719 2.25 12C2.25 10.8281 3.92062 9.9375 4.37625 8.84156C4.815 7.78125 4.24312 5.96812 5.10562 5.10562C5.96812 4.24312 7.78125 4.815 8.84156 4.37625C9.94219 3.92062 10.8281 2.25 12 2.25C13.1719 2.25 14.0625 3.92062 15.1584 4.37625C16.2197 4.815 18.0319 4.24312 18.8944 5.10562C19.7569 5.96812 19.185 7.78031 19.6238 8.84156C20.0794 9.94219 21.75 10.8281 21.75 12C21.75 13.1719 20.0794 14.0625 19.6238 15.1584C19.185 16.2197 19.7569 18.0319 18.8944 18.8944C18.0319 19.7569 16.2197 19.185 15.1584 19.6238C14.0625 20.0794 13.1719 21.75 12 21.75C10.8281 21.75 9.9375 20.0794 8.84156 19.6238C7.78125 19.185 5.96812 19.7569 5.10562 18.8944Z"
-                  fill="#00A551"
-                />
-                <path
-                  d="M5.10562 18.8944C4.24312 18.0319 4.815 16.2197 4.37625 15.1584C3.92063 14.0625 2.25 13.1719 2.25 12C2.25 10.8281 3.92063 9.9375 4.37625 8.84156C4.815 7.78125 4.24312 5.96812 5.10562 5.10562C5.96812 4.24312 7.78125 4.815 8.84156 4.37625C9.94219 3.92063 10.8281 2.25 12 2.25C13.1719 2.25 14.0625 3.92063 15.1584 4.37625C16.2197 4.815 18.0319 4.24312 18.8944 5.10562C19.7569 5.96812 19.185 7.78031 19.6238 8.84156C20.0794 9.94219 21.75 10.8281 21.75 12C21.75 13.1719 20.0794 14.0625 19.6238 15.1584C19.185 16.2197 19.7569 18.0319 18.8944 18.8944C18.0319 19.7569 16.2197 19.185 15.1584 19.6238C14.0625 20.0794 13.1719 21.75 12 21.75C10.8281 21.75 9.9375 20.0794 8.84156 19.6238C7.78125 19.185 5.96812 19.7569 5.10562 18.8944Z"
-                  stroke="#00A551"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-                <path
-                  d="M8.25 12.75L10.5 15L15.75 9.75"
-                  stroke="#00A551"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
-
-              <span className="font-inter text-xs">Verified Vendor</span>
-            </div>
+            {data?.data?.vendorProfile?.isVerified && (
+              <div className="flex items-center">
+                <VerifiedIcon className="w-5 h-5 stroke-[#00A551]" />
+                <span className="font-inter text-xs">Verified Vendor</span>
+              </div>
+            )}
           </div>
         </div>
 
@@ -114,17 +150,26 @@ function VendroServiceSharedPage() {
               <Input
                 placeholder="Search here..."
                 inputClassName="!rounded-[10px]"
-                className="!w-[500px]"
-                prefix={<SearchIcon />}
+                className="w-[500px] max-lg:w-full"
+                prefix={<SearchIcon className="fill-black" />}
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                clearable
+                onClear={() => setSearch("")}
               />
             </div>
           </div>
 
-          {activeTab === "Our Services" ? <Services /> : <Products />}
+          <Services
+            products={products}
+            activeTab={active}
+            isError={isProductError}
+            loading={isProductFetching || isProductRefetching}
+          />
         </div>
       </div>
 
-      <div className="w-[270px] space-y-6 divide-y">
+      <div className="w-[270px] max-lg:w-full space-y-6 divide-y">
         <div className="flex p-4 bg-[#F5EBCE] rounded-2xl gap-2">
           <div className="w-6 h-6 rounded-full flex items-center justify-center bg-[#E3A840]">
             <CelebrateIcon className="w-3 h-3 fill-white" />
@@ -144,14 +189,18 @@ function VendroServiceSharedPage() {
                 <div className="w-6 h-6 flex items-center justify-center rounded-full bg-[#00A551]">
                   <PhoneIcon className="w-4 h-4 fill-white" />
                 </div>
-                <span className="text-xs">+234 816 123 4567</span>
+                <span className="text-xs">
+                  {data?.data?.phoneNumber || "No phone number"}
+                </span>
               </div>
 
               <div className="flex items-center gap-4">
                 <div className="w-6 h-6 flex items-center justify-center rounded-full bg-[#00A551]">
                   <EnvelopeIcon className="w-4 h-4 fill-white" />
                 </div>
-                <span className="text-xs">Xreme@gmail.com</span>
+                <span className="text-xs">
+                  {data?.data?.email || "No email"}
+                </span>
               </div>
 
               <div className="flex items-center gap-4">
@@ -162,18 +211,17 @@ function VendroServiceSharedPage() {
                 </div>
                 <div className="">
                   <span className="text-xs">
-                    GreenSprout Agro Mart 12 Independence Way, Kawo, Kaduna,
-                    Kaduna State, Nigeria.
+                    {data?.data?.address || "No address"}
                   </span>
                 </div>
               </div>
             </div>
-            <KadaButton
+            {/* <KadaButton
               className="w-full !bg-black mt-6"
-              leftIcon={<ChatBubbleLeftIcon className="w-5 h-5" />}
+              leftIcon={<ChatBubbleLeftIcon className="w-5 h-5 mr-2" />}
             >
               Chat with Vendor
-            </KadaButton>
+            </KadaButton> */}
           </div>
         </div>
 
@@ -183,7 +231,7 @@ function VendroServiceSharedPage() {
           </div>
 
           <div className="">
-            <Gallery />
+            <Gallery images={[]} />
           </div>
         </div>
       </div>

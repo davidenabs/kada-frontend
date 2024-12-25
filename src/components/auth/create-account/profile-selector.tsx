@@ -29,18 +29,18 @@ const profileTypes: ProfileType[] = [
   },
   {
     icon: <UsersIcon className="object-contain w-6 h-6" />,
-    title: "Data Enumerator",
+    title: "Vendor",
     description:
       "with this account you can do this and Lorem ipsum do this and Lorem",
-    type: "dataEnumerator",
+    type: "vendor",
   },
-  {
-    icon: <UsersIcon className="object-contain w-6 h-6" />,
-    title: "Guest",
-    description:
-      "with this account you can do this and Lorem ipsum do this and Lorem",
-    type: "guest",
-  },
+  // {
+  //   icon: <UsersIcon className="object-contain w-6 h-6" />,
+  //   title: "Guest",
+  //   description:
+  //     "with this account you can do this and Lorem ipsum do this and Lorem",
+  //   type: "guest",
+  // },
 ];
 
 const ProfileTypeSelector: React.FC = () => {

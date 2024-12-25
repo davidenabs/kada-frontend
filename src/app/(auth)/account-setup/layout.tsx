@@ -7,6 +7,8 @@ export default function MainAuthLayout({
   children: React.ReactNode;
 }) {
   return (
-    <AccountSetupLayout><div className="app_container mt-[10%]">{children}</div></AccountSetupLayout>
+    <AccountSetupLayout>
+      <div className="app_container">{children}</div>
+    </AccountSetupLayout>
   );
 }

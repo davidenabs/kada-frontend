@@ -18,15 +18,17 @@ const marketClient = {
     ApiClient.put(API_ENDPOINTS.UPDATE_MARKET.replace(":id", id), data),
   deleteMarket: (id: string): Promise<any> =>
     ApiClient.delete(API_ENDPOINTS.DELETE_MARKET.replace(":id", id)),
-  getMarketProducts: (params: IParams): Promise<any> =>
-    ApiClient.get(API_ENDPOINTS.GET_MARKET_PRODUCTS, params),
+  getMarketProducts: (params: IParams, marketId: string): Promise<any> =>
+    ApiClient.get(
+      API_ENDPOINTS.GET_MARKET_PRODUCTS.replace(":marketId", marketId),
+      params
+    ),
+  getProducts: (params: IParams): Promise<any> =>
+    ApiClient.get(API_ENDPOINTS.GET_PRODUCTS, params),
   getProductTemplate: (params: IParams): Promise<any> =>
     ApiClient.get(API_ENDPOINTS.GET_PRODUCT_TEMPLATE, params),
-  uploadProductsFromSheet: (
-    data: IUploadProductsFromSheetPayload
-  ): Promise<any> => {
-    const formData = objectToFormData(data);
-    return ApiClient.post(API_ENDPOINTS.GET_MARKETS, formData, {
+  uploadProductsFromSheet: (data: FormData): Promise<any> => {
+    return ApiClient.post(API_ENDPOINTS.UPLOAD_PRODUCTS_FROM_SHEETS, data, {
       headers: { "Content-Type": "multipart/form-data" },
     });
   },

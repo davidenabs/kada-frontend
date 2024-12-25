@@ -1,8 +1,7 @@
-import { IUser } from "@/interface/user";
 import { userAtom } from "@/stores/user";
 import { useAtomValue } from "jotai";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 
 interface UseCheckUserFieldParams {
   field: string;
@@ -15,20 +14,27 @@ function getNestedValue(obj: any, path: string): any {
 }
 
 function useCheckUserFields(conditions: UseCheckUserFieldParams[]) {
+  const [loaded, setLoaded] = React.useState(false);
   const router = useRouter();
-  const { user } = useAtomValue(userAtom);
+  const user = useAtomValue(userAtom);
 
   useEffect(() => {
-    if (!user) return;
+    const userData = user?.user;
+    if (!userData || !loaded) return;
     for (const { field, condition, redirectTo } of conditions) {
-      const fieldValue = getNestedValue(user, field);
+      const fieldValue = getNestedValue(userData, field);
       if (fieldValue === undefined) return;
       if (condition(fieldValue)) {
         router.push(redirectTo);
         break;
       }
     }
-  }, [user, conditions, router]);
+  }, [user, conditions, router, loaded]);
+
+  useEffect(() => {
+    setLoaded(true);
+    return () => setLoaded(false);
+  }, []);
 }
 
 export default useCheckUserFields;

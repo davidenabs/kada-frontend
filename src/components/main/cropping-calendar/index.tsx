@@ -1,20 +1,35 @@
 "use client";
 import { CalendarIcon, CalendarIcon2, ListIcon, SearchIcon } from "@/icons";
-import { cn } from "rizzui";
+import { cn, Popover } from "rizzui";
 import React, { Fragment, useEffect, useState } from "react";
 import ChooseCrop from "./choose-crop";
 import Input from "@/components/form/input";
 import { Crop, searchCrops } from "@/lib/crop-data";
 import { DetailData, SidebarData } from "./data";
+import { useGetFarmProductsQuery } from "@/app/_api/farm-products";
+import useDebounce from "@/hooks/use-debounce";
+import { ICrop } from "@/interface/crop";
 
 function CroppingCalendar() {
   const [selectedOption, setSelectedOption] = useState<
     "date-range" | "cropping-stage"
-  >("date-range");
+  >("cropping-stage");
   const [search, setSearch] = useState("");
-  const [debouncedSearch, setDebouncedSearch] = useState("");
   const [results, setResults] = useState<Crop[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [loaded, setLoaded] = React.useState(false);
+  const [isOepn, setIsOpen] = useState(false);
+  const [selected, setSelected] = useState<ICrop | null>(null);
+  const debouncedSearchQuery = useDebounce(search);
+
+  const { data, isFetching, isRefetching, isError } = useGetFarmProductsQuery({
+    enabled: loaded && debouncedSearchQuery.length > 0,
+    params: {
+      page: 1,
+      limit: 10,
+      search: debouncedSearchQuery,
+    },
+  });
 
   const handleSelect = (index: number) => {
     setCurrentIndex(index);
@@ -31,24 +46,8 @@ function CroppingCalendar() {
   };
 
   useEffect(() => {
-    const timeout = setTimeout(() => {
-      setDebouncedSearch(search);
-    }, 300);
-
-    return () => clearTimeout(timeout);
-  }, [search]);
-
-  useEffect(() => {
-    if (debouncedSearch) {
-      handleSearch(debouncedSearch);
-    }
-  }, [debouncedSearch]);
-
-  useEffect(() => {
-    if (!debouncedSearch) {
-      setResults([]);
-    }
-  }, [debouncedSearch]);
+    setLoaded(true);
+  }, []);
 
   return (
     <Fragment>
@@ -68,7 +67,7 @@ function CroppingCalendar() {
           </h4>
 
           <div className="flex justify-center mt-[50px]">
-            <div className="flex items-center gap-3">
+            <div className="flex flex-row-reverse items-center gap-3">
               <button
                 className={cn(
                   "flex items-center gap-4 px-3 py-2 bg-[#E5E5E5] rounded-lg w-[210px]",
@@ -104,10 +103,10 @@ function CroppingCalendar() {
 
           <div className="bg-white rounded-3xl px-[21px] py-[30px] w-full flex gap-[23px] mt-[60px]">
             <div className="w-[262px] h-[691px] bg-[#EEF3F1] border border-[#ECF2F6] rounded-lg">
-              {results.length > 0 ? (
+              {selected ? (
                 <SidebarData
                   type={selectedOption}
-                  data={results[0]}
+                  data={selected}
                   currentIndex={currentIndex}
                   handleSelect={handleSelect}
                 />
@@ -117,35 +116,76 @@ function CroppingCalendar() {
             </div>
 
             <div className="flex-1 flex flex-col">
-              <div className="bg-[#506561] rounded-2xl px-9 py-8">
-                <Input
-                  type="search"
-                  placeholder="Search for a crop"
-                  label="Search for crop"
-                  suffix={
-                    <div className="rounded-full bg-[#367B62] w-10 h-10 flex items-center justify-center">
-                      <SearchIcon className="fill-white" />
+              <div className="bg-[#506561] rounded-2xl px-9 py-8 relative">
+                <Popover
+                  isOpen={isOepn}
+                  // setIsOpen={setIsOpen}
+                  arrowClassName="fill-white"
+                  animation="slideIn"
+                  showArrow={false}
+                  size="lg"
+                >
+                  <Popover.Trigger>
+                    <Input
+                      type="search"
+                      placeholder="Search for a crop"
+                      label="Search for crop"
+                      suffix={
+                        <div className="rounded-full bg-[#367B62] w-10 h-10 flex items-center justify-center">
+                          <SearchIcon className="fill-white" />
+                        </div>
+                      }
+                      inputClassName="h-[50px]"
+                      labelClassName="text-white"
+                      clearable
+                      onClear={() => {
+                        setSearch("");
+                        setResults([]);
+                        setCurrentIndex(0);
+                        setSelected(null);
+                      }}
+                      value={search}
+                      onChange={(e) => setSearch(e.target.value)}
+                      onFocus={() => setIsOpen(true)}
+                      onBlur={() => setIsOpen(false)}
+                    />
+                  </Popover.Trigger>
+                  <Popover.Content className="bg-white w-[400px] !p-2">
+                    <div className="w-[600px] max-h-[400px] overflow-y-scroll">
+                      {isFetching || isRefetching ? (
+                        <div className="space-y-4">
+                          <div className="w-[300px] h-[50px] bg-[#F0F0F0] animate-pulse"></div>
+                          <div className="w-[300px] h-[50px] bg-[#F0F0F0] animate-pulse"></div>
+                        </div>
+                      ) : isError ? (
+                        <div>Failed to fetch data</div>
+                      ) : (
+                        <div className="">
+                          {data?.data?.items.map((item) => (
+                            <div
+                              key={item.id}
+                              className="flex items-center justify-between px-4 py-2 border-b cursor-pointer hover:bg-[#F0F0F0]"
+                              onClick={() => {
+                                setSelected(item);
+                                setIsOpen(false);
+                              }}
+                            >
+                              <p>{item.name}</p>
+                            </div>
+                          ))}
+                        </div>
+                      )}
                     </div>
-                  }
-                  inputClassName="h-[50px]"
-                  labelClassName="text-white"
-                  clearable
-                  onClear={() => {
-                    setSearch("");
-                    setResults([]);
-                    setCurrentIndex(0);
-                  }}
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                />
+                  </Popover.Content>
+                </Popover>
               </div>
 
               <div className="border-t mt-4 flex-1">
-                {results.length > 0 ? (
+                {selected ? (
                   <div className="">
                     <DetailData
                       type={selectedOption}
-                      data={results[0]}
+                      data={selected}
                       currentIndex={currentIndex}
                       handleSelect={handleSelect}
                     />

@@ -25,7 +25,7 @@ interface Props {
 
 const defaultValues = {
   description: "",
-  file: null,
+  file: new File([], ""),
 };
 
 function AddPhoto({ close, gallery, farmId }: Props) {
@@ -59,7 +59,10 @@ function AddPhoto({ close, gallery, farmId }: Props) {
   });
 
   const onSubmit = (data: CreateGallerySchemaType) => {
-    console.log(data);
+    const formData = new FormData();
+    formData.append("description", data.description);
+    formData.append("file", data.file);
+
     mutateAsync(
       {
         data: {
@@ -70,7 +73,6 @@ function AddPhoto({ close, gallery, farmId }: Props) {
       },
       {
         onSuccess: (response) => {
-          console.log(response);
           if (response.success) {
             toast.success("Gallery created successfully");
             reset(defaultValues);

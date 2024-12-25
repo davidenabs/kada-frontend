@@ -19,7 +19,7 @@ const SearchBar = () => {
         onClear={() => setSearch("")}
         value={search}
         clearable
-        suffix={<SearchIcon />}
+        suffix={<SearchIcon className="fill-black" />}
       />
     </div>
   );

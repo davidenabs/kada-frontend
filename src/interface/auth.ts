@@ -6,8 +6,10 @@ export interface ILoginPayload {
 }
 
 export interface IRegisterPayload {
-  firstName: string;
-  lastName: string;
+  firstName?: string;
+  lastName?: string;
+  cooperativeName?: string;
+  vendorName?: string;
   email: string;
   phoneNumber: string;
   password: string;

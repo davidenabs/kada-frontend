@@ -1,6 +1,6 @@
 "use client";
 import CooperativeForm from "@/components/auth/create-account/forms/cooperative";
-import DataEForm from "@/components/auth/create-account/forms/data-enumerator";
+import VendorForm from "@/components/auth/create-account/forms/vendor";
 import FarmerForm from "@/components/auth/create-account/forms/farmer";
 import GuestForm from "@/components/auth/create-account/forms/guest";
 import AppLoader from "@/components/shared/loader";
@@ -24,10 +24,10 @@ const CreateAccountPage: React.FC = () => {
         <FarmerForm />
       ) : userType === "cooperative" ? (
         <CooperativeForm />
-      ) : userType === "dataEnumerator" ? (
-        <DataEForm />
+      ) : userType === "vendor" ? (
+        <VendorForm />
       ) : userType === "guest" ? (
-        <GuestForm />
+        <FarmerForm />
       ) : (
         <p className="text-gray-400 my-auto mx-auto">Invalid user type</p>
       )}

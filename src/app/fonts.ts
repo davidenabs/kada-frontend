@@ -1,4 +1,12 @@
-import { Inter, Oxygen, Raleway } from "next/font/google";
+import {
+  Inter,
+  JetBrains_Mono,
+  Lora,
+  Oxygen,
+  Playfair_Display,
+  Raleway,
+  Space_Grotesk,
+} from "next/font/google";
 import localFont from "next/font/local";
 
 export const inter = Inter({
@@ -15,4 +23,14 @@ export const oxygen = Oxygen({
 export const raleway = Raleway({
   subsets: ["latin"],
   variable: "--raleway",
+});
+
+export const jetbrains_mono = JetBrains_Mono({
+  subsets: ["latin"],
+  display: "swap",
+});
+
+export const space_grotesk = Space_Grotesk({
+  subsets: ["latin"],
+  display: "swap",
 });

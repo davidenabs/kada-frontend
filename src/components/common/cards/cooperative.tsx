@@ -43,7 +43,7 @@ function CooperativeCard({
         >
           <div className="relative w-[123px] h-[118px]">
             <Image
-              src="/images/bdo.png"
+              src={data?.imagePath || "/images/bdo.png"}
               alt="bdo"
               fill
               className="object-cover rounded-md"
@@ -54,15 +54,15 @@ function CooperativeCard({
             <div className="flex justify-between items-center">
               <div className="">
                 <h4 className="text-[15px] font-semibold font-inter">
-                  Cooperative Name
+                  {data?.cooperativeProfile?.cooperativeName}
                 </h4>
                 <p className="text-xs mt-1">
-                  Empowering local farmers through shared resources and support
+                  {data?.cooperativeProfile?.about || "No description"}
                 </p>
                 <div className="flex items-center my-2 gap-4">
                   <div className="flex items-center gap-2">
                     <MapPinIcon className="w-4 h-4" />
-                    <span className="text-xs">Chikun, Kaduna</span>
+                    {/* <span className="text-xs">Chikun, Kaduna</span> */}
                   </div>
 
                   <div className="flex items-center gap-2">
@@ -71,9 +71,9 @@ function CooperativeCard({
                   </div>
                 </div>
 
-                <div className="flex items-center">
+                {/* <div className="flex items-center">
                   <span className="text-sm">(91)</span>
-                </div>
+                </div> */}
               </div>
 
               <KadaButton

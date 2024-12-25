@@ -13,7 +13,7 @@ import React, { Fragment } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
-const defaultValues = {
+const defaultValues: ForgotPasswordSchemaType = {
   userId: "",
   type: OtpType.CHANGE_PASSWORD,
 };

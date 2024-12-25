@@ -2,17 +2,27 @@ import { ArrowRightIcon } from "@/icons";
 import { cn } from "rizzui";
 import Image from "next/image";
 import React from "react";
+import Link from "next/link";
 
 interface CatalogProps {
-  type: "service" | "product";
+  type: "services" | "products";
   image: string;
   name: string;
   price: string;
+  description: string;
+  href?: string;
 }
 
-function Catalog({ type, image, name, price }: CatalogProps) {
+function Catalog({
+  type,
+  image,
+  name,
+  price,
+  description,
+  href,
+}: CatalogProps) {
   return (
-    <div className="flex items-center gap-5">
+    <Link href={href ?? "#"} className="flex items-center gap-5">
       <div className="relative w-[116px] h-[104px] rounded-xl">
         <Image
           src={image}
@@ -24,8 +34,8 @@ function Catalog({ type, image, name, price }: CatalogProps) {
 
       <div className="flex-1">
         <div className="font-inter">
-          <h4 className="text-sm font-semibold">{name}</h4>
-          <p className="text-[#929292] text-sm">Ferterlizer Provider</p>
+          <h4 className="text-sm font-semibold capitalize">{name}</h4>
+          <p className="text-[#929292] text-sm">{description}</p>
         </div>
 
         <div className="flex justify-between mt-4">
@@ -33,7 +43,7 @@ function Catalog({ type, image, name, price }: CatalogProps) {
             <span
               className={cn(
                 "text-[#A2A9B0] text-base",
-                type === "product" && "hidden"
+                type === "products" && "hidden"
               )}
             >
               From
@@ -43,7 +53,7 @@ function Catalog({ type, image, name, price }: CatalogProps) {
           <ArrowRightIcon className="w-5 h-5 fill-[#C1C7CD]" />
         </div>
       </div>
-    </div>
+    </Link>
   );
 }
 

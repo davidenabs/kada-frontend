@@ -1,21 +1,55 @@
 "use client";
-import FarmerTable from "@/components/dashboards/cooperative/members/farm-table";
 import { KadaButton } from "@/components/form/button";
 import Input from "@/components/form/input";
 import useDashboardTitle from "@/hooks/use-dashboard-tite";
 import { SearchIcon } from "@/icons";
 import React from "react";
-import { Badge, Popover } from "rizzui";
+import { Badge, Empty, Popover } from "rizzui";
 import MembersTable from "./table";
 import { useModal } from "@/hooks/use-modal";
 import MembershipRequestModal from "@/components/modals/cooperative/membership-request";
 import AddMemberModal from "@/components/modals/cooperative/add-member";
 import { ClipboardIcon } from "@heroicons/react/16/solid";
 import ImportMemberModal from "@/components/modals/cooperative/import-member";
+import { withAuth } from "@/components/common/auth";
+import { IUser, UserType } from "@/interface/user";
+import { useGetCooperativeFarmersQuery } from "@/app/_api/user";
+import MembersTableSkeleton from "@/components/skeletons/table/member";
+import columns from "./columns";
+import KadaTable from "@/components/common/table";
+import useDebounce from "@/hooks/use-debounce";
 
 function CooperativeMembersPage() {
   useDashboardTitle("Members");
   const { openModal, closeModal } = useModal();
+  const [loaded, setLoaded] = React.useState(false);
+  const [members, setMembers] = React.useState<IUser[]>([]);
+  const [search, setSearch] = React.useState("");
+  const [limit, setLimit] = React.useState(10);
+  const [page, setPage] = React.useState(1);
+  const debouncedSearchQuery = useDebounce(search);
+
+  const { data, isFetching, isRefetching } = useGetCooperativeFarmersQuery({
+    enabled: loaded, // *Enable the query when the component is loaded
+    params: {
+      search: debouncedSearchQuery,
+      page,
+      limit,
+    },
+  });
+
+  // *Set members when data is fetched
+  React.useEffect(() => {
+    if (data?.data && data.success && !isFetching && !isRefetching) {
+      setMembers(data.data.users);
+    }
+  }, [data, isFetching, isRefetching]);
+
+  // *Set loaded to true when component mounts
+  React.useEffect(() => {
+    setLoaded(true);
+    return () => setLoaded(false);
+  }, []);
 
   return (
     <>
@@ -47,9 +81,9 @@ function CooperativeMembersPage() {
               }
             >
               Membership Requests
-              <Badge className="ml-2 bg-red-500" color="danger" size="sm">
+              {/* <Badge className="ml-2 bg-red-500" color="danger" size="sm">
                 6
-              </Badge>
+              </Badge> */}
             </KadaButton>
 
             <KadaButton
@@ -70,11 +104,15 @@ function CooperativeMembersPage() {
           <Input
             placeholder="Search here..."
             inputClassName="!rounded-[10px] !h-[36px]"
-            className="!w-[500px]"
-            prefix={<SearchIcon />}
+            className="w-full lg:w-[500px]"
+            prefix={<SearchIcon className="fill-black" />}
+            clearable
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            onClear={() => setSearch("")}
           />
 
-          <Popover shadow="sm" placement="bottom-end">
+          {/* <Popover shadow="sm" placement="bottom-end">
             <Popover.Trigger>
               <KadaButton className="" variant="outline">
                 Filter
@@ -87,11 +125,36 @@ function CooperativeMembersPage() {
                 </div>
               </>
             </Popover.Content>
-          </Popover>
+          </Popover> */}
         </div>
 
         <div className="border-x mt-3">
-          <MembersTable />
+          {
+            // *Show loading skeleton when fetching data
+            isFetching || isRefetching ? (
+              <MembersTableSkeleton />
+            ) : members.length > 0 ? (
+              <KadaTable
+                data={data?.data?.users || []}
+                columns={columns}
+                // renderActions={(item) => (
+                //   <div className="flex">
+                //     <button className="text-xs text-blue-600">View</button>
+                //   </div>
+                // )}
+                itemsPerPage={limit}
+                totalItems={data?.data?.total || 0}
+                page={page}
+                onPageChange={(page) => setPage(page)}
+              />
+            ) : (
+              <Empty
+                className="mt-6"
+                text="No members found"
+                textClassName="mt-2"
+              />
+            )
+          }
         </div>
       </div>
     </>

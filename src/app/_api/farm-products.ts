@@ -1,46 +1,61 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import farmProductsClient from "./client/farm-products";
-import { IQueryParams } from "@/interface/client";
+import {
+  IPaginatedResponse,
+  IQueryParams,
+  IResponse,
+} from "@/interface/client";
 import API_ENDPOINTS from "./client/endpoint";
+import { IRequest } from "@/interface/request";
+import { ICrop } from "@/interface/crop";
 
 export const useGetFarmProductsQuery = ({
   enabled = true,
   params = {},
 }: IQueryParams) => {
-  return useQuery({
-    queryKey: [API_ENDPOINTS.GET_FARM_PRODUCTS],
+  return useQuery<IResponse<IPaginatedResponse<ICrop, "items">>, Error>({
+    queryKey: [API_ENDPOINTS.GET_FARM_PRODUCTS, params],
     queryFn: () => farmProductsClient.getFarmProducts(params),
     enabled: enabled !== undefined ? enabled : true,
   });
 };
 
 export const useCreateFarmProductMutation = () => {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (data: any) => farmProductsClient.createFarmProduct(data),
-    onError: (error: any) => {
-      console.error(error);
-    },
     mutationKey: [API_ENDPOINTS.CREATE_FARM_PRODUCT],
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [API_ENDPOINTS.GET_FARM_PRODUCTS],
+      });
+    },
   });
 };
 
 export const useUpdateFarmProductMutation = () => {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: ({ data, id }: { data: any; id: string }) =>
       farmProductsClient.updateFarmProduct(data, id),
-    onError: (error: any) => {
-      console.error(error);
-    },
     mutationKey: [API_ENDPOINTS.UPDATE_FARM_PRODUCT],
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [API_ENDPOINTS.GET_FARM_PRODUCTS],
+      });
+    },
   });
 };
 
 export const useDeleteFarmProductMutation = () => {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (id: string) => farmProductsClient.deleteFarmProduct(id),
-    onError: (error: any) => {
-      console.error(error);
-    },
     mutationKey: [API_ENDPOINTS.DELETE_FARM_PRODUCT],
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [API_ENDPOINTS.GET_FARM_PRODUCTS],
+      });
+    },
   });
 };

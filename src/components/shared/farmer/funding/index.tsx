@@ -60,7 +60,7 @@ function FarmersFundingSharedPage() {
                   placeholder="Search here..."
                   inputClassName="!rounded-[10px]"
                   className="!w-[500px]"
-                  prefix={<SearchIcon />}
+                  prefix={<SearchIcon className="fill-black" />}
                 />
               </div>
             </div>

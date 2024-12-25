@@ -63,7 +63,7 @@ function ResendOtp({ close }: { close: () => void }) {
 
   return (
     <Fragment>
-      <section className="p-4">
+      <section className="p-4 bg-white">
         <div className="flex justify-between items-center">
           <h1 className="self-start text-2xl font-bold text-green-800">
             Resend OTP

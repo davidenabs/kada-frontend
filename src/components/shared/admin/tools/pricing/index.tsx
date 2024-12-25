@@ -69,7 +69,7 @@ function AdminPricingSharedPage() {
             <Upload
               fileInputRef={fileInputRef}
               handleClick={handleClick}
-              handleFileChange={handleFileChange}
+              onChange={handleFileChange}
             />
           </div>
 
