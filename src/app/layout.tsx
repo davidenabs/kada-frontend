@@ -11,6 +11,7 @@ import "./_styles/globals.css";
 import { Toaster } from "@/components/common/toast";
 import LoaderProvider from "@/provider/loader";
 import { baseMetadata } from "./_templates/metadata";
+import { SocketProvider } from "@/provider/socket";
 
 export const metadata: Metadata = baseMetadata;
 
@@ -22,20 +23,22 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${oxygen.variable} ${inter.variable} font-oxygen`}>
-        <ReactQueryProvider>
-          <PreviousPathnameProvider>
-            <Suspense fallback={<div className="">Loading...</div>}>
-              <main className="relative">
-                <LoaderProvider>
-                  <Toaster />
-                  {children}
-                  <GlobalModal />
-                  <GlobalDrawer />
-                </LoaderProvider>
-              </main>
-            </Suspense>
-          </PreviousPathnameProvider>
-        </ReactQueryProvider>
+        <SocketProvider>
+          <ReactQueryProvider>
+            <PreviousPathnameProvider>
+              <Suspense fallback={<div className="">Loading...</div>}>
+                <main className="relative">
+                  <LoaderProvider>
+                    <Toaster />
+                    {children}
+                    <GlobalModal />
+                    <GlobalDrawer />
+                  </LoaderProvider>
+                </main>
+              </Suspense>
+            </PreviousPathnameProvider>
+          </ReactQueryProvider>
+        </SocketProvider>
       </body>
     </html>
   );

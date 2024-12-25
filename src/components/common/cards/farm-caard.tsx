@@ -8,7 +8,7 @@ function FarmCard({
   landArea,
   location,
   activeSeason,
-  products,
+  crops,
 }: IFarm) {
   return (
     <Fragment>
@@ -32,7 +32,7 @@ function FarmCard({
               <p className="self-stretch my-auto">{activeSeason}</p>
             </div>
             <div className="flex gap-1.5 self-stretch mt-5 w-full text-black whitespace-nowrap max-md:mr-1">
-              {products?.map((crop, index) => (
+              {crops?.map((crop, index) => (
                 <span
                   key={index}
                   className="gap-2.5 self-stretch px-2.5 py-1 rounded border-zinc-300 border-[0.5px]"
