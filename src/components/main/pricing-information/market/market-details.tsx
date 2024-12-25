@@ -7,12 +7,12 @@ interface MarketDetailsProps {
 
 const MarketDetails: React.FC<MarketDetailsProps> = ({ data }) => {
   const days = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
-
+  const openingDaysArray = data?.openingDays.split(",").map((day: string) => day.trim().substring(0, 3).toUpperCase() || []);
   return (
     <div className="flex flex-col text-start w-[56%] max-md:ml-0 max-md:w-full">
       <div className="flex flex-col grow ">
         <div className="text-xs font-semibold text-gray-400 tracking-[4.08px]">
-          {data?.name}
+          {data?.name} - {data?.lga && (data?.lga?.name + " LGA")}
         </div>
         <div className="mt-3 text-base font-semibold leading-6 text-zinc-700">
           {data?.address}
@@ -31,7 +31,7 @@ const MarketDetails: React.FC<MarketDetailsProps> = ({ data }) => {
                 <DayIndicator
                   key={day}
                   day={day}
-                  isActive={index < 3 || index > 4}
+                  isActive={openingDaysArray.includes(day)}
                 />
               ))}
             </div>

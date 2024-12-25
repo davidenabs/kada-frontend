@@ -9,6 +9,7 @@ import useDashboardTitle from "@/hooks/use-dashboard-tite";
 import { KadaButton } from "@/components/form/button";
 import { useModal } from "@/hooks/use-modal";
 import NotificationsModal from "@/components/modals/farmer/notifications";
+import CreateFarmModal from "@/components/modals/create-farm";
 
 interface NavigationItemProps {
   text: string;
@@ -54,6 +55,13 @@ function FarmSharedPage() {
     return <div>Loading...</div>;
   }
 
+  const handleEditFarmModal = () => {
+    openModal({
+      customSize: "654px",
+      view: <CreateFarmModal close={closeModal} farm={data?.data} />,
+    });
+  };
+
   return (
     <div className="">
       <div className="flex justify-between items-center">
@@ -65,12 +73,11 @@ function FarmSharedPage() {
 
         <div className="">
           <KadaButton
-            className="!rounded-full h-[30px]"
-            onClick={() =>
-              openModal({ view: <NotificationsModal close={closeModal} /> })
-            }
+            className="!rounded-full h-[30px] !bg-slate-400"
+            onClick={handleEditFarmModal}
           >
-            Notifications
+            
+            Modify Farm
           </KadaButton>
         </div>
       </div>

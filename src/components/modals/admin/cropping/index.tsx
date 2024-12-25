@@ -14,6 +14,7 @@ import {
 } from "@/app/_api/farm-products";
 import { toast } from "sonner";
 import { Modal } from "rizzui";
+import ActivityForm from "./activity-form";
 
 type CreateCroppingInfoProps = {
   open: boolean;
@@ -28,8 +29,9 @@ const defaultValues: cropSchemaType = {
   idealTemperature: "",
   waterRequirements: "",
   soilType: "",
-  seasons: [] as any,
-  stages: [] as any,
+  activities: [] as any,
+  // seasons: [] as any,
+  // stages: [] as any,
 };
 
 function CreateCroppingInfoModal({
@@ -94,7 +96,7 @@ function CreateCroppingInfoModal({
     <Fragment>
       <Modal
         isOpen={open}
-        onClose={() => {}}
+        onClose={() => { }}
         size={"full"}
         overlayClassName="dark:bg-opacity-40 dark:backdrop-blur-sm"
         containerClassName="dark:bg-gray-100"
@@ -184,7 +186,13 @@ function CreateCroppingInfoModal({
                       <p>CROPPING DETAILS</p>
                     </div>
 
-                    <div className="mt-1 flex-1  px-4 max-h-[500px] grid grid-cols-1 lg:grid-cols-2 max-lg:divide-y lg:divide-x [&>div]:lg:px-4 [&>div]:max-lg:px-4">
+                    <div className="mt-1 flex-1  px-4 max-h-[500px] grid grid-cols-1lg:grid-cols-2 max-lg:divide-y lg:divide-x [&>div]:lg:px-4 [&>div]:max-lg:px-4">
+                      <div className="h-full overflow-y-scroll">
+                        <ActivityForm control={control} />
+                      </div>
+                    </div>
+
+                    {/* <div className="mt-1 flex-1  px-4 max-h-[500px] grid grid-cols-1 lg:grid-cols-2 max-lg:divide-y lg:divide-x [&>div]:lg:px-4 [&>div]:max-lg:px-4">
                       <div className="h-full overflow-y-scroll">
                         <SeasonForm control={control} />
                       </div>
@@ -192,7 +200,7 @@ function CreateCroppingInfoModal({
                       <div className="h-full overflow-y-scroll">
                         <StageForm control={control} />
                       </div>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               </div>

@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import React from "react";
-import Rating from "react-rating";
+// import Rating from "react-rating";
 import { KadaButton } from "../form/button";
 import { ArrowRightIcon } from "@/icons";
 import Link from "next/link";

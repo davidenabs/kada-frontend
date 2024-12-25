@@ -5,13 +5,13 @@ import useDashboardTitle from "@/hooks/use-dashboard-tite";
 import { SearchIcon } from "@/icons";
 import React from "react";
 import { Badge, Empty, Popover } from "rizzui";
-import MembersTable from "./table";
+// import MembersTable from "./table";
 import { useModal } from "@/hooks/use-modal";
 import MembershipRequestModal from "@/components/modals/cooperative/membership-request";
-import AddMemberModal from "@/components/modals/cooperative/add-member";
-import { ClipboardIcon } from "@heroicons/react/16/solid";
-import ImportMemberModal from "@/components/modals/cooperative/import-member";
-import { withAuth } from "@/components/common/auth";
+// import AddMemberModal from "@/components/modals/cooperative/add-member";
+// import { ClipboardIcon } from "@heroicons/react/16/solid";
+// import ImportMemberModal from "@/components/modals/cooperative/import-member";
+// import { withAuth } from "@/components/common/auth";
 import { IUser, UserType } from "@/interface/user";
 import { useGetCooperativeFarmersQuery } from "@/app/_api/user";
 import MembersTableSkeleton from "@/components/skeletons/table/member";
@@ -60,7 +60,7 @@ function CooperativeMembersPage() {
           </h2>
 
           <div className="flex gap-4">
-            <button
+            {/* <button
               onClick={() =>
                 openModal({
                   customSize: "480px",
@@ -69,7 +69,7 @@ function CooperativeMembersPage() {
               }
             >
               <ClipboardIcon className="w-4 h-4" />
-            </button>
+            </button> */}
             <KadaButton
               className="rounded-full"
               variant="outline"
@@ -86,7 +86,7 @@ function CooperativeMembersPage() {
               </Badge> */}
             </KadaButton>
 
-            <KadaButton
+            {/* <KadaButton
               className="rounded-full"
               onClick={() =>
                 openModal({
@@ -96,7 +96,7 @@ function CooperativeMembersPage() {
               }
             >
               Add Member
-            </KadaButton>
+            </KadaButton> */}
           </div>
         </div>
 

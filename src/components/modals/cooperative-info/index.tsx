@@ -11,10 +11,13 @@ import { useAtomValue } from "jotai";
 import { userAtom } from "@/stores/user";
 import { toast } from "sonner";
 import ConfirmModal from "../confim-modal";
+import { PaymentPurposeType } from "@/interface/payment";
+import { useInitiatePaymentMutation } from "@/app/_api/payment";
 
 interface CooperativeInfoModalProps {
   close: () => void;
-  cooperaative: IUser;
+  cooperative: IUser;
+  farmerId?: any;
 }
 
 const tabs = [
@@ -34,40 +37,41 @@ const tabs = [
 
 function CooperativeInfoModal({
   close,
-  cooperaative,
+  cooperative,
+  farmerId
 }: CooperativeInfoModalProps) {
   const user = useAtomValue(userAtom);
   const [activeTab, setActiveTab] = useState("about");
-  const { mutateAsync, isPending } = useCreateRequestMutation();
   const [confirm, setConfirm] = useState(false);
+  const { mutateAsync, isPending } = useInitiatePaymentMutation();
 
   const handleJoin = () => {
     toast.dismiss();
     toast.loading("Sending request...");
-    mutateAsync(
-      {
-        data: {
-          requestType: RequestType.FARMER_TO_COOPERATIVE,
-          cooperativeId: cooperaative?.id,
-          farmerId: user.user?.id,
-        },
+
+    const payload = {
+      email: user.user!.email,
+      amount: cooperative?.cooperativeProfile?.joinAmount as number,
+      currency: "NGN",
+      type: "debit",
+      purpose: PaymentPurposeType.COOPERATIVE_JOIN_REQUEST,
+      userId: farmerId || user.user!.id,
+      cooperativeProfileId: cooperative?.cooperativeProfile?.id,
+      paidBy: {
+        userId: user.user!.id,
+        name: user.user!.firstName + " " + user.user!.lastName,
       },
-      {
-        onSuccess: (response) => {
-          if (response.success) {
-            toast.dismiss();
-            toast.success("Request sent successfully");
-            close();
-          }
-        },
-        onError: (error) => {
-          toast.dismiss();
-        },
-        onSettled: () => {
-          setConfirm(false);
-        },
-      }
-    );
+      meta: {},
+    };
+
+    mutateAsync(payload, {
+      onSuccess: (res) => {
+        toast.success("Payment initiated successfully, redirecting...");
+        close()
+        window.location.href = res.data.authorization_url;
+        // setIsPaid(true);
+      },
+    });
   };
 
   return (
@@ -78,6 +82,7 @@ function CooperativeInfoModal({
           onConfirm={handleJoin}
           open={confirm}
           loading={isPending}
+          amount={cooperative?.cooperativeProfile?.joinAmount as number}
         />
       )}
       <section className="flex overflow-hidden flex-col w-full rounded-[10px] max-md:max-w-full bg-white font-inter">
@@ -95,7 +100,7 @@ function CooperativeInfoModal({
               <div className="flex flex-col items-center px-8">
                 <div className="relative w-[122px] h-[122px]">
                   <Image
-                    src={cooperaative?.imagePath || "/images/bdo.png"}
+                    src={cooperative?.imagePath || "/images/bdo.png"}
                     alt="bdo"
                     fill
                     className="object-cover rounded-full"
@@ -103,7 +108,7 @@ function CooperativeInfoModal({
                 </div>
 
                 <h4 className="text-base text-[#101928] font-semibold mt-6">
-                  {cooperaative?.cooperativeProfile?.cooperativeName}
+                  {cooperative?.cooperativeProfile?.cooperativeName}
                 </h4>
 
                 <p className="text-center text-sm font-inter text-[#1D2739]">
@@ -113,17 +118,17 @@ function CooperativeInfoModal({
 
               <div className="px-8 space-y-4">
                 <div className="flex justify-center">
-                  <span className="text-sm">(91)</span>
+                  <span className="text-sm">({cooperative?.phoneNumber})</span>
                 </div>
                 <div className="flex justify-center items-center my-2 gap-4">
                   <div className="flex items-center gap-2">
                     <MapPinIcon className="w-4 h-4" />
-                    <span className="text-xs">Chikun, Kaduna</span>
+                    <span className="text-xs">{cooperative?.lga || "Kaduna"}</span>
                   </div>
 
                   <div className="flex items-center gap-2">
                     <UsersListIcon className="w-[19px] h-[11px] text-[#667185]" />
-                    <span className="text-xs">234 Members</span>
+                    <span className="text-xs">0 Members</span>
                   </div>
                 </div>
                 <KadaButton
@@ -145,7 +150,7 @@ function CooperativeInfoModal({
                     setConfirm(true);
                   }}
                 >
-                  Request to Join
+                  Request to Join (&#8358;{cooperative.cooperativeProfile?.joinAmount})
                 </KadaButton>
               </div>
             </div>
@@ -177,12 +182,12 @@ function CooperativeInfoModal({
 
                 <p className="text-base mt-4">
                   {activeTab === "about"
-                    ? cooperaative?.cooperativeProfile?.about ||
-                      "No description provided"
+                    ? cooperative?.cooperativeProfile?.about ||
+                    "No description provided"
                     : activeTab === "eligibility"
-                    ? cooperaative?.cooperativeProfile?.eligibility ||
+                      ? cooperative?.cooperativeProfile?.eligibility ||
                       "No eligibility provided"
-                    : null}
+                      : null}
                 </p>
               </div>
             </div>

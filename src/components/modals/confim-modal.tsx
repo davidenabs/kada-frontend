@@ -7,6 +7,7 @@ type ConfirmModalProps = {
   close: () => void;
   onConfirm: () => void;
   loading: boolean;
+  amount?: number;
 };
 
 const ConfirmModal: React.FC<ConfirmModalProps> = ({
@@ -14,6 +15,7 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
   close,
   onConfirm,
   loading,
+  amount
 }) => {
   return (
     <Modal
@@ -32,8 +34,8 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
         </header>
 
         <div className="flex flex-col gap-4 items-center justify-center h-full p-3">
-          <h4 className="text-lg font-semibold text-center">
-            Are you sure you want to proceed? This action cannot be undone.
+          <h4 className="text-md font-semibold text-center">
+            Are you sure you want to proceed?<br></br>{amount && `Please note that this action is irreversible and will require a payment of &#8358;${amount} to this cooperative`}
           </h4>
           {loading && (
             <div className="flex items-center justify-center">

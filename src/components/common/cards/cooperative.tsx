@@ -13,6 +13,7 @@ function CooperativeCard({
   closeModal,
   router,
   data,
+  farmerId,
 }: {
   openModal: ({
     view,
@@ -26,6 +27,7 @@ function CooperativeCard({
   closeModal: () => void;
   router: any;
   data: IUser;
+  farmerId?: any;
 }) {
   return (
     <Fragment>
@@ -36,7 +38,7 @@ function CooperativeCard({
             openModal({
               customSize: "80%",
               view: (
-                <CooperativeInfoModal close={closeModal} cooperaative={data} />
+                <CooperativeInfoModal close={closeModal} cooperative={data} farmerId={farmerId} />
               ),
             });
           }}
@@ -62,12 +64,12 @@ function CooperativeCard({
                 <div className="flex items-center my-2 gap-4">
                   <div className="flex items-center gap-2">
                     <MapPinIcon className="w-4 h-4" />
-                    {/* <span className="text-xs">Chikun, Kaduna</span> */}
+                    <span className="text-xs"> {data?.lga || "Kaduna"}</span>
                   </div>
 
                   <div className="flex items-center gap-2">
                     <UsersListIcon className="w-[19px] h-[11px] text-[#667185]" />
-                    <span className="text-xs">234 Members</span>
+                    <span className="text-xs">  {data?.cooperativeProfile?.totalMembers || 0} Member(s)</span>
                   </div>
                 </div>
 

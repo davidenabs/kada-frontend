@@ -23,7 +23,8 @@ function CooperativeProfileSharedPage() {
       customSize: "50%",
     });
   };
-
+// add asection for user to update their join amount
+// also, it should be done on creating account
   return (
     <div className="flex justify-stretch items-stretch gap-8">
       <div className="flex-1 space-y-6">
@@ -103,19 +104,19 @@ function CooperativeProfileSharedPage() {
             </div>
           </div>
 
-          <div className="flex justify-between">
+          {/* <div className="flex justify-between">
             <span className="text-lg">Funding History</span>
 
             <div className="flex">
               <span className="text-[#878D96]">Kaduna</span>
             </div>
-          </div>
+          </div> */}
 
           <div className="flex justify-between">
-            <span className="text-lg">Cooperative (0)</span>
+            <span className="text-lg">Members</span>
 
             <div className="flex">
-              <span className="text-[#878D96]">Kaduna</span>
+              <span className="text-[#878D96]">{user?.cooperativeProfile?.totalMembers || "0"}</span>
             </div>
           </div>
         </div>

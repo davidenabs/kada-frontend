@@ -2,7 +2,9 @@ import { useRegisterMutation } from "@/app/_api/auth";
 import Button from "@/components/form/button";
 import Input from "@/components/form/input";
 import Password from "@/components/form/password";
+import Select from "@/components/form/select";
 import { UserType } from "@/interface/user";
+import { kadaLGA, lgaOptions } from "@/lib/lga-data";
 import {
   CooperativeSchema,
   CooperativeSchemaType,
@@ -25,6 +27,7 @@ const defaultValues = {
   confirmPassword: "",
   userType: UserType.COOPERATIVE,
   acceptTerms: false,
+  lga: "",
 };
 
 const CooperativeForm: React.FC = () => {
@@ -55,9 +58,15 @@ const CooperativeForm: React.FC = () => {
           toast.error(response.message);
         }
       },
-      onError: (error) => {},
+      onError: (error) => { },
     });
   };
+
+  // Map LGAs to options
+  // const lgaOptions = kadaLGA.lgas.map((lga) => ({
+  //   value: lga,
+  //   label: lga,
+  // }));
 
   return (
     <form
@@ -88,6 +97,15 @@ const CooperativeForm: React.FC = () => {
           {...register("cooperativeName")}
           error={errors.cooperativeName?.message}
         />
+
+        <Select
+          label="Local Government Area (LGA)"
+          id="lga"
+          options={lgaOptions}
+          {...register("lga")}
+          error={errors.lga?.message}
+        >
+        </Select>
 
         <Input
           label="Phone"

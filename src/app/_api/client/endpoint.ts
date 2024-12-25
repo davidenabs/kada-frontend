@@ -27,6 +27,8 @@ const API_ENDPOINTS = {
   CREATE_FARM_GALLERY: "/farms/gallery/:farmId",
   CREATE_FARM_CROPPING: "/farm-cropping",
   GET_FARM_CROPPING_NOTIFICATION: "/farm-cropping/farm/notification/:farmId",
+  UPDATE_FARM_ACTIVITY_LOG: "/farms/update-farm-activity-log",
+  VERIFY_FARM: "/farms/verify/:farmId/:farmerId",
 
   // catalog
   CATALOG_GET_PRODUCTS: "/catalog/products",
@@ -66,6 +68,7 @@ const API_ENDPOINTS = {
   GET_COOPERATIVE_OVERVIEW: "/overview/cooperative",
   GET_VENDOR_OVERVIEW: "/overview/vendor",
   GET_ADMIN_OVERVIEW: "/overview/admin",
+  GET_ENUMERATOR_OVERVIEW: "/overview/enumerator",
 
   // cms
   CMS_GET_POSTS: "/cms/posts",
@@ -75,6 +78,17 @@ const API_ENDPOINTS = {
   PAYMENT_INITIATE: "/payments",
   ADD_FARMERS_FROM_CSV: "/cooperatives/add-farmers-from-csv",
   ADD_FARMER: "/cooperatives/add-farmer/:farmerId",
+
+  // subscriptions
+  CREATE_SUBSCRIPTION_PLAN: "/subscription-plans",
+  GET_SUBSCRIPTION_PLANS: "/subscription-plans",
+  UPDATE_SUBSCRIPTION_PLAN: "/subscription-plans/:id",
+  DELETE_SUBSCRIPTION_PLAN: "/subscription-plans/:id",
+  GET_MY_SUBSCRIPTION_PLAN: "/subscription-plans/my-plan",
+
+  // Enumerator
+  REGISTER_FARM: "/enumerator/register-farmer",
+  
 };
 
 export default API_ENDPOINTS;

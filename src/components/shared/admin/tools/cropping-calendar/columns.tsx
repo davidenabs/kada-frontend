@@ -4,7 +4,7 @@ import { format } from "date-fns";
 const columns: Column<any>[] = [
   {
     label: "Crop",
-    key: "date",
+    key: "name",
     render: (item) => <div className="">{item.name}</div>,
   },
   {
@@ -15,15 +15,15 @@ const columns: Column<any>[] = [
     ),
   },
   {
-    label: "No of Stages",
-    key: "title",
-    render: (item) => <div className="">{item.stages.length}</div>,
+    label: "No of Activities",
+    key: "activities",
+    render: (item) => <div className="">{item.activities.length}</div>,
   },
-  {
-    label: "No of Seasons",
-    key: "title",
-    render: (item) => <div className="">{item.seasons.length}</div>,
-  },
+  // {
+  //   label: "No of Seasons",
+  //   key: "title",
+  //   render: (item) => <div className="">{item.seasons.length}</div>,
+  // },
 ];
 
 export default columns;

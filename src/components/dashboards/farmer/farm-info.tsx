@@ -1,5 +1,5 @@
-import Button, { KadaButton } from "@/components/form/button";
-import { CameraIcon } from "@/icons";
+import Button from "@/components/form/button";
+import { CalendarIcon, CalendarIcon2, CameraIcon, ListIcon } from "@/icons";
 import Image from "next/image";
 import React, { Fragment } from "react";
 import Gallery from "./gallery";
@@ -10,8 +10,15 @@ import { useGetFarmGalleryQuery } from "@/app/_api/farm";
 import FarmGalleySkeleton from "@/components/skeletons/farm-gallery";
 import { Map } from "@/components/common/map";
 import { parseGeoLocation } from "@/utils/utils";
-import { Tooltip } from "rizzui";
+import { cn, Tooltip } from "rizzui";
 import NotifyModal from "@/components/modals/farmer/notify";
+import { ICrop } from "@/interface/crop";
+import { DetailData, SidebarData } from "@/components/main/cropping-calendar/data";
+import ChooseCrop from "@/components/main/cropping-calendar/choose-crop";
+import CropDetails from "./cropping-info";
+import CreateFarmModal from "@/components/modals/create-farm";
+import { getAuthToken } from "@/app/api/auth";
+import CropActivities from "@/components/main/cropping-calendar/crop-activities";
 
 export function CoordinateDisplay({ geoLocation }: { geoLocation: string }) {
   const coordinates = parseGeoLocation(geoLocation);
@@ -19,6 +26,8 @@ export function CoordinateDisplay({ geoLocation }: { geoLocation: string }) {
     return <p className="text-red-500">Invalid coordinates</p>;
   }
 
+  const token = getAuthToken();
+  console.log(token)
   return (
     <div className="space-y-2">
       <h3 className="text-sm font-medium text-white">
@@ -47,6 +56,7 @@ function FarmInfo(farm: IFarm & { farmId: string }) {
     farmId: farm.farmId,
   });
   const [notify, setNotify] = React.useState(false);
+  // const [currentIndex, setCurrentIndex] = React.useState(0);
 
   const handleOpenModal = () => {
     openModal({
@@ -72,7 +82,7 @@ function FarmInfo(farm: IFarm & { farmId: string }) {
       )}
       <section className="mt-6 p-2 border border-teal-700 border-opacity-30 rounded-[20px]">
         <div className="flex gap-4">
-          <div className="bg-white rounded-3xl shadow-[0px_0px_40px_0px_#C6C5C545] h-[682px] w-[269px] p-3">
+          <div className="bg-white rounded-3xl shadow-[0px_0px_40px_0px_#C6C5C545] h[682px] w-[269px] p-3">
             <div className="relative w-60 h-[105px]">
               <Image
                 src="/images/crop-thumb.png"
@@ -88,7 +98,7 @@ function FarmInfo(farm: IFarm & { farmId: string }) {
                 {farm?.landArea} HECTRES
               </p>
               <p className="text-sm font-thin pt-2 max-w-[213px]">
-                Close to FGSC along, lorem ipsumn road, kaduna
+                LGA: {farm?.lga}
               </p>
             </div>
 
@@ -100,7 +110,7 @@ function FarmInfo(farm: IFarm & { farmId: string }) {
 
             <div className="mt-4">
               <h4 className="text-[14px]">Crop(s)</h4>
-              <div className="flex flex-wrap gap-[6px] justify-center text-sm font-thin mt-2 w-full text-black/85 whitespace-nowrap">
+              <div className="flex flex-wrap gap-[6px] justify-start text-sm font-thin mt-2 w-full text-black/85 whitespace-nowrap">
                 {farm?.crops?.map((crop, index) => (
                   <span
                     key={index + crop.name}
@@ -112,7 +122,7 @@ function FarmInfo(farm: IFarm & { farmId: string }) {
               </div>
             </div>
 
-            <div className="text-center mt-4">
+            {/* <div className="text-center mt-4">
               <Tooltip
                 size="sm"
                 className="bg-white border-primary border"
@@ -126,7 +136,7 @@ function FarmInfo(farm: IFarm & { farmId: string }) {
                   Get Notified
                 </KadaButton>
               </Tooltip>
-            </div>
+            </div> */}
 
             <div className="mt-4 space-y-4">
               <h4 className="text-[14px] font-medium">Farming Season</h4>
@@ -224,6 +234,13 @@ function FarmInfo(farm: IFarm & { farmId: string }) {
             </div>
           </div>
         </div>
+
+        {farm.crops!.map((crop) => {
+          return (
+            <CropDetails crop={crop} activities={crop.activities} />
+          );
+        })}
+
       </section>
     </Fragment>
   );

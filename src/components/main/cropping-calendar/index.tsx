@@ -49,6 +49,7 @@ function CroppingCalendar() {
     setLoaded(true);
   }, []);
 
+
   return (
     <Fragment>
       <div className="bg-[#F0F0F0]">
@@ -66,7 +67,7 @@ function CroppingCalendar() {
             How would you like to <br /> explore calendar?
           </h4>
 
-          <div className="flex justify-center mt-[50px]">
+          {/* <div className="flex justify-center mt-[50px]">
             <div className="flex flex-row-reverse items-center gap-3">
               <button
                 className={cn(
@@ -99,10 +100,10 @@ function CroppingCalendar() {
                 <span>Cropping Stages</span>
               </button>
             </div>
-          </div>
+          </div> */}
 
           <div className="bg-white rounded-3xl px-[21px] py-[30px] w-full flex gap-[23px] mt-[60px]">
-            <div className="w-[262px] h-[691px] bg-[#EEF3F1] border border-[#ECF2F6] rounded-lg">
+            {/* <div className="w-[262px] h-[691px] bg-[#EEF3F1] border border-[#ECF2F6] rounded-lg">
               {selected ? (
                 <SidebarData
                   type={selectedOption}
@@ -113,7 +114,7 @@ function CroppingCalendar() {
               ) : (
                 <ChooseCrop />
               )}
-            </div>
+            </div> */}
 
             <div className="flex-1 flex flex-col">
               <div className="bg-[#506561] rounded-2xl px-9 py-8 relative">
@@ -193,7 +194,7 @@ function CroppingCalendar() {
                 ) : (
                   <div className="w-full h-full flex items-center justify-center overflow-y-scroll">
                     <div className="">
-                      <p>Nothing to display</p>
+                      {/* <p>Nothing to display</p> */}
                     </div>
                   </div>
                 )}

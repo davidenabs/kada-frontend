@@ -5,39 +5,23 @@ import { BriefcaseIcon, SearchIcon } from "@/icons";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useModal } from "@/hooks/use-modal";
-import { useGetCooperativesQuery, useGetUsersQuery } from "@/app/_api/user";
-import { UserType } from "@/interface/user";
+import { useGetCooperativesQuery } from "@/app/_api/user";
 import CooperativeCard from "@/components/common/cards/cooperative";
 import { Empty } from "rizzui";
 import CooperativeCardGallery from "@/components/skeletons/cooperative-card";
-import { withAuth } from "@/components/common/auth";
 import useDashboardTitle from "@/hooks/use-dashboard-tite";
 import useDebounce from "@/hooks/use-debounce";
+import { UserType } from "@/interface/user";
 
-const tabs = [
-  {
-    id: "all",
-    label: "All Cooperative",
-    badge: 3,
-    icon: BriefcaseIcon,
-  },
-  {
-    id: "active",
-    label: "Active Cooperative",
-    badge: 0,
-    icon: BriefcaseIcon,
-  },
-];
-
-function FarmerCooperativeSharedPage() {
+function FarmerCooperativeSharedPage({ farmerId }: { farmerId?: any }) {
   useDashboardTitle("Cooperative");
   const { closeModal, openModal } = useModal();
   const router = useRouter();
   const [activeTab, setActiveTab] = useState("All Cooperative");
   const [loaded, setLoaded] = useState(false);
-  const [page, setPage] = useState(1);
+  const [page] = useState(1);
   const [search, setSearch] = useState("");
-  const [limit, setLimit] = useState(10);
+  const [limit] = useState(10);
   const debounceSearchQuery = useDebounce(search);
 
   const { data, isFetching, isRefetching } = useGetCooperativesQuery({
@@ -46,6 +30,8 @@ function FarmerCooperativeSharedPage() {
       page,
       limit,
       search: debounceSearchQuery,
+      userId: farmerId || null,
+      getByUser: UserType.ENUMERATOR
     },
   });
 
@@ -53,9 +39,24 @@ function FarmerCooperativeSharedPage() {
     setLoaded(true);
   }, []);
 
+  const tabs = [
+    {
+      id: "all",
+      label: "All Cooperative",
+      badge: data?.data?.total || 0,
+      icon: BriefcaseIcon,
+    },
+    {
+      id: "active",
+      label: "Active Cooperative",
+      badge: 0,
+      icon: BriefcaseIcon,
+    },
+  ];
+
   return (
     <div className="font-inter space-y-6">
-      <h4 className="text-2xl">Cooperatives ({data?.data?.total})</h4>
+      <h4 className="text-2xl">Cooperatives ({data?.data?.total || 0})</h4>
 
       <div className="flex-1 space-y-4">
         <div className="bg-white border border-[#ECF2F6] p-6 rounded-2xl space-y-4">
@@ -100,7 +101,7 @@ function FarmerCooperativeSharedPage() {
             </>
           ) : (
             <>
-              <div className="grid grid-cols-2">
+              <div className="grid grid-cols-2 gap-2">
                 {data?.data?.users.map((user) => (
                   <CooperativeCard
                     closeModal={closeModal}
@@ -108,6 +109,7 @@ function FarmerCooperativeSharedPage() {
                     router={router}
                     key={user.id}
                     data={user}
+                    farmerId={farmerId}
                   />
                 ))}
               </div>

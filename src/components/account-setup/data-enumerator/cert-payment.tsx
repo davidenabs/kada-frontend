@@ -4,6 +4,7 @@ import { useUpdateUserMutation } from "@/app/_api/user";
 import Button from "@/components/form/button";
 import Input from "@/components/form/input";
 import Select from "@/components/form/select";
+import { PaymentPurposeType } from "@/interface/payment";
 import { userAtom } from "@/stores/user";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAtom } from "jotai";
@@ -112,7 +113,7 @@ const CertificationLicensePayment: React.FC = () => {
       amount: 50000,
       currency: "NGN",
       type: "debit",
-      purpose: "license",
+      purpose: PaymentPurposeType.LICENSE,
       userId: user.user!.id,
       meta: {},
     };

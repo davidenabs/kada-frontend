@@ -5,6 +5,11 @@ export const EditCooperaativeProfileSchema = z.object({
   address: z.string().min(1, { message: "Address is required" }),
   about: z.string().min(1, { message: "About is required" }),
   eligibility: z.string().min(1, { message: "Eligibility is required" }),
+  bankName: z.string(),
+  accountNumber: z.string(),
+  accountName: z.string(),
+  bankAddress: z.string(),
+  joinAmount: z.number(),
 });
 
 export type EditCooperaativeProfileSchemaType = z.infer<

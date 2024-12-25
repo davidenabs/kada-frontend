@@ -8,7 +8,7 @@ import Button from "@/components/form/button";
 import CreateFarmModal from "@/components/modals/create-farm";
 import useDashboardTitle from "@/hooks/use-dashboard-tite";
 import { useModal } from "@/hooks/use-modal";
-import { PlusIcon } from "@/icons";
+import { PlusIcon, VerifiedIcon } from "@/icons";
 import { userAtom } from "@/stores/user";
 import { useAtom } from "jotai";
 
@@ -25,8 +25,13 @@ function FarmerDashboardSharedPage() {
   };
   return (
     <>
-      <h1 className="mb-4 text-base font-bold leading-tight text-teal-700">
-        Hello, {user?.user?.firstName}
+      <h1 className="mb-4 text-base font-bold leading-tight text-teal-700 flex items-center gap-1">
+        <span> Hello, {user?.user?.firstName}</span>
+        {user?.user?.isSubscribed ? (
+          <VerifiedIcon className="w-4 h-4" />
+        ) : (
+          <VerifiedIcon className="w-4 h-4 fill-red-300 stroke-red-600" />
+        )}
       </h1>
       <div className="flex">
         <section className="flex flex-col w-[69%] max-md:ml-0 max-md:w-full space-y-6">

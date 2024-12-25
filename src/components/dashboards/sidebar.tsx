@@ -35,6 +35,7 @@ interface MenuItem {
 const cooperativePath = "/dashboard/cooperative";
 const vendorPath = "/dashboard/vendor";
 const adminBasePath = "/admin";
+const enumeratorPath = "/dashboard/enumerator";
 
 // Admin Menu
 const adminMenuItems: MenuItem[] = [
@@ -134,6 +135,19 @@ const vendorItems: MenuItem[] = [
   },
 ];
 
+const enumeratorItems: MenuItem[] = [
+  {
+    icon: DashboardIcon,
+    label: "Dashboard",
+    href: enumeratorPath,
+  },
+  {
+    icon: ProfileIcon,
+    label: "Profile",
+    href: `${enumeratorPath}/profile`,
+  },
+];
+
 const Sidebar: React.FC = () => {
   const pathname = usePathname();
   const { width } = useScreenSize();
@@ -156,6 +170,7 @@ const Sidebar: React.FC = () => {
   const isAdminRoute = pathname.startsWith(adminBasePath);
   const isCooperativeRoute = pathname.startsWith(cooperativePath);
   const isVendorRoute = pathname.startsWith(vendorPath);
+  const isEnumeratorRoute = pathname.startsWith(enumeratorPath);
 
   let itemsToRender: MenuItem[] = [];
 
@@ -165,6 +180,8 @@ const Sidebar: React.FC = () => {
     itemsToRender = cooperativeItems;
   } else if (isVendorRoute) {
     itemsToRender = vendorItems;
+  } else if (isEnumeratorRoute) {
+    itemsToRender = enumeratorItems;
   } else {
     itemsToRender = [];
   }

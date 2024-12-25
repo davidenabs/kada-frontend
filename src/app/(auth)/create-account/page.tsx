@@ -6,6 +6,7 @@ import GuestForm from "@/components/auth/create-account/forms/guest";
 import AppLoader from "@/components/shared/loader";
 import useUserType from "@/hooks/use-user-type";
 import React from "react";
+import EnumeratorForm from "@/components/auth/create-account/forms/enumerator";
 
 const CreateAccountPage: React.FC = () => {
   const { userType, loaded } = useUserType();
@@ -28,6 +29,8 @@ const CreateAccountPage: React.FC = () => {
         <VendorForm />
       ) : userType === "guest" ? (
         <FarmerForm />
+      ) : userType === "enumerator" ? (
+        <EnumeratorForm />
       ) : (
         <p className="text-gray-400 my-auto mx-auto">Invalid user type</p>
       )}

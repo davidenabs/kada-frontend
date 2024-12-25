@@ -100,7 +100,7 @@ const Header: React.FC = () => {
                   </div>
                   <div className="text-start">
                     <span className="text-xs font-light text-zinc-700 capitalize">
-                      {user.user?.userType}
+                      {user.user?.userType} ({user.user?.publicId})
                     </span>
                   </div>
                 </div>

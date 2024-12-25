@@ -41,6 +41,11 @@ const farmClient = {
     ApiClient.get(
       API_ENDPOINTS.GET_FARM_CROPPING_NOTIFICATION.replace(":farmId", farmId)
     ),
+  updateFarmActivityLog: (data: any): Promise<any> =>
+    ApiClient.post(API_ENDPOINTS.UPDATE_FARM_ACTIVITY_LOG, data),
+
+  verifyFarm: (data: any, id: string, farmerId: any): Promise<any> =>
+    ApiClient.put(API_ENDPOINTS.VERIFY_FARM.replace(":farmId", id).replace(":farmerId", farmerId), data),
 };
 
 export default farmClient;

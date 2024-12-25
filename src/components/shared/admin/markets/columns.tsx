@@ -1,6 +1,7 @@
 import { Column } from "@/components/common/table";
 import { IMarket } from "@/interface/market";
 import { format } from "date-fns";
+import React from "react";
 
 const columns: Column<IMarket>[] = [
   {
@@ -14,10 +15,19 @@ const columns: Column<IMarket>[] = [
   },
   {
     label: "LGA",
-    key: "localGovernmentArea",
+    key: "lga",
     render: (item) => (
       <div className="">
-        <span>{item.localGovernmentArea}</span>
+        <span>{item.lga?.name}</span>
+      </div>
+    ),
+  },
+  {
+    label: "Zone",
+    key: "zone",
+    render: (item) => (
+      <div className="">
+        <span>{item.lga?.zone?.name}</span>
       </div>
     ),
   },
@@ -42,11 +52,33 @@ const columns: Column<IMarket>[] = [
   {
     label: "Opening Days",
     key: "openingDays",
-    render: (item) => (
-      <div className="">
-        <span>{item.openingDays}</span>
-      </div>
-    ),
+    render: (item) => {
+      const days = item.openingDays.split(","); // Split the string into an array
+      const maxVisibleDays = 3; // Set the maximum number of days to display
+      const totalDays = days.length; // Total number of days
+      const [visibleCount, setVisibleCount] = React.useState(maxVisibleDays); // State to manage the number of visible days
+  
+      const remainingDaysCount = totalDays - visibleCount; // Count the remaining days
+  
+      const toggleExpand = () => {
+        if (remainingDaysCount > 0) {
+          // Increment the visible count by the number of remaining days or set it to total days
+          setVisibleCount(Math.min(totalDays, visibleCount + remainingDaysCount));
+        }
+      };
+  
+      return (
+        <div>
+          <span
+            onClick={toggleExpand}
+            style={{ cursor: 'pointer' }}
+          >
+            {days.slice(0, visibleCount).join(", ")} {/* Show the visible days */}
+            {remainingDaysCount > 0 && ` + ${remainingDaysCount} more`} {/* Show remaining days if any */}
+          </span>
+        </div>
+      );
+    },
   },
   {
     label: "Opening Time",

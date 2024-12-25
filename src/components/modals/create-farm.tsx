@@ -10,13 +10,17 @@ import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import "leaflet/dist/leaflet.css";
 import "leaflet-draw/dist/leaflet.draw.css";
-import { useCreateFarmMutation } from "@/app/_api/farm";
+import { useCreateFarmMutation, useUpdateFarmMutation } from "@/app/_api/farm";
 import { useAtomValue } from "jotai";
 import { userAtom } from "@/stores/user";
 import { toast } from "sonner";
 import { CreateFarmSchemaType, createFarmSchema } from "@/schema/farm";
 import { MultiSelect } from "rizzui";
 import { useGetFarmProductsQuery } from "@/app/_api/farm-products";
+import { IFarm } from "@/interface/farm";
+import Select from "../form/select";
+import { kadaLGA } from "@/lib/lga-data";
+// import { lga } from "@/lib/lga-data";
 
 const defaultValues = {
   name: "",
@@ -27,6 +31,7 @@ const defaultValues = {
   },
   activeSeason: "",
   products: [],
+  lga: "",
 };
 
 const seasons = [
@@ -44,7 +49,7 @@ const seasons = [
   },
 ];
 
-function CreateFarmModal({ close }: { close: () => void }) {
+function CreateFarmModal({ close, farm }: { close: () => void, farm?: IFarm }) {
   const mapRef = useRef(null);
   const [userLocation, setUserLocation] = useState<[number, number] | null>(
     null
@@ -55,7 +60,9 @@ function CreateFarmModal({ close }: { close: () => void }) {
   const [products, setProducts] = useState<any[]>([]);
 
   // * react-query
-  const { mutateAsync, isPending } = useCreateFarmMutation();
+  // const { mutateAsync, isPending } = useCreateFarmMutation();
+  const { mutateAsync: createFarm, isPending: isCreating } = useCreateFarmMutation();
+  const { mutateAsync: updateFarm, isPending: isUpdating } = useUpdateFarmMutation();
   const { data, isFetching, isRefetching } = useGetFarmProductsQuery({});
 
   const {
@@ -69,6 +76,19 @@ function CreateFarmModal({ close }: { close: () => void }) {
     defaultValues,
     resolver: zodResolver(createFarmSchema),
   });
+
+  useEffect(() => {
+    if (farm) {
+      reset({
+        name: farm.name || defaultValues.name,
+        landArea: farm.landArea.toString() || defaultValues.landArea,
+        geoLocation: farm.geoLocation.coordinates || defaultValues.geoLocation,
+        activeSeason: farm.activeSeason || defaultValues.activeSeason,
+        // products: farm.crops?.map((p) =>  p.name) || defaultValues.products,
+        lga: farm.lga || defaultValues.lga,
+      });
+    }
+  }, [farm, reset]);
 
   useEffect(() => {
     if (!navigator.geolocation) {
@@ -121,27 +141,38 @@ function CreateFarmModal({ close }: { close: () => void }) {
     setValue("geoLocation", geoLocation);
   };
 
-  const onSubmit = (data: CreateFarmSchemaType) => {
-    const newData = {
+  const onSubmit = async (data: CreateFarmSchemaType) => {
+    const newData: any = {
       data: {
         ...data,
         landArea: Number(data.landArea),
       },
       farmerId: user.user?.id!,
+      id: farm ? farm.id : null
     };
-    mutateAsync(newData, {
+    // console.log(newData);
+
+    const mutate = farm ? updateFarm : createFarm;
+
+    await mutate(newData, {
       onSuccess: (response) => {
         if (response.success) {
-          toast.success("Farm created successfully");
+          toast.success(farm ? "Farm updated successfully" : "Farm created successfully");
           reset(defaultValues);
           close();
         }
       },
       onError: (error) => {
-        console.error("Failed to create farm:", error);
+        console.error(`Failed to ${farm ? "update" : "create"} farm:`, error);
       },
     });
   };
+
+  // Map LGAs to options
+  const lgaOptions = kadaLGA.lgas.map((lga) => ({
+    value: lga,
+    label: lga,
+  }));
 
   if (!loaded) return null;
 
@@ -153,7 +184,7 @@ function CreateFarmModal({ close }: { close: () => void }) {
       >
         <header className="flex justify-between bg-[#FFFFFF] border-b border-[#ECF2F6]">
           <h1 className="self-start text-2xl font-bold text-green-800">
-            Create Farm
+            {farm ? "Edit Farm" : "Create Farm"}
           </h1>
           <button onClick={close}>
             <CloseIcon className="w-4 h-4" />
@@ -195,9 +226,8 @@ function CreateFarmModal({ close }: { close: () => void }) {
                         <button
                           type="button"
                           key={s.label + s.value}
-                          className={`w-full h-full py-2 ${
-                            value === s.value ? "bg-[#D8FBE9]" : ""
-                          }`}
+                          className={`w-full h-full py-2 ${value === s.value ? "bg-[#D8FBE9]" : ""
+                            }`}
                           onClick={() => {
                             setSeason(s.value);
                             onChange(s.value);
@@ -216,6 +246,25 @@ function CreateFarmModal({ close }: { close: () => void }) {
                 )}
               />
             </div>
+
+            <Controller
+              control={control}
+              name="lga"
+              render={({
+                field: { value, onChange },
+                fieldState: { error },
+              }) => (
+                <Select
+                  label="Local Government Area (LGA)"
+                  id="lga"
+                  value={value} // Ensure value is a string
+                  onChange={(selected: { value: string }) => onChange(selected?.value)} // Extract the value string
+                  className={"!h-[56px]"}
+                  options={lgaOptions}
+                  error={errors.lga?.message || error?.message}
+                />
+              )}
+            />
 
             <div className="">
               <Controller
@@ -285,9 +334,9 @@ function CreateFarmModal({ close }: { close: () => void }) {
           <Button
             type="submit"
             className="!rounded-full !shadow-none"
-            loading={isSubmitting || isPending}
+            loading={isSubmitting || isCreating || isUpdating}
           >
-            Create Farm
+            {farm ? "Update Farm" : "Create Farm"}
           </Button>
         </div>
       </form>
