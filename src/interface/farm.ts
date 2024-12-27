@@ -2,7 +2,7 @@ import { Activity, ICrop } from "./crop";
 
 export interface ICreateFarmGalleryPayload {
   description: string;
-  file: File;
+  image: File;
 }
 
 export interface CreateFarmCroppingPayload {

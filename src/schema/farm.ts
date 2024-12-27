@@ -28,7 +28,7 @@ export const createFarmSchema = z.object({
 export type CreateFarmSchemaType = z.infer<typeof createFarmSchema>;
 
 export const createGallerySchema = z.object({
-  file: z
+  image: z
     .custom<File>()
     .nullable()
     .refine((file) => file instanceof File, "Must be a valid file")

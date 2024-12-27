@@ -102,7 +102,7 @@ function CreateFarmModal({ close, farm }: { close: () => void, farm?: IFarm }) {
         setUserLocation([latitude, longitude]);
       },
       (error) => {
-        toast.error(`Unable to retrieve your location: ${error.message}`);
+        toast.error(`For the best experience with the map, please allow permission.`);
       }
     );
   }, []);
