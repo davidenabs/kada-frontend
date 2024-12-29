@@ -25,7 +25,7 @@ interface Props {
 
 const defaultValues = {
   description: "",
-  file: new File([], ""),
+  image: new File([], ""),
 };
 
 function AddPhoto({ close, gallery, farmId }: Props) {
@@ -61,13 +61,13 @@ function AddPhoto({ close, gallery, farmId }: Props) {
   const onSubmit = (data: CreateGallerySchemaType) => {
     const formData = new FormData();
     formData.append("description", data.description);
-    formData.append("file", data.file);
+    formData.append("file", data.image);
 
     mutateAsync(
       {
         data: {
           description: data.description,
-          file: data.file as File,
+          image: data.image as File,
         },
         farmId: farmId,
       },
@@ -126,7 +126,7 @@ function AddPhoto({ close, gallery, farmId }: Props) {
                 </div>
                 <Controller
                   control={control}
-                  name="file"
+                  name="image"
                   render={({ field: { value, onChange } }) => (
                     <input
                       type="file"
@@ -143,7 +143,7 @@ function AddPhoto({ close, gallery, farmId }: Props) {
               </div>
 
               <p className="text-red-500 text-xs mt-1">
-                {errors?.file?.message}
+                {errors?.image?.message}
               </p>
             </div>
 

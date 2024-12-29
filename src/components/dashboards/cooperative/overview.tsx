@@ -1,4 +1,6 @@
 import { useGetCooperativeOverviewQuery } from "@/app/_api/overview";
+import { userAtom } from "@/stores/user";
+import { useAtom } from "jotai";
 import React from "react";
 
 interface OverviewItem {
@@ -47,12 +49,13 @@ const Overview: React.FC = () => {
   const { data, isFetching, isRefetching } = useGetCooperativeOverviewQuery({
     enabled: loaded,
   });
+   const [user] = useAtom(userAtom); 
 
-  const items = React.useMemo(
+   const items = React.useMemo(
     () => [
       {
         icon: "https://cdn.builder.io/api/v1/image/assets/TEMP/103798cdebe2f62b5f727f2cfbf4b80c4a8859cebe42b8f89e5b1512d61390df?placeholderIfAbsent=true&apiKey=e3159558e3c24b7bb6f2db02f0873db3",
-        count: stats?.userStatistics?.totalFarmers || 0,
+        count:user?.user?.cooperativeProfile?.totalMembers|| 0,
         label: "Registered Members",
         bgColor: "bg-emerald-50",
       },
@@ -75,7 +78,7 @@ const Overview: React.FC = () => {
         bgColor: "bg-yellow-100",
       },
     ],
-    [stats]
+    [stats, user]
   );
 
   React.useEffect(() => {
