@@ -2,7 +2,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { io, Socket } from "socket.io-client";
 
-const SocketUrl = "http://localhost:3000";
+const SocketUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
 interface ISocketContext {
   socket: Socket | null;
