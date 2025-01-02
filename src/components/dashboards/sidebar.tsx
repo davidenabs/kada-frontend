@@ -66,6 +66,12 @@ const adminMenuItems: MenuItem[] = [
     href: `${adminBasePath}/tools`,
     matchSubPath: true,
   },
+  // subscriptions
+  {
+    icon: UsersListIcon,
+    label: "Subscriptions",
+    href: `${adminBasePath}/subscriptions`,
+  },
   {
     icon: BriefcaseIcon,
     label: "Opportunities",

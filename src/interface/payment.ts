@@ -1,7 +1,7 @@
 export enum PaymentPurposeType {
-  LICENSE = 'LICENSE',
-  SUBSCRIPTION = 'SUBSCRIPTION',
-  COOPERATIVE_JOIN_REQUEST = 'COOPERATIVE_JOIN_REQUEST',
+  LICENSE = "LICENSE",
+  SUBSCRIPTION = "SUBSCRIPTION",
+  COOPERATIVE_JOIN_REQUEST = "COOPERATIVE_JOIN_REQUEST",
 }
 
 export interface PaymentPayload {
@@ -11,4 +11,5 @@ export interface PaymentPayload {
   purpose: PaymentPurposeType;
   userId: number;
   meta: Record<string, any>;
+  callback_url?: string;
 }

@@ -7,7 +7,7 @@ function Tab(props: {
   title: string;
   active: string;
   onClick: any;
-  count: number;
+  count?: number;
   icon: any;
   className?: string;
 }) {

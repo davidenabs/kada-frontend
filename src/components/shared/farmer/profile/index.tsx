@@ -15,6 +15,7 @@ import React from "react";
 import Button from "@/components/form/button";
 import ProfileModal from "@/components/modals/farmer/profile";
 import IDCard from "@/components/modals/farmer/id-card";
+import { useSocket } from "@/provider/socket";
 
 function FarmerProfileSharedPage() {
   useDashboardTitle("Profile");
@@ -22,24 +23,52 @@ function FarmerProfileSharedPage() {
   const [loaded, setLoaded] = React.useState(false);
   const { openModal, closeModal } = useModal();
   const [confirm, setConfirm] = React.useState(false);
+  const { socket } = useSocket();
+  const [paymentStatus, setPaymentStatus] = React.useState<
+    "completed" | "failed" | null
+  >(null);
   // const { mutateAsync, isPending } = useUpdateRequestMutation();
 
   React.useEffect(() => {
     setLoaded(true);
   }, []);
 
+  React.useEffect(() => {
+    if (!socket) return;
+
+    const event_name = `payment_verified_${user?.id}`;
+
+    socket.on(event_name, (data: any) => {
+      const { status, transactionId } = data;
+      console.log("event_name", data);
+      setPaymentStatus(status);
+    });
+
+    return () => {
+      socket.off(event_name);
+    };
+  });
+
   if (!loaded) return null;
 
   const handleOpenModal = () => {
     openModal({
       customSize: "654px",
-      view: <SubscribeModal close={() => setConfirm(false)} open={confirm} onSubscribe={() => { }} loading={false} />
+      view: (
+        <SubscribeModal
+          close={() => setConfirm(false)}
+          open={confirm}
+          onSubscribe={() => {}}
+          loading={false}
+        />
+      ),
     });
   };
 
-  const isValidValue = (value: any) => value !== null && value !== undefined && value !== "";
+  const isValidValue = (value: any) =>
+    value !== null && value !== undefined && value !== "";
 
-  let profileImagePath = '/images/avatar.png';
+  let profileImagePath = "/images/avatar.png";
 
   if (isValidValue(user?.farmerProfile?.ninData?.photo)) {
     profileImagePath = `data:image/jpeg;base64,${user?.farmerProfile?.ninData?.photo}`;
@@ -52,7 +81,9 @@ function FarmerProfileSharedPage() {
     email: user?.email,
     phone: user?.phoneNumber,
     publicId: user?.publicId,
-    address: isValidValue(user?.farmerProfile?.ninData?.address) ? user?.farmerProfile?.ninData?.address : "",
+    address: isValidValue(user?.farmerProfile?.ninData?.address)
+      ? user?.farmerProfile?.ninData?.address
+      : "",
     profileImage: profileImagePath,
   };
 
@@ -85,7 +116,7 @@ function FarmerProfileSharedPage() {
                 <h4 className="text-[18px] font-bold">
                   {user?.firstName} {user?.lastName}
                 </h4>
-                {user?.isSubscribed ? (
+                {user?.isSubscribed || paymentStatus !== "completed" ? (
                   <div className="flex items-center space-x-2">
                     <VerifiedIcon className="w-4 h-4" />
                     <span>Verified</span>
@@ -106,7 +137,6 @@ function FarmerProfileSharedPage() {
                 <span>Subscribe</span>
               </Button>
             )}
-
           </div>
         </div>
 
@@ -168,6 +198,16 @@ function FarmerProfileSharedPage() {
           </div>
 
           <div className="flex justify-between">
+            <span className="text-lg">LGA</span>
+
+            <div className="flex">
+              <span className="text-[#878D96]">
+                {user?.lga ?? "Not Available"}
+              </span>
+            </div>
+          </div>
+
+          <div className="flex justify-between">
             <span className="text-lg">State of Residence</span>
 
             <div className="flex">
@@ -196,7 +236,12 @@ function FarmerProfileSharedPage() {
               className="!rounded-full h-[30px] !bg-slate-300 !text-black"
               onClick={() =>
                 openModal({
-                  view: <ProfileModal close={closeModal} profile={user?.farmerProfile?.ninData} />,
+                  view: (
+                    <ProfileModal
+                      close={closeModal}
+                      profile={user?.farmerProfile?.ninData}
+                    />
+                  ),
                 })
               }
             >
@@ -206,14 +251,16 @@ function FarmerProfileSharedPage() {
             <KadaButton
               className="!rounded-full h-[30px] !bg-slate-300 !text-black"
               onClick={() =>
-                openModal({ view: <IDCard userData={userData} />, outSideClickClose: true })
+                openModal({
+                  view: <IDCard userData={userData} />,
+                  outSideClickClose: true,
+                })
               }
             >
               ID card
             </KadaButton>
           </div>
         </div>
-
       </div>
 
       <div className="w-[366px] bg-[url('/images/bdo.png')] bg-cover bg-center bg-no-repeat rounded-3xl h-auto flex items-end">

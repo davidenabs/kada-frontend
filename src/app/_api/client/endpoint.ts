@@ -85,10 +85,10 @@ const API_ENDPOINTS = {
   UPDATE_SUBSCRIPTION_PLAN: "/subscription-plans/:id",
   DELETE_SUBSCRIPTION_PLAN: "/subscription-plans/:id",
   GET_MY_SUBSCRIPTION_PLAN: "/subscription-plans/my-plan",
+  GET_SUBSCRIPTIONS: "/subscriptions",
 
   // Enumerator
   REGISTER_FARM: "/enumerator/register-farmer",
-  
 };
 
 export default API_ENDPOINTS;

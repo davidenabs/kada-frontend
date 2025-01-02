@@ -6,8 +6,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { cropSchema, cropSchemaType } from "@/schema/crop";
 import { KadaButton } from "@/components/form/button";
-import SeasonForm from "./season-form";
-import StageForm from "./stage-form";
 import {
   useCreateFarmProductMutation,
   useUpdateFarmProductMutation,
@@ -96,7 +94,7 @@ function CreateCroppingInfoModal({
     <Fragment>
       <Modal
         isOpen={open}
-        onClose={() => { }}
+        onClose={() => {}}
         size={"full"}
         overlayClassName="dark:bg-opacity-40 dark:backdrop-blur-sm"
         containerClassName="dark:bg-gray-100"
