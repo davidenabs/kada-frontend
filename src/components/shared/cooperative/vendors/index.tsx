@@ -11,6 +11,8 @@ import { useGetProducts } from "@/app/_api/catalog";
 import { Empty } from "rizzui";
 import VendorCardSkeleton from "@/components/skeletons/vendor-card";
 import CatalogSkeleton from "@/components/skeletons/catalog";
+import Select from "@/components/form/select";
+import { productServiceCategories } from "@/lib/vendor-category-data";
 
 function CooperativeVendorsSharedPage() {
   useDashboardTitle("Vendors");
@@ -20,12 +22,16 @@ function CooperativeVendorsSharedPage() {
   const [search, setSearch] = React.useState("");
   const debouncedSearchQuery = useDebounce(search);
 
+  const [productService, setProductService] = React.useState<{ value: string } | null>(null);
+  const debouncedFilterProductServiceQuery = useDebounce(productService?.value!);
+
   const { data, isFetching, isRefetching } = useGetVendorsQuery({
     enabled: loaded,
     params: {
       page,
       limit,
       search: debouncedSearchQuery,
+      productService: debouncedFilterProductServiceQuery
     },
   });
 
@@ -50,7 +56,7 @@ function CooperativeVendorsSharedPage() {
       <div className="flex-1 space-y-4">
         <h4 className="text-2xl font-inter font-bold">Explore Vendors</h4>
 
-        <div className="">
+        <div className="flex gap-2">
           <Input
             placeholder="Search here..."
             inputClassName="!rounded-[10px]"
@@ -60,6 +66,15 @@ function CooperativeVendorsSharedPage() {
             clearable
             onClear={() => setSearch("")}
             value={search}
+          />
+
+          <Select
+            clearable={productService !== null}
+            onClear={() => setProductService(null)}
+            options={productServiceCategories}
+            onChange={setProductService}
+            value={productService}
+            selectClassName="min-w-40"
           />
         </div>
 
