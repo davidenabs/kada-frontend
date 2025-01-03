@@ -6,6 +6,30 @@ import Image from "next/image";
 import { IFarm } from "@/interface/farm";
 import Button from "@/components/form/button";
 
+const CoordinatesList = ({ coordinates }: { coordinates: any }) => {
+    if (!coordinates) {
+      return null;
+    }
+
+    const flattenedCoordinates = JSON.parse(coordinates)[0];
+  
+    return (
+      <div>
+         <h4 className="text-[14px]">Coordinates</h4>
+        {flattenedCoordinates.map((coordinate: number[], index: number) => (
+          <div key={index} className="p-2 flex justify-between w-full border">
+            <div style={{ fontSize: '13px', fontWeight: 300, color: '#333543' }}>
+              Point {index + 1}
+            </div>
+            <div style={{ fontSize: '13px', fontWeight: 700, color: '#333543' }}>
+              {coordinate[0].toFixed(4)}° N, {coordinate[1].toFixed(4)}° E
+            </div>
+          </div>
+        ))}
+      </div>
+    );
+  };  
+
 const FarmData = ({ farm, close }: { farm: IFarm, close: () => void }): React.JSX.Element => {
     const { handleSubmit } = useForm();
     const { mutateAsync, isPending } = useVerifyFarmMutation();
@@ -97,6 +121,7 @@ const FarmData = ({ farm, close }: { farm: IFarm, close: () => void }): React.JS
                         </div>
                         <span className="font-bold text-sm">{farm.activeSeason}</span>
                     </div>
+                    <CoordinatesList coordinates={farm.geoLocation}/>
 
                     {!farm?.isVerified && <Button handleClick={handleSubmit(onSubmit)} loading={isPending} className="rounded-full">
                         Verify Farm

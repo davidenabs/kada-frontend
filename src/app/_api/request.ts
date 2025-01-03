@@ -6,10 +6,12 @@ import {
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import API_ENDPOINTS from "./client/endpoint";
 import requestClient from "./client/request";
+import { UserType } from '../../interface/user';
 import {
   ICreateRequestPayload,
   IRequest,
   IUpdateRequestPayload,
+  RequestType,
 } from "@/interface/request";
 
 export const useGetRequests = ({
@@ -50,5 +52,17 @@ export const useUpdateRequestMutation = () => {
         queryKey: [API_ENDPOINTS.GET_COOPERATIVE_FARMERS],
       });
     },
+  });
+};
+
+export const useGetRequestByUserIdAndType = ({
+  enabled = true,
+  params = {},
+
+}: IQueryParams) => {
+  return useQuery<IResponse<IRequest>, Error>({
+    queryKey: [API_ENDPOINTS.GET_REQUESTS_BY_USER, params],
+    queryFn: () => requestClient.getRequestByUserIdAndType(params),
+    enabled,
   });
 };

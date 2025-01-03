@@ -46,6 +46,7 @@ const API_ENDPOINTS = {
   GET_REQUESTS: "/requests",
   CREATE_REQUEST: "/requests",
   UPDATE_REQUEST: "/requests/:id",
+  GET_REQUESTS_BY_USER: "/requests/by-user",
 
   // market
   GET_MARKETS: "/market",
