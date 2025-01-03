@@ -129,7 +129,7 @@ function CroppingCalendar() {
                   <Popover.Trigger>
                     <Input
                       type="search"
-                      placeholder="Search for a crop"
+                      placeholder="Search for a crop (e.g rice, beans, yam...)"
                       label="Search for crop"
                       suffix={
                         <div className="rounded-full bg-[#367B62] w-10 h-10 flex items-center justify-center">
