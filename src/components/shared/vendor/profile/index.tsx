@@ -6,10 +6,10 @@ import { PencilIcon } from "@heroicons/react/16/solid";
 import Input from "@/components/form/input";
 import { KadaButton } from "@/components/form/button";
 import { useModal } from "@/hooks/use-modal";
-import EditCooperaativeProfile from "@/components/modals/edit-profile/cooperative";
 import { useAtomValue } from "jotai";
 import { userAtom } from "@/stores/user";
 import { format } from "date-fns";
+import EditVendorProfile from "@/components/modals/edit-profile/vendor";
 
 function VendorProfileSharedPage() {
   const { closeModal, openModal } = useModal();
@@ -17,7 +17,7 @@ function VendorProfileSharedPage() {
 
   const handleEditClick = () => {
     openModal({
-      view: <EditCooperaativeProfile close={closeModal} />,
+      view: <EditVendorProfile close={closeModal} />,
       customSize: "50%",
     });
   };
@@ -38,7 +38,7 @@ function VendorProfileSharedPage() {
 
             <div className="">
               <h4 className="text-[18px] font-bold">
-                {user?.cooperativeProfile?.cooperativeName || "N/A"}
+                {user?.vendorProfile?.vendorName || "N/A"}
               </h4>
               <div className="flex items-center space-x-2">
                 <VerifiedIcon className="w-4 h-4" />
@@ -101,21 +101,21 @@ function VendorProfileSharedPage() {
             </div>
           </div>
 
-          <div className="flex justify-between">
+          {/* <div className="flex justify-between">
             <span className="text-lg">Funding History</span>
 
             <div className="flex">
               <span className="text-[#878D96]">Kaduna</span>
             </div>
-          </div>
+          </div> */}
 
-          <div className="flex justify-between">
+          {/* <div className="flex justify-between">
             <span className="text-lg">Cooperative (0)</span>
 
             <div className="flex">
               <span className="text-[#878D96]">Kaduna</span>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
 
