@@ -124,9 +124,15 @@ export const useUpdateFarmActivityLogMutation = () => {
 };
 
 export const useVerifyFarmMutation = () => {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: ({ data, id, farmerId }: { data: any; id: string, farmerId: any }) =>
       farmClient.verifyFarm(data, id, farmerId),
     mutationKey: [API_ENDPOINTS.VERIFY_FARM],
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({
+        queryKey: [API_ENDPOINTS.GET_FARMS],
+      });
+    },
   });
 };

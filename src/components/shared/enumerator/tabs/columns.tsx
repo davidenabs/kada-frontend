@@ -37,18 +37,34 @@ export const farmersColumns: Column<Partial<IUser>>[] = [
   {
     label: "Email",
     key: "email",
-    render: (item) => item.email,
+    render: (item) => item.email || "- -",
   },
   {
     label: "Phone",
     key: "phoneNumber",
-    render: (item) => item.phoneNumber,
+    render: (item) => item.phoneNumber || "- -",
   },
   {
     label: "Type",
     key: "userType",
     render: (item) => item.userType,
   },
+  {
+    label: "Status",
+    key: "verified",
+    render: (item) => {
+      return item.verified ? <Badge color="success">Status</Badge> :
+        <Badge color="danger">Pending</Badge>;
+    },
+  },
+  {
+    label: "Subscribed",
+    key: "isSubscribed",
+    render: (item) => {
+      return item.isSubscribed ? <Badge color="success">Subscribed</Badge> :
+        <Badge color="danger">Not Subscribed</Badge>;
+    },
+  }
 ];
 
 
@@ -96,56 +112,56 @@ export const farmColumns: Column<Partial<IFarm>>[] = [
     },
 
   },
-  {
-    label: "Location",
-    key: "geoLocation",
-    render: (item) => {
-      const [showFull, setShowFull] = useState(false);
+  // {
+  //   label: "Location",
+  //   key: "geoLocation",
+  //   render: (item) => {
+  //     const [showFull, setShowFull] = useState(false);
 
-      const handleToggle = () => {
-        setShowFull(!showFull);
-      };
+  //     const handleToggle = () => {
+  //       setShowFull(!showFull);
+  //     };
 
-      const getBriefLocation = (geoLocation: any) => {
-        // Return a short preview, e.g., the first coordinate pair
-        return geoLocation.length > 0
-          ? `[[${geoLocation[0][0]}, ${geoLocation[0][1]}], ...]`
-          : "N/A";
-      };
+  //     const getBriefLocation = (geoLocation: any) => {
+  //       // Return a short preview, e.g., the first coordinate pair
+  //       return geoLocation.length > 0
+  //         ? `[[${geoLocation[0][0]}, ${geoLocation[0][1]}], ...]`
+  //         : "N/A";
+  //     };
 
-      const isGeoLocationValid = Array.isArray(JSON.parse(`${item.geoLocation}`));
+  //     const isGeoLocationValid = Array.isArray(JSON.parse(`${item.geoLocation}`));
 
-      return (
-        <div className="flex flex-col gap-1">
-          {isGeoLocationValid ? (
-            <>
-              <span className="text-sm text-blue-600 cursor-pointer" onClick={handleToggle}>
-                {showFull
-                  ? JSON.stringify(item.geoLocation) // Show full content
-                  : getBriefLocation(item.geoLocation)} {/* Show brief preview */}
-              </span>
-              {showFull && (
-                <button
-                  className="text-xs text-gray-500 underline mt-1"
-                  onClick={handleToggle}
-                >
-                  Show Less
-                </button>
-              )}
-            </>
-          ) : (
-            "N/A"
-          )}
-        </div>
-      );
-    },
-  },
+  //     return (
+  //       <div className="flex flex-col gap-1">
+  //         {isGeoLocationValid ? (
+  //           <>
+  //             <span className="text-sm text-blue-600 cursor-pointer" onClick={handleToggle}>
+  //               {showFull
+  //                 ? JSON.stringify(item.geoLocation) // Show full content
+  //                 : getBriefLocation(item.geoLocation)} {/* Show brief preview */}
+  //             </span>
+  //             {showFull && (
+  //               <button
+  //                 className="text-xs text-gray-500 underline mt-1"
+  //                 onClick={handleToggle}
+  //               >
+  //                 Show Less
+  //               </button>
+  //             )}
+  //           </>
+  //         ) : (
+  //           "N/A"
+  //         )}
+  //       </div>
+  //     );
+  //   },
+  // },
   {
     label: "Status",
     key: "isVerified",
     render: (item) => {
-      return item.isVerified ?  <Badge color="success">Verified</Badge> : 
-      <Badge color="danger">Pending</Badge>;
+      return item.isVerified ? <Badge color="success">Verified</Badge> :
+        <Badge color="danger">Pending</Badge>;
     },
   },
 ];

@@ -38,7 +38,7 @@ function EnumeratorFarmersSharedPage({
   const handleView = (item: any) => {
     openModal({
       view: <ViewFarmerFarmModal close={closeModal} item={item} activeTab={activeTab} />,
-      customSize: activeTab === "Farms" ? "1000px" : "500px",
+      customSize: activeTab === "Farms" ? "500px" : "500px",
     });
   };
 
