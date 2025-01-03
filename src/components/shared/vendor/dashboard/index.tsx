@@ -10,6 +10,8 @@ import { useGetProducts } from "@/app/_api/catalog";
 import { ICatalog } from "@/interface/catalog";
 import useDebounce from "@/hooks/use-debounce";
 import useDashboardTitle from "@/hooks/use-dashboard-tite";
+import { useAtomValue } from "jotai";
+import { userAtom } from "@/stores/user";
 
 function VendorDashboardSharedPage() {
   useDashboardTitle("Dashboard");
@@ -21,6 +23,7 @@ function VendorDashboardSharedPage() {
   const [products, setProducts] = useState<ICatalog[]>([]);
   const [stats, setStats] = React.useState<any>({});
   const debouncedSearchQuery = useDebounce(search);
+  const { user } = useAtomValue(userAtom);
 
   const active = React.useMemo(() => {
     return activeTab === "Our Services" ? "services" : "products";
@@ -69,7 +72,7 @@ function VendorDashboardSharedPage() {
     <>
       <div className="flex justify-between items-center text-sm leading-tight">
         <div className="rounded-full px-4 py-1 bg-[#F0EFEC]">
-          👍🏾 Welcome Back, Agrogrid Cooperative
+          👍🏾 Welcome Back, {user?.vendorProfile?.vendorName || ""}
         </div>
 
         <div className="flex">

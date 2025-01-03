@@ -1,11 +1,12 @@
 import React, { useRef, useState } from "react";
 import { Control, Controller, FieldErrors } from "react-hook-form";
-import { Select, Text } from "rizzui";
+import { Text } from "rizzui";
 import Upload from "@/components/common/upload";
 import { CreateCatalogSchemaType } from "@/schema";
 import Input from "@/components/form/input";
 import { KadaButton } from "@/components/form/button";
 import { useGetCategories } from "@/app/_api/catalog";
+import Select from "@/components/form/select";
 
 function ProductForm({
   control,
@@ -84,6 +85,7 @@ function ProductForm({
                 label={"Category"}
                 options={options}
                 value={selectValue}
+                selectClassName="rounded-full"
                 onChange={(value: any) => {
                   if (value.add_new) {
                     setIsNew(true);

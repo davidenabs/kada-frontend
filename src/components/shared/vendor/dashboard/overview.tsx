@@ -18,6 +18,7 @@ const Overview: React.FC = () => {
       enabled: loaded,
     });
   const { user } = useAtomValue(userAtom);
+console.log( data);
 
   const overviewItems: OverviewItem[] = React.useMemo(
     () => [
