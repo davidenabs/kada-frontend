@@ -1,3 +1,10 @@
+export enum PostType {
+  post = 'post',
+  opportunity = 'opportunity',
+  interventions = 'interventions',
+  program = 'program',
+}
+
 export interface IPost {
   id: string;
   title: string;
@@ -14,7 +21,7 @@ export interface IPost {
   hasComment: boolean;
   isPublished: boolean;
   isFeatured: boolean;
-  type: string;
+  type: PostType;
   meta: any;
   dueDate: string;
   createdAt: string;
