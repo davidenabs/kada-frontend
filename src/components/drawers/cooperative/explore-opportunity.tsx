@@ -41,7 +41,7 @@ function ExploreOpportunityDraewr({
             </button>
           </div>
 
-          <div className="bg-white px-6 p-6">
+          <div className="bg-white px-6 p-6 h-full overflow-y-auto">
             <div className="flex gap-7 justify-items-stretch">
               <div className="relative w-[171px] h-[160px] rounded-xl overflow-hidden">
                 <Image
@@ -79,7 +79,7 @@ function ExploreOpportunityDraewr({
               </div>
             </div>
 
-            <div className="rounded-2xl bg-[#F8F8F8F8] px-3 py-7 space-y-4 mt-10">
+            <div className="rounded-2xl bg-[#F8F8F8F8] px-3 py-7 space-y-4 mt-10 mb-20">
               <div dangerouslySetInnerHTML={{ __html: data?.content || "" }} />
 
               {/* <div className="">
