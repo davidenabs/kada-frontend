@@ -22,10 +22,10 @@ const columns: Column<Partial<IUser>>[] = [
         <div>
           <p className="font-medium text-sm">
             {item.userType === UserType.FARMER
-              ? item?.firstName + " " + item?.lastName
+              ? (item?.firstName + " " + item?.lastName) || "- -"
               : item.userType === UserType.COOPERATIVE
-              ? item?.cooperativeProfile?.cooperativeName
-              : item?.vendorProfile?.vendorName}
+                ? item?.cooperativeProfile?.cooperativeName || "- -"
+                : item?.vendorProfile?.vendorName || "- -"}
           </p>
           <p className="text-xs text-gray-500">
             {format(item?.createdAt || new Date(), "dd MMM, yyyy")}
@@ -37,12 +37,12 @@ const columns: Column<Partial<IUser>>[] = [
   {
     label: "Email",
     key: "email",
-    render: (item) => item.phoneNumber,
+    render: (item) => item.email || "- -",
   },
   {
     label: "Phone",
     key: "phoneNumber",
-    render: (item) => item.userType,
+    render: (item) => item.phoneNumber || "- -",
   },
   {
     label: "Type",
