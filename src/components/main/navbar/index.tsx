@@ -132,6 +132,7 @@ const navItems: NavItemProps[] = [
   { text: "Home", route: "/" },
   { text: "About Kada", route: "/about-kada" },
   { text: "Programs", route: "/programs" },
+  { text: "Interventions", route: "/interventions" },
   { text: "Tools", route: "#", hasDropdown: true },
   { text: "Contact Us", route: "/contact" },
 ];
