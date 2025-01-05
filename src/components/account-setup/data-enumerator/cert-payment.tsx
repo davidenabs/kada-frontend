@@ -116,6 +116,7 @@ const CertificationLicensePayment: React.FC = () => {
       purpose: PaymentPurposeType.LICENSE,
       userId: user.user!.id,
       meta: {},
+      // callbackUrl: `${window.location.origin}/dashboard/vendor`,
     };
 
     const newData = {

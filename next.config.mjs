@@ -14,7 +14,12 @@ const nextConfig = {
     return config;
   },
   images: {
-    domains: ["randomuser.me", "images.remotePatterns", "localhost"],
+    domains: [
+      "randomuser.me",
+      "images.remotePatterns",
+      "localhost",
+      "plus.unsplash.com",
+    ],
   },
 };
 

@@ -11,6 +11,7 @@ import { userAtom } from "@/stores/user";
 import { PaymentPurposeType } from "@/interface/payment";
 import { toast } from "sonner";
 import { UserType } from "@/interface/user";
+import { formatCurrency } from "@/utils/utils";
 
 const defaultValues = {
   planId: "",
@@ -110,7 +111,7 @@ const SubscribeModal: React.FC<SubscribeModalProps> = ({
           <h1 className="self-start text-2xl font-bold text-green-800">
             Subscription Plan
           </h1>
-          <button onClick={close}>
+          <button onClick={close} type="button">
             <CloseIcon className="w-4 h-4" />
           </button>
         </header>
@@ -140,10 +141,7 @@ const SubscribeModal: React.FC<SubscribeModalProps> = ({
                   </td>
                   {/* <td className="border border-gray-300 p-2">₦{subscriptionPlan.price}</td> */}
                   <td className="border border-gray-300 p-2">
-                    {subscriptionPlan.price.toLocaleString("en-NG", {
-                      style: "currency",
-                      currency: "NGN",
-                    })}
+                    {formatCurrency(subscriptionPlan.price)}
                   </td>
                   <td className="border border-gray-300 p-2">
                     {subscriptionPlan.durationInYears}

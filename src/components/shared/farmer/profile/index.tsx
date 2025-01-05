@@ -232,21 +232,23 @@ function FarmerProfileSharedPage() {
           </div>
 
           <div className="mx-aut self-center flex gap-2">
-            <KadaButton
-              className="!rounded-full h-[30px] !bg-slate-300 !text-black"
-              onClick={() =>
-                openModal({
-                  view: (
-                    <ProfileModal
-                      close={closeModal}
-                      profile={user?.farmerProfile?.ninData}
-                    />
-                  ),
-                })
-              }
-            >
-              View full profile
-            </KadaButton>
+            {user?.farmerProfile?.ninData && (
+              <KadaButton
+                className="!rounded-full h-[30px] !bg-slate-300 !text-black"
+                onClick={() =>
+                  openModal({
+                    view: (
+                      <ProfileModal
+                        close={closeModal}
+                        profile={user?.farmerProfile?.ninData}
+                      />
+                    ),
+                  })
+                }
+              >
+                View full profile
+              </KadaButton>
+            )}
 
             <KadaButton
               className="!rounded-full h-[30px] !bg-slate-300 !text-black"

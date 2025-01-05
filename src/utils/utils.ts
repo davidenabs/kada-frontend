@@ -70,7 +70,8 @@ export const getTimeAgo = (date: Date | string): string => {
 };
 
 // Helper function to check for valid non-empty values
-export const isValidValue = (value: any) => value !== null && value !== undefined && value !== "";
+export const isValidValue = (value: any) =>
+  value !== null && value !== undefined && value !== "";
 
 export const formatKey = (key: string) => {
   return key
@@ -82,4 +83,9 @@ export const renderValue = (value: any) => {
   return value;
 };
 
-
+export const formatCurrency = (value: number) => {
+  return new Intl.NumberFormat("en-NG", {
+    style: "currency",
+    currency: "NGN",
+  }).format(value);
+};

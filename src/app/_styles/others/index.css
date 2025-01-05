@@ -14,3 +14,7 @@
 .rizzui-multi-select-options {
   @apply !bg-white;
 }
+
+.swiper-pagination-container .swiper-pagination-bullet-active {
+  @apply bg-primary;
+}
