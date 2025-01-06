@@ -25,7 +25,7 @@ const ContactUs: React.FC = () => {
     {
       icon: "https://cdn.builder.io/api/v1/image/assets/TEMP/dbeee2692aa6950454f8d20cc6f4c30632b7d9d4ac47de5994c719828e14e5ff?placeholderIfAbsent=true&apiKey=e3159558e3c24b7bb6f2db02f0873db3",
       title: "E-mails",
-      details: ["kadphq@yahoo.com", "muhammad.rii@kdsg.gov.ng"],
+      details: ["muhammad.rii@kdsg.gov.ng"],
     },
     {
       icon: "https://cdn.builder.io/api/v1/image/assets/TEMP/8937116792d4c23b6a481a409dd63643d28a57b81378ba83609b132b53cd2e0e?placeholderIfAbsent=true&apiKey=e3159558e3c24b7bb6f2db02f0873db3",
@@ -36,29 +36,29 @@ const ContactUs: React.FC = () => {
 
   const officeDetails: OfficeDetails[] = [
     {
-      name: "HEAD OFFICE :",
+      name: "HEAD OFFICE:",
       address:
-        "No 1, Aliyu Makama by Gashashi Road, Barnawa GRA P.M.B 2269, Kaduna, KadunaState",
+        "No 1, Gashashi Road, Aliyu Makama Barnawa GRA, P.M.B 2269, Kaduna, Kaduna State.",
     },
     {
-      name: "MAIGANA ZONAL OFFICE :",
+      name: "Mai Gana Agric Zonal Office:",
       address:
-        "No 1, Aliyu Makama by Gashashi Road, Barnawa GRA P.M.B 2269, Kaduna, KadunaState",
+        "Tudun SOibu community, Maigana, Saba Local Government Area.",
     },
     {
-      name: "SAMARU AGRIC ZONAL OFFICE :",
+      name: "Samaru Agric Zonal Office:",
       address:
-        "No 1, Aliyu Makama by Gashashi Road, Barnawa GRA P.M.B 2269, Kaduna, KadunaState",
+        "Samaru Kataf Along Zankuwa Kagoro Road Zangan Kataf Local Government Area.",
     },
     {
-      name: "LERE AGRIC ZONAL OFFICE :",
+      name: "Lere Agric Zonal Office:",
       address:
-        "No 1, Aliyu Makama by Gashashi Road, Barnawa GRA P.M.B 2269, Kaduna, KadunaState",
+        "Zonal Head Quarter, Sabon Birni Saminaka, Lere Local Government Area.",
     },
     {
-      name: "BIRNIN-GWARI AGRIC ZONAL OFFICE :",
+      name: "Birni Gwari Agric Zonal Office:",
       address:
-        "No 1, Aliyu Makama by Gashashi Road, Barnawa GRA P.M.B 2269, Kaduna, KadunaState",
+        "Aliyu Makama Road, Adjacent Living fiath Church, Garden, Kaduna South Local Government Area.",
     },
   ];
 
