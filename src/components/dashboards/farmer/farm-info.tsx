@@ -1,5 +1,5 @@
 import Button from "@/components/form/button";
-import { CalendarIcon, CalendarIcon2, CameraIcon, ListIcon } from "@/icons";
+import { CameraIcon } from "@/icons";
 import Image from "next/image";
 import React, { Fragment } from "react";
 import Gallery from "./gallery";
@@ -10,15 +10,8 @@ import { useGetFarmGalleryQuery } from "@/app/_api/farm";
 import FarmGalleySkeleton from "@/components/skeletons/farm-gallery";
 import { Map } from "@/components/common/map";
 import { parseGeoLocation } from "@/utils/utils";
-import { cn, Tooltip } from "rizzui";
 import NotifyModal from "@/components/modals/farmer/notify";
-import { ICrop } from "@/interface/crop";
-import { DetailData, SidebarData } from "@/components/main/cropping-calendar/data";
-import ChooseCrop from "@/components/main/cropping-calendar/choose-crop";
 import CropDetails from "./cropping-info";
-import CreateFarmModal from "@/components/modals/create-farm";
-import { getAuthToken } from "@/app/api/auth";
-import CropActivities from "@/components/main/cropping-calendar/crop-activities";
 
 export function CoordinateDisplay({ geoLocation }: { geoLocation: string }) {
   const coordinates = parseGeoLocation(geoLocation);
@@ -26,8 +19,6 @@ export function CoordinateDisplay({ geoLocation }: { geoLocation: string }) {
     return <p className="text-red-500">Invalid coordinates</p>;
   }
 
-  const token = getAuthToken();
-  console.log(token)
   return (
     <div className="space-y-2">
       <h3 className="text-sm font-medium text-white">
@@ -236,11 +227,8 @@ function FarmInfo(farm: IFarm & { farmId: string }) {
         </div>
 
         {farm.crops!.map((crop) => {
-          return (
-            <CropDetails crop={crop} activities={crop.activities} />
-          );
+          return <CropDetails crop={crop} activities={crop.activities} />;
         })}
-
       </section>
     </Fragment>
   );

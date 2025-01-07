@@ -49,7 +49,6 @@ function CroppingCalendar() {
     setLoaded(true);
   }, []);
 
-
   return (
     <Fragment>
       <div className="bg-[#F0F0F0]">
@@ -129,7 +128,7 @@ function CroppingCalendar() {
                   <Popover.Trigger>
                     <Input
                       type="search"
-                      placeholder="Search for a crop"
+                      placeholder="Search for a crop (e.g. Maize, Rice)"
                       label="Search for crop"
                       suffix={
                         <div className="rounded-full bg-[#367B62] w-10 h-10 flex items-center justify-center">
@@ -193,9 +192,7 @@ function CroppingCalendar() {
                   </div>
                 ) : (
                   <div className="w-full h-full flex items-center justify-center overflow-y-scroll">
-                    <div className="">
-                      {/* <p>Nothing to display</p> */}
-                    </div>
+                    <div className="">{/* <p>Nothing to display</p> */}</div>
                   </div>
                 )}
               </div>

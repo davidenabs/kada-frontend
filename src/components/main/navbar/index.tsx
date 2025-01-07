@@ -9,6 +9,7 @@ import { appAtom, openNavDrawerAtom } from "@/stores/app";
 import { cn } from "rizzui";
 import { usePathname, useRouter } from "next/navigation";
 import { Bars3Icon } from "@heroicons/react/16/solid";
+import { ChevronDownIcon } from "@heroicons/react/24/outline";
 
 interface NavItemProps {
   text: string;
@@ -73,13 +74,14 @@ const NavItem: React.FC<NavItemProps> = ({
         <button
           onClick={toggleDropdown}
           className={cn(
-            "text-tertiary-700",
+            "text-tertiary-700 flex items-center gap-1",
             isActive && "font-bold text-primary-700"
           )}
           aria-haspopup="true"
           aria-expanded={isDropdownOpen}
         >
-          {text}
+          <span>{text}</span>
+          <ChevronDownIcon className="h-4 w-4" />
         </button>
       ) : (
         <Link

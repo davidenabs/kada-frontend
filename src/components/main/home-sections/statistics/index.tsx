@@ -1,12 +1,27 @@
 "use client";
-
 import React from "react";
-import Slider from "react-slick";
 import StatCard, { StatCardProps } from "./stat-card";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+import { Swiper, SwiperSlide } from "swiper/react";
+import type { Swiper as SwiperType } from "swiper";
+
+import {
+  Autoplay,
+  EffectFade,
+  Mousewheel,
+  Keyboard,
+  Pagination,
+} from "swiper/modules";
+import { useInView } from "@/hooks/use-in-view";
+
+import "swiper/css";
+import "swiper/swiper-bundle.css";
+import "swiper/css/effect-fade";
+import "swiper/css/pagination";
 
 const Statistics: React.FC<{ hasBg?: boolean }> = ({ hasBg = true }) => {
+  const swiperRef = React.useRef<SwiperType | null>(null);
+  const [ref, isInView] = useInView<HTMLDivElement>();
+
   const settings = {
     dots: true,
     arrows: true,
@@ -35,8 +50,30 @@ const Statistics: React.FC<{ hasBg?: boolean }> = ({ hasBg = true }) => {
     ],
   };
 
+  React.useEffect(() => {
+    if (swiperRef.current) {
+      if (isInView) {
+        console.log("isInView", isInView);
+        swiperRef.current.autoplay.start();
+      } else {
+        console.log("isNotInView", isInView);
+        swiperRef.current.autoplay.stop();
+      }
+    }
+  }, [isInView, swiperRef.current]);
+
+  React.useEffect(() => {
+    if (swiperRef.current) {
+      console.log("swiper running", swiperRef.current.autoplay.running);
+    }
+  }, [swiperRef.current]);
+
   return (
-    <div className="app_container items-center flex flex-col relative pb-40 w-full pt-[123px] md:py-[165px] mb-20 overflow-hidden">
+    <div
+      className="app_container items-center flex flex-col pb-40 w-full pt-[123px] md:py-[165px] mb-20 overflow-hidden relative"
+      ref={ref}
+    >
+      <div className="absolute bg-[#FBFBFB] w-[1871.08px] h-[652.1px] left-[-283px] top-[50px] rotate-[5deg] rounded-[50%]" />
       <div className="flex z-10 flex-col w-full">
         <div className="flex flex-col md:self-start text-center md:text-left self-center whitespace-nowrap mb-12">
           <h2 className="text-lg font-semibold leading-snug text-green-600 uppercase">
@@ -46,14 +83,59 @@ const Statistics: React.FC<{ hasBg?: boolean }> = ({ hasBg = true }) => {
             Statistics
           </h1>
         </div>
-        <div className="w-full px-4 md:px-8 bg-transparent">
-          <Slider {...settings}>
+        <div className="w-full bg-transparent relative">
+          {/* <Slider {...settings}>
             {statisticsData.map((stat, index) => (
               <div key={index} className="px-2 py-2">
                 <StatCard {...stat} />
               </div>
             ))}
-          </Slider>
+          </Slider> */}
+
+          <Swiper
+            // onInit={(swiper) => (swiperRef.current = swiper)}
+            onSwiper={(swiper) => {
+              swiperRef.current = swiper;
+            }}
+            slidesPerView={4}
+            autoplay={{
+              delay: 3000,
+              disableOnInteraction: false,
+              // Start paused, we'll control it with the useEffect
+              pauseOnMouseEnter: true,
+            }}
+            speed={500}
+            loop={true}
+            className="mySwiper1 w-full relative h-full"
+            modules={[Autoplay, EffectFade, Mousewheel, Keyboard, Pagination]}
+            keyboard={true}
+            spaceBetween={8}
+            direction="horizontal"
+            touchAngle={45}
+            draggable
+            pagination={{
+              dynamicBullets: true,
+              clickable: true,
+              el: ".swiper-pagination-container",
+              type: "bullets",
+              // bulletElement: "span",
+              // bulletClass: "swiper-pagination-bullet",
+              // bulletActiveClass: "swiper-pagination-bullet-active",
+            }}
+            onSlideChange={(swiper) => {
+              console.log("slide change", swiper.realIndex);
+            }}
+          >
+            {statisticsData.map((stat, index) => (
+              <SwiperSlide key={index} className="h-full">
+                <div className="">
+                  <StatCard {...stat} />
+                </div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+
+          <div className="swiper-pagination-container absolute transform -translate-x-1/2 left-1/2 !-bottom-[30px] z-10" />
         </div>
       </div>
     </div>

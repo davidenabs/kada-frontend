@@ -25,11 +25,7 @@ const StatCard: React.FC<StatCardProps> = ({
     <article
       className={`flex flex-col w-full w[33%] max-md:w-full h-[317.05px] relative bg-transparent`}
     >
-      <div
-        className={`flex flex-col grow pb-9 w-full rounded-3xl ${bgColor}  shadow-md max-md:mt-6`}
-
-        //  shadow-[0px_4px_36px_rgba(214,214,214,0.25)]
-      >
+      <div className={`flex flex-col grow pb-9 w-full rounded-3xl ${bgColor} `}>
         {title === "Arable Land" && (
           <img
             src="https://cdn.builder.io/api/v1/image/assets/TEMP/9c20e9d273d0f3567dae0f0fffed726ab57797b5ac298ccf60a5d92e8d9481d2?placeholderIfAbsent=true&apiKey=e3159558e3c24b7bb6f2db02f0873db3"
