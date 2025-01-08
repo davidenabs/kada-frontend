@@ -22,20 +22,22 @@ const About = () => {
           </h2>
           <div className="mt-9 text-base leading-6 text-center text-zinc-700 max-md:max-w-full space-y-5">
             <p>
-              The Kaduna State Government seeks to build human capital by
-              promoting equality of opportunity and empowering people to use
-              their initiative and hard work.
+              The Kaduna Agricultural Development Agency (KADA) is dedicated to
+              driving agricultural transformation in Kaduna State by promoting
+              sustainable practices, enhancing productivity, and empowering
+              farmers. With a focus on modern farming techniques, capacity
+              building, and value chain development, KADA works to unlock
+              agriculture's potential as a catalyst for economic growth, food
+              security, and rural development.
             </p>
             <p>
-              We seek to expand economic opportunities and deliver prosperity
-              and social inclusion Kaduna State has a competitive advantage in
-              agriculture, based on its vast arable and well-watered land.
-            </p>
-
-            <p>
-              The government's vision is to improve agricultural productivity,
-              investment, value addition, transfer of capital to rural
-              communities and promote competitive markets.
+              Through strategic partnerships and innovative programs, KADA
+              fosters an enabling environment where agriculture thrives as both
+              a business and a means of livelihood. By prioritizing
+              sustainability and climate-smart practices, the agency ensures
+              long-term food security while contributing significantly to the
+              well-being of Kaduna State’s people and the overall growth of its
+              economy.
             </p>
           </div>
         </div>
@@ -59,26 +61,59 @@ const About = () => {
           </h2>
           <div className="mt-9 text-base font-thin leading-6 text-center text-zinc-700 max-md:max-w-full space-y-5">
             <p>
-              {" "}
-              The Kaduna State Agriculture Policy has been developed to provide
-              guidance for holistically scaling up the agricultural sector to
-              meet the global challenges in the agri-food and value chain
-              systems by moving the State to most outstanding position in
-              agricultural productivity, agribusiness, women and youth
-              inclusion, financial and social inclusion, and employment
-              generation.
+              The Kaduna State Agricultural Development Agency (KADA) is a
+              beacon of innovation, resilience, and growth in the agricultural
+              sector of Kaduna State. Established to advance agricultural
+              practices, empower farmers, and ensure food security, KADA has
+              consistently worked to transform agriculture into a viable tool
+              for economic development and social progress.
             </p>
 
             <p>
-              The State Agriculture Policy is an all-inclusive document that
-              aligns the existing policies and the State Development Plan,
-              primarily designed through a consultative process by major
-              stakeholders, to guide our agricultural programs for economic
-              prosperity and wealth creation, among all actors. Besides, the
-              plan has provided the guiding principles, priority areas, target
-              beneficiaries and geographic focus among value chains of
-              competitive advantage across the State.
+              Agriculture is more than just an economic activity; it is the
+              backbone of our communities and the pathway to prosperity for
+              millions of households in Kaduna State. KADA is dedicated to
+              fostering sustainable agricultural systems by introducing modern
+              techniques, supporting smallholder farmers, and promoting
+              market-oriented farming.
             </p>
+
+            <p>
+              Under the guidance of His Excellency, Senator Uba Sani, Governor
+              of Kaduna State, KADA has championed several impactful
+              initiatives. These include the Free Fertilizer Distribution
+              Program, the Dry Season Farming Revitalization Initiative, and
+              strategic Public-Private Partnerships designed to create value
+              across agricultural value chains. We have consistently prioritized
+              solutions that ensure growth and sustainability.
+            </p>
+
+            <p>
+              KADA remains committed to inclusivity, transparency, and
+              sustainability in its operations. By engaging with farmers,
+              stakeholders, and partners, we are building a future where
+              agriculture serves as the engine for economic diversification and
+              a means of uplifting rural communities and most importantly
+              guarantees food security.
+            </p>
+
+            <p>
+              Our focus extends beyond production to include capacity-building,
+              market access, and the adoption of climate-smart agricultural
+              practices. We believe in harnessing innovation to tackle
+              challenges, improve resilience, and unlock the immense potential
+              within our agricultural sector.
+            </p>
+
+            <p>
+              As the General Manager of KADA, I invite all stakeholders—farmers,
+              investors, researchers, and policymakers—to collaborate with us in
+              achieving our shared vision of an agriculturally prosperous Kaduna
+              State. Together, we can create a future where agriculture serves
+              as a beacon of progress and prosperity for all.
+            </p>
+
+            <p>Thank you for your continued support and partnership.</p>
           </div>
         </div>
       </section>
