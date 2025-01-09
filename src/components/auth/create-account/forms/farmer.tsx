@@ -2,14 +2,16 @@ import { useRegisterMutation } from "@/app/_api/auth";
 import Button from "@/components/form/button";
 import Input from "@/components/form/input";
 import Password from "@/components/form/password";
+import Select from "@/components/form/select";
 import { UserType } from "@/interface/user";
+import { lgaOptionsByZone, zoneOptions } from "@/lib/lga-data";
 import { RegisterSchema, RegisterSchemaType } from "@/schema/auth";
 import { appAtom } from "@/stores/app";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";
 import React from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 
 const defaultValues = {
@@ -21,14 +23,21 @@ const defaultValues = {
   confirmPassword: "",
   userType: UserType.FARMER,
   acceptTerms: false,
+  lga: "",
+  zone: "",
+  ward: "",
+  community: "",
 };
 
 const FarmerForm: React.FC = () => {
   const [app, setApp] = useAtom(appAtom);
   const router = useRouter();
   const { mutateAsync, isPending } = useRegisterMutation();
+  const [option, setOption] = React.useState<any>(null);
+  const [zoneOption, setZoneOption] = React.useState<any>(null);
 
   const {
+    control,
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
@@ -37,8 +46,17 @@ const FarmerForm: React.FC = () => {
     resolver: zodResolver(RegisterSchema),
   });
 
+  const lgaOptions = React.useMemo(() => {
+    if (zoneOption) {
+      return lgaOptionsByZone(zoneOption.value);
+    }
+    return [];
+  }, [zoneOption]);
+
   const onSubmit = (data: RegisterSchemaType) => {
     const { confirmPassword, acceptTerms, ...rest } = data;
+
+    // console.log(rest);
 
     mutateAsync(rest, {
       onSuccess: (response) => {
@@ -103,6 +121,60 @@ const FarmerForm: React.FC = () => {
           className=""
           {...register("lastName")}
           error={errors.lastName?.message}
+        />
+
+        <Controller
+          name="zone"
+          control={control}
+          render={({ field: { name, onChange } }) => (
+            <Select
+              label="Zone"
+              id="zone"
+              options={zoneOptions}
+              onChange={(e: any) => {
+                setZoneOption(e);
+                onChange(e.value);
+              }}
+              value={zoneOption}
+              error={errors.zone?.message}
+            />
+          )}
+        />
+
+        <Controller
+          name="lga"
+          control={control}
+          render={({ field: { name, onChange } }) => (
+            <Select
+              label="Local Government Area (LGA)"
+              id="lga"
+              options={lgaOptions}
+              onChange={(e: any) => {
+                setOption(e);
+                onChange(e.value);
+              }}
+              value={option}
+              error={errors.lga?.message}
+            />
+          )}
+        />
+
+        <Input
+          label="Ward"
+          id="ward"
+          placeholder="What is your ward"
+          className=""
+          {...register("ward")}
+          error={errors.ward?.message}
+        />
+
+        <Input
+          label="Community"
+          id="community"
+          placeholder="What is your community"
+          className=""
+          {...register("community")}
+          error={errors.community?.message}
         />
 
         <Password

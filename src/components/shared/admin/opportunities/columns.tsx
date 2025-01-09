@@ -18,7 +18,7 @@ const columns: Column<any>[] = [
     key: "content",
     render: (item) => (
       <div className="">
-        <div dangerouslySetInnerHTML={{ __html: item.content }} />
+        <div dangerouslySetInnerHTML={{ __html: item.shortDescription }} />
       </div>
     ),
   },

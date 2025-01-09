@@ -13,20 +13,38 @@ const activityDetailsSchema = z.object({
   total_cost: z.number().positive("Total cost must be greater than 0"),
 });
 
-
 const activitySchema = z.object({
-  // phase: z.string().min(1, "Phase is required"),
   name: z.string().min(1, "Activity name is required"),
+  phase: z.string().min(1, "Phase is required"),
+  subtotal: z.number().positive("Subtotal must be greater than 0"),
   details: z
     .array(activityDetailsSchema)
     .nonempty("At least one detail is required for the activity"),
 });
 
+const stagesSchema = z.object({
+  name: z.string().min(1, "Stage name is required"),
+  duration: z.string().min(1, "Duration is required"),
+  description: z.string().min(1, "Description is required"),
+  tasks: z
+    .array(
+      z.object({
+        description: z.string().min(1, "Task description is required"),
+      })
+    )
+    .nonempty("At least one task is required"),
+  activities: z.array(activitySchema).nonempty({
+    message: "At least one activity is required",
+  }),
+});
 
 export const seasonSchema = z.object({
   name: z.string().min(1, "Season name is required"),
   period: z.string().min(1, "Period is required"),
   isRecommended: z.boolean(),
+  stages: z.array(stagesSchema).nonempty({
+    message: "At least one stage is required",
+  }),
   // activities: z.array(activitySchema).nonempty({
   //   message: "At least one activity is required",
   // }),
@@ -54,15 +72,18 @@ export const cropSchema = z.object({
   idealTemperature: z.string().min(1, "Ideal temperature is required"),
   waterRequirements: z.string().min(1, "Water requirements are required"),
   soilType: z.string().min(1, "Soil type is required"),
-  activities: z
-    .array(activitySchema)
-    .nonempty({ message: "At least one activity is required" }),
+  // activities: z
+  //   .array(activitySchema)
+  //   .nonempty({ message: "At least one activity is required" }),
   // seasons: z
   //   .array(seasonSchema)
   //   .nonempty({ message: "At least one season is required" }),
   // stages: z
   //   .array(stageSchema)
   //   .nonempty({ message: "At least one stage is required" }),
+  seasons: z.array(seasonSchema).nonempty({
+    message: "At least one season is required",
+  }),
 });
 
 export type cropSchemaType = z.infer<typeof cropSchema>;
