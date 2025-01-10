@@ -4,7 +4,12 @@ import Input from "@/components/form/input";
 import Password from "@/components/form/password";
 import Select from "@/components/form/select";
 import { UserType } from "@/interface/user";
-import { kadaLGA, lgaOptions } from "@/lib/lga-data";
+import {
+  kadaLGA,
+  lgaOptions,
+  lgaOptionsByZone,
+  zoneOptions,
+} from "@/lib/lga-data";
 import {
   CooperativeSchema,
   CooperativeSchemaType,
@@ -16,7 +21,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";
 import React from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 
 const defaultValues = {
@@ -28,14 +33,20 @@ const defaultValues = {
   userType: UserType.COOPERATIVE,
   acceptTerms: false,
   lga: "",
+  zone: "",
+  ward: "",
+  community: "",
 };
 
 const CooperativeForm: React.FC = () => {
   const router = useRouter();
   const { mutateAsync, isPending } = useRegisterMutation();
   const [app, setApp] = useAtom(appAtom);
+  const [option, setOption] = React.useState<any>(null);
+  const [zoneOption, setZoneOption] = React.useState<any>(null);
 
   const {
+    control,
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
@@ -62,11 +73,12 @@ const CooperativeForm: React.FC = () => {
     });
   };
 
-  // Map LGAs to options
-  // const lgaOptions = kadaLGA.lgas.map((lga) => ({
-  //   value: lga,
-  //   label: lga,
-  // }));
+  const lgaOptions = React.useMemo(() => {
+    if (zoneOption) {
+      return lgaOptionsByZone(zoneOption.value);
+    }
+    return [];
+  }, [zoneOption]);
 
   return (
     <form
@@ -98,14 +110,67 @@ const CooperativeForm: React.FC = () => {
           error={errors.cooperativeName?.message}
         />
 
-        <Select
+        {/* <Select
           label="Local Government Area (LGA)"
           id="lga"
           options={lgaOptions}
           {...register("lga")}
           error={errors.lga?.message}
         >
-        </Select>
+        </Select> */}
+        <Controller
+          name="zone"
+          control={control}
+          render={({ field: { name, onChange } }) => (
+            <Select
+              label="Zone"
+              id="zone"
+              options={zoneOptions}
+              onChange={(e: any) => {
+                setZoneOption(e);
+                onChange(e.value);
+              }}
+              value={zoneOption}
+              error={errors.zone?.message}
+            />
+          )}
+        />
+
+        <Controller
+          name="lga"
+          control={control}
+          render={({ field: { name, onChange } }) => (
+            <Select
+              label="Local Government Area (LGA)"
+              id="lga"
+              options={lgaOptions}
+              onChange={(e: any) => {
+                setOption(e);
+                onChange(e.value);
+              }}
+              value={option}
+              error={errors.lga?.message}
+            />
+          )}
+        />
+
+        <Input
+          label="Ward"
+          id="ward"
+          placeholder="What is your ward"
+          className=""
+          {...register("ward")}
+          error={errors.ward?.message}
+        />
+
+        <Input
+          label="Community"
+          id="community"
+          placeholder="What is your community"
+          className=""
+          {...register("community")}
+          error={errors.community?.message}
+        />
 
         <Input
           label="Phone"

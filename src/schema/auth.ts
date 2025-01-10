@@ -74,6 +74,9 @@ export const CooperativeSchema = z
       .string()
       .min(1, { message: "Cooperative name is required" }),
     lga: z.string().min(1, { message: "LGA is required" }),
+    zone: z.string().min(1, { message: "Zone is required" }),
+    ward: z.string().min(1, { message: "Ward is required" }),
+    community: z.string().min(1, { message: "Community is required" }),
     ...baseRegisterSchema,
   })
   .refine((data) => data.password === data.confirmPassword, {
