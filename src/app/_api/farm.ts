@@ -114,10 +114,10 @@ export const useGetFarmCroppingNotificationQuery = ({
     enabled: enabled !== undefined ? enabled : true,
   });
 };
-// 
+//
 export const useUpdateFarmActivityLogMutation = () => {
   return useMutation({
-    mutationFn: (data: { farmActivityLogId: string; }) =>
+    mutationFn: (data: { farmActivityLogId: string }) =>
       farmClient.updateFarmActivityLog(data),
     mutationKey: [API_ENDPOINTS.UPDATE_FARM_ACTIVITY_LOG],
   });
@@ -126,13 +126,38 @@ export const useUpdateFarmActivityLogMutation = () => {
 export const useVerifyFarmMutation = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ data, id, farmerId }: { data: any; id: string, farmerId: any }) =>
-      farmClient.verifyFarm(data, id, farmerId),
+    mutationFn: ({
+      data,
+      id,
+      farmerId,
+    }: {
+      data: any;
+      id: string;
+      farmerId: any;
+    }) => farmClient.verifyFarm(data, id, farmerId),
     mutationKey: [API_ENDPOINTS.VERIFY_FARM],
     onSuccess: (data) => {
       queryClient.invalidateQueries({
         queryKey: [API_ENDPOINTS.GET_FARMS],
       });
     },
+  });
+};
+
+export const usePersonalizeCroppingMutation = () => {
+  return useMutation({
+    mutationFn: (data: any) => farmClient.personalizeCropping(data),
+    mutationKey: [API_ENDPOINTS.PERSONALIZED_CROPPING_CALENDAR],
+  });
+};
+
+export const useGetPersonalizedCroppingQuery = ({
+  enabled = true,
+  params = {},
+}: IQueryParams) => {
+  return useQuery<IResponse<any>, Error>({
+    queryKey: [API_ENDPOINTS.PERSONALIZED_CROPPING_CALENDAR, params],
+    queryFn: () => farmClient.getPersonalizedCropping(params),
+    enabled: enabled !== undefined ? enabled : true,
   });
 };

@@ -1,4 +1,5 @@
 "use client";
+import { useGetProfileQuery } from "@/app/_api/user";
 import NextProgress from "@/components/common/next-progress";
 import Unauthorized from "@/components/common/unauthorized";
 import Header from "@/components/dashboards/farmer/header";
@@ -7,7 +8,7 @@ import { FullPageLoader } from "@/components/shared/loader";
 import useCheckUserFields from "@/hooks/user-field";
 import { UserType } from "@/interface/user";
 import { userAtom } from "@/stores/user";
-import { useAtomValue } from "jotai";
+import { useAtom, useAtomValue } from "jotai";
 import { useRouter } from "next/navigation";
 import React, { startTransition, Suspense } from "react";
 
@@ -17,7 +18,8 @@ export default function FarmerDahboardLayout({
   children: React.ReactNode;
 }) {
   const router = useRouter();
-  const user = useAtomValue(userAtom);
+  // const user = useAtomValue(userAtom);
+  const [user, setUser] = useAtom(userAtom);
   const [isAuthorized, setIsAuthorized] = React.useState(false);
   const [loaded, setLoaded] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false); // *is DOM loading
@@ -35,6 +37,16 @@ export default function FarmerDahboardLayout({
       condition: (value) => value === false,
     },
   ]);
+
+  const { isFetching, isRefetching, data } = useGetProfileQuery({
+    enabled: loaded,
+  });
+
+  React.useEffect(() => {
+    if (data?.data && data.success && !isFetching && !isRefetching) {
+      setUser((prevUser) => ({ ...prevUser, user: data.data }));
+    }
+  }, [data, isFetching, isRefetching, setUser]);
 
   React.useEffect(() => {
     const checkAuth = () => {

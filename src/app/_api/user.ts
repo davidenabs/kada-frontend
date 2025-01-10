@@ -5,7 +5,12 @@ import {
 } from "@/interface/client";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import userClient from "./client/user";
-import { IUser, IVerifyNinPayload } from "@/interface/user";
+import {
+  ISendContactMailPayload,
+  ISendInvitationPayload,
+  IUser,
+  IVerifyNinPayload,
+} from "@/interface/user";
 import API_ENDPOINTS from "./client/endpoint";
 
 export const useVerifyNinMutation = () => {
@@ -133,5 +138,18 @@ export const useAddFarmerMutation = () => {
         queryKey: [API_ENDPOINTS.GET_COOPERATIVE_FARMERS],
       });
     },
+  });
+};
+
+export const useInviteUserMutation = () => {
+  return useMutation({
+    mutationFn: (data: ISendInvitationPayload) => userClient.inviteUser(data),
+  });
+};
+
+export const useSendContactMailMutation = () => {
+  return useMutation({
+    mutationFn: (data: ISendContactMailPayload) =>
+      userClient.sendContactMail(data),
   });
 };
