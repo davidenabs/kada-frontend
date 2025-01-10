@@ -7,16 +7,30 @@ import { toast } from "sonner";
 import Input from "@/components/form/input";
 import KadaButton from "@/components/form/button";
 import ProfileDetail from "./profile-details";
-import { IUser } from "@/interface/user";
+import { IUser, UserType } from "@/interface/user";
 import Link from "next/link";
 import { useModal } from "@/hooks/use-modal";
 import SubscribeModal from "../../subscribe-modal";
+import { useGetRequestByUserIdAndType, useGetRequests } from "@/app/_api/request";
+import { RequestType } from "@/interface/request";
+import { Loader } from "rizzui";
 
 const FarmerData = ({ profile, close }: { profile: IUser, close: () => void }) => {
+    const [loaded, setLoaded] = React.useState(false);
     const ninData = profile?.farmerProfile?.ninData;
     const { mutateAsync, isPending } = useVerifyNinMutation();
     const { openModal, closeModal } = useModal();
     const [confirm, setConfirm] = React.useState(false);
+    // useGetRequests
+    const { data: hasCooperative, isFetching, isRefetching } = useGetRequestByUserIdAndType({
+        enabled: loaded,
+        params: {
+            requestType: RequestType.FARMER_TO_COOPERATIVE,
+            userId: profile?.id.toString(),
+            userType: UserType.FARMER,
+            status: ['pending', 'rejected']
+        }
+    });
 
     const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm({
         defaultValues: {
@@ -31,7 +45,7 @@ const FarmerData = ({ profile, close }: { profile: IUser, close: () => void }) =
         data.phoneNumber = profile?.phoneNumber;
         try {
             console.log(data);
-            
+
             const response = await mutateAsync(data);
             if (response.success) {
                 toast.success("User NIN verification was successful");
@@ -52,6 +66,12 @@ const FarmerData = ({ profile, close }: { profile: IUser, close: () => void }) =
             view: <SubscribeModal close={() => setConfirm(false)} open={confirm} onSubscribe={() => { }} loading={false} farmerId={profile?.id} />
         });
     };
+
+    // *Set loaded to true when component mounts
+    React.useEffect(() => {
+        setLoaded(true);
+        return () => setLoaded(false);
+    }, []);
 
     return (
         <div className="w-full max-h-[70vh] overflow-y-scroll p-4">
@@ -102,7 +122,6 @@ const FarmerData = ({ profile, close }: { profile: IUser, close: () => void }) =
                 {(!profile.isSubscribed || !profile.farmerProfile?.cooperative) && ninData && (
 
                     <>
-
                         {!profile.isSubscribed ?
                             <KadaButton
                                 handleClick={() => handleOpenModal()}
@@ -113,10 +132,15 @@ const FarmerData = ({ profile, close }: { profile: IUser, close: () => void }) =
                             :
                             <Link
                                 type="button"
-                                className="!rounded-full !py-4 mt-3.5 w-full inline-flex items-center justify-center text-sm font-medium transition-colors h-[36px] text-white bg-primary-600"
+                                className={`!rounded-full !py-4 mt-3.5 w-full inline-flex items-center justify-center text-sm font-medium transition-colors h-[36px] text-white bg-primary-600 ${hasCooperative?.data?.status === 'pending' ? 'pointer-events-none opacity-50' : ''}`}
                                 href={`/dashboard/enumerator/cooperative/${profile.id}`}
+                                aria-disabled={hasCooperative?.data?.status === 'pending'}
                             >
-                                Join A Cooperative
+                                {loaded ? (
+                                    hasCooperative?.data?.status !== 'pending' ? "Join A Cooperative" : "Already requested"
+                                ) : (
+                                    <Loader />
+                                )}
                             </Link>}
                     </>
                 )}

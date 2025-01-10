@@ -9,26 +9,28 @@ const columns: Column<any>[] = [
     render: (item) => <div className="">{format(new Date(), "dd/mm/yy")}</div>,
   },
   {
-    label: "Source",
+    label: "Title",
     key: "title",
     render: (item) => <div className="">{item.title}</div>,
   },
   {
     label: "Description",
-    key: "content",
+    key: "shortDescription",
     render: (item) => (
       <div className="">
-        <div dangerouslySetInnerHTML={{ __html: item.shortDescription }} />
+        {item.shortDescription.length > 100 ? item.shortDescription.substring(0, 100) + "..." : item.shortDescription}
       </div>
     ),
   },
   {
-    label: "Click Rate",
+    label: "CTA",
     key: "cta",
-    render: (item) => <div className="">{item.cta}</div>,
+    render: (item) => <div className="">
+      {item.cta.length > 20 ? item.cta.substring(0, 20) + "..." : item.cta}
+    </div>,
   },
   {
-    label: "Availabilty",
+    label: "Availability",
     key: "availability",
     render: (item) => <div className="">{item.userType}</div>,
   },

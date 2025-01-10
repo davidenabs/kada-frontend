@@ -1,8 +1,8 @@
 "use client";
 import React from "react";
 import Image from "next/image";
-import { VerifiedIcon } from "@/icons";
-import { PencilIcon } from "@heroicons/react/16/solid";
+// import { VerifiedIcon } from "@/icons";
+// import { PencilIcon } from "@heroicons/react/16/solid";
 import Input from "@/components/form/input";
 import { KadaButton } from "@/components/form/button";
 import { useModal } from "@/hooks/use-modal";
@@ -11,7 +11,7 @@ import { useAtomValue } from "jotai";
 import { userAtom } from "@/stores/user";
 import { format } from "date-fns";
 
-function VendorProfileSharedPage() {
+function EnumeratorProfileSharedPage() {
   const { closeModal, openModal } = useModal();
   const { user } = useAtomValue(userAtom);
 
@@ -38,12 +38,12 @@ function VendorProfileSharedPage() {
 
             <div className="">
               <h4 className="text-[18px] font-bold">
-                {user?.cooperativeProfile?.cooperativeName || "N/A"}
+                {`${user?.firstName ?? ""} ${user?.lastName ?? ""}`.trim() || "N/A"}
               </h4>
-              <div className="flex items-center space-x-2">
+              {/* <div className="flex items-center space-x-2">
                 <VerifiedIcon className="w-4 h-4" />
                 <span>Verified</span>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
@@ -52,9 +52,9 @@ function VendorProfileSharedPage() {
           <div className="flex justify-between">
             <span className="text-[#00A551] text-lg">Bio</span>
 
-            <button onClick={handleEditClick}>
+            {/* <button onClick={handleEditClick}>
               <PencilIcon className="w-4 h-4 fill-[#00A551]" />
-            </button>
+            </button> */}
           </div>
 
           <div className="flex justify-between">
@@ -93,7 +93,7 @@ function VendorProfileSharedPage() {
             </div>
           </div>
 
-          <div className="flex justify-between">
+          {/* <div className="flex justify-between">
             <span className="text-lg">State of Residence</span>
 
             <div className="flex">
@@ -115,7 +115,7 @@ function VendorProfileSharedPage() {
             <div className="flex">
               <span className="text-[#878D96]">Kaduna</span>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
 
@@ -139,4 +139,4 @@ function VendorProfileSharedPage() {
   );
 }
 
-export default VendorProfileSharedPage;
+export default EnumeratorProfileSharedPage;

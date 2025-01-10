@@ -16,6 +16,7 @@ import DatePicker from "@/components/form/date-picker";
 import { TagInput } from "./tag-input";
 import { useCreateCmsPostMutation } from "@/app/_api/cms";
 import { toast } from "sonner";
+import { PostType } from "@/interface/cms";
 
 type PostOpportunityModalProps = {
   close: () => void;
@@ -28,7 +29,7 @@ const defaultValues: OpportunitySchemaType = {
   cta: "",
   userType: "" as any,
   isPublished: false,
-  type: "opportunity",
+  type: PostType.opportunity,
   keywords: [],
   dueDate: "" as any,
   featuredImage: new File([], ""),

@@ -117,7 +117,7 @@ function CreatePlan({ open, selected, close }: any) {
                 <div className="grid grid-cols-2 gap-2">
                   <Input
                     label="Name"
-                    placeholder="e.g. Maize"
+                    placeholder="e.g. Cooperative Certificate"
                     {...register("name")}
                     error={errors.name?.message?.toString()}
                     inputClassName="h-[30px]"
@@ -127,7 +127,7 @@ function CreatePlan({ open, selected, close }: any) {
 
                   <Input
                     label="Price"
-                    placeholder="e.g. Zea mays"
+                    placeholder="e.g. 10,000"
                     inputClassName="h-[30px]"
                     labelClassName="text-xs"
                     {...register("price")}
@@ -137,7 +137,7 @@ function CreatePlan({ open, selected, close }: any) {
 
                   <Input
                     label="Duration in Years"
-                    placeholder="e.g. Maize is a cereal crop"
+                    placeholder="e.g. 1"
                     inputClassName="h-[30px]"
                     labelClassName="text-xs"
                     {...register("durationInYears")}
@@ -150,14 +150,9 @@ function CreatePlan({ open, selected, close }: any) {
                     name="userType"
                     render={({ field: { name, onChange, value } }) => (
                       <Select
-                        label="Are you fully registered with CAC"
+                        label="User Type"
                         value={
-                          option === null
-                            ? {
-                                label: value,
-                                value: value,
-                              }
-                            : option
+                          option
                         }
                         className={"border"}
                         options={options}

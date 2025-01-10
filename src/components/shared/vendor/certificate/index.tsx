@@ -152,7 +152,7 @@ function VendorCertificatePage() {
                     <div className="w-5/12 h-[1px] bg-gray-400 mx-auto mb-3" />
                     <h4 className="font-light text-[12px]">SIGNED</h4>
                     <p className="text-[10px]">
-                      GM, Kaduna State Agriultural Development Agency
+                      GM, Kaduna State Agricultural Development Agency
                     </p>
                   </div>
                 </div>

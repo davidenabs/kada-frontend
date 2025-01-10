@@ -4,12 +4,14 @@ import { useGetUsersQuery, useGetVendorsQuery } from "@/app/_api/user";
 import Catalog from "@/components/common/catalog";
 import VendorCard from "@/components/common/vendor-card";
 import Input from "@/components/form/input";
+import Select from "@/components/form/select";
 import CatalogSkeleton from "@/components/skeletons/catalog";
 import VendorCardSkeleton from "@/components/skeletons/vendor-card";
 import useDashboardTitle from "@/hooks/use-dashboard-tite";
 import useDebounce from "@/hooks/use-debounce";
 import { SearchIcon } from "@/icons";
 import { UserType } from "@/interface/user";
+import { productServiceCategories, vendorProductServiceCategories } from "@/lib/vendor-category-data";
 import React from "react";
 import { Empty } from "rizzui";
 
@@ -20,6 +22,8 @@ function FarmerVendorsSharedPage() {
   const [limit, setLimit] = React.useState(10);
   const [search, setSearch] = React.useState("");
   const debouncedSearchQuery = useDebounce(search);
+  const [productService, setProductService] = React.useState<{ value: string } | null>(null);
+  const debouncedFilterProductServiceQuery = useDebounce(productService?.value!);
 
   const { data, isFetching, isRefetching } = useGetVendorsQuery({
     enabled: loaded,
@@ -27,6 +31,7 @@ function FarmerVendorsSharedPage() {
       page,
       limit,
       search: debouncedSearchQuery,
+      productService: debouncedFilterProductServiceQuery
     },
   });
 
@@ -52,7 +57,7 @@ function FarmerVendorsSharedPage() {
       <div className="flex-1">
         <h4 className="text-2xl font-inter font-bold">Explore Vendors</h4>
 
-        <div className="">
+        <div className="flex gap-2">
           <Input
             placeholder="Search here..."
             inputClassName="!rounded-[10px]"
@@ -62,6 +67,15 @@ function FarmerVendorsSharedPage() {
             clearable
             onClear={() => setSearch("")}
             value={search}
+          />
+
+          <Select
+            clearable={productService !== null}
+            onClear={() => setProductService(null)}
+            options={productServiceCategories}
+            onChange={setProductService}
+            value={productService}
+            selectClassName="min-w-40"
           />
         </div>
 

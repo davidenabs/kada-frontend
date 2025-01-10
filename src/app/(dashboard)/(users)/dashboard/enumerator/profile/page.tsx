@@ -1,6 +1,6 @@
 import React from "react";
-import VendorProfileSharedPage from "@/components/shared/vendor/profile";
+import EnumeratorProfileSharedPage from "@/components/shared/enumerator/profile";
 
 export default function CooperativeProfilePage() {
-  return <VendorProfileSharedPage />;
+  return <EnumeratorProfileSharedPage />;
 }

@@ -21,7 +21,7 @@ const OfficeInfo: React.FC<OfficeInfoProps> = ({ offices }) => {
         <tbody>
           {offices.map((office, index) => (
             <tr key={index} className="">
-              <td className="px-4 py-2 text-sm text-right">{office.name}</td>
+              <td className="px-4 py-2 text-sm text-right">{office.name.toUpperCase()}</td>
               <td className="px-4 py-2 text-sm">{office.address}</td>
             </tr>
           ))}
