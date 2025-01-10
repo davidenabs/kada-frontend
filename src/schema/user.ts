@@ -24,6 +24,7 @@ export const contactSchema = z.object({
     .min(1, { message: "Email address is required" })
     .email({ message: "Invalid email address" }),
   message: z.string().trim().min(1, { message: "Message is required" }),
+  phoneNumber: z.string().optional(),
 });
 
 export type contactSchemaType = z.infer<typeof contactSchema>;

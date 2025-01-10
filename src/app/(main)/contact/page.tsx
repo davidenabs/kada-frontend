@@ -88,7 +88,7 @@ const ContactUs: React.FC = () => {
       </section>
       <OfficeInfo offices={officeDetails} />
 
-      <ContactForm onSubmit={() => {}} />
+      <ContactForm />
     </main>
   );
 };
