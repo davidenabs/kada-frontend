@@ -87,6 +87,8 @@ function FarmerProfileSharedPage() {
     profileImage: profileImagePath,
   };
 
+  console.log(user);
+
   return (
     <div className="flex justify-stretch items-stretch gap-8">
       <div className="flex-1 space-y-6">
@@ -215,7 +217,7 @@ function FarmerProfileSharedPage() {
             </div>
           </div>
 
-          <div className="flex justify-between">
+          {/* <div className="flex justify-between">
             <span className="text-lg">Funding History</span>
 
             <div className="flex">
@@ -229,7 +231,7 @@ function FarmerProfileSharedPage() {
             <div className="flex">
               <span className="text-[#878D96]">Kaduna</span>
             </div>
-          </div>
+          </div> */}
 
           <div className="mx-aut self-center flex gap-2">
             {user?.farmerProfile?.ninData && (

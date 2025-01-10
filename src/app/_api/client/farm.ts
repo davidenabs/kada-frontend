@@ -43,9 +43,18 @@ const farmClient = {
     ),
   updateFarmActivityLog: (data: any): Promise<any> =>
     ApiClient.post(API_ENDPOINTS.UPDATE_FARM_ACTIVITY_LOG, data),
-
   verifyFarm: (data: any, id: string, farmerId: any): Promise<any> =>
-    ApiClient.put(API_ENDPOINTS.VERIFY_FARM.replace(":farmId", id).replace(":farmerId", farmerId), data),
+    ApiClient.put(
+      API_ENDPOINTS.VERIFY_FARM.replace(":farmId", id).replace(
+        ":farmerId",
+        farmerId
+      ),
+      data
+    ),
+  personalizeCropping: (data: any): Promise<any> =>
+    ApiClient.post(API_ENDPOINTS.PERSONALIZED_CROPPING_CALENDAR, data),
+  getPersonalizedCropping: (params: IParams): Promise<any> =>
+    ApiClient.get(API_ENDPOINTS.PERSONALIZED_CROPPING_CALENDAR, params),
 };
 
 export default farmClient;

@@ -74,3 +74,15 @@ export interface IVendorProfile {
   isVerified: boolean;
   verificationStatusUpdatedAt: string | null;
 }
+
+export interface ISendContactMailPayload {
+  name: string;
+  email: string;
+  phoneNumber?: string;
+  message: string;
+}
+
+export interface ISendInvitationPayload {
+  email: string;
+  registerLink: string;
+}

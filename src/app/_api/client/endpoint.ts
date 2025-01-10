@@ -16,6 +16,8 @@ const API_ENDPOINTS = {
   GET_VENDORS: "/users/vendors",
   GET_FARMERS: "/users/farmers",
   GET_COOPERATIVES: "/users/cooperatives",
+  SEDN_CONTACT_MAIL: "/contact/send",
+  INVITE_USER: "/contact/invite",
 
   // farm
   GET_FARMS: "/farms",
@@ -29,6 +31,7 @@ const API_ENDPOINTS = {
   GET_FARM_CROPPING_NOTIFICATION: "/farm-cropping/farm/notification/:farmId",
   UPDATE_FARM_ACTIVITY_LOG: "/farms/update-farm-activity-log",
   VERIFY_FARM: "/farms/verify/:farmId/:farmerId",
+  PERSONALIZED_CROPPING_CALENDAR: "/farm-personalized-cropping-calendar",
 
   // catalog
   CATALOG_GET_PRODUCTS: "/catalog/products",

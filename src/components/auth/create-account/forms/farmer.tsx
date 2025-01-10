@@ -54,7 +54,7 @@ const FarmerForm: React.FC = () => {
   }, [zoneOption]);
 
   const onSubmit = (data: RegisterSchemaType) => {
-    const { confirmPassword, acceptTerms, ...rest } = data;
+    const { confirmPassword, acceptTerms, zone, ...rest } = data;
 
     // console.log(rest);
 

@@ -136,8 +136,6 @@ const ActivityField = ({
     name: `seasons[${index}].stages[${index}].activities[${activityIndex}].details`,
   });
 
-  const [phaseOption, setPhaseOption] = React.useState<any>(null);
-
   return (
     <>
       <div key={activityIndex + "activity field"}>
@@ -153,33 +151,6 @@ const ActivityField = ({
                 inputClassName="h-[30px]"
                 labelClassName="text-xs"
                 error={error?.message}
-              />
-            )}
-          />
-
-          <Controller
-            control={control}
-            name={`seasons[${index}].stages[${activityIndex}].activities[${activityIndex}].phase`}
-            render={({
-              field: { onChange, onBlur },
-              fieldState: { error },
-            }) => (
-              <Select
-                label="Phase"
-                value={phaseOption}
-                options={[
-                  { label: "Start", value: "START" },
-                  { label: "Mid", value: "MID" },
-                  { label: "End", value: "END" },
-                ]}
-                selectClassName="h-[30px] rounded-full"
-                labelClassName="text-xs"
-                error={error?.message}
-                onChange={(e: any) => {
-                  setPhaseOption(e);
-                  onChange(e.value);
-                }}
-                onBlur={onBlur}
               />
             )}
           />
@@ -304,6 +275,7 @@ const StageField = ({ control, index, stageIndex, removeStage }: any) => {
   });
 
   const [option, setOption] = React.useState<any>(null);
+  const [phaseOption, setPhaseOption] = React.useState<any>(null);
 
   return (
     <div key={stageIndex + "stage field"}>
@@ -386,6 +358,30 @@ const StageField = ({ control, index, stageIndex, removeStage }: any) => {
               inputClassName="h-[30px]"
               labelClassName="text-xs"
               error={error?.message}
+            />
+          )}
+        />
+
+        <Controller
+          control={control}
+          name={`seasons[${index}].stages[${stageIndex}].phase`}
+          render={({ field: { onChange, onBlur }, fieldState: { error } }) => (
+            <Select
+              label="Phase"
+              value={phaseOption}
+              options={[
+                { label: "Start", value: "START" },
+                { label: "Mid", value: "MID" },
+                { label: "End", value: "END" },
+              ]}
+              selectClassName="h-[30px] rounded-full"
+              labelClassName="text-xs"
+              error={error?.message}
+              onChange={(e: any) => {
+                setPhaseOption(e);
+                onChange(e.value);
+              }}
+              onBlur={onBlur}
             />
           )}
         />
@@ -624,6 +620,7 @@ const SeasonField = ({
                     duration_unit: "",
                     description: "",
                     tasks: [],
+                    phase: "",
                     activities: [],
                   })
                 }

@@ -227,7 +227,7 @@ function FarmInfo(farm: IFarm & { farmId: string }) {
         </div>
 
         {farm.crops!.map((crop) => {
-          return <CropDetails crop={crop} activities={crop.activities} />;
+          return <CropDetails crop={crop} />;
         })}
       </section>
     </Fragment>

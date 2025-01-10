@@ -1,5 +1,8 @@
 "use client";
-import { useGetFarmProductsQuery } from "@/app/_api/farm-products";
+import {
+  useDeleteFarmProductMutation,
+  useGetFarmProductsQuery,
+} from "@/app/_api/farm-products";
 import Breadcrumb from "@/components/common/breadcrumb";
 import KadaTable from "@/components/common/table";
 import { KadaButton } from "@/components/form/button";
@@ -19,6 +22,10 @@ import {
 } from "@heroicons/react/16/solid";
 import CreateCroppingInfoModal from "@/components/modals/admin/cropping";
 import { Dropdown } from "rizzui";
+import ConfirmModal from "@/components/modals/confim-modal";
+import ViewCroppingInfoModal from "@/components/modals/admin/cropping/view-modal";
+import { useModal } from "@/hooks/use-modal";
+import PersonalizedCropping from "@/components/modals/farmer/croppping/personalized";
 
 function CroppingCalendarPage() {
   useDashboardTitle("Tools");
@@ -29,6 +36,8 @@ function CroppingCalendarPage() {
   const debouncedSearchQuery = useDebounce(search);
   const [open, setOpen] = React.useState(false);
   const [selected, setSelected] = React.useState<any | null>(null);
+  const [confirm, setConfirm] = React.useState(false);
+  const [view, setView] = React.useState(false);
 
   const { data, isFetching, isRefetching, isError } = useGetFarmProductsQuery({
     enabled: loaded,
@@ -39,11 +48,28 @@ function CroppingCalendarPage() {
     },
   });
 
+  const { mutateAsync, isPending } = useDeleteFarmProductMutation();
+
   const toggleModal = () => setOpen(!open);
 
   React.useEffect(() => {
     setLoaded(true);
   }, []);
+
+  const handleAccept = () => {
+    if (isPending) return;
+
+    mutateAsync(selected.id, {
+      onSuccess: (response) => {
+        if (response.success) {
+          setConfirm(false);
+        }
+      },
+      onSettled: () => {
+        setConfirm(false);
+      },
+    });
+  };
 
   return (
     <Fragment>
@@ -53,6 +79,26 @@ function CroppingCalendarPage() {
           selected={selected}
           close={() => {
             toggleModal();
+            setSelected(null);
+          }}
+        />
+      )}
+      {confirm && (
+        <ConfirmModal
+          open={confirm}
+          close={() => setConfirm(false)}
+          loading={isPending}
+          onConfirm={() => {
+            handleAccept();
+          }}
+        />
+      )}
+      {view && (
+        <ViewCroppingInfoModal
+          open={view}
+          selected={selected}
+          close={() => {
+            setView(false);
             setSelected(null);
           }}
         />
@@ -124,13 +170,25 @@ function CroppingCalendarPage() {
                             </Dropdown.Item>
                           </div>
                           <div className="mb-1 pt-1">
-                            <Dropdown.Item className="text-xs">
+                            <Dropdown.Item
+                              className="text-xs"
+                              onClick={() => {
+                                setSelected(item);
+                                setView(true);
+                              }}
+                            >
                               <EyeIcon className="mr-2 h-4 w-4" />
                               View
                             </Dropdown.Item>
                           </div>
                           <div className="mt-1 pt-1">
-                            <Dropdown.Item className="text-xs">
+                            <Dropdown.Item
+                              className="text-xs"
+                              onClick={() => {
+                                setSelected(item);
+                                setConfirm(true);
+                              }}
+                            >
                               <TrashIcon className="mr-2 h-4 w-4" />
                               Delete
                             </Dropdown.Item>

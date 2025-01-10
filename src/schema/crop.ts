@@ -1,10 +1,5 @@
 import { z } from "zod";
 
-// export const activitySchema = z.object({
-//   description: z.string().min(1, "Activity description is required"),
-// });
-
-// Define the schema for activity details
 const activityDetailsSchema = z.object({
   description: z.string(),
   quantity: z.coerce.number().positive("Quantity must be greater than 0"),
@@ -15,7 +10,6 @@ const activityDetailsSchema = z.object({
 
 const activitySchema = z.object({
   name: z.string().min(1, "Activity name is required"),
-  phase: z.string().min(1, "Phase is required"),
   subtotal: z.coerce.number().positive("Subtotal must be greater than 0"),
   details: z
     .array(activityDetailsSchema)
@@ -35,6 +29,7 @@ const stagesSchema = z.object({
       })
     )
     .nonempty("At least one task is required"),
+  phase: z.string().min(1, "Phase is required"),
   activities: z.array(activitySchema).nonempty({
     message: "At least one activity is required",
   }),
@@ -49,9 +44,6 @@ export const seasonSchema = z.object({
   stages: z.array(stagesSchema).nonempty({
     message: "At least one stage is required",
   }),
-  // activities: z.array(activitySchema).nonempty({
-  //   message: "At least one activity is required",
-  // }),
 });
 
 export const taskSchema = z.object({
@@ -76,18 +68,20 @@ export const cropSchema = z.object({
   idealTemperature: z.string().min(1, "Ideal temperature is required"),
   waterRequirements: z.string().min(1, "Water requirements are required"),
   soilType: z.string().min(1, "Soil type is required"),
-  // activities: z
-  //   .array(activitySchema)
-  //   .nonempty({ message: "At least one activity is required" }),
-  // seasons: z
-  //   .array(seasonSchema)
-  //   .nonempty({ message: "At least one season is required" }),
-  // stages: z
-  //   .array(stageSchema)
-  //   .nonempty({ message: "At least one stage is required" }),
   seasons: z.array(seasonSchema).nonempty({
     message: "At least one season is required",
   }),
 });
 
 export type cropSchemaType = z.infer<typeof cropSchema>;
+
+export const createCroppingSchema = z.object({
+  cropId: z.string().min(1, "Crop is required"),
+  farmId: z.string().min(1, "Farm is required"),
+  plantingDate: z.date().max(new Date(), "Planting date must be in the past"),
+  // farmerId (String or Number)
+  farmerId: z.any(),
+  seasonId: z.string().min(1, "Season is required"),
+});
+
+export type createCroppingSchemaType = z.infer<typeof createCroppingSchema>;

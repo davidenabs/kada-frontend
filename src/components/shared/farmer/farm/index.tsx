@@ -10,6 +10,7 @@ import { KadaButton } from "@/components/form/button";
 import { useModal } from "@/hooks/use-modal";
 import NotificationsModal from "@/components/modals/farmer/notifications";
 import CreateFarmModal from "@/components/modals/create-farm";
+import PersonalizedCropping from "@/components/modals/farmer/croppping/personalized";
 
 interface NavigationItemProps {
   text: string;
@@ -62,6 +63,13 @@ function FarmSharedPage() {
     });
   };
 
+  const handleOpen = () => {
+    openModal({
+      view: <PersonalizedCropping close={closeModal} data={data?.data} />,
+      size: "lg",
+    });
+  };
+
   return (
     <div className="">
       <div className="flex justify-between items-center">
@@ -71,12 +79,18 @@ function FarmSharedPage() {
           ))}
         </nav>
 
-        <div className="">
+        <div className="space-x-4">
+          <KadaButton
+            className="!rounded-full h-[30px]"
+            onClick={handleOpen}
+            variant="outline"
+          >
+            Personalize Crop
+          </KadaButton>
           <KadaButton
             className="!rounded-full h-[30px] !bg-slate-400"
             onClick={handleEditFarmModal}
           >
-            
             Modify Farm
           </KadaButton>
         </div>

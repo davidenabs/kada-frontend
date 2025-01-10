@@ -14,7 +14,6 @@ export interface ICreateCropActivityDetail {
 export interface Activity {
   id: string;
   name: string;
-  phase: ActivityPhases;
   subtotal?: number;
   details: ICreateCropActivityDetail[];
 }
@@ -44,6 +43,7 @@ export interface Stage {
   isRecommended: boolean;
   tasks: { description: string }[];
   activities: Activity[];
+  phase: ActivityPhases;
 }
 
 export interface ICrop {

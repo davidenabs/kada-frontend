@@ -2,6 +2,7 @@ import { cn, Table } from "rizzui";
 import React, { useState } from "react";
 import { ICrop } from "@/interface/crop";
 import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/24/outline";
+import { formatCurrency } from "@/utils/utils";
 
 type SidebarDataProps = {
   type: "date-range" | "cropping-stage";
@@ -11,10 +12,10 @@ type SidebarDataProps = {
 };
 
 type DetailDataProps = {
-  type: "date-range" | "cropping-stage";
+  type?: "date-range" | "cropping-stage";
   data: ICrop | null;
-  currentIndex: number;
-  handleSelect: (index: number) => void;
+  currentIndex?: number;
+  handleSelect?: (index: number) => void;
 };
 
 function SidebarItem({
@@ -190,6 +191,7 @@ function DetailData({ data, type, currentIndex }: DetailDataProps) {
                     {expandedStage === stageIndex && (
                       <div className="p-3">
                         <p className="text-sm mb-2">{stage.description}</p>
+                        <p className="text-sm">Phase: {stage.phase}</p>
                         <h5 className="font-medium mt-3 mb-2">Tasks:</h5>
                         <ul className="list-disc list-inside text-sm">
                           {stage?.tasks?.map((task, taskIndex) => (
@@ -202,43 +204,52 @@ function DetailData({ data, type, currentIndex }: DetailDataProps) {
                               Activities:
                             </h5>
                             {stage.activities.map((activity, activityIndex) => (
-                              <div key={activityIndex} className="mb-3">
-                                <h6 className="font-medium">{activity.name}</h6>
-                                <p className="text-sm">
-                                  Phase: {activity.phase}
-                                </p>
+                              <div
+                                key={activityIndex}
+                                className="mb-3 space-y-4"
+                              >
+                                <h6 className="font-medium">
+                                  Name: {activity.name}
+                                </h6>
                                 <p className="text-sm">
                                   Subtotal: &#8358;{activity.subtotal}
                                 </p>
 
-                                <Table variant="minimal" className="rounded-lg">
-                                  <Table.Header>
-                                    <Table.Row>
-                                      <Table.Head>Description</Table.Head>
-                                      <Table.Head>Quantity</Table.Head>
-                                      <Table.Head>Unit Cost</Table.Head>
-                                      <Table.Head>Total Cost</Table.Head>
-                                    </Table.Row>
-                                  </Table.Header>
-                                  <Table.Body>
-                                    {activity.details.map((detail, idx) => (
-                                      <Table.Row key={idx}>
-                                        <Table.Cell>
-                                          {detail.description}
-                                        </Table.Cell>
-                                        <Table.Cell>
-                                          {detail.quantity} {detail.unit}
-                                        </Table.Cell>
-                                        <Table.Cell>
-                                          &#8358;{detail.unit_cost}
-                                        </Table.Cell>
-                                        <Table.Cell>
-                                          &#8358;{detail.total_cost}
-                                        </Table.Cell>
+                                <div className="">
+                                  <p className="text-sm">Details:</p>
+                                  <Table
+                                    variant="minimal"
+                                    className="rounded-lg"
+                                  >
+                                    <Table.Header>
+                                      <Table.Row>
+                                        <Table.Head>Description</Table.Head>
+                                        <Table.Head>Quantity</Table.Head>
+                                        <Table.Head>Unit Cost</Table.Head>
+                                        <Table.Head>Total Cost</Table.Head>
                                       </Table.Row>
-                                    ))}
-                                  </Table.Body>
-                                </Table>
+                                    </Table.Header>
+                                    <Table.Body>
+                                      {activity.details.map((detail, idx) => (
+                                        <Table.Row key={idx}>
+                                          <Table.Cell>
+                                            {detail.description}
+                                          </Table.Cell>
+                                          <Table.Cell>
+                                            {detail.quantity} {detail.unit}
+                                          </Table.Cell>
+                                          <Table.Cell>
+                                            {formatCurrency(detail.unit_cost)}
+                                          </Table.Cell>
+                                          <Table.Cell>
+                                            &#8358;
+                                            {formatCurrency(detail.total_cost)}
+                                          </Table.Cell>
+                                        </Table.Row>
+                                      ))}
+                                    </Table.Body>
+                                  </Table>
+                                </div>
                               </div>
                             ))}
                           </>

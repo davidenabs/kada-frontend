@@ -63,7 +63,7 @@ function CreateCroppingInfoModal({
   }, [selected]);
 
   const onSubmit = (data: cropSchemaType) => {
-    // console.log(data);
+    console.log(data);
     if (selected === null) {
       mutateAsync(data, {
         onSuccess: () => {
