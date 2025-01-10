@@ -7,16 +7,16 @@ import { z } from "zod";
 // Define the schema for activity details
 const activityDetailsSchema = z.object({
   description: z.string(),
-  quantity: z.number().positive("Quantity must be greater than 0"),
+  quantity: z.coerce.number().positive("Quantity must be greater than 0"),
   unit: z.string().min(1, "Unit is required"),
-  unit_cost: z.number().positive("Unit cost must be greater than 0"),
-  total_cost: z.number().positive("Total cost must be greater than 0"),
+  unit_cost: z.coerce.number().positive("Unit cost must be greater than 0"),
+  total_cost: z.coerce.number().positive("Total cost must be greater than 0"),
 });
 
 const activitySchema = z.object({
   name: z.string().min(1, "Activity name is required"),
   phase: z.string().min(1, "Phase is required"),
-  subtotal: z.number().positive("Subtotal must be greater than 0"),
+  subtotal: z.coerce.number().positive("Subtotal must be greater than 0"),
   details: z
     .array(activityDetailsSchema)
     .nonempty("At least one detail is required for the activity"),
@@ -24,7 +24,9 @@ const activitySchema = z.object({
 
 const stagesSchema = z.object({
   name: z.string().min(1, "Stage name is required"),
-  duration: z.string().min(1, "Duration is required"),
+  start: z.coerce.number().min(1, "Start date is required"),
+  stop: z.coerce.number().min(1, "End date is required"),
+  duration_unit: z.string().min(1, "Duration unit is required"),
   description: z.string().min(1, "Description is required"),
   tasks: z
     .array(
@@ -40,8 +42,10 @@ const stagesSchema = z.object({
 
 export const seasonSchema = z.object({
   name: z.string().min(1, "Season name is required"),
-  period: z.string().min(1, "Period is required"),
+  period: z.string(),
   isRecommended: z.boolean(),
+  from: z.string().min(1, "From is required"),
+  to: z.string().min(1, "To is required"),
   stages: z.array(stagesSchema).nonempty({
     message: "At least one stage is required",
   }),

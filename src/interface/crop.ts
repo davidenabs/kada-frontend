@@ -1,12 +1,12 @@
 export enum ActivityPhases {
-  START = 'START',
-  MID = 'MID',
-  END = 'END',
+  START = "START",
+  MID = "MID",
+  END = "END",
 }
 
 export interface ICreateCropActivityDetail {
-  description?: string |null;
-  quantity: number; 
+  description?: string | null;
+  quantity: number;
   unit: string;
   unit_cost: number;
   total_cost: number;
@@ -23,8 +23,10 @@ export interface Season {
   id: string;
   name: string;
   period: string;
+  from: string;
+  to: string;
   isRecommended: boolean;
-  activities: Activity[];
+  stages: Stage[];
 }
 
 export interface Task {
@@ -35,9 +37,13 @@ export interface Task {
 export interface Stage {
   id: string;
   name: string;
-  duration: string;
+  start: number;
+  stop: number;
+  duration_unit: string;
   description: string;
-  tasks: Task[];
+  isRecommended: boolean;
+  tasks: { description: string }[];
+  activities: Activity[];
 }
 
 export interface ICrop {
@@ -51,8 +57,8 @@ export interface ICrop {
   soilType: string;
   createdAt: string;
   updatedAt: string;
-  // seasons: Season[];
+  seasons: Season[];
   // stages: Stage[];
   farms: any[];
-  activities: Activity[];
+  // activities: Activity[];
 }

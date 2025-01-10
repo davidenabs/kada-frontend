@@ -1,5 +1,7 @@
 import { KadaButton } from "@/components/form/button";
+import DatePicker from "@/components/form/date-picker";
 import Input from "@/components/form/input";
+import Select from "@/components/form/select";
 import { CloseIcon } from "@/icons";
 import { PlusIcon, TrashIcon } from "@heroicons/react/16/solid";
 import React, { Fragment } from "react";
@@ -8,7 +10,23 @@ import { Switch } from "rizzui";
 
 interface SeasonFormProps {
   control: Control<any>;
+  setValue: any;
 }
+
+const months = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
 
 const DetailField = ({ control, index, detailIndex, removeDetail }: any) => (
   <div key={detailIndex + "detail field"}>
@@ -118,6 +136,8 @@ const ActivityField = ({
     name: `seasons[${index}].stages[${index}].activities[${activityIndex}].details`,
   });
 
+  const [phaseOption, setPhaseOption] = React.useState<any>(null);
+
   return (
     <>
       <div key={activityIndex + "activity field"}>
@@ -140,14 +160,26 @@ const ActivityField = ({
           <Controller
             control={control}
             name={`seasons[${index}].stages[${activityIndex}].activities[${activityIndex}].phase`}
-            render={({ field, fieldState: { error } }) => (
-              <Input
+            render={({
+              field: { onChange, onBlur },
+              fieldState: { error },
+            }) => (
+              <Select
                 label="Phase"
-                {...field}
-                placeholder="e.g. Initial"
-                inputClassName="h-[30px]"
+                value={phaseOption}
+                options={[
+                  { label: "Start", value: "START" },
+                  { label: "Mid", value: "MID" },
+                  { label: "End", value: "END" },
+                ]}
+                selectClassName="h-[30px] rounded-full"
                 labelClassName="text-xs"
                 error={error?.message}
+                onChange={(e: any) => {
+                  setPhaseOption(e);
+                  onChange(e.value);
+                }}
+                onBlur={onBlur}
               />
             )}
           />
@@ -168,7 +200,7 @@ const ActivityField = ({
           />
 
           <div className="col-span-2">
-            <h5 className="text-sm">Details</h5>
+            <h5 className="text-sm">Details ({details.length})</h5>
             <div>
               <div className="grid grid-cols-1 gap-2">
                 {details.map((detail, detailIndex) => (
@@ -231,7 +263,7 @@ const ActivityField = ({
 const TaskField = ({ control, index, taskIndex, removeTask }: any) => (
   <Controller
     control={control}
-    name={`stages[${index}].tasks[${taskIndex}].description`}
+    name={`seasons[${index}].stages[${index}].tasks[${taskIndex}].description`}
     render={({ field, fieldState: { error } }) => (
       <div className="flex items-center gap-1 w-full">
         <div className="flex-1">
@@ -268,8 +300,10 @@ const StageField = ({ control, index, stageIndex, removeStage }: any) => {
     remove: removeTask,
   } = useFieldArray({
     control,
-    name: `stages.${index}.tasks`,
+    name: `seasons[${index}].stages[${stageIndex}].tasks`,
   });
+
+  const [option, setOption] = React.useState<any>(null);
 
   return (
     <div key={stageIndex + "stage field"}>
@@ -291,12 +325,64 @@ const StageField = ({ control, index, stageIndex, removeStage }: any) => {
 
         <Controller
           control={control}
-          name={`seasons[${index}].stages[${stageIndex}].duration`}
+          name={`seasons[${index}].stages[${stageIndex}].start`}
           render={({ field, fieldState: { error } }) => (
             <Input
-              label="Duration"
+              label="Start"
               {...field}
-              placeholder="e.g. 2 weeks"
+              inputClassName="h-[30px]"
+              labelClassName="text-xs"
+              error={error?.message}
+            />
+          )}
+        />
+
+        <Controller
+          control={control}
+          name={`seasons[${index}].stages[${stageIndex}].stop`}
+          render={({ field, fieldState: { error } }) => (
+            <Input
+              label="Stop"
+              {...field}
+              inputClassName="h-[30px]"
+              labelClassName="text-xs"
+              error={error?.message}
+            />
+          )}
+        />
+
+        <Controller
+          control={control}
+          name={`seasons[${index}].stages[${stageIndex}].duration_unit`}
+          render={({ field: { onChange }, fieldState: { error } }) => (
+            <Select
+              value={option}
+              label="Duration Unit"
+              options={[
+                { label: "Days", value: "days" },
+                { label: "Weeks", value: "weeks" },
+                { label: "Months", value: "months" },
+              ]}
+              selectClassName="h-[30px] rounded-full"
+              labelClassName="text-xs"
+              error={error?.message}
+              // onChange={(e: any) => onChange(e.value)}
+              onChange={(e: any) => {
+                setOption(e);
+                onChange(e.value);
+              }}
+            />
+          )}
+        />
+
+        <Controller
+          control={control}
+          name={`seasons[${index}].stages[${stageIndex}].description`}
+          render={({ field, fieldState: { error } }) => (
+            <Input
+              label="Description"
+              {...field}
+              placeholder="e.g. Prepare land for planting"
               inputClassName="h-[30px]"
               labelClassName="text-xs"
               error={error?.message}
@@ -335,7 +421,7 @@ const StageField = ({ control, index, stageIndex, removeStage }: any) => {
 
           <Controller
             control={control}
-            name={`stages[${index}].tasks`}
+            name={`seasons[${index}].stages[${stageIndex}].tasks`}
             render={({ fieldState: { error } }) => (
               <p className="text-red-500 text-xs">{error?.message}</p>
             )}
@@ -398,7 +484,13 @@ const StageField = ({ control, index, stageIndex, removeStage }: any) => {
   );
 };
 
-const SeasonField = ({ control, season, index, removeSeason }: any) => {
+const SeasonField = ({
+  control,
+  setValue,
+  season,
+  index,
+  removeSeason,
+}: any) => {
   const {
     fields: stages,
     append: appendStage,
@@ -407,6 +499,19 @@ const SeasonField = ({ control, season, index, removeSeason }: any) => {
     control,
     name: `seasons.${index}.stages`,
   });
+  // const [option, setOption] = React.useState<any>(null);
+  const [fromOption, setFromOption] = React.useState<any>(null);
+  const [toOption, setToOption] = React.useState<any>(null);
+  const [monthOptions, setMonthOptions] = React.useState<any>([]);
+
+  React.useEffect(() => {
+    setMonthOptions(
+      months.map((month, i) => ({
+        label: month,
+        value: month,
+      }))
+    );
+  }, []);
 
   return (
     <div key={season.id + index + "season field"}>
@@ -428,13 +533,46 @@ const SeasonField = ({ control, season, index, removeSeason }: any) => {
 
         <Controller
           control={control}
-          name={`seasons[${index}].period`}
-          render={({ field, fieldState: { error } }) => (
-            <Input
-              label="Period"
-              {...field}
-              placeholder="e.g. March - July"
-              inputClassName="h-[30px]"
+          name={`seasons[${index}].from`}
+          render={({ field: { onChange, value }, fieldState: { error } }) => (
+            <Select
+              label="From"
+              value={fromOption}
+              className={"border"}
+              options={monthOptions}
+              onChange={(e: any) => {
+                setFromOption(e);
+                onChange(e.value);
+                setValue(
+                  `seasons[${index}].period`,
+                  `${e.value} - ${toOption?.value || ""}`
+                );
+              }}
+              selectClassName="h-[30px] rounded-full"
+              labelClassName="text-xs"
+              error={error?.message}
+            />
+          )}
+        />
+
+        <Controller
+          control={control}
+          name={`seasons[${index}].to`}
+          render={({ field: { onChange }, fieldState: { error } }) => (
+            <Select
+              label="To"
+              value={toOption}
+              className={"border"}
+              options={monthOptions}
+              onChange={(e: any) => {
+                setToOption(e);
+                onChange(e.value);
+                setValue(
+                  `seasons[${index}].period`,
+                  `${fromOption?.value || ""} - ${e.value}`
+                );
+              }}
+              selectClassName="h-[30px] rounded-full"
               labelClassName="text-xs"
               error={error?.message}
             />
@@ -460,7 +598,7 @@ const SeasonField = ({ control, season, index, removeSeason }: any) => {
         <div className="col-span-2">
           <h5 className="text-sm">Stages ({stages.length})</h5>
           <div>
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-1 gap-2">
               {stages.map((stage, stageIndex) => (
                 <StageField
                   key={stage.id + stageIndex + "stage field"}
@@ -480,7 +618,10 @@ const SeasonField = ({ control, season, index, removeSeason }: any) => {
                 onClick={() =>
                   appendStage({
                     name: "",
-                    duration: "",
+                    // duration: "",
+                    start: "",
+                    stop: "",
+                    duration_unit: "",
                     description: "",
                     tasks: [],
                     activities: [],
@@ -517,7 +658,7 @@ const SeasonField = ({ control, season, index, removeSeason }: any) => {
   );
 };
 
-function SeasonForm({ control }: SeasonFormProps) {
+function SeasonForm({ control, setValue }: SeasonFormProps) {
   const {
     fields: seasons,
     append: appendSeason,
@@ -545,6 +686,7 @@ function SeasonForm({ control }: SeasonFormProps) {
             <SeasonField
               key={season.id + index + "season field"}
               control={control}
+              setValue={setValue}
               season={season}
               index={index}
               removeSeason={removeSeason}

@@ -15,9 +15,9 @@ const columns: Column<any>[] = [
     ),
   },
   {
-    label: "No of Activities",
+    label: "No of Seasons",
     key: "activities",
-    render: (item) => <div className="">{item.activities.length}</div>,
+    render: (item) => <div className="">{item.seasons.length}</div>,
   },
   // {
   //   label: "No of Seasons",

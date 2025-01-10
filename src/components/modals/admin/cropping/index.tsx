@@ -54,6 +54,8 @@ function CreateCroppingInfoModal({
     resolver: zodResolver(cropSchema),
   });
 
+  console.log(errors);
+
   React.useEffect(() => {
     if (selected) {
       reset(selected);
@@ -61,6 +63,7 @@ function CreateCroppingInfoModal({
   }, [selected]);
 
   const onSubmit = (data: cropSchemaType) => {
+    // console.log(data);
     if (selected === null) {
       mutateAsync(data, {
         onSuccess: () => {
@@ -193,7 +196,7 @@ function CreateCroppingInfoModal({
 
                     <div className="mt-1 flex-1  px-4 max-h-[500px] grid grid-cols-1lg:grid-cols-2 max-lg:divide-y lg:divide-x [&>div]:lg:px-4 [&>div]:max-lg:px-4">
                       <div className="h-full overflow-y-scroll">
-                        <SeasonForm control={control} />
+                        <SeasonForm control={control} setValue={setValue} />
                       </div>
                     </div>
 
