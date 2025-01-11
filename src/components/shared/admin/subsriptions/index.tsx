@@ -1,20 +1,16 @@
 "use client";
 import React, { useState } from "react";
 import useDashboardTitle from "@/hooks/use-dashboard-tite";
-import Overview from "./overview";
 import { KadaButton } from "@/components/form/button";
 import { BriefcaseIcon, PlusIcon } from "@heroicons/react/16/solid";
 import Input from "@/components/form/input";
 import { SearchIcon } from "@/icons";
-import UsersTable from "./table";
 import Tab from "@/components/common/tab";
 import { userAtom } from "@/stores/user";
 import { useAtomValue } from "jotai";
-import { useGetUsersQuery } from "@/app/_api/user";
-import { IUser, UserType } from "@/interface/user";
 import MembersTableSkeleton from "@/components/skeletons/table/member";
 import useDebounce from "@/hooks/use-debounce";
-import columns from "./columns";
+import { columns, subscriptionColumns } from "./columns";
 import KadaTable from "@/components/common/table";
 import {
   useGetSubscriptionPlans,
@@ -137,44 +133,76 @@ function AdminSubsriptionSharedPage() {
           <div className="text-center">An error occurred</div>
         ) : (
           <KadaTable
-            data={data?.data?.items || []}
-            columns={columns}
-            renderActions={(item) => (
-              <div className="ml-4">
-                <Dropdown placement="bottom">
-                  <Dropdown.Trigger>
-                    <EllipsisVerticalIcon className="fill-black h-4 w-4" />
-                  </Dropdown.Trigger>
-                  <Dropdown.Menu className="divide-y bg-white">
-                    <div className={"mb-1"}>
-                      <Dropdown.Item
-                        className="text-xs"
-                        onClick={() => {
-                          setSelected(item);
-                          setOpen(true);
-                        }}
-                      >
-                        <PencilIcon className="mr-2 h-4 w-4" />
-                        Edit
-                      </Dropdown.Item>
-                    </div>
+            // data={data?.data?.items || []}
+            data={
+              activeTab === "Plans"
+                ? data?.data?.items || []
+                : subscriptionData?.data?.items || []
+            }
+            columns={activeTab === "Plans" ? columns : subscriptionColumns}
+            // renderActions={(item) => (
+            //   <div className={"ml-4"}>
+            //     <Dropdown placement="bottom">
+            //       <Dropdown.Trigger>
+            //         <EllipsisVerticalIcon className="fill-black h-4 w-4" />
+            //       </Dropdown.Trigger>
+            //       <Dropdown.Menu className="divide-y bg-white">
+            //         <div className={"mb-1"}>
+            //           <Dropdown.Item
+            //             className="text-xs"
+            //             onClick={() => {
+            //               setSelected(item);
+            //               setOpen(true);
+            //             }}
+            //           >
+            //             <PencilIcon className="mr-2 h-4 w-4" />
+            //             Edit
+            //           </Dropdown.Item>
+            //         </div>
 
-                    {/* <div className={"mb-1"}>
-                      <Dropdown.Item
-                        className="text-xs"
-                        onClick={() => {
-                          setMarket(item);
-                          setConfirm(true);
-                        }}
-                      >
-                        <TrashIcon className="mr-2 h-4 w-4" />
-                        Delete
-                      </Dropdown.Item>
-                    </div> */}
-                  </Dropdown.Menu>
-                </Dropdown>
-              </div>
-            )}
+            //         {/* <div className={"mb-1"}>
+            //           <Dropdown.Item
+            //             className="text-xs"
+            //             onClick={() => {
+            //               setMarket(item);
+            //               setConfirm(true);
+            //             }}
+            //           >
+            //             <TrashIcon className="mr-2 h-4 w-4" />
+            //             Delete
+            //           </Dropdown.Item>
+            //         </div> */}
+            //       </Dropdown.Menu>
+            //     </Dropdown>
+            //   </div>
+            // )}
+            renderActions={
+              activeTab === "Plans"
+                ? (item) => (
+                    <div className={"ml-4"}>
+                      <Dropdown placement="bottom">
+                        <Dropdown.Trigger>
+                          <EllipsisVerticalIcon className="fill-black h-4 w-4" />
+                        </Dropdown.Trigger>
+                        <Dropdown.Menu className="divide-y bg-white">
+                          <div className={"mb-1"}>
+                            <Dropdown.Item
+                              className="text-xs"
+                              onClick={() => {
+                                setSelected(item);
+                                setOpen(true);
+                              }}
+                            >
+                              <PencilIcon className="mr-2 h-4 w-4" />
+                              Edit
+                            </Dropdown.Item>
+                          </div>
+                        </Dropdown.Menu>
+                      </Dropdown>
+                    </div>
+                  )
+                : undefined
+            }
             itemsPerPage={limit}
             totalItems={data?.data?.total || 0}
             page={page}

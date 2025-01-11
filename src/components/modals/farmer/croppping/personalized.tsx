@@ -26,30 +26,39 @@ const Attribute = ({ label, value }: { label: string; value: string }) => (
 
 function PersonalizedCropping({ close, data }: PostOpportunityModalProps) {
   const [loaded, setLoaded] = React.useState(false);
-  const [crop, setCrop] = React.useState<ICrop | null>(null);
+  // const [crop, setCrop] = React.useState<ICrop | null>(null);
   const [open, setOpen] = React.useState(false);
-  const [isOpen, setIsOpen] = React.useState(false);
-
-  // Function to toggle the visibility
-  const toggleDetails = () => {
-    setIsOpen((prev) => !prev);
-  };
-  const [expandedSeason, setExpandedSeason] = React.useState<number | null>(
-    null
-  );
+  // const [isOpen, setIsOpen] = React.useState(false);
+  const [expandedCrop, setExpandedCrop] = React.useState<number | null>(null); // Track expanded crop index
   const [expandedStage, setExpandedStage] = React.useState<number | null>(null);
 
-  const toggleSeason = (index: number) => {
-    setExpandedSeason(expandedSeason === index ? null : index);
-    setExpandedStage(null);
+  // Function to toggle the visibility
+  // const toggleDetails = () => {
+  //   setIsOpen((prev) => !prev);
+  // };
+  // const [expandedSeason, setExpandedSeason] = React.useState<number | null>(
+  //   null
+  // );
+  // const [expandedStage, setExpandedStage] = React.useState<number | null>(null);
+
+  // const toggleSeason = (index: number) => {
+  //   setExpandedSeason(expandedSeason === index ? null : index);
+  //   setExpandedStage(null);
+  // };
+
+  // const toggleStage = (index: number) => {
+  //   setExpandedStage(expandedStage === index ? null : index);
+  // };
+
+  const toggleCrop = (index: number) => {
+    setExpandedCrop(expandedCrop === index ? null : index); // Expand or collapse the crop
+    setExpandedStage(null); // Reset stage expansion
   };
 
   const toggleStage = (index: number) => {
-    setExpandedStage(expandedStage === index ? null : index);
+    setExpandedStage(expandedStage === index ? null : index); // Expand or collapse the stage
   };
 
-  const fileInputRef = React.useRef<HTMLInputElement>(null);
-  const handleClick = () => fileInputRef.current?.click();
   const {
     data: croppingData,
     isFetching,
@@ -99,12 +108,16 @@ function PersonalizedCropping({ close, data }: PostOpportunityModalProps) {
               Add New
             </KadaButton>
           </div>
-          {croppingData?.data.items.map((item: any) => (
+          {croppingData?.data.items.map((item: any, cropIndex: number) => (
             <>
-              <section className="mt-6 p-2 border border-teal-700 border-opacity-30 rounded-[5px]">
+              <section
+                key={cropIndex}
+                className="mt-6 p-2 border border-teal-700 border-opacity-30 rounded-[5px]"
+              >
                 <div
                   className="bg-[#E7ECE8] border-l-2 border-[#205B42] flex justify-between text-sm py-3 px-5 cursor-pointer"
-                  onClick={toggleDetails}
+                  // onClick={toggleDetails}
+                  onClick={() => toggleCrop(cropIndex)}
                 >
                   <div className="flex items-center gap-6">
                     <span className="text-[#4D5358]">
@@ -117,7 +130,7 @@ function PersonalizedCropping({ close, data }: PostOpportunityModalProps) {
                   <span>
                     <ChevronDownIcon
                       className={`w-5 h-5 fill-[#205B42] transition-transform duration-300 ${
-                        isOpen ? "transform rotate-180" : ""
+                        expandedCrop === cropIndex ? "transform rotate-180" : ""
                       }`}
                     />
                   </span>
@@ -125,7 +138,7 @@ function PersonalizedCropping({ close, data }: PostOpportunityModalProps) {
 
                 <div
                   className={`overflow-hidden transition-all duration-300 ${
-                    isOpen ? "max-h-screen" : "max-h-0"
+                    expandedCrop === cropIndex ? "max-h-screen" : "max-h-0"
                   }`}
                 >
                   <div className="w-full">
@@ -220,6 +233,7 @@ function PersonalizedCropping({ close, data }: PostOpportunityModalProps) {
                                       ? "bg-blue-50"
                                       : "bg-gray-50"
                                   }`}
+                                  // onClick={() => toggleStage(stageIndex)}
                                   onClick={() => toggleStage(stageIndex)}
                                 >
                                   <div>
@@ -293,12 +307,12 @@ function PersonalizedCropping({ close, data }: PostOpportunityModalProps) {
                                                     <Table.Head>
                                                       Quantity
                                                     </Table.Head>
-                                                    <Table.Head>
+                                                    {/* <Table.Head>
                                                       Unit Cost
                                                     </Table.Head>
                                                     <Table.Head>
                                                       Total Cost
-                                                    </Table.Head>
+                                                    </Table.Head> */}
                                                   </Table.Row>
                                                 </Table.Header>
                                                 <Table.Body>
@@ -312,7 +326,7 @@ function PersonalizedCropping({ close, data }: PostOpportunityModalProps) {
                                                           {detail.quantity}{" "}
                                                           {detail.unit}
                                                         </Table.Cell>
-                                                        <Table.Cell>
+                                                        {/* <Table.Cell>
                                                           {formatCurrency(
                                                             detail.unit_cost
                                                           )}
@@ -321,7 +335,7 @@ function PersonalizedCropping({ close, data }: PostOpportunityModalProps) {
                                                           {formatCurrency(
                                                             detail.total_cost
                                                           )}
-                                                        </Table.Cell>
+                                                        </Table.Cell> */}
                                                       </Table.Row>
                                                     )
                                                   )}
