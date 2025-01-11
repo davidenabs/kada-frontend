@@ -7,6 +7,10 @@ type UserData = {
     publicId: any;
     address: any;
     profileImage: any;
+    zone: any;
+    lga: any;
+    ward: any;
+    community: any;
 };
 
 type IDCardProps = {
@@ -21,6 +25,10 @@ const IDCard: React.FC<IDCardProps> = ({ userData }) => {
         publicId,
         address,
         profileImage,
+        zone,
+        lga,
+        ward,
+        community
     } = userData;
 
     return (
@@ -52,6 +60,18 @@ const IDCard: React.FC<IDCardProps> = ({ userData }) => {
                     </li>
                     <li>
                         <strong>Phone:</strong> {phone || "N/A"}
+                    </li>
+                    <li>
+                        <strong>Zone:</strong> {zone || "N/A"}
+                    </li>
+                    <li>
+                        <strong>LGA:</strong> {lga || "N/A"}
+                    </li>
+                    <li>
+                        <strong>Ward:</strong> {ward || "N/A"}
+                    </li>
+                    <li>
+                        <strong>Community:</strong> {community || "N/A"}
                     </li>
                     <li>
                         <strong>Address:</strong> {address || "N/A"}

@@ -15,6 +15,9 @@ export interface IUser {
   isSubscribed: boolean;
   createdBy: string;
   lga: string;
+  ward: string;
+  community: string;
+  zone: string;
   verificationMethod: "EMAIL" | "PHONE" | "BOTH";
   otp: string;
   otpCreatedAt: string | null;

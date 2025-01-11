@@ -106,8 +106,8 @@ function AddCroppping({
           onSubmit={handleSubmit(onSubmit)}
         >
           <header className="flex justify-between bg-[#FFFFFF] border-b border-[#ECF2F6]">
-            <h1 className="self-start text-2xl font-bold text-green-800">
-              Get Notified
+            <h1 className="self-start text-xl font-bold text-green-800">
+              Set Personalized Cropping Calender
             </h1>
             <button onClick={close}>
               <CloseIcon className="w-4 h-4" />
@@ -175,7 +175,7 @@ function AddCroppping({
                       onChange(date);
                     }}
                     placeholderText="Select Date"
-                    maxDate={new Date()}
+                    // maxDate={new Date()}: FOR TEST
                     wrapperClassName="w-full"
                     inputProps={{
                       inputClassName:

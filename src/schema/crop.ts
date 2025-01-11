@@ -78,7 +78,8 @@ export type cropSchemaType = z.infer<typeof cropSchema>;
 export const createCroppingSchema = z.object({
   cropId: z.string().min(1, "Crop is required"),
   farmId: z.string().min(1, "Farm is required"),
-  plantingDate: z.date().max(new Date(), "Planting date must be in the past"),
+  plantingDate: z.date().optional(),
+  // plantingDate: z.date().max(new Date(), "Planting date must be in the past"),
   // farmerId (String or Number)
   farmerId: z.any(),
   seasonId: z.string().min(1, "Season is required"),

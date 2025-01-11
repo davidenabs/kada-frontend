@@ -85,6 +85,10 @@ function FarmerProfileSharedPage() {
       ? user?.farmerProfile?.ninData?.address
       : "",
     profileImage: profileImagePath,
+    lga: user?.lga,
+    ward: user?.ward,
+    zone: user?.zone,
+    community: user?.community,
   };
 
   console.log(user);
