@@ -22,7 +22,7 @@ export const opportunitySchema = z.object({
   type: z.enum(["post", "opportunity"]),
   keywords: z.array(z.string()),
   dueDate: z.date(),
-  featuredImage: z
+  image: z
     .custom<File>()
     .nullable()
     .refine((file) => file instanceof File, "Must be a valid file")

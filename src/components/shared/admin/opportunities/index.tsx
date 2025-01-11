@@ -12,15 +12,19 @@ import { PlusIcon } from "@heroicons/react/16/solid";
 import React, { Fragment } from "react";
 import { Empty, Input } from "rizzui";
 import columns from "./columns";
+import ExploreOpportunityDraewr from "@/components/drawers/cooperative/explore-opportunity";
+import { IPost } from "@/interface/cms";
 
 function AdminOpportunitiesPage() {
   useDashboardTitle("Cooperatives");
+   const [open, setOpen] = React.useState(false);
   const [loaded, setLoaded] = React.useState(false);
   const [search, setSearch] = React.useState("");
   const [limit, setLimit] = React.useState(10);
   const [page, setPage] = React.useState(1);
   const debouncedSearchQuery = useDebounce(search);
   const { openModal, closeModal } = useModal();
+    const [post, setPost] = React.useState<IPost | null>(null);
 
   const { data, isFetching, isLoading, isError } = useGetCmsPostsQuery({
     enabled: loaded,
@@ -38,6 +42,11 @@ function AdminOpportunitiesPage() {
     });
   };
 
+
+  const toggleDrawer = () => {
+    setOpen(!open);
+  };
+
   React.useEffect(() => {
     setLoaded(true);
   }, []);
@@ -46,6 +55,13 @@ function AdminOpportunitiesPage() {
 
   return (
     <Fragment>
+        {open && (
+        <ExploreOpportunityDraewr
+          close={toggleDrawer}
+          open={open}
+          data={post}
+        />
+      )}
       <section className="space-y-3">
         <div className="flex justify-between items-start">
           <h4 className="text-sm font-bold text-zinc-700">
@@ -87,7 +103,12 @@ function AdminOpportunitiesPage() {
               columns={columns}
               renderActions={(item) => (
                 <div className="flex items-center">
-                  <button className="text-xs text-blue-600">View</button>
+                  <button className="text-xs text-blue-600"
+                   onClick={() => {
+                    setPost(item);
+                    toggleDrawer();
+                  }}
+                  >View</button>
                 </div>
               )}
               itemsPerPage={limit}

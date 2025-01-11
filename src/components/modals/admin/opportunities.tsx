@@ -32,7 +32,7 @@ const defaultValues: OpportunitySchemaType = {
   type: PostType.opportunity,
   keywords: [],
   dueDate: "" as any,
-  featuredImage: new File([], ""),
+  image: new File([], ""),
 };
 
 function PostOpportunityModal({ close }: PostOpportunityModalProps) {
@@ -60,14 +60,15 @@ function PostOpportunityModal({ close }: PostOpportunityModalProps) {
   };
 
   const onSubmit = (data: OpportunitySchemaType) => {
-    const { keywords, dueDate, featuredImage, ...rest } = data;
+    const { keywords, dueDate, ...rest } = data;
     const newData = {
       ...rest,
       dueDate: dueDate.toISOString(),
-      meta: {
-        keywords,
-      },
+      // meta: {
+      //   // keywords,
+      // },
     };
+    
     mutateAsync(
       { data: newData },
       {
@@ -111,7 +112,7 @@ function PostOpportunityModal({ close }: PostOpportunityModalProps) {
             <div className="">
               <Controller
                 control={control}
-                name="featuredImage"
+                name="image"
                 render={({ field: { value, onChange } }) => (
                   <Upload
                     fileInputRef={fileInputRef}
@@ -127,7 +128,7 @@ function PostOpportunityModal({ close }: PostOpportunityModalProps) {
               />
 
               <p className="text-red-500 text-xs mt-1">
-                {errors?.featuredImage?.message}
+                {errors?.image?.message}
               </p>
             </div>
 
@@ -145,7 +146,7 @@ function PostOpportunityModal({ close }: PostOpportunityModalProps) {
                   type="button"
                   onClick={() => {
                     setFile(null);
-                    setValue("featuredImage", new File([], ""));
+                    setValue("image", new File([], ""));
                   }}
                 >
                   <CloseIcon className="w-4 h-4" />
@@ -261,7 +262,7 @@ function PostOpportunityModal({ close }: PostOpportunityModalProps) {
             </div>
 
             {/* tags */}
-            <div className="">
+            {/* <div className="">
               <Controller
                 control={control}
                 name="keywords"
@@ -278,7 +279,7 @@ function PostOpportunityModal({ close }: PostOpportunityModalProps) {
                   />
                 )}
               />
-            </div>
+            </div> */}
           </div>
         </div>
         <div className="px-6 pb-6">

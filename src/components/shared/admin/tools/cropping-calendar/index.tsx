@@ -114,7 +114,7 @@ function CroppingCalendarPage() {
 
         <div className="flex justify-between items-start">
           <h4 className="text-sm font-bold text-zinc-700">
-            Manage Opportunities
+            Manage Cropping Calendar
           </h4>
 
           <KadaButton
@@ -181,7 +181,7 @@ function CroppingCalendarPage() {
                               View
                             </Dropdown.Item>
                           </div>
-                          <div className="mt-1 pt-1">
+                          <div className="mt-1 pt-1 hidden">
                             <Dropdown.Item
                               className="text-xs"
                               onClick={() => {

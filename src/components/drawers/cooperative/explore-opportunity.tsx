@@ -45,7 +45,7 @@ function ExploreOpportunityDraewr({
             <div className="flex gap-7 justify-items-stretch">
               <div className="relative w-[171px] h-[160px] rounded-xl overflow-hidden">
                 <Image
-                  src={"/images/bdo.png"}
+                  src={data?.featuredImage || "/images/bdo.png"}
                   fill
                   className="object-cover"
                   alt="Funding Opportunities for Farmers!"
