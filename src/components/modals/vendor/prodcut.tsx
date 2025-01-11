@@ -102,6 +102,7 @@ function ProductForm({
                 getOptionDisplayValue={(option: any) =>
                   renderOptionDisplayValue(option)
                 }
+                error={errors?.category?.message}
               />
             )}
           />
@@ -137,7 +138,7 @@ function ProductForm({
           />
         </div>
 
-        <div className="col-span-2">
+        <div className="col-span-2 hidden">
           <Controller
             control={control}
             name="file"

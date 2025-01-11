@@ -12,19 +12,19 @@ export const createCatalogSchema = z.object({
     .refine((value) => value === "products" || value === "services", {
       message: "Type must be products or services",
     }),
-  category: z.string(),
+  category: z.string().min(1, { message: "Category catalog name is required" }),
   file: z
     .custom<File>()
-    .nullable()
-    .refine((file) => file instanceof File, "Must be a valid file")
-    .refine(
-      (file) => file && file.size <= MAX_FILE_SIZE,
-      `File size should be less than 5MB`
-    )
-    .refine(
-      (file) => file && ACCEPTED_FILE_TYPES.includes(file.type),
-      "Only .jpg, .jpeg, .png, .webp and .pdf files are accepted"
-    ),
+    .nullable(),
+    // .refine((file) => file instanceof File, "Must be a valid file")
+    // .refine(
+    //   (file) => file && file.size <= MAX_FILE_SIZE,
+    //   `File size should be less than 5MB`
+    // )
+    // .refine(
+    //   (file) => file && ACCEPTED_FILE_TYPES.includes(file.type),
+    //   "Only .jpg, .jpeg, .png, .webp and .pdf files are accepted"
+    // ),
   isNew: z.boolean(),
 });
 

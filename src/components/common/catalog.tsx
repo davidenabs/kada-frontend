@@ -46,9 +46,13 @@ function Catalog({
                 type === "products" && "hidden"
               )}
             >
-              From
+              {/* From */}
             </span>
-            <span className="text-sm font-semibold">₦{price}</span>
+            {type === "products" && (
+              <>
+                From <span className="text-sm font-semibold">₦{price}</span>
+              </>
+            )}
           </div>
           <ArrowRightIcon className="w-5 h-5 fill-[#C1C7CD]" />
         </div>
