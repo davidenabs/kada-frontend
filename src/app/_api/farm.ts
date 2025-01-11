@@ -145,9 +145,15 @@ export const useVerifyFarmMutation = () => {
 };
 
 export const usePersonalizeCroppingMutation = () => {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (data: any) => farmClient.personalizeCropping(data),
-    mutationKey: [API_ENDPOINTS.PERSONALIZED_CROPPING_CALENDAR],
+    // mutationKey: [API_ENDPOINTS.PERSONALIZED_CROPPING_CALENDAR],
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({
+        queryKey: [API_ENDPOINTS.PERSONALIZED_CROPPING_CALENDAR],
+      });
+    },
   });
 };
 
