@@ -63,13 +63,6 @@ function FarmSharedPage() {
     });
   };
 
-  const handleOpen = () => {
-    openModal({
-      view: <PersonalizedCropping close={closeModal} data={data?.data} />,
-      size: "lg",
-    });
-  };
-
   return (
     <div className="">
       <div className="flex justify-between items-center">
@@ -80,13 +73,6 @@ function FarmSharedPage() {
         </nav>
 
         <div className="space-x-4">
-          <KadaButton
-            className="!rounded-full h-[30px]"
-            onClick={handleOpen}
-            variant="outline"
-          >
-            Personalize Crop
-          </KadaButton>
           <KadaButton
             className="!rounded-full h-[30px] !bg-slate-400"
             onClick={handleEditFarmModal}

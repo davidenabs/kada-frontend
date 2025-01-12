@@ -88,7 +88,7 @@ function PersonalizedCropping({ close, data }: PostOpportunityModalProps) {
       {open && (
         <AddCroppping close={() => setOpen(false)} open={open} crop={data} />
       )}
-      <section className="w-full bg-white rounded-xl">
+      <section className="w-full bg-white rounded-xl max-h-[90vh] overflow-y-auto">
         <header className="flex items-center justify-between border-b px-6 py-4 bg-[#F9F9F9] rounded-t-xl">
           <h4 className="text-base font-semibold">
             Personalized Cropping Calendar
@@ -108,6 +108,15 @@ function PersonalizedCropping({ close, data }: PostOpportunityModalProps) {
               Add New
             </KadaButton>
           </div>
+
+          {isFetching && <div>Loading...</div>}
+
+          {croppingData?.data.items.length === 0 && (
+            <div className="text-center mt-6">
+              <h1 className="text-2xl font-semibold">No Cropping Data</h1>
+            </div>
+          )}
+
           {croppingData?.data.items.map((item: any, cropIndex: number) => (
             <>
               <section

@@ -12,6 +12,7 @@ import { Map } from "@/components/common/map";
 import { parseGeoLocation } from "@/utils/utils";
 import NotifyModal from "@/components/modals/farmer/notify";
 import CropDetails from "./cropping-info";
+import PersonalizedCropping from "@/components/modals/farmer/croppping/personalized";
 
 export function CoordinateDisplay({ geoLocation }: { geoLocation: string }) {
   const coordinates = parseGeoLocation(geoLocation);
@@ -59,6 +60,13 @@ function FarmInfo(farm: IFarm & { farmId: string }) {
           farmId={farm.farmId}
         />
       ),
+    });
+  };
+
+  const handleOpen = () => {
+    openModal({
+      view: <PersonalizedCropping close={closeModal} data={data?.data} />,
+      size: "lg",
     });
   };
 
@@ -163,6 +171,19 @@ function FarmInfo(farm: IFarm & { farmId: string }) {
                 </div>
                 <span className="font-bold text-sm">{farm.activeSeason}</span>
               </div>
+            </div>
+
+            <div className="mt-4 space-y-4 text-center">
+              <p className="text-[14px] font-medium">
+                Want a personalized cropping plan?
+              </p>
+
+              <button
+                className="underline mx-auto text-center text-sm"
+                onClick={handleOpen}
+              >
+                <span>Click Here</span>
+              </button>
             </div>
           </div>
 

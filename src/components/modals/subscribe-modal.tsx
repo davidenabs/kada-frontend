@@ -74,7 +74,6 @@ const SubscribeModal: React.FC<SubscribeModalProps> = ({
   }, []);
 
   const onSubmit = () => {
-    console.log(subscriptionPlan!.price);
     const payload = {
       email: user.user!.email,
       amount: parseFloat(subscriptionPlan!.price.toString()),
@@ -94,6 +93,7 @@ const SubscribeModal: React.FC<SubscribeModalProps> = ({
     paymentMutation.mutateAsync(payload, {
       onSuccess: (res) => {
         toast.success("Payment initiated successfully, redirecting...");
+        onSubscribe();
         window.location.href = res.data.authorization_url;
       },
     });

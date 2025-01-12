@@ -25,7 +25,7 @@ function FarmerProfileSharedPage() {
   const [confirm, setConfirm] = React.useState(false);
   const { socket } = useSocket();
   const [paymentStatus, setPaymentStatus] = React.useState<
-    "completed" | "failed" | null
+    "completed" | "failed" | "pending" | null
   >(null);
   // const { mutateAsync, isPending } = useUpdateRequestMutation();
 
@@ -37,10 +37,8 @@ function FarmerProfileSharedPage() {
     if (!socket) return;
 
     const event_name = `payment_verified_${user?.id}`;
-
     socket.on(event_name, (data: any) => {
       const { status, transactionId } = data;
-      console.log("event_name", data);
       setPaymentStatus(status);
     });
 
@@ -58,7 +56,9 @@ function FarmerProfileSharedPage() {
         <SubscribeModal
           close={() => setConfirm(false)}
           open={confirm}
-          onSubscribe={() => {}}
+          onSubscribe={() => {
+            setPaymentStatus("pending");
+          }}
           loading={false}
         />
       ),
@@ -91,8 +91,6 @@ function FarmerProfileSharedPage() {
     community: user?.community,
   };
 
-  console.log(user);
-
   return (
     <div className="flex justify-stretch items-stretch gap-8">
       <div className="flex-1 space-y-6">
@@ -107,16 +105,6 @@ function FarmerProfileSharedPage() {
                   className="object-cover rounded-full"
                 />
               </div>
-
-              {/* {isValidValue(profile?.photo) && (
-                            <div className="mb-4">
-                                <img
-                                    src={`data: image / jpeg; base64, ${ profile?.photo } `}
-                                    alt="Profile"
-                                    className="w-32 h-32 rounded-full object-cover border border-gray-200"
-                                />
-                            </div>
-                        )} */}
 
               <div className="">
                 <h4 className="text-[18px] font-bold">
@@ -135,13 +123,20 @@ function FarmerProfileSharedPage() {
                 )}
               </div>
             </div>
-            {!user?.isSubscribed && (
+            {!user?.isSubscribed && paymentStatus == null && (
               <Button
                 handleClick={() => handleOpenModal()}
                 className="!w-fit !rounded-full !py-3 !px-3 !shadow-none !bg-red-800 !text-white self-center z-10 flex gap-2"
               >
                 <span>Subscribe</span>
               </Button>
+            )}
+
+            {paymentStatus === "pending" && (
+              <div className="flex items-center space-x-2">
+                <Lock className="w-4 h-4" />
+                <span>Payment pending</span>
+              </div>
             )}
           </div>
         </div>

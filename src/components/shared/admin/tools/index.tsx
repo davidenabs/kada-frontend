@@ -14,13 +14,13 @@ const tools = [
     color: "#F7D150",
     link: "/cropping-calendar",
   },
-  {
-    name: "Price Calculator",
-    description:
-      "Calculate product costs accurately across markets for smart budgeting and pricing",
-    color: "#E7413E",
-    link: "/pricing",
-  },
+  // {
+  //   name: "Price Calculator",
+  //   description:
+  //     "Calculate product costs accurately across markets for smart budgeting and pricing",
+  //   color: "#E7413E",
+  //   link: "/pricing",
+  // },
   {
     name: "Market Information",
     description:

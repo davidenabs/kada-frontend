@@ -11,6 +11,8 @@ import { useModal } from "@/hooks/use-modal";
 import { PlusIcon, VerifiedIcon } from "@/icons";
 import { userAtom } from "@/stores/user";
 import { useAtom } from "jotai";
+import Link from "next/link";
+import { cn } from "rizzui";
 
 function FarmerDashboardSharedPage() {
   useDashboardTitle("Dashboard");
@@ -25,14 +27,27 @@ function FarmerDashboardSharedPage() {
   };
   return (
     <>
-      <h1 className="mb-4 text-base font-bold leading-tight text-teal-700 flex items-center gap-1">
-        <span> Hello, {user?.user?.firstName}</span>
-        {user?.user?.isSubscribed ? (
-          <VerifiedIcon className="w-4 h-4" />
-        ) : (
-          <VerifiedIcon className="w-4 h-4 fill-red-300 stroke-red-600" />
+      <div className="flex">
+        <h1 className="mb-4 text-base font-bold leading-tight text-teal-700 flex items-center gap-1">
+          <span> Hello, {user?.user?.firstName}</span>
+
+          <VerifiedIcon
+            className={cn(
+              "w-4 h-4",
+              user?.user?.isSubscribed ? "" : "fill-red-300 stroke-red-600"
+            )}
+          />
+        </h1>
+
+        {!user?.user?.isSubscribed && (
+          <div className="text-sm font-bold ms-2">
+            <Link href="/dashboard/farmer/profile">
+              <span className="underline">Click here to subscribe</span>
+            </Link>
+          </div>
         )}
-      </h1>
+      </div>
+
       <div className="flex">
         <section className="flex flex-col w-[69%] max-md:ml-0 max-md:w-full space-y-6">
           <div className="overflow-hidden px-10 mx-auto w-full bg-[#205B42] rounded-3xl max-md:px-5 max-md:mt-5 max-md:max-w-full">
