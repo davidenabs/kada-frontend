@@ -115,7 +115,7 @@ const VendorList: React.FC = () => {
                   name={vendor.vendorProfile?.vendorName!}
                   description={vendor.vendorProfile?.about!}
                   imageUrl={vendor.imagePath ?? "/images/avatar.png"}
-                  path={pathname + "/" + vendor.id}
+                  path={pathname + "/vendors/" + vendor.id}
                 />
               ))}
             </div>
