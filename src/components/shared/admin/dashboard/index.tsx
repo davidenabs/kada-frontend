@@ -16,6 +16,7 @@ import MembersTableSkeleton from "@/components/skeletons/table/member";
 import useDebounce from "@/hooks/use-debounce";
 import columns from "./columns";
 import KadaTable from "@/components/common/table";
+import FarmersLGAChart from "./lga-chart";
 
 const tabs = [
   {
@@ -134,6 +135,8 @@ function AdminDashboardSharedPage() {
       </div>
 
       <Overview />
+
+      {/* <FarmersLGAChart /> */}
 
       <div className="border mt-10 p-4 space-y-4 rounded-2xl bg-white">
         <h5 className="font-bold text-lg">Users</h5>

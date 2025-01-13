@@ -91,7 +91,9 @@ function AddMarketModal({ open, market, close }: AddMarketModalProps) {
       return;
     }
     if (!long || !lat) {
-      toast.error("Please input the coordinates of the market (Longitude and Latitude)");
+      toast.error(
+        "Please input the coordinates of the market (Longitude and Latitude)"
+      );
       return;
     }
     if (!startDate || !endDate) {
@@ -107,8 +109,6 @@ function AddMarketModal({ open, market, close }: AddMarketModalProps) {
     data.lga = localGovernmentArea;
     data.coordinates = `${long},${lat}`;
 
-    console.log(data);
-    
     if (market === null) {
       createMutation.mutateAsync(
         {
@@ -123,7 +123,6 @@ function AddMarketModal({ open, market, close }: AddMarketModalProps) {
         }
       );
     } else {
-      
       updateMutation.mutateAsync(
         {
           id: market.id,
@@ -143,7 +142,7 @@ function AddMarketModal({ open, market, close }: AddMarketModalProps) {
     <Fragment>
       <Modal
         isOpen={open}
-        onClose={() => { }}
+        onClose={() => {}}
         size={"lg"}
         overlayClassName="dark:bg-opacity-40 dark:backdrop-blur-sm"
         containerClassName="dark:bg-gray-100"
@@ -152,7 +151,10 @@ function AddMarketModal({ open, market, close }: AddMarketModalProps) {
         <section className="bg-white rounded-lg">
           <form onSubmit={handleSubmit(onSubmit)}>
             <header className="flex items-center justify-between border-b px-6 py-1 bg-[#F9F9F9] rounded-t-xl">
-              <h4 className="text-base font-semibold"> {market ? "Update" : "Add a"} market</h4>
+              <h4 className="text-base font-semibold">
+                {" "}
+                {market ? "Update" : "Add a"} market
+              </h4>
 
               <button onClick={close} type="button">
                 <CloseIcon className="w-3 h-3" />
@@ -186,8 +188,7 @@ function AddMarketModal({ open, market, close }: AddMarketModalProps) {
                     setLocalGovernmentArea(e.value);
                   }}
                   disabled={isLoading}
-                >
-                </Select>
+                ></Select>
 
                 <Input
                   label="Ward"
@@ -226,12 +227,30 @@ function AddMarketModal({ open, market, close }: AddMarketModalProps) {
                   />
                 </div>
 
-                <Input
+                {/* <Input
                   label="Size"
                   placeholder="Enter market size"
                   error={errors.size?.message}
                   {...register("size")}
                   disabled={isLoading}
+                /> */}
+                <Controller
+                  control={control}
+                  name="size"
+                  render={({ field: { value, onChange } }) => (
+                    <Select
+                      label="Size"
+                      id="size"
+                      options={[
+                        { value: "Small", label: "Small" },
+                        { value: "Medium", label: "Medium" },
+                        { value: "Large", label: "Large" },
+                      ]}
+                      value={value}
+                      onChange={(e: any) => onChange(e.value)}
+                      disabled={isLoading}
+                    />
+                  )}
                 />
 
                 <div className="">

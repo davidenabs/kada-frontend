@@ -47,10 +47,11 @@ const NimcVerification: React.FC = () => {
             ...user,
             user: {
               ...user.user!,
-              farmerProfile: {
-                ...user.user?.farmerProfile!,
-                isNinVerified: true,
-              },
+              // farmerProfile: {
+              //   ...user.user?.farmerProfile!,
+              //   isNinVerified: true,
+              // },
+              ...response.data.user,
             },
           });
         } else {

@@ -23,7 +23,7 @@ function CroppingCalendar() {
   const debouncedSearchQuery = useDebounce(search);
 
   const { data, isFetching, isRefetching, isError } = useGetFarmProductsQuery({
-    enabled: loaded && debouncedSearchQuery.length > 0,
+    enabled: loaded,
     params: {
       page: 1,
       limit: 10,
