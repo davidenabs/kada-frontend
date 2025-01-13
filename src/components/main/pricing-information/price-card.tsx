@@ -4,6 +4,7 @@ import { formatDate } from "date-fns";
 import { useAtom } from "jotai";
 import Link from "next/link";
 import React from "react";
+import { formatDistanceToNow } from "date-fns";
 
 interface PriceCardProps {
   title: string;
@@ -12,6 +13,7 @@ interface PriceCardProps {
   lastUpdated: string;
   percentageChange: string;
   comparisonText: string;
+  currentPriceDate: string;
 }
 
 const PriceCard: React.FC<PriceCardProps> = (product: any) => {
@@ -25,7 +27,14 @@ const PriceCard: React.FC<PriceCardProps> = (product: any) => {
       className={`flex flex-col flex-1 shrink justify-center self-stretch px-2.5 py-4 my-auto bg-gray-50 hover:bg-emerald-50 rounded-2xl border border-solid basis-0 border-slate-100 min-w-[240px]`}
     >
       <div className="flex flex-col w-full">
-        <h2 className="text-xs leading-tight text-black">Today</h2>
+        <h2 className="text-xs leading-tight text-black capitalize">
+          {formatDistanceToNow(
+            new Date(product.currentPriceDate ?? new Date()),
+            {
+              addSuffix: true,
+            }
+          )}
+        </h2>
         <div className="flex flex-col mt-4 w-full">
           <div className="flex flex-col leading-tight text-black whitespace-nowrap w-[83px]">
             <h3 className="text-xl">{product?.name}</h3>

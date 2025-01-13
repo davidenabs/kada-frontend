@@ -67,6 +67,7 @@ function CooperativeInfoModal({
         name: user.user!.firstName + " " + user.user!.lastName,
       },
       meta: {},
+      callback_url: `${window.location.origin}/dashboard/farmer/cooperative`,
     };
 
     mutateAsync(payload, {

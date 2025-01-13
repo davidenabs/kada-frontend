@@ -31,7 +31,7 @@ function FarmerCooperativeSharedPage({ farmerId }: { farmerId?: any }) {
       limit,
       search: debounceSearchQuery,
       userId: farmerId || null,
-      getByUser: UserType.ENUMERATOR
+      getByUser: UserType.ENUMERATOR,
     },
   });
 
@@ -46,12 +46,12 @@ function FarmerCooperativeSharedPage({ farmerId }: { farmerId?: any }) {
       badge: data?.data?.total || 0,
       icon: BriefcaseIcon,
     },
-    {
-      id: "active",
-      label: "Active Cooperative",
-      badge: 0,
-      icon: BriefcaseIcon,
-    },
+    // {
+    //   id: "active",
+    //   label: "Active Cooperative",
+    //   badge: 0,
+    //   icon: BriefcaseIcon,
+    // },
   ];
 
   return (

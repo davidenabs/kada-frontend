@@ -264,7 +264,7 @@ function PricingInformation() {
                     <div className="flex flex-wrap gap-1 items-center w-full max-md:max-w-full">
                       <div className="flex flex-col flex-1 shrink self-stretch my-auto basis-0 min-w-[240px] max-md:max-w-full">
                         <h2 className="text-2xl text-green-600 uppercase max-md:max-w-full">
-                          RESULT ({"24"})
+                          RESULT ({products.length})
                         </h2>
                         <div className="flex flex-wrap gap-3 items-start mt-1 w-full text-base text-neutral-700 max-md:max-w-full">
                           <span className="uppercase">

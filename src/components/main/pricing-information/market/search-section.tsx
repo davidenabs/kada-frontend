@@ -23,7 +23,7 @@ const SearchSection: React.FC<SearchSectionProps> = ({
   const [value, setValue] = React.useState(null);
 
   const { data, isFetching, isRefetching, isError } = useGetMarketsQuery({
-    enabled: loaded && debouncedSearchQuery.length > 0,
+    enabled: loaded,
     params: {
       search: debouncedSearchQuery,
       page: 1,

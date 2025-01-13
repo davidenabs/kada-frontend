@@ -1,5 +1,4 @@
 import { KadaButton } from "@/components/form/button";
-import DatePicker from "@/components/form/date-picker";
 import Input from "@/components/form/input";
 import Select from "@/components/form/select";
 import { CloseIcon } from "@/icons";
@@ -52,6 +51,21 @@ const DetailField = ({ control, index, detailIndex, removeDetail }: any) => (
         render={({ field, fieldState: { error } }) => (
           <Input
             label="Quantity"
+            {...field}
+            placeholder="e.g. 5"
+            inputClassName="h-[30px]"
+            labelClassName="text-xs"
+            error={error?.message}
+          />
+        )}
+      />
+
+      <Controller
+        control={control}
+        name={`seasons[${index}].stages[${index}].activities[${index}].details[${detailIndex}].landSize`}
+        render={({ field, fieldState: { error } }) => (
+          <Input
+            label="Land Size"
             {...field}
             placeholder="e.g. 5"
             inputClassName="h-[30px]"
@@ -197,6 +211,7 @@ const ActivityField = ({
                       unit: "",
                       unit_cost: "",
                       total_cost: "",
+                      landSize: "",
                     })
                   }
                 >
