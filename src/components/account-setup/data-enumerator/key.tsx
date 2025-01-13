@@ -34,7 +34,7 @@ const KeyValueArea: React.FC = () => {
     if (data?.data && !isFetching && !isRefetching && !isError) {
       const newOptions = data.data.items.map((category) => ({
         label: category.name,
-        value: String(category.id),
+        value: category.name,
       }));
       setOptions(newOptions);
     }
