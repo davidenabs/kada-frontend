@@ -5,7 +5,10 @@ import { useCreateCmsPostMutation } from "@/app/_api/cms";
 import { toast } from "sonner";
 import { KadaButton } from "@/components/form/button";
 import AddCroppping from "./add";
-import { useGetPersonalizedCroppingQuery } from "@/app/_api/farm";
+import {
+  useApplyCroppingStagMutation,
+  useGetPersonalizedCroppingQuery,
+} from "@/app/_api/farm";
 import { ICrop } from "@/interface/crop";
 import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/24/outline";
 import { Table } from "rizzui";
@@ -31,6 +34,7 @@ function PersonalizedCropping({ close, data }: PostOpportunityModalProps) {
   // const [isOpen, setIsOpen] = React.useState(false);
   const [expandedCrop, setExpandedCrop] = React.useState<number | null>(null); // Track expanded crop index
   const [expandedStage, setExpandedStage] = React.useState<number | null>(null);
+  const { mutateAsync, isPending } = useApplyCroppingStagMutation();
 
   // Function to toggle the visibility
   // const toggleDetails = () => {
@@ -78,6 +82,18 @@ function PersonalizedCropping({ close, data }: PostOpportunityModalProps) {
       //   });
     }
   }, [croppingData, isFetching, isRefetching, isError]);
+
+  const onSubmit = (stageId: string) => {
+    mutateAsync(
+      { stageId },
+      {
+        onSuccess: () => {
+          toast.success("Stage application successful");
+          // close();
+        },
+      }
+    );
+  };
 
   React.useEffect(() => {
     setLoaded(true);
@@ -187,14 +203,14 @@ function PersonalizedCropping({ close, data }: PostOpportunityModalProps) {
                           )}
                         />
                         <Attribute
-                          label="Start Date"
+                          label="Expected Start Date"
                           value={format(
                             item?.startDate || new Date(),
                             "dd MMM, yyyy"
                           )}
                         />
                         <Attribute
-                          label="End Date"
+                          label="Expected End Date"
                           value={format(
                             item?.endDate || new Date(),
                             "dd MMM, yyyy"
@@ -221,136 +237,152 @@ function PersonalizedCropping({ close, data }: PostOpportunityModalProps) {
                         </div>
 
                         <div className="p-4">
-                          {item?.season.stages.map(
-                            (stage: any, stageIndex: any) => (
+                          {item?.stages.map((stage: any, stageIndex: any) => (
+                            <div
+                              key={stageIndex}
+                              className="mb-4 border rounded"
+                            >
                               <div
-                                key={stageIndex}
-                                className="mb-4 border rounded"
+                                className={`flex justify-between items-center p-3 cursor-pointer ${
+                                  stage.isRecommended
+                                    ? "bg-blue-50"
+                                    : "bg-gray-50"
+                                }`}
+                                // onClick={() => toggleStage(stageIndex)}
+                                onClick={() => toggleStage(stageIndex)}
                               >
-                                <div
-                                  className={`flex justify-between items-center p-3 cursor-pointer ${
-                                    stage.isRecommended
-                                      ? "bg-blue-50"
-                                      : "bg-gray-50"
-                                  }`}
-                                  // onClick={() => toggleStage(stageIndex)}
-                                  onClick={() => toggleStage(stageIndex)}
-                                >
-                                  <div>
-                                    <h4 className="font-medium">
-                                      {stage.name}
-                                    </h4>
-                                    <p className="text-sm text-[#697077]">
-                                      {stage.start} - {stage.stop}{" "}
-                                      {stage.duration_unit}
-                                    </p>
-                                  </div>
-                                  {expandedStage === stageIndex ? (
-                                    <ChevronUpIcon className="w-4 h-4" />
-                                  ) : (
-                                    <ChevronDownIcon className="w-4 h-4" />
-                                  )}
+                                <div>
+                                  <h4 className="font-medium">{stage.name} ({stage.start} - {stage.stop} {stage.durationUnit})</h4>
+                                  <p className="text-sm text-gray-600 flex flex-col">
+                                    <span>
+                                      <strong>Expected Start Date:</strong>{" "}
+                                      {stage.startDate
+                                        ? format(
+                                            stage.startDate,
+                                            "dd MMM, yyyy"
+                                          )
+                                        : "Not started yet"}
+                                    </span>
+                                    <span>
+                                      <strong>Expected End Date:</strong>{" "}
+                                      {stage.endDate
+                                        ? format(stage.endDate, "dd MMM, yyyy")
+                                        : "No end date set"}
+                                    </span>
+                                  </p>
                                 </div>
 
-                                {expandedStage === stageIndex && (
-                                  <div className="p-3">
-                                    <p className="text-sm mb-2">
-                                      {stage.description}
-                                    </p>
+                                {expandedStage === stageIndex ? (
+                                  <ChevronUpIcon className="w-4 h-4" />
+                                ) : (
+                                  <ChevronDownIcon className="w-4 h-4" />
+                                )}
+                              </div>
 
-                                    <p className="text-sm">
-                                      Phase: {stage.phase}
-                                    </p>
-                                    <h5 className="font-medium mt-3 mb-2">
-                                      Tasks:
-                                    </h5>
-                                    <ul className="list-disc list-inside text-sm">
-                                      {stage?.tasks?.map(
-                                        (task: any, taskIndex: any) => (
-                                          <li key={taskIndex}>
-                                            {task.description}
-                                          </li>
-                                        )
-                                      )}
-                                    </ul>
-                                    {stage?.activities?.length > 0 && (
-                                      <>
-                                        <h5 className="font-medium mt-4 mb-2">
-                                          Activities:
-                                        </h5>
-                                        {stage.activities.map(
-                                          (
-                                            activity: any,
-                                            activityIndex: any
-                                          ) => (
-                                            <div
-                                              key={activityIndex}
-                                              className="mb-3"
+                              {expandedStage === stageIndex && (
+                                <div className="p-3">
+                                  {!stage.startedAt && (
+                                    <div className="flex justify-end">
+                                      <KadaButton
+                                        loading={isPending}
+                                        onClick={() => onSubmit(stage.id)}
+                                      >
+                                        Apply
+                                      </KadaButton>
+                                    </div>
+                                  )}
+                                  <p className="text-sm mb-2">
+                                    {stage.description}
+                                  </p>
+
+                                  <p className="text-sm">
+                                    Phase: {stage.phase}
+                                  </p>
+                                  <h5 className="font-medium mt-3 mb-2">
+                                    Tasks:
+                                  </h5>
+                                  <ul className="list-disc list-inside text-sm">
+                                    {stage?.tasks?.map(
+                                      (task: any, taskIndex: any) => (
+                                        <li key={taskIndex}>
+                                          {task.description}
+                                        </li>
+                                      )
+                                    )}
+                                  </ul>
+                                  {stage?.activities?.length > 0 && (
+                                    <>
+                                      <h5 className="font-medium mt-4 mb-2">
+                                        Activities:
+                                      </h5>
+                                      {stage.activities.map(
+                                        (activity: any, activityIndex: any) => (
+                                          <div
+                                            key={activityIndex}
+                                            className="mb-3"
+                                          >
+                                            <h6 className="font-medium">
+                                              {activity.name}
+                                            </h6>
+                                            <p className="text-sm">
+                                              Subtotal: &#8358;
+                                              {activity.subtotal}
+                                            </p>
+
+                                            <Table
+                                              variant="minimal"
+                                              className="rounded-lg"
                                             >
-                                              <h6 className="font-medium">
-                                                {activity.name}
-                                              </h6>
-                                              <p className="text-sm">
-                                                Subtotal: &#8358;
-                                                {activity.subtotal}
-                                              </p>
-
-                                              <Table
-                                                variant="minimal"
-                                                className="rounded-lg"
-                                              >
-                                                <Table.Header>
-                                                  <Table.Row>
-                                                    <Table.Head>
-                                                      Description
-                                                    </Table.Head>
-                                                    <Table.Head>
-                                                      Quantity
-                                                    </Table.Head>
-                                                    {/* <Table.Head>
-                                                      Unit Cost
-                                                    </Table.Head>
-                                                    <Table.Head>
+                                              <Table.Header>
+                                                <Table.Row>
+                                                  <Table.Head>
+                                                    Description
+                                                  </Table.Head>
+                                                  <Table.Head>
+                                                    Quantity
+                                                  </Table.Head>
+                                                  <Table.Head>
+                                                    Land Area
+                                                  </Table.Head>
+                                                  {/* <Table.Head>
                                                       Total Cost
                                                     </Table.Head> */}
-                                                  </Table.Row>
-                                                </Table.Header>
-                                                <Table.Body>
-                                                  {activity.details.map(
-                                                    (detail: any, idx: any) => (
-                                                      <Table.Row key={idx}>
-                                                        <Table.Cell>
-                                                          {detail.description}
-                                                        </Table.Cell>
-                                                        <Table.Cell>
-                                                          {detail.quantity}{" "}
-                                                          {detail.unit}
-                                                        </Table.Cell>
-                                                        {/* <Table.Cell>
-                                                          {formatCurrency(
-                                                            detail.unit_cost
-                                                          )}
-                                                        </Table.Cell>
-                                                        <Table.Cell>
+                                                </Table.Row>
+                                              </Table.Header>
+                                              <Table.Body>
+                                                {activity.details.map(
+                                                  (detail: any, idx: any) => (
+                                                    <Table.Row key={idx}>
+                                                      <Table.Cell>
+                                                        {detail.description}
+                                                      </Table.Cell>
+                                                      <Table.Cell>
+                                                        {detail.quantity}{" "}
+                                                        {detail.unit}
+                                                      </Table.Cell>
+                                                      <Table.Cell>
+                                                        {detail.landSize || 0}
+                                                        (sq/km)
+                                                      </Table.Cell>
+                                                      {/* <Table.Cell>
                                                           {formatCurrency(
                                                             detail.total_cost
                                                           )}
                                                         </Table.Cell> */}
-                                                      </Table.Row>
-                                                    )
-                                                  )}
-                                                </Table.Body>
-                                              </Table>
-                                            </div>
-                                          )
-                                        )}
-                                      </>
-                                    )}
-                                  </div>
-                                )}
-                              </div>
-                            )
-                          )}
+                                                    </Table.Row>
+                                                  )
+                                                )}
+                                              </Table.Body>
+                                            </Table>
+                                          </div>
+                                        )
+                                      )}
+                                    </>
+                                  )}
+                                </div>
+                              )}
+                            </div>
+                          ))}
                         </div>
                       </div>
                     </div>

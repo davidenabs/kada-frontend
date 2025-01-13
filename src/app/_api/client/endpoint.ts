@@ -32,6 +32,8 @@ const API_ENDPOINTS = {
   UPDATE_FARM_ACTIVITY_LOG: "/farms/update-farm-activity-log",
   VERIFY_FARM: "/farms/verify/:farmId/:farmerId",
   PERSONALIZED_CROPPING_CALENDAR: "/farm-personalized-cropping-calendar",
+  PERSONALIZED_CROPPING_CALENDAR_STAGE_APP: "/farm-personalized-cropping-calendar/stage-application",
+
 
   // catalog
   CATALOG_GET_PRODUCTS: "/catalog/products",

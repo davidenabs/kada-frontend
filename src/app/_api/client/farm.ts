@@ -55,6 +55,8 @@ const farmClient = {
     ApiClient.post(API_ENDPOINTS.PERSONALIZED_CROPPING_CALENDAR, data),
   getPersonalizedCropping: (params: IParams): Promise<any> =>
     ApiClient.get(API_ENDPOINTS.PERSONALIZED_CROPPING_CALENDAR, params),
+  applyCroppingStage: (data: any): Promise<any> =>
+    ApiClient.post(API_ENDPOINTS.PERSONALIZED_CROPPING_CALENDAR_STAGE_APP, data),
 };
 
 export default farmClient;
