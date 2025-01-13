@@ -40,14 +40,13 @@ function Catalog({
 
         <div className="flex justify-between mt-4">
           <div className="flex items-center gap-2">
-            <span
+            {/* <span
               className={cn(
                 "text-[#A2A9B0] text-base",
                 type === "products" && "hidden"
               )}
             >
               {/* From */}
-            </span>
             {type === "products" && (
               <>
                 From <span className="text-sm font-semibold">₦{price}</span>

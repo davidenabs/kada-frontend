@@ -242,7 +242,6 @@ function DetailData({ data, type, currentIndex }: DetailDataProps) {
                                             {formatCurrency(detail.unit_cost)}
                                           </Table.Cell>
                                           <Table.Cell>
-                                            &#8358;
                                             {formatCurrency(detail.total_cost)}
                                           </Table.Cell>
                                         </Table.Row>

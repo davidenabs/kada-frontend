@@ -1,4 +1,5 @@
 import { CloseIcon } from "@/icons";
+import { formatCurrency } from "@/utils/utils";
 import React, { Fragment } from "react";
 import { Loader, Modal } from "rizzui";
 
@@ -15,7 +16,7 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
   close,
   onConfirm,
   loading,
-  amount
+  amount,
 }) => {
   return (
     <Modal
@@ -35,7 +36,13 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
 
         <div className="flex flex-col gap-4 items-center justify-center h-full p-3">
           <h4 className="text-md font-semibold text-center">
-            Are you sure you want to proceed?<br></br>{amount && `Please note that this action is irreversible and will require a payment of &#8358;${amount} to this cooperative`}
+            Are you sure you want to proceed?<br></br>
+            {amount && (
+              <>
+                Please note that this action is irreversible and will require a
+                payment of {formatCurrency(amount)} to this cooperative
+              </>
+            )}
           </h4>
           {loading && (
             <div className="flex items-center justify-center">

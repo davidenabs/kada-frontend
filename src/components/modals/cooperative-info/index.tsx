@@ -4,8 +4,11 @@ import Image from "next/image";
 import React, { Fragment, useState } from "react";
 import { cn } from "rizzui";
 import { KadaButton } from "@/components/form/button";
-import { IUser } from "@/interface/user";
-import { useCreateRequestMutation } from "@/app/_api/request";
+import { IUser, UserType } from "@/interface/user";
+import {
+  useCreateRequestMutation,
+  useGetRequestByUserIdAndType,
+} from "@/app/_api/request";
 import { RequestType } from "@/interface/request";
 import { useAtomValue } from "jotai";
 import { userAtom } from "@/stores/user";
@@ -13,6 +16,7 @@ import { toast } from "sonner";
 import ConfirmModal from "../confim-modal";
 import { PaymentPurposeType } from "@/interface/payment";
 import { useInitiatePaymentMutation } from "@/app/_api/payment";
+import { formatCurrency } from "@/utils/utils";
 
 interface CooperativeInfoModalProps {
   close: () => void;
@@ -38,12 +42,13 @@ const tabs = [
 function CooperativeInfoModal({
   close,
   cooperative,
-  farmerId
+  farmerId,
 }: CooperativeInfoModalProps) {
   const user = useAtomValue(userAtom);
   const [activeTab, setActiveTab] = useState("about");
   const [confirm, setConfirm] = useState(false);
   const { mutateAsync, isPending } = useInitiatePaymentMutation();
+  const [loaded, setLoaded] = React.useState(false);
 
   const handleJoin = () => {
     toast.dismiss();
@@ -62,17 +67,37 @@ function CooperativeInfoModal({
         name: user.user!.firstName + " " + user.user!.lastName,
       },
       meta: {},
+      callback_url: `${window.location.origin}/dashboard/farmer/cooperative`,
     };
 
     mutateAsync(payload, {
       onSuccess: (res) => {
         toast.success("Payment initiated successfully, redirecting...");
-        close()
+        close();
         window.location.href = res.data.authorization_url;
         // setIsPaid(true);
       },
     });
   };
+
+  const {
+    data: hasCooperative,
+    isFetching,
+    isRefetching,
+  } = useGetRequestByUserIdAndType({
+    enabled: loaded,
+    params: {
+      requestType: RequestType.FARMER_TO_COOPERATIVE,
+      userId: user.user?.id.toString(),
+      userType: UserType.FARMER,
+      status: ["pending"],
+    },
+  });
+
+  React.useEffect(() => {
+    setLoaded(true);
+    return () => setLoaded(false);
+  }, []);
 
   return (
     <Fragment>
@@ -123,34 +148,45 @@ function CooperativeInfoModal({
                 <div className="flex justify-center items-center my-2 gap-4">
                   <div className="flex items-center gap-2">
                     <MapPinIcon className="w-4 h-4" />
-                    <span className="text-xs">{cooperative?.lga || "Kaduna"}</span>
+                    <span className="text-xs">
+                      {cooperative?.lga || "Kaduna"}
+                    </span>
                   </div>
 
                   <div className="flex items-center gap-2">
                     <UsersListIcon className="w-[19px] h-[11px] text-[#667185]" />
-                    <span className="text-xs">0 Members</span>
+                    <span className="text-xs">
+                      {cooperative?.cooperativeProfile?.totalMembers || 0}{" "}
+                      Member(s)
+                    </span>
                   </div>
                 </div>
                 <KadaButton
-                  className={cn("rounded-full w-full")}
+                  className={cn("rounded-full w-full text-xs")}
                   rightIcon={
                     <ArrowRightIcon className="w-[18px] h-[18px] fill-white" />
                   }
                   onClick={() => {
-                    // toast("Are you sure you want to join this cooperative?", {
-                    //   action: {
-                    //     label: "Confirm",
-                    //     onClick: () => handleJoin(),
-                    //   },
-                    //   dismissible: true,
-                    //   position: "top-center",
-                    //   closeButton: true,
-                    //   duration: 10000,
-                    // });
-                    setConfirm(true);
+                    if (hasCooperative?.data?.status !== "pending") {
+                      setConfirm(true);
+                    }
                   }}
                 >
-                  Request to Join (&#8358;{cooperative.cooperativeProfile?.joinAmount})
+                  {hasCooperative?.data?.status === "pending" ? (
+                    <span className="text-xs text-red-500">Pending</span>
+                  ) : hasCooperative?.data?.status === "approved" ? (
+                    <span className="text-xs text-green-500">Approved</span>
+                  ) : (
+                    <>
+                      Request to Join (
+                      <span className="text-xs">
+                        {formatCurrency(
+                          cooperative.cooperativeProfile?.joinAmount as number
+                        )}
+                      </span>
+                      )
+                    </>
+                  )}
                 </KadaButton>
               </div>
             </div>
@@ -183,11 +219,11 @@ function CooperativeInfoModal({
                 <p className="text-base mt-4">
                   {activeTab === "about"
                     ? cooperative?.cooperativeProfile?.about ||
-                    "No description provided"
+                      "No description provided"
                     : activeTab === "eligibility"
-                      ? cooperative?.cooperativeProfile?.eligibility ||
+                    ? cooperative?.cooperativeProfile?.eligibility ||
                       "No eligibility provided"
-                      : null}
+                    : null}
                 </p>
               </div>
             </div>

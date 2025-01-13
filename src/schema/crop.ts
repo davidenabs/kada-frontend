@@ -6,6 +6,7 @@ const activityDetailsSchema = z.object({
   unit: z.string().min(1, "Unit is required"),
   unit_cost: z.coerce.number().positive("Unit cost must be greater than 0"),
   total_cost: z.coerce.number().positive("Total cost must be greater than 0"),
+  landSize: z.coerce.number().positive("Land size must be greater than 0"),
 });
 
 const activitySchema = z.object({

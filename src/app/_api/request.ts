@@ -6,7 +6,7 @@ import {
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import API_ENDPOINTS from "./client/endpoint";
 import requestClient from "./client/request";
-import { UserType } from '../../interface/user';
+import { UserType } from "../../interface/user";
 import {
   ICreateRequestPayload,
   IRequest,
@@ -58,7 +58,6 @@ export const useUpdateRequestMutation = () => {
 export const useGetRequestByUserIdAndType = ({
   enabled = true,
   params = {},
-
 }: IQueryParams) => {
   return useQuery<IResponse<IRequest>, Error>({
     queryKey: [API_ENDPOINTS.GET_REQUESTS_BY_USER, params],
