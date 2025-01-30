@@ -27,7 +27,7 @@ const VendorWelcome: React.FC = () => {
         Welcome, ABCD Enterprise
       </header>
       <h1 className="mt-7 text-2xl font-bold leading-7 text-center text-black w-[315px]">
-        As a Vendor on Kada you do these and even more
+        As a Vendor on KADA you do these and even more
       </h1>
       <section className="self-stretch mt-11 w-full max-md:mt-10 max-md:max-w-full bg-[url('/images/bdo.png')] bg-contain bg-no-repeat max-md:rounded-t-lg  rounded-lg overflow-hidden">
         <div className="flex gap-5 max-md:flex-col">

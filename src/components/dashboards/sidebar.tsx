@@ -36,6 +36,8 @@ const cooperativePath = "/dashboard/cooperative";
 const vendorPath = "/dashboard/vendor";
 const adminBasePath = "/admin";
 const enumeratorPath = "/dashboard/enumerator";
+const zonalPath = "/dashboard/zonal";
+const partnerPath = "/dashboard/partner";
 
 // Admin Menu
 const adminMenuItems: MenuItem[] = [
@@ -54,6 +56,11 @@ const adminMenuItems: MenuItem[] = [
     icon: TreeIcon,
     label: "Vendors",
     href: `${adminBasePath}/requests`,
+  },
+  {
+    icon: TreeIcon,
+    label: "Users",
+    href: `${adminBasePath}/users`,
   },
   {
     icon: ChartIcon,
@@ -101,11 +108,6 @@ const cooperativeItems: MenuItem[] = [
     label: "Opportunities",
     href: `${cooperativePath}/opportunities`,
   },
-  // {
-  //   icon: DashboardIcon,
-  //   label: "Funding",
-  //   href: `${cooperativePath}/funding`,
-  // },
   {
     icon: StorefrontIcon,
     label: "Vendors",
@@ -154,6 +156,42 @@ const enumeratorItems: MenuItem[] = [
   },
 ];
 
+const zonalItems: MenuItem[] = [
+  {
+    icon: DashboardIcon,
+    label: "Dashboard",
+    href: zonalPath,
+  },
+  {
+    icon: UsersListIcon,
+    label: "Vendors",
+    href: `${zonalPath}/vendors`,
+  },
+  {
+    icon: ProfileIcon,
+    label: "Profile",
+    href: `${zonalPath}/profile`,
+  },
+];
+
+const partnerItems: MenuItem[] = [
+  {
+    icon: DashboardIcon,
+    label: "Dashboard",
+    href: zonalPath,
+  },
+  {
+    icon: UsersListIcon,
+    label: "Prpgrams",
+    href: `${zonalPath}/programs`,
+  },
+  // {
+  //   icon: ProfileIcon,
+  //   label: "Profile",
+  //   href: `${zonalPath}/profile`,
+  // },
+];
+
 const Sidebar: React.FC = () => {
   const pathname = usePathname();
   const { width } = useScreenSize();
@@ -177,6 +215,8 @@ const Sidebar: React.FC = () => {
   const isCooperativeRoute = pathname.startsWith(cooperativePath);
   const isVendorRoute = pathname.startsWith(vendorPath);
   const isEnumeratorRoute = pathname.startsWith(enumeratorPath);
+  const isZonalRoute = pathname.startsWith(zonalPath);
+  const isPartnerRoute = pathname.startsWith(partnerPath);
 
   let itemsToRender: MenuItem[] = [];
 
@@ -188,6 +228,10 @@ const Sidebar: React.FC = () => {
     itemsToRender = vendorItems;
   } else if (isEnumeratorRoute) {
     itemsToRender = enumeratorItems;
+  } else if (isZonalRoute) {
+    itemsToRender = zonalItems;
+  } else if (isPartnerRoute) {
+    itemsToRender = partnerItems;
   } else {
     itemsToRender = [];
   }

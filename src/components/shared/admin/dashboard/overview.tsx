@@ -7,12 +7,12 @@ interface OverviewItem {
   label: string;
 }
 
-const Overview: React.FC = () => {
+interface OverviewProps {
+  stats: any;
+}
+
+const Overview: React.FC<OverviewProps> = ({ stats }) => {
   const [loaded, setLoaded] = React.useState(false);
-  const { data, isFetching, isRefetching } = useGetAdminOverviewQuery({
-    enabled: loaded,
-  });
-  const [stats, setStats] = React.useState<any>(null);
 
   const overviewItems: OverviewItem[] = React.useMemo(
     () => [
@@ -33,19 +33,17 @@ const Overview: React.FC = () => {
       },
       {
         icon: "https://cdn.builder.io/api/v1/image/assets/TEMP/83d62767185a837e667a85f2da59dd299385615bff3f6b843c813993d474eb8f?placeholderIfAbsent=true&apiKey=e3159558e3c24b7bb6f2db02f0873db3",
-        count: 6,
-        label: "Verified",
+        count: stats?.totalEnumerators || 0,
+        label: "Enumberators",
+      },
+      {
+        icon: "https://cdn.builder.io/api/v1/image/assets/TEMP/83d62767185a837e667a85f2da59dd299385615bff3f6b843c813993d474eb8f?placeholderIfAbsent=true&apiKey=e3159558e3c24b7bb6f2db02f0873db3",
+        count: stats?.totalZonalHeads || 0,
+        label: "Zonal Heads",
       },
     ],
     [stats]
   );
-
-  React.useEffect(() => {
-    if (!isFetching && !isRefetching && data?.success && data?.data) {
-      console.log(data.data);
-      setStats(data.data?.userStatistics);
-    }
-  }, [data, isFetching, isRefetching]);
 
   React.useEffect(() => {
     setLoaded(true);

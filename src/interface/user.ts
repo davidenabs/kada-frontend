@@ -32,6 +32,10 @@ export enum UserType {
   COOPERATIVE = "COOPERATIVE",
   ENUMERATOR = "ENUMERATOR",
   VENDOR = "VENDOR",
+  ZONAL = "ZONAL",
+  PARTNER = "PARTNER",
+  AGRIC_BUSINESS = "AGRIC BUSINESS",
+  STAFF = "STAFF",
 }
 
 export interface IVerifyNinPayload {

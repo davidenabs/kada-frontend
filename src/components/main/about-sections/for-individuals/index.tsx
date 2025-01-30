@@ -7,7 +7,7 @@ interface FeatureData {
 
 const featureData: FeatureData[] = [
   { title: "Cropping Calendar" },
-  { title: "POP and Execution" },
+  { title: "EOP and Execution" },
   { title: "Finance and Inventory Manager" },
   { title: "Crop health information from space satellite data" },
   { title: "Mobile Emergency Notification" },
@@ -21,7 +21,7 @@ const ForIndividuals: React.FC = () => {
         <div className="flex flex-col ml-3 w-7/12 max-md:ml-0 max-md:w-full">
           <div className="flex flex-col mt-24 w-full max-md:mt-10 max-md:max-w-full">
             <h2 className="text-xl pb-10 font-semibold text-tertiary-600 uppercase">
-              For Individuals
+              For Small Holder Farmer
             </h2>
             {[0, 1, 2].map((rowIndex) => (
               <div

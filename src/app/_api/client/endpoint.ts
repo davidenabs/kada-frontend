@@ -5,6 +5,7 @@ const API_ENDPOINTS = {
   RESET_PASSWORD: "/auth/reset-password",
   SEND_OTP: "/users/send-otp",
   VERIFY_OTP: "/users/verify-otp",
+  VERIFY_ONBOARDING_TOKEN: "/auth/verify-onboarding-token",
   // users
   GET_USERS: "/users",
   GET_USER: "/users/get-user/:id",
@@ -32,8 +33,8 @@ const API_ENDPOINTS = {
   UPDATE_FARM_ACTIVITY_LOG: "/farms/update-farm-activity-log",
   VERIFY_FARM: "/farms/verify/:farmId/:farmerId",
   PERSONALIZED_CROPPING_CALENDAR: "/farm-personalized-cropping-calendar",
-  PERSONALIZED_CROPPING_CALENDAR_STAGE_APP: "/farm-personalized-cropping-calendar/stage-application",
-
+  PERSONALIZED_CROPPING_CALENDAR_STAGE_APP:
+    "/farm-personalized-cropping-calendar/stage-application",
 
   // catalog
   CATALOG_GET_PRODUCTS: "/catalog/products",
@@ -95,6 +96,13 @@ const API_ENDPOINTS = {
 
   // Enumerator
   REGISTER_FARM: "/enumerator/register-farmer",
+
+  // Admin
+  ADMIN_ADD_USER: "/admin/add-user",
+
+  GET_VENDOR_REVIEWS: "/vendor-reviews",
+  GET_ZONAL_OFFICER_VENDORS: "/users/zonal-officer-vendors",
+  APPROVE_VENDOR_REVIEW: "/vendor-reviews/approve",
 };
 
 export default API_ENDPOINTS;

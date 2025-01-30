@@ -172,10 +172,10 @@ export const useApplyCroppingStagMutation = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (data: any) => farmClient.applyCroppingStage(data),
-    mutationKey: [API_ENDPOINTS.PERSONALIZED_CROPPING_CALENDAR],
+    mutationKey: [API_ENDPOINTS.PERSONALIZED_CROPPING_CALENDAR_STAGE_APP],
     onSuccess: (data) => {
       queryClient.invalidateQueries({
-        queryKey: [API_ENDPOINTS.PERSONALIZED_CROPPING_CALENDAR_STAGE_APP],
+        queryKey: [API_ENDPOINTS.PERSONALIZED_CROPPING_CALENDAR],
       });
     },
   });

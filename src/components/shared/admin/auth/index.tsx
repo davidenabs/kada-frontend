@@ -9,7 +9,7 @@ import { userAtom } from "@/stores/user";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";
-import React, { useTransition } from "react";
+import React, { Fragment, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
@@ -70,47 +70,58 @@ function AdminAuthPage() {
     });
   };
   return (
-    <section className="container h-screen flex justify-center items-center">
-      <div className="">
-        <form
-          noValidate
-          className="flex flex-col mx-auto -center mt-8 max-w-[90%] md:max-w-full"
-          onSubmit={handleSubmit(onSubmit)}
-        >
-          <div className="text-xl font-bold text-green-800">Sign in</div>
-          <div className="mt-1 text-sm font-thin text-black mb-4">
-            Please enter your credentials to sign in
+    <Fragment>
+      <section className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 flex items-center justify-center p-4">
+        <div className="bg-white rounded-2xl shadow-xl w-full max-w-md p-8">
+          <div className="text-center mb-8">
+            <h1 className="text-2xl font-bold text-gray-900 mb-2">
+              Welcome back
+            </h1>
+            <p className="text-gray-600">
+              Please enter your credentials to sign in
+            </p>
           </div>
 
-          <Input
-            label="Email/Phone"
-            placeholder="Enter your email or phone number"
-            inputClassName=""
-            {...register("email")}
-            error={errors.email?.message}
-            disabled={loading}
-          />
-
-          <Password
-            label="Password"
-            placeholder="********"
-            id="email"
-            className="mt-4"
-            {...register("password")}
-            error={errors.password?.message}
-            disabled={loading}
-          />
-
-          <Button
-            type="submit"
-            className="!py-3 mt-8 !rounded-full"
-            loading={loading}
+          <form
+            noValidate
+            className="space-y-6"
+            onSubmit={handleSubmit(onSubmit)}
           >
-            Sign in
-          </Button>
-        </form>
-      </div>
-    </section>
+            {/* <div className="text-xl font-bold text-green-800">Sign in</div>
+            <div className="mt-1 text-sm font-thin text-black mb-4">
+              Please enter your credentials to sign in
+            </div> */}
+
+            <Input
+              label="Email/Phone"
+              placeholder="Enter your email or phone number"
+              inputClassName=""
+              {...register("email")}
+              error={errors.email?.message}
+              disabled={loading}
+            />
+
+            <Password
+              label="Password"
+              placeholder="********"
+              id="email"
+              className="mt-4"
+              {...register("password")}
+              error={errors.password?.message}
+              disabled={loading}
+            />
+
+            <Button
+              type="submit"
+              className="!py-3 mt-8 !rounded-full"
+              loading={loading}
+            >
+              Sign in
+            </Button>
+          </form>
+        </div>
+      </section>
+    </Fragment>
   );
 }
 

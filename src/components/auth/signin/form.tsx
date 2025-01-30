@@ -50,7 +50,9 @@ const SignInForm: React.FC = () => {
             userType !== UserType.FARMER &&
             userType !== UserType.COOPERATIVE &&
             userType !== UserType.VENDOR &&
-            userType !== UserType.ENUMERATOR
+            userType !== UserType.ENUMERATOR &&
+            userType !== UserType.ZONAL &&
+            userType !== UserType.PARTNER
           ) {
             toast.dismiss();
             toast.error("Unauthorized", {
@@ -79,6 +81,12 @@ const SignInForm: React.FC = () => {
               break;
             case UserType.ENUMERATOR:
               router.push("/dashboard/enumerator");
+              break;
+            case UserType.ZONAL:
+              router.push("/dashboard/zonal");
+              break;
+            case UserType.PARTNER:
+              router.push("/dashboard/partner");
               break;
             default:
               break;

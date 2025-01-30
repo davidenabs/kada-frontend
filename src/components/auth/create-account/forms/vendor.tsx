@@ -59,7 +59,9 @@ const VendorForm: React.FC = () => {
       className="flex flex-col items-start lg:px-8 mt20 max-md:mt-10"
     >
       <div className="flex flex-col">
-        <h2 className="text-base font-bold text-teal-700">Vendor</h2>
+        <h2 className="text-base font-bold text-teal-700">
+          Agro Input Dealers
+        </h2>
         <p className="mt-1 text-sm font-medium text-zinc-500">
           Please complete the form to get started
         </p>

@@ -22,14 +22,14 @@ const profileTypes: ProfileType[] = [
   },
   {
     icon: <UsersIcon className="object-contain w-6 h-6" />,
-    title: "Cooperative/ Associaties",
+    title: "Cooperative/Association",
     description:
       "with this account you can do this and Lorem ipsum do this and Lorem i",
     type: "cooperative",
   },
   {
     icon: <UsersIcon className="object-contain w-6 h-6" />,
-    title: "Vendor",
+    title: "Agro Input Dealers",
     description:
       "with this account you can do this and Lorem ipsum do this and Lorem",
     type: "vendor",

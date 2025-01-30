@@ -31,11 +31,11 @@ const CategoryButtons: React.FC<{
   const { width } = useScreenSize();
 
   const categories = [
-    { text: "For Farmers", value: "FARMERS" },
+    { text: "Small Holder Farmers", value: "FARMERS" },
     { text: "Processors & Marketers", value: "PROCESSORS & MARKETERS" },
-    { text: "For Vendors", value: "VENDORS" },
-    { text: "For Partners", value: "PARTNERS" },
-    { text: "Economy Security", value: "ECONOMY SECURITY" },
+    { text: "Agro Input Dealers", value: "VENDORS" },
+    { text: "Development Partners", value: "PARTNERS" },
+    { text: "Economic Security", value: "ECONOMY SECURITY" },
   ];
 
   return width > 992 ? (

@@ -3,54 +3,15 @@ import React, { useState } from "react";
 import CommitteeMember from "./members";
 import LocalGovernmentSelector from "./lg-sector";
 import { Swiper } from "swiper/react";
-
+import Button from "@/components/form/button";
+import { committeeMembers, ZoneMembers } from "@/lib/team-data";
 import { Navigation, Pagination, Scrollbar } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
-import Button from "@/components/form/button";
 
 const CommunityAids: React.FC = () => {
-  const committeeMembers = [
-    {
-      name: "John Doe",
-      role: "Committee chairman KALAC",
-      imageSrc: "/images/rili.png",
-      background: "/images/vector-bg-1.svg",
-    },
-    {
-      name: "John Doe",
-      role: "Committee chairman KALAC",
-      imageSrc: "/images/rili.png",
-      background: "/images/vector-bg.png",
-    },
-    {
-      name: "John Doe",
-      role: "Committee chairman KALAC",
-      imageSrc: "/images/rili.png",
-      background: "/images/vector-bg-2.svg",
-    },
-    {
-      name: "John Doe",
-      role: "Committee chairman KALAC",
-      imageSrc: "/images/rili.png",
-      background: "/images/vector-bg-1.svg",
-    },
-    {
-      name: "John Doe",
-      role: "Committee chairman KALAC",
-      imageSrc: "/images/rili.png",
-      background: "/images/vector-bg.png",
-    },
-    {
-      name: "John Doe",
-      role: "Committee chairman KALAC",
-      imageSrc: "/images/rili.png",
-      background: "/images/vector-bg-2.svg",
-    },
-  ];
-
   const [activeTab, setActiveTab] = useState("KALAC");
 
   const renderCommitteeContent = () => {
@@ -73,11 +34,29 @@ const CommunityAids: React.FC = () => {
         </Swiper>
       );
     } else if (activeTab === "KAWAC") {
-      return <p>Content for KAWAC</p>;
+      return (
+        <>
+          <div className="grid md:grid-cols-3 gap-10 items-start mt-9 max-md:max-w-full">
+            {committeeMembers.slice().map((member, index) => (
+              <CommitteeMember key={index} {...member} />
+            ))}
+          </div>
+        </>
+      );
     } else if (activeTab === "ZACO") {
       return <p>Content for ZACO</p>;
     } else if (activeTab === "SADEC") {
       return <p>Content for SADEC</p>;
+    } else if (activeTab === "DIRECTORATES") {
+      return (
+        <>
+          <div className="grid md:grid-cols-3 gap-10 items-start mt-9 max-md:max-w-full">
+            {ZoneMembers.slice().map((member, index) => (
+              <CommitteeMember key={index} {...member} />
+            ))}
+          </div>
+        </>
+      );
     }
   };
 
@@ -132,15 +111,27 @@ const CommunityAids: React.FC = () => {
               >
                 SADEC
               </Button>
+              <Button
+                className={`px-16 !py-2 rounded-[33px] max-md:px-5 !shadow-none ${
+                  activeTab === "DIRECTORATES"
+                    ? "!bg-zinc-700 text-white"
+                    : "border-[0.5px] !bg-white text-zinc-700 border-zinc-700"
+                }`}
+                handleClick={() => setActiveTab("DIRECTORATES")}
+              >
+                DIRECTORATES
+              </Button>
             </div>
           </div>
           <h2 className="mt-28 text-2xl md:text-3xl font-semibold leading-tight text-zinc-700 max-md:mt-10 max-md:max-w-full">
             {activeTab === "KALAC"
-              ? "Kada Local Agric Community (KALAC)"
+              ? "KADA Local Agric Community (KALAC)"
               : activeTab === "KAWAC"
-              ? "Kada Ward Agric Community (KAWAC)"
+              ? "KADA Ward Agricultural Community (KAWAC)"
               : activeTab === "ZACO"
               ? "Zonal Agric Development Community (ZACO)"
+              : activeTab === "DIRECTORATES"
+              ? "Directorate and Zonal Zanagers"
               : " (SADEC)"}
           </h2>
           {renderCommitteeContent()}

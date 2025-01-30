@@ -7,7 +7,7 @@ interface ZonalOffice {
 
 const zonalOffices: ZonalOffice[] = [
   {
-    name: "Mai Gana Agric Zonal Office",
+    name: "MaiGana Agric Zonal Office",
     address: "Tudun SOibu community, Maigana, Saba Local Government Area",
   },
   {

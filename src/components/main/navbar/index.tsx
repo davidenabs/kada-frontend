@@ -132,7 +132,7 @@ const NavItem: React.FC<NavItemProps> = ({
 
 const navItems: NavItemProps[] = [
   { text: "Home", route: "/" },
-  { text: "About Kada", route: "/about-kada" },
+  { text: "About KADA", route: "/about-kada" },
   { text: "Programs", route: "/programs" },
   { text: "Interventions", route: "/interventions" },
   { text: "Tools", route: "#", hasDropdown: true },
@@ -222,7 +222,7 @@ const Navbar: React.FC = () => {
                 handleClick={() => router.push("/portal")}
                 className="flex w-[146px] h-[45px] gap-2.5 justify-center items-center  !px-5 !py-0 my-auto font-bold text-white !rounded-full"
               >
-                <span className="self-stretch my-auto">Kada Portal</span>
+                <span className="self-stretch my-auto">KADA Portal</span>
                 <Lock className="my-auto aspect-square w-[18px]" />
               </Button>
             </div>

@@ -3,8 +3,8 @@ import React from "react";
 const FarmerSection: React.FC = () => (
   <div className="flex flex-col ml-5 w-[54%] max-md:ml-0 max-md:w-full">
     <div className="flex relative flex-col items-start self-stretch px-20 py-12 my-auto w-full rounded-3xl bg-[#F8F8F8] max-md:px-5 max-md:mt-10 max-md:max-w-full">
-      <div className="text-lg font-semibold leading-snug text-green-600">
-        FARMERS
+      <div className="text-lg font-semibold uppercase leading-snug text-green-600">
+        Small Holder FARMERS
       </div>
       <h2 className="mt-6 text-xl font-bold leading-none text-zinc-700">
         Empowering Farmers for Best Productivity
@@ -46,7 +46,7 @@ const CooperativesSection: React.FC = () => (
   <div className="flex flex-col ml-5 w-[54%] max-md:ml-0 max-md:w-full">
     <div className="flex relative flex-col items-start self-stretch px-20 py-12 my-auto w-full rounded-3xl bg-[#F8F8F8] max-md:px-5 max-md:mt-10 max-md:max-w-full">
       <div className="text-lg font-semibold uppercase leading-snug text-green-600">
-        VENDORS
+        Agro Input Dealers
       </div>
       <h2 className="mt-6 text-xl font-bold leading-none text-zinc-700">
         Empowering Individuals for a Better Future
@@ -67,7 +67,7 @@ const KadunaSection: React.FC = () => (
   <div className="flex flex-col ml-5 w-[54%] max-md:ml-0 max-md:w-full">
     <div className="flex relative flex-col items-start self-stretch px-20 py-12 my-auto w-full rounded-3xl bg-[#F8F8F8] max-md:px-5 max-md:mt-10 max-md:max-w-full">
       <div className="text-lg font-semibold uppercase leading-snug text-green-600">
-        PARTNERS
+        Development PARTNERS
       </div>
       <h2 className="mt-6 text-xl font-bold leading-none text-zinc-700">
         Empowering Individuals for a Better Future
@@ -88,7 +88,7 @@ const NationalDevelopmentSection: React.FC = () => (
   <div className="flex flex-col ml-5 w-[54%] max-md:ml-0 max-md:w-full">
     <div className="flex relative flex-col items-start self-stretch px-20 py-12 my-auto w-full rounded-3xl bg-[#F8F8F8] max-md:px-5 max-md:mt-10 max-md:max-w-full">
       <div className="text-lg font-semibold uppercase leading-snug text-green-600">
-        ECONOMY SECURITY
+        ECONOMIC SECURITY
       </div>
       <h2 className="mt-6 text-xl font-bold leading-none text-zinc-700">
         Empowering Individuals for a Better Future

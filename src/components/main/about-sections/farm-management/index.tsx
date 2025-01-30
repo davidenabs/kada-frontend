@@ -7,7 +7,7 @@ interface FeatureData {
 
 const featureData: FeatureData[] = [
   { title: "Cropping Calendar" },
-  { title: "POP and Execution" },
+  { title: "EOP and Execution" },
   { title: "Finance and Inventory Manager" },
   { title: "Crop health information from space satellite data" },
   { title: "Mobile Emergency Notification" },

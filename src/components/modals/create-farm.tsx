@@ -49,7 +49,7 @@ const seasons = [
   },
 ];
 
-function CreateFarmModal({ close, farm }: { close: () => void, farm?: IFarm }) {
+function CreateFarmModal({ close, farm }: { close: () => void; farm?: IFarm }) {
   const mapRef = useRef(null);
   const [userLocation, setUserLocation] = useState<[number, number] | null>(
     null
@@ -61,8 +61,10 @@ function CreateFarmModal({ close, farm }: { close: () => void, farm?: IFarm }) {
 
   // * react-query
   // const { mutateAsync, isPending } = useCreateFarmMutation();
-  const { mutateAsync: createFarm, isPending: isCreating } = useCreateFarmMutation();
-  const { mutateAsync: updateFarm, isPending: isUpdating } = useUpdateFarmMutation();
+  const { mutateAsync: createFarm, isPending: isCreating } =
+    useCreateFarmMutation();
+  const { mutateAsync: updateFarm, isPending: isUpdating } =
+    useUpdateFarmMutation();
   const { data, isFetching, isRefetching } = useGetFarmProductsQuery({});
 
   const {
@@ -82,6 +84,7 @@ function CreateFarmModal({ close, farm }: { close: () => void, farm?: IFarm }) {
       reset({
         name: farm.name || defaultValues.name,
         landArea: farm.landArea.toString() || defaultValues.landArea,
+        // @ts-ignore
         geoLocation: farm.geoLocation.coordinates || defaultValues.geoLocation,
         activeSeason: farm.activeSeason || defaultValues.activeSeason,
         // products: farm.crops?.map((p) =>  p.name) || defaultValues.products,
@@ -102,7 +105,9 @@ function CreateFarmModal({ close, farm }: { close: () => void, farm?: IFarm }) {
         setUserLocation([latitude, longitude]);
       },
       (error) => {
-        toast.error(`For the best experience with the map, please allow permission.`);
+        toast.error(
+          `For the best experience with the map, please allow permission.`
+        );
       }
     );
   }, []);
@@ -148,7 +153,7 @@ function CreateFarmModal({ close, farm }: { close: () => void, farm?: IFarm }) {
         landArea: Number(data.landArea),
       },
       farmerId: user.user?.id!,
-      id: farm ? farm.id : null
+      id: farm ? farm.id : null,
     };
     // console.log(newData);
 
@@ -157,7 +162,9 @@ function CreateFarmModal({ close, farm }: { close: () => void, farm?: IFarm }) {
     await mutate(newData, {
       onSuccess: (response) => {
         if (response.success) {
-          toast.success(farm ? "Farm updated successfully" : "Farm created successfully");
+          toast.success(
+            farm ? "Farm updated successfully" : "Farm created successfully"
+          );
           reset(defaultValues);
           close();
         }
@@ -226,8 +233,9 @@ function CreateFarmModal({ close, farm }: { close: () => void, farm?: IFarm }) {
                         <button
                           type="button"
                           key={s.label + s.value}
-                          className={`w-full h-full py-2 ${value === s.value ? "bg-[#D8FBE9]" : ""
-                            }`}
+                          className={`w-full h-full py-2 ${
+                            value === s.value ? "bg-[#D8FBE9]" : ""
+                          }`}
                           onClick={() => {
                             setSeason(s.value);
                             onChange(s.value);
@@ -258,7 +266,9 @@ function CreateFarmModal({ close, farm }: { close: () => void, farm?: IFarm }) {
                   label="Local Government Area (LGA)"
                   id="lga"
                   value={value} // Ensure value is a string
-                  onChange={(selected: { value: string }) => onChange(selected?.value)} // Extract the value string
+                  onChange={(selected: { value: string }) =>
+                    onChange(selected?.value)
+                  } // Extract the value string
                   className={"!h-[56px]"}
                   options={lgaOptions}
                   error={errors.lga?.message || error?.message}
@@ -275,7 +285,7 @@ function CreateFarmModal({ close, farm }: { close: () => void, farm?: IFarm }) {
                   fieldState: { error },
                 }) => (
                   <MultiSelect
-                    label="Products"
+                    label="Crops"
                     value={value}
                     options={products}
                     onChange={onChange}

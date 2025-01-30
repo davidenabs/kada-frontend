@@ -34,7 +34,7 @@ const PortalLandingPage = () => {
                 href="/sign-in"
                 className="overflow-hidden gap-2.5 self-stretch px-5 py-3.5 text-white border border-white border-solid shadow-lg rounded-[60px]"
               >
-                Visit Kada Portal
+                Visit KADA Portal
               </Link>
               <a
                 href="#"

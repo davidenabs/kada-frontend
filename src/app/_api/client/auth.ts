@@ -21,6 +21,8 @@ const authClient = {
     ApiClient.post(API_ENDPOINTS.VERIFY_OTP, data),
   sendOtp: async (data: ISendOtpPayload): Promise<any> =>
     ApiClient.post(API_ENDPOINTS.SEND_OTP, data),
+  verifyOnboardingToken: async (data: any): Promise<any> =>
+    ApiClient.post(API_ENDPOINTS.VERIFY_ONBOARDING_TOKEN, data),
 };
 
 export default authClient;

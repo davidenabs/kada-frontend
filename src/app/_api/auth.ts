@@ -37,3 +37,9 @@ export const useSendOtpMutation = () => {
     mutationFn: (data: ISendOtpPayload) => authClient.sendOtp(data),
   });
 };
+
+export const useVerifyOnboardingTokenMutation = () => {
+  return useMutation({
+    mutationFn: (data: any) => authClient.verifyOnboardingToken(data),
+  });
+};

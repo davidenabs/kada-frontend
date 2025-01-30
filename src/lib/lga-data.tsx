@@ -3,6 +3,7 @@ export interface KadaLGA {
   state: string;
   lgas: string[]; // Flat list of LGAs
   zones: Record<string, string[]>; // LGAs grouped by zones
+  wards: Record<string, string[]>; // Wards grouped by LGAs
 }
 
 // Define the KadaLGA instance
@@ -62,6 +63,48 @@ export const kadaLGA: KadaLGA = {
       "Kagarko",
     ],
   },
+  wards: {
+    Igabi: [
+      "Rigachikun",
+      "Rigasa",
+      "Sabon Birni",
+      "Kwarau",
+      "Birnin Yaro",
+      "Kerawa",
+      "Zangon Aya",
+      "Turunku",
+      "Gadangayan",
+      "Igabi",
+      "Afaka",
+      "Gwaraji",
+    ],
+    Lere: [
+      "Saminaka",
+      "Lere",
+      "Sabon Birni",
+      "Yarkasuwa",
+      "Dan'alhaji",
+      "Kayarda",
+      "Abadawa",
+      "Lazuru",
+      "Gure/Kahugu",
+      "Ramin Kura",
+      "Garu",
+    ],
+    Kauru: [
+      "Geshere",
+      "Damakasuwa",
+      "Kamaru",
+      "Badurum",
+      "Bital",
+      "Kwassam",
+      "Dawaki",
+      "Makami",
+      "Kauru East",
+      "Kauru West",
+      "Bakin Kogi",
+    ],
+  },
 };
 
 // Map LGAs to options
@@ -82,3 +125,11 @@ export const lgaOptionsByZone = (zone: string) =>
     value: lga,
     label: lga,
   }));
+
+export const wardOptionsByLga = (lga: string) => {
+  if (!kadaLGA.wards[lga]) return [];
+  return kadaLGA.wards[lga].map((ward) => ({
+    value: ward,
+    label: ward,
+  }));
+};

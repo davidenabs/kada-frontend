@@ -37,7 +37,7 @@ const baseRegisterSchema = {
     .email({ message: "Invalid email address" }),
   phoneNumber: z
     .string()
-    .min(1, { message: "Phone number is required" })
+    .min(11, { message: "Phone number is required" })
     .max(11, { message: "Phone number must be 11 characters" }),
   password: passwordSchema,
   confirmPassword: z

@@ -20,16 +20,6 @@ const data = [
   { name: "Jaba", value: 1100 },
 ];
 
-// Custom colors for the pie chart slices
-// const COLORS = [
-//   "#0088FE",
-//   "#00C49F",
-//   "#FFBB28",
-//   "#FF8042",
-//   "#8884D8",
-//   "#82CA9D",
-// ];
-
 // Function to generate a color based on index
 const generateColor = (index: number): string => {
   const hue = (index * 137.508) % 360; // Use golden angle approximation
@@ -48,7 +38,19 @@ const CustomTooltip = ({ active, payload }: any) => {
   return null;
 };
 
-export default function FarmersLGAChart() {
+interface Props {
+  stats: any;
+}
+
+export default function FarmersLGAChart({ stats }: Props): JSX.Element {
+  const lgaData = React.useMemo(() => {
+    const lga = Object.entries(stats?.lgaStats || {}).map(([key, value]) => ({
+      name: key,
+      value: (value as any).total,
+    }));
+
+    return lga;
+  }, [stats]);
   return (
     <div className="w-full max-w-3xl bg-white rounded-lg shadow-md overflow-hidden">
       <div className="p-4 border-b">
@@ -63,7 +65,7 @@ export default function FarmersLGAChart() {
             <PieChart>
               <Tooltip content={<CustomTooltip />} />
               <Pie
-                data={data}
+                data={lgaData}
                 cx="50%"
                 cy="50%"
                 labelLine={false}
@@ -74,7 +76,7 @@ export default function FarmersLGAChart() {
                   `${name} ${(percent * 100).toFixed(0)}%`
                 }
               >
-                {data.map((entry, index) => (
+                {lgaData.map((entry, index) => (
                   <Cell
                     key={`cell-${index}`}
                     // fill={COLORS[index % COLORS.length]}
@@ -83,6 +85,7 @@ export default function FarmersLGAChart() {
                 ))}
               </Pie>
 
+              {/* <div className="max-h-full overflow-y-auto"> */}
               <Legend
                 layout="vertical"
                 align="right"
@@ -93,6 +96,17 @@ export default function FarmersLGAChart() {
                   </span>
                 )}
               />
+              {/* </div> */}
+              {/* <Legend
+                layout="vertical"
+                align="right"
+                verticalAlign="middle"
+                formatter={(value, entry: any) => (
+                  <span style={{ color: entry.color }}>
+                    {value}: {entry.payload.value}
+                  </span>
+                )}
+              /> */}
             </PieChart>
           </ResponsiveContainer>
         </div>

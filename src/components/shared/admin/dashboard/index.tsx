@@ -17,6 +17,7 @@ import useDebounce from "@/hooks/use-debounce";
 import columns from "./columns";
 import KadaTable from "@/components/common/table";
 import FarmersLGAChart from "./lga-chart";
+import { useGetAdminOverviewQuery } from "@/app/_api/overview";
 
 const tabs = [
   {
@@ -56,6 +57,8 @@ function AdminDashboardSharedPage() {
     totalVendors: 0,
     totalCooperatives: 0,
   });
+  const [adminStats, setAdminStats] = React.useState<any>(null);
+  const [localStats, setLocalStats] = React.useState<any>(null);
   const debouncedSearchQuery = useDebounce(search);
 
   const userType = React.useMemo(() => {
@@ -75,6 +78,26 @@ function AdminDashboardSharedPage() {
       limit,
     },
   });
+
+  const {
+    data: adminData,
+    isFetching: isAdminDataFetching,
+    isRefetching,
+  } = useGetAdminOverviewQuery({
+    enabled: loaded,
+  });
+
+  React.useEffect(() => {
+    if (
+      !isAdminDataFetching &&
+      !isRefetching &&
+      adminData?.success &&
+      adminData?.data
+    ) {
+      setAdminStats(adminData.data?.userStatistics);
+      setLocalStats(adminData.data?.userStatisticsByLocal);
+    }
+  }, [data, isAdminDataFetching, isRefetching]);
 
   React.useEffect(() => {
     if (data?.data && data.success && !isFetching) {
@@ -119,12 +142,13 @@ function AdminDashboardSharedPage() {
 
   return (
     <>
-      <div className="flex justify-between items-center text-sm leading-tight">
-        <div className="rounded-full px-4 py-1 bg-[#F0EFEC]">
-          👍🏾 Welcome Back, {user?.firstName}
-        </div>
+      <section className="space-y-8">
+        <div className="flex justify-between items-center text-sm leading-tight">
+          <div className="rounded-full px-4 py-1 bg-[#F0EFEC]">
+            👍🏾 Welcome Back, {user?.firstName}
+          </div>
 
-        {/* <div className="flex">
+          {/* <div className="flex">
           <KadaButton
             className="rounded-full"
             leftIcon={<PlusIcon className="w-4 h-4 fill-white mr-1" />}
@@ -132,61 +156,62 @@ function AdminDashboardSharedPage() {
             Add User
           </KadaButton>
         </div> */}
-      </div>
-
-      <Overview />
-
-      {/* <FarmersLGAChart /> */}
-
-      <div className="border mt-10 p-4 space-y-4 rounded-2xl bg-white">
-        <h5 className="font-bold text-lg">Users</h5>
-
-        <div className="flex items-center justify-between">
-          <div className="flex">
-            {tabs.map((tab) => (
-              <Tab
-                key={tab.id}
-                title={tab.label}
-                active={activeTab}
-                onClick={() => setActiveTab(tab.label)}
-                count={Number(tab.badge)}
-                className="max-lg:flex-1"
-                icon={tab.icon}
-              />
-            ))}
-          </div>
-          <Input
-            placeholder="Search here..."
-            inputClassName="rounded-[10px] h-[36px]"
-            className="w-full lg:w-[500px]"
-            prefix={<SearchIcon className="fill-black" />}
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            clearable
-            onClear={() => setSearch("")}
-          />
         </div>
 
-        {isFetching || isLoading ? (
-          <MembersTableSkeleton />
-        ) : isError ? (
-          <div className="text-center">An error occurred</div>
-        ) : (
-          <KadaTable
-            data={data?.data?.users || []}
-            columns={columns}
-            renderActions={(item) => (
-              <div className="flex">
-                <button className="text-xs text-blue-600">View</button>
-              </div>
-            )}
-            itemsPerPage={limit}
-            totalItems={data?.data?.total || 0}
-            page={page}
-            onPageChange={(page) => setPage(page)}
-          />
-        )}
-      </div>
+        <Overview stats={adminStats} />
+
+        <FarmersLGAChart stats={localStats} />
+
+        <div className="border mt-10 p-4 space-y-4 rounded-2xl bg-white">
+          <h5 className="font-bold text-lg">Users</h5>
+
+          <div className="flex items-center justify-between">
+            <div className="flex">
+              {tabs.map((tab) => (
+                <Tab
+                  key={tab.id}
+                  title={tab.label}
+                  active={activeTab}
+                  onClick={() => setActiveTab(tab.label)}
+                  count={Number(tab.badge)}
+                  className="max-lg:flex-1"
+                  icon={tab.icon}
+                />
+              ))}
+            </div>
+            <Input
+              placeholder="Search here..."
+              inputClassName="rounded-[10px] h-[36px]"
+              className="w-full lg:w-[500px]"
+              prefix={<SearchIcon className="fill-black" />}
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              clearable
+              onClear={() => setSearch("")}
+            />
+          </div>
+
+          {isFetching || isLoading ? (
+            <MembersTableSkeleton />
+          ) : isError ? (
+            <div className="text-center">An error occurred</div>
+          ) : (
+            <KadaTable
+              data={data?.data?.users || []}
+              columns={columns}
+              renderActions={(item) => (
+                <div className="flex">
+                  <button className="text-xs text-blue-600">View</button>
+                </div>
+              )}
+              itemsPerPage={limit}
+              totalItems={data?.data?.total || 0}
+              page={page}
+              onPageChange={(page) => setPage(page)}
+            />
+          )}
+        </div>
+      </section>
     </>
   );
 }
