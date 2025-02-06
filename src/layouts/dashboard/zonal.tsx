@@ -29,7 +29,7 @@ export default function ZonalDahboardLayout({
       // *if user is not authenticated or token is not set, redirect to sign-in page
       if (!user || !user.authenticated || !user.token) {
         setLoaded(false);
-        router.push("/admin/auth");
+        router.push("/sign-in");
         return;
       }
 

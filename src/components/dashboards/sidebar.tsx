@@ -178,12 +178,12 @@ const partnerItems: MenuItem[] = [
   {
     icon: DashboardIcon,
     label: "Dashboard",
-    href: zonalPath,
+    href: partnerPath,
   },
   {
     icon: UsersListIcon,
-    label: "Prpgrams",
-    href: `${zonalPath}/programs`,
+    label: "Programs",
+    href: `${partnerPath}/programs`,
   },
   // {
   //   icon: ProfileIcon,
