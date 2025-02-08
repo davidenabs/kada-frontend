@@ -36,3 +36,14 @@ export const useGetEnumeratorOverviewQuery = ({ enabled = true }: IQueryParams) 
     enabled: enabled,
   });
 };
+
+export const useGetPartnerPostOverviewQuery = ({
+  enabled = true,
+}: IQueryParams) => {
+  return useQuery<IResponse<any>, Error>({
+    queryKey: [API_ENDPOINTS.CMS_USER_POST_OVERVIEW],
+    queryFn: () => overviewClient.getPartnerPostOverview(),
+    enabled: enabled,
+  });
+};
+

@@ -24,6 +24,7 @@ export interface IUser {
   farmerProfile: IFarmerProfile | null;
   cooperativeProfile: ICooperativeProfile | null;
   vendorProfile: IVendorProfile | null;
+  partnerProfile: IPartnerProfile | null;
 }
 
 export enum UserType {
@@ -92,4 +93,10 @@ export interface ISendContactMailPayload {
 export interface ISendInvitationPayload {
   email: string;
   registerLink: string;
+}
+
+export interface IPartnerProfile {
+  id: number;
+  businessName: string | null;
+  about: string | null;
 }

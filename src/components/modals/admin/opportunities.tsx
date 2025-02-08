@@ -17,6 +17,11 @@ import { TagInput } from "./tag-input";
 import { useCreateCmsPostMutation } from "@/app/_api/cms";
 import { toast } from "sonner";
 import { PostType } from "@/interface/cms";
+import {
+  lgaOptionsByZone,
+  wardOptionsByLga,
+  zoneOptions,
+} from "@/lib/lga-data";
 
 type PostOpportunityModalProps = {
   close: () => void;
@@ -26,12 +31,16 @@ const defaultValues: OpportunitySchemaType = {
   title: "",
   content: "",
   shortDescription: "",
-  cta: "",
+  // cta: "",
   userType: "" as any,
-  isPublished: false,
+  // applicationLimit: "" as number,
   type: PostType.opportunity,
   keywords: [],
-  dueDate: "" as any,
+  applicationDate: "" as any,
+  closingDate: "" as any,
+  zone: "",
+  lga: "",
+  ward: "",
   image: new File([], ""),
 };
 
@@ -39,8 +48,26 @@ function PostOpportunityModal({ close }: PostOpportunityModalProps) {
   const fileInputRef = React.useRef<HTMLInputElement>(null);
   const handleClick = () => fileInputRef.current?.click();
   const [file, setFile] = React.useState<File | null>(null);
-  const [startDate, setStartDate] = React.useState<Date>();
+  const [appDate, setApplicationDate] = React.useState<Date>();
+  const [closeDate, setClosingDate] = React.useState<Date>();
   const { mutateAsync, isPending } = useCreateCmsPostMutation();
+  const [zoneOption, setZoneOption] = React.useState<any>(null);
+  const [option, setOption] = React.useState<any>(null);
+  const [wardOption, setWardOption] = React.useState<any>(null);
+
+  const lgaOptions = React.useMemo(() => {
+    if (zoneOption) {
+      return lgaOptionsByZone(zoneOption.value);
+    }
+    return [];
+  }, [zoneOption]);
+
+  const wardOptions = React.useMemo(() => {
+    if (option) {
+      return wardOptionsByLga(option.value);
+    }
+    return [];
+  }, [option]);
 
   const {
     reset,
@@ -60,22 +87,25 @@ function PostOpportunityModal({ close }: PostOpportunityModalProps) {
   };
 
   const onSubmit = (data: OpportunitySchemaType) => {
-    const { keywords, dueDate, ...rest } = data;
+    const { keywords, applicationDate, closingDate, ...rest } = data;
     const newData = {
       ...rest,
-      dueDate: dueDate.toISOString(),
-      // meta: {
-      //   // keywords,
-      // },
+      applicationDate: applicationDate?.toISOString(),
+      closingDate: closingDate?.toISOString(),
+      meta: {
+        // keywords,
+      },
     };
-    
+    console.log(newData);
+
+    // return;
     mutateAsync(
       { data: newData },
       {
         onSuccess: (response) => {
           console.log(response);
           if (response.success) {
-            toast.success("Opportunity created successfully");
+            toast.success("Created successfully");
             reset(defaultValues);
             close();
           }
@@ -86,6 +116,7 @@ function PostOpportunityModal({ close }: PostOpportunityModalProps) {
       }
     );
   };
+  console.log(errors);
 
   return (
     <Fragment>
@@ -94,7 +125,9 @@ function PostOpportunityModal({ close }: PostOpportunityModalProps) {
         onSubmit={handleSubmit(onSubmit)}
       >
         <header className="flex items-center justify-between border-b px-6 py-4 bg-[#F9F9F9] rounded-t-xl">
-          <h4 className="text-base font-semibold">Publish Opportunities</h4>
+          <h4 className="text-base font-semibold">
+            Publish Opportunities, Interventions or Programs
+          </h4>
 
           <button onClick={close}>
             <CloseIcon className="w-4 h-4" />
@@ -103,8 +136,31 @@ function PostOpportunityModal({ close }: PostOpportunityModalProps) {
 
         <div className="h-[calc(80vh)] overflow-y-scroll">
           <div className="space-y-4 p-6">
+            <div className="pt10mt-4">
+              <Controller
+                control={control}
+                name="type"
+                render={({
+                  field: { value, onChange },
+                  fieldState: { error },
+                }) => (
+                  <Select
+                    label="Publication type"
+                    options={[
+                      { label: "Opportunity", value: PostType.opportunity },
+                      { label: "Intervention", value: PostType.interventions },
+                      { label: "Program", value: PostType.program },
+                    ]}
+                    value={value}
+                    onChange={(v: any) => onChange(v.value)}
+                    error={errors.type?.message}
+                  />
+                )}
+              />
+            </div>
+
             <Input
-              label="Originating Organisation"
+              label="Title"
               {...register("title")}
               error={errors.title?.message}
             />
@@ -161,7 +217,7 @@ function PostOpportunityModal({ close }: PostOpportunityModalProps) {
             />
 
             {/* is published */}
-            <div className="flex items-center gap-4">
+            {/* <div className="flex items-center gap-4">
               <Controller
                 control={control}
                 name="isPublished"
@@ -174,10 +230,10 @@ function PostOpportunityModal({ close }: PostOpportunityModalProps) {
                   />
                 )}
               />
-            </div>
+            </div> */}
 
             <div className="">
-              <label className="text-xs">Opportunity Descriptiion</label>
+              <label className="text-xs">Content</label>
               <Controller
                 control={control}
                 name="content"
@@ -199,67 +255,155 @@ function PostOpportunityModal({ close }: PostOpportunityModalProps) {
               </p>
             </div>
 
-            <Input
-              label="Application Url"
-              type="url"
-              prefix={<LinkIcon className="w-4 h-4" />}
-              {...register("cta")}
-              error={errors.cta?.message}
-              className="!mt-16"
-              placeholder="https://"
-            />
+            <div className="pt-10 mt-4">
+              <Controller
+                control={control}
+                name="userType"
+                render={({
+                  field: { value, onChange },
+                  fieldState: { error },
+                }) => (
+                  <Select
+                    label="Publish to"
+                    options={[
+                      { label: "All", value: "ALL" },
+                      { label: "Farmers", value: UserType.FARMER },
+                      { label: "Vendors", value: UserType.VENDOR },
+                      { label: "Cooperatives", value: UserType.COOPERATIVE },
+                    ]}
+                    value={value}
+                    onChange={(v: any) => onChange(v.value)}
+                    error={errors.userType?.message}
+                  />
+                )}
+              />
+            </div>
+
+            {/* due date */}
+            <div className="flex gap-2 items-center w-full">
+              <div className="">
+                <Controller
+                  control={control}
+                  name="applicationDate"
+                  render={({ field: { value, onChange } }) => (
+                    <DatePicker
+                      selected={appDate}
+                      onChange={(date: Date) => {
+                        setApplicationDate(date);
+                        onChange(date);
+                      }}
+                      placeholderText="Application Date"
+                      // maxDate={new Date()}
+                      minDate={new Date()}
+                      wrapperClassName="w-full"
+                      inputProps={{
+                        inputClassName:
+                          "!rounded-full border-primary border-[.5px]",
+                        label: "Select Application Date",
+                      }}
+                    />
+                  )}
+                />
+
+                <p className="text-red-500 text-xs mt-1">
+                  {errors.applicationDate?.message}
+                </p>
+              </div>
+
+              <div className="">
+                <Controller
+                  control={control}
+                  name="closingDate"
+                  render={({ field: { value, onChange } }) => (
+                    <DatePicker
+                      selected={closeDate}
+                      onChange={(date: Date) => {
+                        setClosingDate(date);
+                        onChange(date);
+                      }}
+                      placeholderText="Closing Date"
+                      // maxDate={new Date()}
+                      minDate={new Date()}
+                      wrapperClassName="w-full"
+                      inputProps={{
+                        inputClassName:
+                          "!rounded-full border-primary border-[.5px]",
+                        label: "Select Closing Date",
+                      }}
+                    />
+                  )}
+                />
+
+                <p className="text-red-500 text-xs mt-1">
+                  {errors.closingDate?.message}
+                </p>
+              </div>
+            </div>
 
             <Controller
+              name="zone"
               control={control}
-              name="userType"
-              render={({
-                field: { value, onChange },
-                fieldState: { error },
-              }) => (
+              render={({ field: { name, onChange } }) => (
                 <Select
-                  label="Publish to"
-                  options={[
-                    { label: "All", value: "ALL" },
-                    { label: "Farmers", value: UserType.FARMER },
-                    { label: "Vendors", value: UserType.VENDOR },
-                    { label: "Cooperatives", value: UserType.COOPERATIVE },
-                  ]}
-                  value={value}
-                  onChange={(v: any) => onChange(v.value)}
-                  error={errors.userType?.message}
+                  label="Zone"
+                  id="zone"
+                  options={zoneOptions}
+                  onChange={(e: any) => {
+                    setZoneOption(e);
+                    onChange(e.value);
+                  }}
+                  value={zoneOption}
+                  error={errors.zone?.message}
                 />
               )}
             />
 
-            {/* due date */}
-            <div className="">
-              <Controller
-                control={control}
-                name="dueDate"
-                render={({ field: { value, onChange } }) => (
-                  <DatePicker
-                    selected={startDate}
-                    onChange={(date: Date) => {
-                      setStartDate(date);
-                      onChange(date);
-                    }}
-                    placeholderText="Due Date"
-                    // maxDate={new Date()}
-                    minDate={new Date()}
-                    wrapperClassName="w-full"
-                    inputProps={{
-                      inputClassName:
-                        "!rounded-full border-primary border-[.5px]",
-                      label: "Select Date",
-                    }}
-                  />
-                )}
-              />
+            <Controller
+              name="lga"
+              control={control}
+              render={({ field: { name, onChange } }) => (
+                <Select
+                  label="Local Government Area (LGA)"
+                  id="lga"
+                  options={lgaOptions}
+                  onChange={(e: any) => {
+                    setOption(e);
+                    onChange(e.value);
+                  }}
+                  value={option}
+                  error={errors.lga?.message}
+                />
+              )}
+            />
 
-              <p className="text-red-500 text-xs mt-1">
-                {errors.dueDate?.message}
-              </p>
-            </div>
+            <Controller
+              name="ward"
+              control={control}
+              render={({ field: { name, onChange } }) => (
+                <Select
+                  label="Ward"
+                  id="ward"
+                  options={wardOptions}
+                  onChange={(e: any) => {
+                    setWardOption(e);
+                    onChange(e.value);
+                  }}
+                  error={errors.ward?.message}
+                  value={wardOption}
+                />
+              )}
+            />
+
+            <Input
+              label="Application limit"
+              {...register("applicationLimit")}
+              error={errors.applicationLimit?.message}
+              placeholder="e.g: 100,200 ... "
+              type="number"
+            />
+            <span className="text-[12px] text-gray-500">
+              Leave empty is number of applicants are not restricted
+            </span>
 
             {/* tags */}
             {/* <div className="">

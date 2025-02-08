@@ -5,6 +5,13 @@ export enum PostType {
   program = 'program',
 }
 
+export interface IApplication {
+  id: string;
+  userId: string;
+  meta: any | null;
+  createdAt: string;
+};
+
 export interface IPost {
   id: string;
   title: string;
@@ -28,4 +35,9 @@ export interface IPost {
   updatedAt: string;
   comments: any[];
   category: any;
+  isVerified: boolean;
+  applicationLimit: number | null;
+  applications: IApplication[] | [],
+  applicationDate: string;
+  closingDate: string;
 }

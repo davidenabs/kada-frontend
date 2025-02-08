@@ -15,3 +15,13 @@ export const EditCooperaativeProfileSchema = z.object({
 export type EditCooperaativeProfileSchemaType = z.infer<
   typeof EditCooperaativeProfileSchema
 >;
+
+
+export const EditPartnerProfileSchema = z.object({
+  businessName: z.string().min(1, { message: "Name is required" }),
+  about: z.string().min(1, { message: "About is required" }),
+});
+
+export type EditPartnerProfileSchemaType = z.infer<
+  typeof EditPartnerProfileSchema
+>;

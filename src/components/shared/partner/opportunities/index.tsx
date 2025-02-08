@@ -14,6 +14,7 @@ import { Empty, Input } from "rizzui";
 import columns from "./columns";
 import ExploreOpportunityDraewr from "@/components/drawers/cooperative/explore-opportunity";
 import { IPost } from "@/interface/cms";
+import ProgramDetailsDrawer from "@/components/drawers/partner/program-details";
 
 function PartnerOpportunitiesPage() {
   useDashboardTitle("Programs");
@@ -55,24 +56,18 @@ function PartnerOpportunitiesPage() {
   return (
     <Fragment>
       {open && (
-        <ExploreOpportunityDraewr
-          close={toggleDrawer}
-          open={open}
-          data={post}
-        />
+        <ProgramDetailsDrawer close={toggleDrawer} open={open} data={post} />
       )}
       <section className="space-y-3">
         <div className="flex justify-between items-start">
-          <h4 className="text-sm font-bold text-zinc-700">
-            Manage Opportunities
-          </h4>
+          <h4 className="text-sm font-bold text-zinc-700">Manage Program</h4>
 
           <KadaButton
             className="rounded-full"
             leftIcon={<PlusIcon className="w-4 h-4 fill-white mr-1" />}
             onClick={handleAddProductService}
           >
-            Post Opportunity
+            Post Program
           </KadaButton>
         </div>
 

@@ -80,6 +80,7 @@ const API_ENDPOINTS = {
   // cms
   CMS_GET_POSTS: "/cms/posts",
   CMS_CREATE_POST: "/cms/posts",
+  CMS_USER_POST_OVERVIEW: "/cms/my-stats",
 
   // payment
   PAYMENT_INITIATE: "/payments",
