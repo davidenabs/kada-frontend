@@ -31,6 +31,7 @@ const defaultValues = {
   },
   activeSeason: "",
   products: [],
+  livestocks: [],
   lga: "",
 };
 
@@ -286,6 +287,30 @@ function CreateFarmModal({ close, farm }: { close: () => void; farm?: IFarm }) {
                 }) => (
                   <MultiSelect
                     label="Crops"
+                    value={value}
+                    options={products}
+                    onChange={onChange}
+                    error={error?.message}
+                    className="w-full"
+                    clearable={true}
+                    onClear={() => onChange([])}
+                    selectClassName="!h-[56px] rounded-full border-[0.4px] border-primary"
+                    errorClassName="text-red-500"
+                  />
+                )}
+              />
+            </div>
+
+            <div className="">
+              <Controller
+                control={control}
+                name="livestocks"
+                render={({
+                  field: { value, onChange },
+                  fieldState: { error },
+                }) => (
+                  <MultiSelect
+                    label="Livestocks"
                     value={value}
                     options={products}
                     onChange={onChange}
