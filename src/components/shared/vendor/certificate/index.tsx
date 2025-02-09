@@ -8,9 +8,37 @@ import { ArrowDownTrayIcon } from "@heroicons/react/24/outline";
 import html2canvas from "html2canvas";
 import { useAtomValue } from "jotai";
 import React from "react";
-import { cn } from "rizzui";
+import { cn, Loader } from "rizzui";
 import jsPDF from "jspdf";
 import { useGetVendorCertificateQuery } from "@/app/_api/user";
+
+interface certificateProps {
+  id: string;
+  certificateNumber: string;
+  issuedBy: string;
+  issuedTo: string;
+  issueDate: string;
+  expiryDate: string;
+  isRevoked: boolean;
+  reasonForRevocation: string;
+  certificateType: string;
+  createdAt: string;
+  updatedAt: string;
+  vendor: {
+    id: number;
+    vendorName: string;
+    about: string;
+    productService: string;
+    registrationNumber: string;
+    hasCAC: string;
+    dateEstablished: string;
+    hasPaid: boolean;
+    paymentReference: string;
+    verificationStatusUpdatedAt: string;
+    isVerified: boolean;
+    approvalStatus: string;
+  };
+}
 
 function VendorCertificatePage() {
   useDashboardTitle("Certificate");
@@ -24,12 +52,26 @@ function VendorCertificatePage() {
   const [loaded, setLoaded] = React.useState(false);
   const certificateRef = React.useRef<HTMLDivElement>(null);
   const [downloading, setDownloading] = React.useState(false);
+  const [certificate, setCertificate] = React.useState<certificateProps | null>(
+    null
+  );
   const { user } = useAtomValue(userAtom);
 
-  const {} = useGetVendorCertificateQuery({
+  const { data, isFetching, isError } = useGetVendorCertificateQuery({
     enabled: loaded,
     id: String(user?.id),
   });
+
+  React.useEffect(() => {
+    if (data?.data && data.success && !isFetching) {
+      const certificate = data.data as any;
+      if (certificate.message) {
+        setCertificate(null);
+      } else {
+        setCertificate(data.data as any);
+      }
+    }
+  }, [data, isFetching]);
 
   const downloadAsImage = async () => {
     if (!certificateRef.current) return;
@@ -81,113 +123,140 @@ function VendorCertificatePage() {
   return (
     <section className="flex items-center justify-center">
       <div className="w-7/12">
-        <div className="relative w-10/12 mx-auto">
-          <div
-            className="w-full aspect-[1.5142/1] bg-[#E9E9E9] border rounded-lg p-4"
-            ref={certificateRef}
-          >
-            <div className="flex h-full">
-              <div className="flex-1 h-full flex flex-col justify-between">
-                <div className="flex items-center">
-                  <div className="">
-                    <img
-                      src="/images/logo.png"
-                      alt="kada logo"
-                      className="object-contain w-10 h-10"
-                    />
-                  </div>
-                  <div className="flex-1 text-center">
-                    <h4
-                      className={cn(
-                        space_grotesk.className,
-                        "text-center uppercase font-railway tracking-[4px] text-gray-700 text-xs"
-                      )}
-                    >
-                      www.kada.com
-                    </h4>
-                  </div>
-                </div>
-
-                <div className="text-center mt-10">
-                  <h4
-                    className={cn(
-                      space_grotesk.className,
-                      "text-primary uppercase text-3xl font-bold"
-                    )}
+        {isFetching ? (
+          <Loader />
+        ) : isError ? (
+          <div>Failed to fetch data</div>
+        ) : (
+          <>
+            {certificate ? (
+              <>
+                <div className="relative w-10/12 mx-auto">
+                  <div
+                    className="w-full aspect-[1.5142/1] bg-[#E9E9E9] border rounded-lg p-4"
+                    ref={certificateRef}
                   >
-                    Certified Kada Vendor
-                  </h4>
+                    <div className="flex h-full">
+                      <div className="flex-1 h-full flex flex-col justify-between">
+                        <div className="flex items-center">
+                          <div className="">
+                            <img
+                              src="/images/logo.png"
+                              alt="kada logo"
+                              className="object-contain w-10 h-10"
+                            />
+                          </div>
+                          <div className="flex-1 text-center">
+                            <h4
+                              className={cn(
+                                space_grotesk.className,
+                                "text-center uppercase font-railway tracking-[4px] text-gray-700 text-xs"
+                              )}
+                            >
+                              www.kada.com
+                            </h4>
+                          </div>
+                        </div>
 
-                  <div className={cn(jetbrains_mono.className, "mt-2")}>
-                    <p className="text-[10px]">This is to certify that</p>
+                        <div className="text-center mt-10">
+                          <h4
+                            className={cn(
+                              space_grotesk.className,
+                              "text-primary uppercase text-3xl font-bold"
+                            )}
+                          >
+                            Certified Kada Vendor
+                          </h4>
 
-                    <p className="text-primary text-2xl my-2">
-                      {user?.vendorProfile?.vendorName}
-                    </p>
+                          <div className={cn(jetbrains_mono.className, "mt-2")}>
+                            <p className="text-[10px]">
+                              This is to certify that
+                            </p>
 
-                    <p className={cn("text-[10px]")}>
-                      is certified and licensed to operate on KADA platform{" "}
-                      <br /> based on KADA policy based
-                    </p>
-                  </div>
-                </div>
+                            <p className="text-primary text-2xl my-2">
+                              {certificate.vendor.vendorName}
+                            </p>
 
-                <div className="flex items-end mt-20">
-                  <div className="">
-                    <div
-                      className={cn("text-center", jetbrains_mono.className)}
-                    >
-                      <h6 className="text-gray-400 text-[10px]">Valid till</h6>
-                      <p className="text-primary text-xs">12 June, 2025</p>
+                            <p className={cn("text-[10px]")}>
+                              is certified and licensed to operate on KADA
+                              platform <br /> based on KADA policy based
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className="flex items-end mt-20">
+                          <div className="">
+                            <div
+                              className={cn(
+                                "text-center",
+                                jetbrains_mono.className
+                              )}
+                            >
+                              <h6 className="text-gray-400 text-[10px]">
+                                Valid till
+                              </h6>
+                              <p className="text-primary text-xs">
+                                {certificate.expiryDate}
+                              </p>
+                            </div>
+                          </div>
+
+                          <div
+                            className={cn(
+                              "text-center flex-1 text-gray-600",
+                              jetbrains_mono.className
+                            )}
+                          >
+                            <img
+                              src="/images/signature.png"
+                              alt="signature"
+                              width={50}
+                              height={50}
+                              className="mx-auto"
+                            />
+                            <div className="w-5/12 h-[1px] bg-gray-400 mx-auto mb-3" />
+                            <h4 className="font-light text-[12px]">SIGNED</h4>
+                            <p className="text-[10px]">
+                              GM, Kaduna State Agricultural Development Agency
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="h-full w-[15%]">
+                        <div className="bg-[url('/images/license-img.jpg')] bg-center bg-cover bg-no-repeat h-[80%] rounded-xl" />
+                      </div>
                     </div>
                   </div>
-
-                  <div
-                    className={cn(
-                      "text-center flex-1 text-gray-600",
-                      jetbrains_mono.className
-                    )}
-                  >
-                    <img
-                      src="/images/signature.png"
-                      alt="signature"
-                      width={50}
-                      height={50}
-                      className="mx-auto"
-                    />
-                    <div className="w-5/12 h-[1px] bg-gray-400 mx-auto mb-3" />
-                    <h4 className="font-light text-[12px]">SIGNED</h4>
-                    <p className="text-[10px]">
-                      GM, Kaduna State Agricultural Development Agency
-                    </p>
-                  </div>
                 </div>
-              </div>
-              <div className="h-full w-[15%]">
-                <div className="bg-[url('/images/license-img.jpg')] bg-center bg-cover bg-no-repeat h-[80%] rounded-xl" />
-              </div>
-            </div>
-          </div>
-        </div>
 
-        <div className="text-center">
-          <KadaButton
-            className="w-fit rounded-full mt-5"
-            leftIcon={<ArrowDownTrayIcon className="w-4 h-4 mr-2" />}
-            onClick={downloadAsImage}
-            disabled={downloading}
-          >
-            Download as Image
-          </KadaButton>
-          <KadaButton
-            className="w-fit rounded-full mt-5 ml-2"
-            leftIcon={<ArrowDownTrayIcon className="w-4 h-4 mr-2" />}
-            onClick={downloadAsPDF}
-            disabled={downloading}
-          >
-            Download as PDF
-          </KadaButton>
-        </div>
+                <div className="text-center">
+                  <KadaButton
+                    className="w-fit rounded-full mt-5"
+                    leftIcon={<ArrowDownTrayIcon className="w-4 h-4 mr-2" />}
+                    onClick={downloadAsImage}
+                    disabled={downloading}
+                  >
+                    Download as Image
+                  </KadaButton>
+                  <KadaButton
+                    className="w-fit rounded-full mt-5 ml-2"
+                    leftIcon={<ArrowDownTrayIcon className="w-4 h-4 mr-2" />}
+                    onClick={downloadAsPDF}
+                    disabled={downloading}
+                  >
+                    Download as PDF
+                  </KadaButton>
+                </div>
+              </>
+            ) : (
+              <div className="text-center">
+                <h4 className="text-primary text-2xl font-bold">
+                  No certificate found
+                </h4>
+              </div>
+            )}
+          </>
+        )}
       </div>
     </section>
   );

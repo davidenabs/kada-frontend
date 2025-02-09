@@ -195,7 +195,22 @@ function ZonalVendorsSharedPage() {
                                   View
                                 </Dropdown.Item>
                               </div>
-                              <div className="mb-1 pt-1">
+                              {
+                                // *Check if the request is pending
+                                (item as any).status !== "approved" && (
+                                  <div className="mb-1 pt-1">
+                                    <Dropdown.Item
+                                      className="text-xs"
+                                      onClick={() => {
+                                        console.log("Approve");
+                                      }}
+                                    >
+                                      Approve
+                                    </Dropdown.Item>
+                                  </div>
+                                )
+                              }
+                              {/* <div className="mb-1 pt-1">
                                 <Dropdown.Item
                                   className="text-xs"
                                   onClick={() => {
@@ -206,7 +221,7 @@ function ZonalVendorsSharedPage() {
                                   <PencilIcon className="mr-2 h-4 w-4" />
                                   Review
                                 </Dropdown.Item>
-                              </div>
+                              </div> */}
                             </Dropdown.Menu>
                           </Dropdown>
                         </div>
