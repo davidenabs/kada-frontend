@@ -10,6 +10,7 @@ import { useAtomValue } from "jotai";
 import React from "react";
 import { cn } from "rizzui";
 import jsPDF from "jspdf";
+import { useGetVendorCertificateQuery } from "@/app/_api/user";
 
 function VendorCertificatePage() {
   useDashboardTitle("Certificate");
@@ -24,6 +25,11 @@ function VendorCertificatePage() {
   const certificateRef = React.useRef<HTMLDivElement>(null);
   const [downloading, setDownloading] = React.useState(false);
   const { user } = useAtomValue(userAtom);
+
+  const {} = useGetVendorCertificateQuery({
+    enabled: loaded,
+    id: String(user?.id),
+  });
 
   const downloadAsImage = async () => {
     if (!certificateRef.current) return;

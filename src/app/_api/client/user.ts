@@ -35,6 +35,10 @@ const userClient = {
     ApiClient.post(API_ENDPOINTS.INVITE_USER, data),
   sendContactMail: (data: any): Promise<IResponse<any>> =>
     ApiClient.post(API_ENDPOINTS.SEDN_CONTACT_MAIL, data),
+  getVendorCertificate: (id: string): Promise<IResponse<any>> =>
+    ApiClient.get(
+      API_ENDPOINTS.GET_VENDOR_CERTIFICATE.replace(":vendorId", id)
+    ),
 };
 
 export default userClient;

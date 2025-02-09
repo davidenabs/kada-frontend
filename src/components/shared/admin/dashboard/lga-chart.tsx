@@ -1,5 +1,4 @@
 "use client";
-
 import React from "react";
 import {
   PieChart,
@@ -8,17 +7,11 @@ import {
   ResponsiveContainer,
   Tooltip,
   Legend,
+  BarChart,
+  XAxis,
+  YAxis,
+  Bar,
 } from "recharts";
-
-// Sample data of farmers in each LGA
-const data = [
-  { name: "Birnin Gwari", value: 1500 },
-  { name: "Chikun", value: 1200 },
-  { name: "Giwa", value: 800 },
-  { name: "Igabi", value: 1000 },
-  { name: "Ikara", value: 950 },
-  { name: "Jaba", value: 1100 },
-];
 
 // Function to generate a color based on index
 const generateColor = (index: number): string => {
@@ -42,6 +35,15 @@ interface Props {
   stats: any;
 }
 
+const data = [
+  { name: "Jan", sales: 4000 },
+  { name: "Feb", sales: 3000 },
+  { name: "Mar", sales: 5000 },
+  { name: "Apr", sales: 4000 },
+  { name: "May", sales: 6000 },
+  { name: "Jun", sales: 7000 },
+];
+
 export default function FarmersLGAChart({ stats }: Props): JSX.Element {
   const lgaData = React.useMemo(() => {
     const lga = Object.entries(stats?.lgaStats || {}).map(([key, value]) => ({
@@ -52,7 +54,7 @@ export default function FarmersLGAChart({ stats }: Props): JSX.Element {
     return lga;
   }, [stats]);
   return (
-    <div className="w-full max-w-3xl bg-white rounded-lg shadow-md overflow-hidden">
+    <div className="w-full bg-white rounded-lg shadow-md overflow-hidden">
       <div className="p-4 border-b">
         <h2 className="text-xl font-bold">Farmers Distribution by LGA</h2>
         <p className="text-sm text-gray-500">
@@ -60,8 +62,8 @@ export default function FarmersLGAChart({ stats }: Props): JSX.Element {
         </p>
       </div>
       <div className="p-4">
-        <div className="h-[400px]">
-          <ResponsiveContainer width="100%" height="100%">
+        <div className="">
+          {/* <ResponsiveContainer width="100%" height="100%">
             <PieChart>
               <Tooltip content={<CustomTooltip />} />
               <Pie
@@ -79,13 +81,11 @@ export default function FarmersLGAChart({ stats }: Props): JSX.Element {
                 {lgaData.map((entry, index) => (
                   <Cell
                     key={`cell-${index}`}
-                    // fill={COLORS[index % COLORS.length]}
                     fill={generateColor(index)}
                   />
                 ))}
               </Pie>
 
-              {/* <div className="max-h-full overflow-y-auto"> */}
               <Legend
                 layout="vertical"
                 align="right"
@@ -96,33 +96,26 @@ export default function FarmersLGAChart({ stats }: Props): JSX.Element {
                   </span>
                 )}
               />
-              {/* </div> */}
-              {/* <Legend
-                layout="vertical"
-                align="right"
-                verticalAlign="middle"
-                formatter={(value, entry: any) => (
-                  <span style={{ color: entry.color }}>
-                    {value}: {entry.payload.value}
-                  </span>
-                )}
-              /> */}
             </PieChart>
+          </ResponsiveContainer> */}
+
+          <ResponsiveContainer width="100%" height={300}>
+            <BarChart
+              data={lgaData}
+              margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+            >
+              <XAxis dataKey="name" />
+              <YAxis dataKey="value" />
+              <Tooltip />
+              <Legend layout="vertical" />
+              <Bar dataKey="value" radius={[5, 5, 0, 0]}>
+                {lgaData.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={generateColor(index)} />
+                ))}
+              </Bar>
+            </BarChart>
           </ResponsiveContainer>
         </div>
-        {/* <div className="mt-4 flex flex-wrap justify-center gap-4">
-          {data.map((entry, index) => (
-            <div key={`legend-${index}`} className="flex items-center">
-              <div
-                className="mr-2 h-3 w-3"
-                style={{ backgroundColor: COLORS[index % COLORS.length] }}
-              />
-              <span className="text-sm">
-                {entry.name}: {entry.value}
-              </span>
-            </div>
-          ))}
-        </div> */}
       </div>
     </div>
   );

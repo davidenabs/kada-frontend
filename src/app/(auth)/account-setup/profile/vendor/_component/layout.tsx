@@ -15,12 +15,12 @@ function Layout({ children }: React.PropsWithChildren<{}>) {
     enabled: load,
   });
 
-  React.useEffect(() => {
-    if (!user.user) setLoad(true);
-  }, [user]);
+  // React.useEffect(() => {
+  //   if (!user.user) setLoad(true);
+  // }, [user]);
 
   React.useEffect(() => {
-    setDomLoaded(true);
+    setLoad(true);
   }, []);
 
   React.useEffect(() => {

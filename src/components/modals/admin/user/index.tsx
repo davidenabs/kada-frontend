@@ -33,7 +33,7 @@ const defaultValues = {
   firstName: "",
   lastName: "",
   email: "",
-  password: "",
+  // password: "",
   phoneNumber: "",
   userType: "",
   lga: "",
@@ -118,6 +118,29 @@ function AddUserModal({ open, close }: AddUserModalProps) {
 
             <div className="overflow-y-scroll  max-h-[90vh] px-6 py-3">
               <div className="space-y-4">
+                <Controller
+                  name="userType"
+                  control={control}
+                  render={({ field: { name, onChange } }) => (
+                    <Select
+                      label="User Type"
+                      id="userType"
+                      options={[
+                        { value: UserType.ZONAL, label: "Zonal" },
+                        { value: UserType.PARTNER, label: "Partner" },
+                        { value: UserType.STAFF, label: "Staff" },
+                        { value: UserType.DIRECTORS, label: "Director" },
+                      ]}
+                      onChange={(e: any) => {
+                        setUserType(e);
+                        onChange(e.value);
+                      }}
+                      error={errors.userType?.message}
+                      value={userType}
+                    />
+                  )}
+                />
+
                 <Input
                   label="FirstName"
                   placeholder="Enter first name"
@@ -142,13 +165,13 @@ function AddUserModal({ open, close }: AddUserModalProps) {
                   disabled={isLoading}
                 />
 
-                <Input
+                {/* <Input
                   label="Password"
                   placeholder="Enter password"
                   error={errors.password?.message}
                   {...register("password")}
                   disabled={isLoading}
-                />
+                /> */}
 
                 <Input
                   label="Phone Number"
@@ -159,27 +182,6 @@ function AddUserModal({ open, close }: AddUserModalProps) {
                   className=""
                   {...register("phoneNumber")}
                   error={errors.phoneNumber?.message}
-                />
-
-                <Controller
-                  name="userType"
-                  control={control}
-                  render={({ field: { name, onChange } }) => (
-                    <Select
-                      label="User Type"
-                      id="userType"
-                      options={[
-                        { value: UserType.ZONAL, label: "Zonal" },
-                        { value: UserType.PARTNER, label: "Partner" },
-                      ]}
-                      onChange={(e: any) => {
-                        setUserType(e);
-                        onChange(e.value);
-                      }}
-                      error={errors.userType?.message}
-                      value={userType}
-                    />
-                  )}
                 />
 
                 <Controller
