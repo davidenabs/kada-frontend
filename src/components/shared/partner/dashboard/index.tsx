@@ -7,6 +7,7 @@ import { userAtom } from "@/stores/user";
 import { useRouter } from "next/navigation";
 import { useModal } from "@/hooks/use-modal";
 import EditPartnerProfile from "@/components/modals/edit-profile/partner";
+import { KadaButton } from "@/components/form/button";
 
 function PartnerDashboardPage() {
   useDashboardTitle("Dashboard");
@@ -35,7 +36,7 @@ function PartnerDashboardPage() {
         <div className="rounded-full px-4 py-1 bg-[#F0EFEC]">
           👍🏾 Welcome Back, {name}
         </div>
-        <div className="flex"></div>
+        <div className="flex"><KadaButton onClick={handleEditClick} className="rounded-full"> Profile </KadaButton></div>
       </div>
 
       <Overview />
