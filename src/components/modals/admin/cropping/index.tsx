@@ -54,7 +54,11 @@ function CreateCroppingInfoModal({
     resolver: zodResolver(cropSchema),
   });
 
-  console.log(errors);
+  React.useEffect(() => {
+    if (errors) {
+      console.log(errors, "errors");
+    }
+  }, [errors]);
 
   React.useEffect(() => {
     if (selected) {
@@ -63,7 +67,6 @@ function CreateCroppingInfoModal({
   }, [selected]);
 
   const onSubmit = (data: cropSchemaType) => {
-    console.log(data);
     if (selected === null) {
       mutateAsync(data, {
         onSuccess: () => {

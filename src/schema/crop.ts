@@ -34,6 +34,7 @@ const stagesSchema = z.object({
   activities: z.array(activitySchema).nonempty({
     message: "At least one activity is required",
   }),
+  order: z.number().min(1, "Order is required"),
 });
 
 export const seasonSchema = z.object({
@@ -45,6 +46,7 @@ export const seasonSchema = z.object({
   stages: z.array(stagesSchema).nonempty({
     message: "At least one stage is required",
   }),
+  order: z.number().min(1, "Order is required"),
 });
 
 export const taskSchema = z.object({

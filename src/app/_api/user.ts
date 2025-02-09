@@ -41,6 +41,17 @@ export const useGetUserQuery = ({
   });
 };
 
+export const useGetVendorCertificateQuery = ({
+  enabled = true,
+  id,
+}: IQueryParams & { id: string }) => {
+  return useQuery<IResponse<IUser>, Error>({
+    queryKey: [API_ENDPOINTS.GET_VENDOR_CERTIFICATE, id],
+    queryFn: () => userClient.getVendorCertificate(id),
+    enabled,
+  });
+};
+
 export const useGetVendorsQuery = ({
   enabled = true,
   params = {},

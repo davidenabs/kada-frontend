@@ -2,6 +2,7 @@ import { useCreateVendorReviewMutation } from "@/app/_api/zonal";
 import { KadaButton } from "@/components/form/button";
 import Input from "@/components/form/input";
 import Select from "@/components/form/select";
+import { CloseIcon } from "@/icons";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React, { Fragment } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -47,7 +48,7 @@ function EditReviewModal({ open, close, review }: EditReviewModalProps) {
   const onSubmit = (data: EditReviewSchemaType) => {
     const payload = {
       ...data,
-      vendorId: review.vendorId,
+      vendorId: String(review.vendor?.id),
     };
 
     createMutation.mutateAsync(payload, {
@@ -69,7 +70,14 @@ function EditReviewModal({ open, close, review }: EditReviewModalProps) {
         className="z-[9999] [&_.pointer-events-none]:overflow-visible"
       >
         <div className="bg-white">
-          <form onSubmit={handleSubmit(onSubmit)}>
+          <header className="flex items-center justify-between border-b px-6 py-1 bg-[#F9F9F9] rounded-t-xl">
+            <h4 className="text-base font-semibold">Review</h4>
+
+            <button onClick={close} type="button">
+              <CloseIcon className="w-3 h-3" />
+            </button>
+          </header>
+          <form onSubmit={handleSubmit(onSubmit)} className="p-6">
             <div className="space-y-6">
               <Input
                 label="Remark"

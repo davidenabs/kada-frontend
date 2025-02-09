@@ -1,11 +1,14 @@
 "use client";
 import { useInitiatePaymentMutation } from "@/app/_api/payment";
+import { useGetMySubscriptionPlan } from "@/app/_api/subscription";
 import { useUpdateUserMutation } from "@/app/_api/user";
 import Button from "@/components/form/button";
 import Input from "@/components/form/input";
 import Select from "@/components/form/select";
 import { PaymentPurposeType } from "@/interface/payment";
+import { UserType } from "@/interface/user";
 import { userAtom } from "@/stores/user";
+import { formatCurrency } from "@/utils/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";
@@ -88,6 +91,8 @@ const CertificationLicensePayment: React.FC = () => {
 
   const watchHasCAC = watch("hasCAC");
 
+  const { data, isFetching } = useGetMySubscriptionPlan(UserType.VENDOR);
+
   React.useEffect(() => {
     if (user.user) {
       const userData = user.user;
@@ -107,23 +112,24 @@ const CertificationLicensePayment: React.FC = () => {
     setLoaded(true);
   }, []);
 
-  const onSubmit = (data: schemaType) => {
+  const onSubmit = (submitData: schemaType) => {
+    if (!data) return;
     const payload = {
       email: user.user!.email,
-      amount: 50000,
+      amount: Number(data.data.price),
       currency: "NGN",
       type: "debit",
       purpose: PaymentPurposeType.LICENSE,
       userId: user.user!.id,
       meta: {},
-      // callbackUrl: `${window.location.origin}/dashboard/vendor`,
+      callback_url: `${window.location.origin}/account-setup/profile/vendor/welcome/payment`,
     };
 
     const newData = {
-      vendorDateEstablished: data.dateEstablished,
-      vendorHasCAC: data.hasCAC,
-      vendorRegistrationNumber: data.registrationNumber,
-      vendorName: data.vendorName,
+      vendorDateEstablished: submitData.dateEstablished,
+      vendorHasCAC: submitData.hasCAC,
+      vendorRegistrationNumber: submitData.registrationNumber,
+      vendorName: submitData.vendorName,
     };
 
     updateMutation.mutateAsync(newData, {
@@ -164,7 +170,7 @@ const CertificationLicensePayment: React.FC = () => {
               </h3>
 
               <h3 className="text-lg font-bold leading-tight text-primary-600 pt-3">
-                N50,000.00
+                {data && data.data.price && formatCurrency(data.data.price)}
               </h3>
 
               <div className="flex flex-col mt-5 self-stretch  whitespace-nowrap">
@@ -186,6 +192,7 @@ const CertificationLicensePayment: React.FC = () => {
                   placeholder="What is the name of your organization"
                   {...register("dateEstablished")}
                   error={errors.dateEstablished?.message}
+                  max={new Date().toISOString().split("T")[0]}
                 />
               </div>
 
@@ -231,13 +238,17 @@ const CertificationLicensePayment: React.FC = () => {
                 </div>
               )}
 
-              <Button
-                loading={updateMutation.isPending || paymentMutation.isPending}
-                type="submit"
-                className="!py-3.5 mt-14 font-bold min-h-[48px] !rounded-[60px] max-md:px-5 max-md:mt-10 w-full"
-              >
-                Pay N50,000.00
-              </Button>
+              {!isFetching && data && (
+                <Button
+                  loading={
+                    updateMutation.isPending || paymentMutation.isPending
+                  }
+                  type="submit"
+                  className="!py-3.5 mt-14 font-bold min-h-[48px] !rounded-[60px] max-md:px-5 max-md:mt-10 w-full"
+                >
+                  Pay {formatCurrency(data.data.price)}
+                </Button>
+              )}
             </form>
           </div>
           <div className="flex flex-col md:ml-5 w-[54%] max-md:ml-0 max-md:w-full">

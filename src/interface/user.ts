@@ -37,6 +37,7 @@ export enum UserType {
   PARTNER = "PARTNER",
   AGRIC_BUSINESS = "AGRIC BUSINESS",
   STAFF = "STAFF",
+  DIRECTORS = "DIRECTORS",
 }
 
 export interface IVerifyNinPayload {

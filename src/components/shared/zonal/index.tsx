@@ -10,9 +10,13 @@ import useDashboardTitle from "@/hooks/use-dashboard-tite";
 import useDebounce from "@/hooks/use-debounce";
 import { BriefcaseIcon } from "@/icons";
 import React, { Fragment, useMemo, useState } from "react";
-import { Empty } from "rizzui";
-import { Columns } from "./column";
+import { Dropdown, Empty } from "rizzui";
+import { Columns, requestColumns, Vendorcolumns } from "./column";
 import EditReviewModal from "@/components/modals/zonal/edit-review";
+import { useGetRequests } from "@/app/_api/request";
+import { EllipsisVerticalIcon, PencilIcon } from "@heroicons/react/24/outline";
+import { EyeIcon } from "@heroicons/react/16/solid";
+import ViewVendor from "@/components/modals/zonal/view-vendor";
 
 function ZonalVendorsSharedPage() {
   useDashboardTitle("Vendors");
@@ -23,6 +27,8 @@ function ZonalVendorsSharedPage() {
   const [search, setSearch] = useState("");
   const [open, setOpen] = useState(false);
   const [review, setReview] = useState<any | null>(null);
+  const [view, setView] = useState(false);
+  const [vendor, setVendor] = useState<any | null>(null);
   const debouncedSearchQuery = useDebounce(search);
 
   const { data, isFetching, isRefetching, isError } = useGetVendorReviewsQuery({
@@ -48,6 +54,18 @@ function ZonalVendorsSharedPage() {
     },
   });
 
+  const {
+    data: requestData,
+    isFetching: requestIsFetching,
+    isRefetching: requestIsRefetching,
+    isError: requestIsError,
+  } = useGetRequests({
+    enabled: loaded, // *Enable the query when the component is loaded
+    params: {
+      requestType: "VENDOR_LICENSE",
+    },
+  });
+
   const tabs = [
     {
       id: "farmers",
@@ -59,16 +77,37 @@ function ZonalVendorsSharedPage() {
       label: "Members",
       icon: BriefcaseIcon,
     },
+    {
+      id: "requests",
+      label: "Requests",
+      icon: BriefcaseIcon,
+    },
   ];
 
   const { tableColumns, tableData } = useMemo(() => {
-    const isReviewTab = activeTab === "Reviews";
-
-    return {
-      tableColumns: Columns,
-      tableData: isReviewTab ? data?.data?.users : vendorData?.data?.users,
-    };
-  }, [activeTab, data, vendorData]);
+    switch (activeTab) {
+      case "Reviews":
+        return {
+          tableColumns: Columns,
+          tableData: data?.data?.items || [],
+        };
+      case "Members":
+        return {
+          tableColumns: Vendorcolumns,
+          tableData: vendorData?.data?.users || [],
+        };
+      case "Requests":
+        return {
+          tableColumns: requestColumns,
+          tableData: requestData?.data?.requests || [],
+        };
+      default:
+        return {
+          tableColumns: [],
+          tableData: [],
+        };
+    }
+  }, [activeTab, data, vendorData, requestData]);
 
   React.useEffect(() => {
     setLoaded(true);
@@ -82,6 +121,9 @@ function ZonalVendorsSharedPage() {
           close={() => setOpen(false)}
           review={review}
         />
+      )}
+      {view && (
+        <ViewVendor open={view} close={() => setView(false)} vendor={vendor} />
       )}
       <div className="flex justify-items-stretch mt-8 gap-7">
         <div className="flex-1 h-auto">
@@ -111,22 +153,80 @@ function ZonalVendorsSharedPage() {
                   <Empty />
                 ) : (
                   <KadaTable
-                    data={data?.data?.reviews || []}
+                    // data={data?.data?.reviews || []}
+                    data={tableData || []}
                     columns={tableColumns}
-                    renderActions={(item) => (
-                      <div className="flex">
+                    renderActions={(item) =>
+                      activeTab === "Reviews" ? (
                         <button
-                          className="text-xs text-blue-600"
-                          //   onClick={() => handleView(item)}
                           onClick={() => {
-                            setReview(item);
-                            setOpen(true);
+                            // setReview(item);
+                            // setOpen(true);
                           }}
+                          className="text-primary"
                         >
                           Edit
                         </button>
-                      </div>
-                    )}
+                      ) : activeTab === "Members" ? (
+                        <button
+                          onClick={() => {
+                            console.log("View");
+                          }}
+                          className="text-primary"
+                        >
+                          View
+                        </button>
+                      ) : (
+                        <div className="ml-4">
+                          <Dropdown placement="bottom">
+                            <Dropdown.Trigger>
+                              <EllipsisVerticalIcon className="fill-black h-4 w-4" />
+                            </Dropdown.Trigger>
+                            <Dropdown.Menu className="divide-y bg-white">
+                              <div className="mb-1">
+                                <Dropdown.Item
+                                  className="text-xs"
+                                  onClick={() => {
+                                    setVendor((item as any).vendor);
+                                    setView(true);
+                                  }}
+                                >
+                                  <EyeIcon className="mr-2 h-4 w-4" />
+                                  View
+                                </Dropdown.Item>
+                              </div>
+                              {
+                                // *Check if the request is pending
+                                (item as any).status !== "approved" && (
+                                  <div className="mb-1 pt-1">
+                                    <Dropdown.Item
+                                      className="text-xs"
+                                      onClick={() => {
+                                        console.log("Approve");
+                                      }}
+                                    >
+                                      Approve
+                                    </Dropdown.Item>
+                                  </div>
+                                )
+                              }
+                              {/* <div className="mb-1 pt-1">
+                                <Dropdown.Item
+                                  className="text-xs"
+                                  onClick={() => {
+                                    setReview(item);
+                                    setOpen(true);
+                                  }}
+                                >
+                                  <PencilIcon className="mr-2 h-4 w-4" />
+                                  Review
+                                </Dropdown.Item>
+                              </div> */}
+                            </Dropdown.Menu>
+                          </Dropdown>
+                        </div>
+                      )
+                    }
                     itemsPerPage={limit}
                     totalItems={data?.data?.total || 0}
                     page={page}

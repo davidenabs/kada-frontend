@@ -37,7 +37,7 @@ export const addUserSchema = z.object({
     .trim()
     .min(1, { message: "Email address is required" })
     .email({ message: "Invalid email address" }),
-  password: z.string().trim().min(1, { message: "Password is required" }),
+  // password: z.string().trim().min(1, { message: "Password is required" }),
   userType: z.string().min(1, { message: "User type is required" }),
   phoneNumber: z
     .string()

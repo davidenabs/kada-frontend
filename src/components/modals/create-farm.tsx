@@ -20,6 +20,7 @@ import { useGetFarmProductsQuery } from "@/app/_api/farm-products";
 import { IFarm } from "@/interface/farm";
 import Select from "../form/select";
 import { kadaLGA } from "@/lib/lga-data";
+import { useGetLivestocksQuery } from "@/app/_api/livestock";
 // import { lga } from "@/lib/lga-data";
 
 const defaultValues = {
@@ -31,6 +32,7 @@ const defaultValues = {
   },
   activeSeason: "",
   products: [],
+  livestocks: [],
   lga: "",
 };
 
@@ -58,6 +60,7 @@ function CreateFarmModal({ close, farm }: { close: () => void; farm?: IFarm }) {
   const [loaded, setLoaded] = useState(false);
   const [season, setSeason] = useState<string>("");
   const [products, setProducts] = useState<any[]>([]);
+  const [livestocks, setLivestocks] = useState<any[]>([]);
 
   // * react-query
   // const { mutateAsync, isPending } = useCreateFarmMutation();
@@ -66,6 +69,11 @@ function CreateFarmModal({ close, farm }: { close: () => void; farm?: IFarm }) {
   const { mutateAsync: updateFarm, isPending: isUpdating } =
     useUpdateFarmMutation();
   const { data, isFetching, isRefetching } = useGetFarmProductsQuery({});
+  const {
+    data: livestockData,
+    isFetching: isLiveStockFetching,
+    isRefetching: isLiveStockRefetching,
+  } = useGetLivestocksQuery({});
 
   const {
     control,
@@ -112,6 +120,7 @@ function CreateFarmModal({ close, farm }: { close: () => void; farm?: IFarm }) {
     );
   }, []);
 
+  // * products
   useEffect(() => {
     if ((!isFetching || !isRefetching) && data) {
       const tempProducts: any[] = [];
@@ -122,6 +131,18 @@ function CreateFarmModal({ close, farm }: { close: () => void; farm?: IFarm }) {
       setProducts(tempProducts);
     }
   }, [data, isFetching, isRefetching]);
+
+  // * livestock
+  useEffect(() => {
+    if ((!isLiveStockFetching || !isLiveStockRefetching) && livestockData) {
+      const tempLivestocks: any[] = [];
+      livestockData.data.items.forEach((d: any) => {
+        tempLivestocks.push({ label: d.name, value: d.id });
+      });
+
+      setLivestocks(tempLivestocks);
+    }
+  }, [livestockData, isLiveStockFetching, isLiveStockRefetching]);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -288,6 +309,30 @@ function CreateFarmModal({ close, farm }: { close: () => void; farm?: IFarm }) {
                     label="Crops"
                     value={value}
                     options={products}
+                    onChange={onChange}
+                    error={error?.message}
+                    className="w-full"
+                    clearable={true}
+                    onClear={() => onChange([])}
+                    selectClassName="!h-[56px] rounded-full border-[0.4px] border-primary"
+                    errorClassName="text-red-500"
+                  />
+                )}
+              />
+            </div>
+
+            <div className="">
+              <Controller
+                control={control}
+                name="livestocks"
+                render={({
+                  field: { value, onChange },
+                  fieldState: { error },
+                }) => (
+                  <MultiSelect
+                    label="Livestocks"
+                    value={value}
+                    options={livestocks}
                     onChange={onChange}
                     error={error?.message}
                     className="w-full"

@@ -14,6 +14,16 @@ interface OverviewProps {
 const Overview: React.FC<OverviewProps> = ({ stats }) => {
   const [loaded, setLoaded] = React.useState(false);
 
+  // "totalFarmersInCooperative": 5,
+  //           "totalFarmers": 35,
+  //           "totalCooperatives": 10,
+  //           "totalVendors": 6,
+  //           "totalEnumerators": 1,
+  //           "totalAgricBusinesses": 0,
+  //           "totalZonalHeads": 1,
+  //           "totalPartner": 1,
+  //           "totalStaff": 0
+
   const overviewItems: OverviewItem[] = React.useMemo(
     () => [
       {
@@ -41,6 +51,26 @@ const Overview: React.FC<OverviewProps> = ({ stats }) => {
         count: stats?.totalZonalHeads || 0,
         label: "Zonal Heads",
       },
+      {
+        icon: "https://cdn.builder.io/api/v1/image/assets/TEMP/83d62767185a837e667a85f2da59dd299385615bff3f6b843c813993d474eb8f?placeholderIfAbsent=true&apiKey=e3159558e3c24b7bb6f2db02f0873db3",
+        count: stats?.totalPartner || 0,
+        label: "Partners",
+      },
+      {
+        icon: "https://cdn.builder.io/api/v1/image/assets/TEMP/83d62767185a837e667a85f2da59dd299385615bff3f6b843c813993d474eb8f?placeholderIfAbsent=true&apiKey=e3159558e3c24b7bb6f2db02f0873db3",
+        count: stats?.totalAgricBusinesses || 0,
+        label: "Agric Businesses",
+      },
+      {
+        icon: "https://cdn.builder.io/api/v1/image/assets/TEMP/83d62767185a837e667a85f2da59dd299385615bff3f6b843c813993d474eb8f?placeholderIfAbsent=true&apiKey=e3159558e3c24b7bb6f2db02f0873db3",
+        count: stats?.totalStaff || 0,
+        label: "Staff",
+      },
+      {
+        icon: "https://cdn.builder.io/api/v1/image/assets/TEMP/83d62767185a837e667a85f2da59dd299385615bff3f6b843c813993d474eb8f?placeholderIfAbsent=true&apiKey=e3159558e3c24b7bb6f2db02f0873db3",
+        count: stats?.totalFarmersInCooperative || 0,
+        label: "Farmers in Cooperative",
+      },
     ],
     [stats]
   );
@@ -53,7 +83,7 @@ const Overview: React.FC<OverviewProps> = ({ stats }) => {
     <section className="mt-6 space-y-3">
       <h2 className="text-lg leading-tight text-black font-bold">Overview</h2>
 
-      <div className="grid md:grid-cols-4 gap-5">
+      <div className="grid md:grid-cols-5 gap-5">
         {overviewItems.map((item, index) => (
           <div
             key={index}

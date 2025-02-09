@@ -105,6 +105,12 @@ const API_ENDPOINTS = {
   GET_VENDOR_REVIEWS: "/vendor-reviews",
   GET_ZONAL_OFFICER_VENDORS: "/users/zonal-officer-vendors",
   APPROVE_VENDOR_REVIEW: "/vendor-reviews/approve",
+
+  GET_VENDOR_CERTIFICATE: "/certificates/vendor/:vendorId",
+
+  // livestocks
+  GET_LIVESTOCKS: "/livestocks",
+  GET_LIVESTOCK: "/livestocks/:id",
 };
 
 export default API_ENDPOINTS;
