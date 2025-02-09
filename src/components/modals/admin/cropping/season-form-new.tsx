@@ -27,12 +27,27 @@ const months = [
   "December",
 ];
 
-const DetailField = ({ control, index, detailIndex, removeDetail }: any) => (
-  <div key={detailIndex + "detail field"}>
-    <div className="grid grid-cols-2 gap-1">
+const DetailField = ({
+  control,
+  seasonIndex,
+  stageIndex,
+  activityIndex,
+  detailIndex,
+  removeDetail,
+}: {
+  control: Control<any>;
+  seasonIndex: number;
+  stageIndex: number;
+  activityIndex: number;
+  detailIndex: number;
+  removeDetail: any;
+}) => (
+  <div key={detailIndex + "detail field"} className="">
+    <h5 className="text-sm">Detail {detailIndex + 1}</h5>
+    <div className="grid grid-cols-2 gap-1 border rounded-lg p-2">
       <Controller
         control={control}
-        name={`seasons[${index}].stages[${index}].activities[${index}].details[${detailIndex}].description`}
+        name={`seasons[${seasonIndex}].stages[${stageIndex}].activities[${activityIndex}].details[${detailIndex}].description`}
         render={({ field, fieldState: { error } }) => (
           <Input
             label="Description"
@@ -47,7 +62,7 @@ const DetailField = ({ control, index, detailIndex, removeDetail }: any) => (
 
       <Controller
         control={control}
-        name={`seasons[${index}].stages[${index}].activities[${index}].details[${detailIndex}].quantity`}
+        name={`seasons[${seasonIndex}].stages[${stageIndex}].activities[${activityIndex}].details[${detailIndex}].quantity`}
         render={({ field, fieldState: { error } }) => (
           <Input
             label="Quantity"
@@ -62,7 +77,7 @@ const DetailField = ({ control, index, detailIndex, removeDetail }: any) => (
 
       <Controller
         control={control}
-        name={`seasons[${index}].stages[${index}].activities[${index}].details[${detailIndex}].landSize`}
+        name={`seasons[${seasonIndex}].stages[${stageIndex}].activities[${activityIndex}].details[${detailIndex}].landSize`}
         render={({ field, fieldState: { error } }) => (
           <Input
             label="Land Size"
@@ -77,7 +92,7 @@ const DetailField = ({ control, index, detailIndex, removeDetail }: any) => (
 
       <Controller
         control={control}
-        name={`seasons[${index}].stages[${index}].activities[${index}].details[${detailIndex}].unit`}
+        name={`seasons[${seasonIndex}].stages[${stageIndex}].activities[${activityIndex}].details[${detailIndex}].unit`}
         render={({ field, fieldState: { error } }) => (
           <Input
             label="Unit"
@@ -92,7 +107,7 @@ const DetailField = ({ control, index, detailIndex, removeDetail }: any) => (
 
       <Controller
         control={control}
-        name={`seasons[${index}].stages[${index}].activities[${index}].details[${detailIndex}].unit_cost`}
+        name={`seasons[${seasonIndex}].stages[${stageIndex}].activities[${activityIndex}].details[${detailIndex}].unit_cost`}
         render={({ field, fieldState: { error } }) => (
           <Input
             label="Unit Cost"
@@ -107,7 +122,7 @@ const DetailField = ({ control, index, detailIndex, removeDetail }: any) => (
 
       <Controller
         control={control}
-        name={`seasons[${index}].stages[${index}].activities[${index}].details[${detailIndex}].total_cost`}
+        name={`seasons[${seasonIndex}].stages[${stageIndex}].activities[${activityIndex}].details[${detailIndex}].total_cost`}
         render={({ field, fieldState: { error } }) => (
           <Input
             label="Total Cost"
@@ -137,26 +152,34 @@ const DetailField = ({ control, index, detailIndex, removeDetail }: any) => (
 
 const ActivityField = ({
   control,
-  index,
+  stageIndex,
+  seasonIndex,
   activityIndex,
   removeActivity,
-}: any) => {
+}: {
+  control: Control<any>;
+  stageIndex: number;
+  seasonIndex: number;
+  activityIndex: number;
+  removeActivity: any;
+}) => {
   const {
     fields: details,
     append: appendDetail,
     remove: removeDetail,
   } = useFieldArray({
     control,
-    name: `seasons[${index}].stages[${index}].activities[${activityIndex}].details`,
+    name: `seasons[${seasonIndex}].stages[${stageIndex}].activities[${activityIndex}].details`,
   });
 
   return (
     <>
       <div key={activityIndex + "activity field"}>
-        <div className="grid grid-cols-2 gap-1">
+        <h5 className="text-sm">Activity {activityIndex + 1}</h5>
+        <div className="grid grid-cols-2 gap-1 border rounded-lg p-2">
           <Controller
             control={control}
-            name={`seasons[${index}].stages[${activityIndex}].activities[${activityIndex}].name`}
+            name={`seasons[${seasonIndex}].stages[${stageIndex}].activities[${activityIndex}].name`}
             render={({ field, fieldState: { error } }) => (
               <Input
                 label="Name"
@@ -171,7 +194,7 @@ const ActivityField = ({
 
           <Controller
             control={control}
-            name={`seasons[${index}].stages[${activityIndex}].activities[${activityIndex}].subtotal`}
+            name={`seasons[${seasonIndex}].stages[${stageIndex}].activities[${activityIndex}].subtotal`}
             render={({ field, fieldState: { error } }) => (
               <Input
                 label="Subtotal"
@@ -186,13 +209,15 @@ const ActivityField = ({
 
           <div className="col-span-2">
             <h5 className="text-sm">Details ({details.length})</h5>
-            <div>
+            <div className="border rounded-lg p-2">
               <div className="grid grid-cols-1 gap-2">
                 {details.map((detail, detailIndex) => (
                   <DetailField
                     key={detail.id + detailIndex + "detail field"}
                     control={control}
-                    index={index}
+                    seasonIndex={seasonIndex}
+                    stageIndex={stageIndex}
+                    activityIndex={activityIndex}
                     detailIndex={detailIndex}
                     removeDetail={removeDetail}
                   />
@@ -222,7 +247,7 @@ const ActivityField = ({
             </div>
             <Controller
               control={control}
-              name={`seasons[${index}].stages[${activityIndex}].activities[${activityIndex}].details`}
+              name={`seasons[${seasonIndex}].stages[${stageIndex}].activities[${activityIndex}].details`}
               render={({ fieldState: { error } }) => (
                 <p className="text-red-500 text-xs">{error?.message}</p>
               )}
@@ -246,10 +271,22 @@ const ActivityField = ({
   );
 };
 
-const TaskField = ({ control, index, taskIndex, removeTask }: any) => (
+const TaskField = ({
+  control,
+  seasonIndex,
+  stageIndex,
+  taskIndex,
+  removeTask,
+}: {
+  control: Control<any>;
+  seasonIndex: number;
+  stageIndex: number;
+  taskIndex: number;
+  removeTask: any;
+}) => (
   <Controller
     control={control}
-    name={`seasons[${index}].stages[${index}].tasks[${taskIndex}].description`}
+    name={`seasons[${seasonIndex}].stages[${stageIndex}].tasks[${taskIndex}].description`}
     render={({ field, fieldState: { error } }) => (
       <div className="flex items-center gap-1 w-full">
         <div className="flex-1">
@@ -270,14 +307,24 @@ const TaskField = ({ control, index, taskIndex, removeTask }: any) => (
   />
 );
 
-const StageField = ({ control, index, stageIndex, removeStage }: any) => {
+const StageField = ({
+  control,
+  seasonIndex,
+  stageIndex,
+  removeStage,
+}: {
+  control: Control<any>;
+  seasonIndex: number;
+  stageIndex: number;
+  removeStage: any;
+}) => {
   const {
     fields: activities,
     append: appendActivity,
     remove: removeActivity,
   } = useFieldArray({
     control,
-    name: `seasons[${index}].stages[${stageIndex}].activities`,
+    name: `seasons[${seasonIndex}].stages[${stageIndex}].activities`,
   });
 
   const {
@@ -286,7 +333,7 @@ const StageField = ({ control, index, stageIndex, removeStage }: any) => {
     remove: removeTask,
   } = useFieldArray({
     control,
-    name: `seasons[${index}].stages[${stageIndex}].tasks`,
+    name: `seasons[${seasonIndex}].stages[${stageIndex}].tasks`,
   });
 
   const [option, setOption] = React.useState<any>(null);
@@ -294,10 +341,10 @@ const StageField = ({ control, index, stageIndex, removeStage }: any) => {
 
   return (
     <div key={stageIndex + "stage field"}>
-      <div className="grid grid-cols-2 gap-1">
+      <div className="grid grid-cols-2 gap-1 border rounded-lg p-2">
         <Controller
           control={control}
-          name={`seasons[${index}].stages[${stageIndex}].name`}
+          name={`seasons[${seasonIndex}].stages[${stageIndex}].name`}
           render={({ field, fieldState: { error } }) => (
             <Input
               label="Name"
@@ -312,7 +359,7 @@ const StageField = ({ control, index, stageIndex, removeStage }: any) => {
 
         <Controller
           control={control}
-          name={`seasons[${index}].stages[${stageIndex}].start`}
+          name={`seasons[${seasonIndex}].stages[${stageIndex}].start`}
           render={({ field, fieldState: { error } }) => (
             <Input
               label="Start"
@@ -326,7 +373,7 @@ const StageField = ({ control, index, stageIndex, removeStage }: any) => {
 
         <Controller
           control={control}
-          name={`seasons[${index}].stages[${stageIndex}].stop`}
+          name={`seasons[${seasonIndex}].stages[${stageIndex}].stop`}
           render={({ field, fieldState: { error } }) => (
             <Input
               label="Stop"
@@ -340,7 +387,7 @@ const StageField = ({ control, index, stageIndex, removeStage }: any) => {
 
         <Controller
           control={control}
-          name={`seasons[${index}].stages[${stageIndex}].duration_unit`}
+          name={`seasons[${seasonIndex}].stages[${stageIndex}].duration_unit`}
           render={({ field: { onChange }, fieldState: { error } }) => (
             <Select
               value={option}
@@ -364,7 +411,7 @@ const StageField = ({ control, index, stageIndex, removeStage }: any) => {
 
         <Controller
           control={control}
-          name={`seasons[${index}].stages[${stageIndex}].description`}
+          name={`seasons[${seasonIndex}].stages[${stageIndex}].description`}
           render={({ field, fieldState: { error } }) => (
             <Input
               label="Description"
@@ -379,7 +426,7 @@ const StageField = ({ control, index, stageIndex, removeStage }: any) => {
 
         <Controller
           control={control}
-          name={`seasons[${index}].stages[${stageIndex}].phase`}
+          name={`seasons[${seasonIndex}].stages[${stageIndex}].phase`}
           render={({ field: { onChange, onBlur }, fieldState: { error } }) => (
             <Select
               label="Phase"
@@ -404,13 +451,14 @@ const StageField = ({ control, index, stageIndex, removeStage }: any) => {
         <div className="col-span-2">
           <h5 className="text-sm">Tasks ({tasks.length})</h5>
 
-          <div className="">
+          <div className="border rounded-lg p-2">
             <div className="grid grid-cols-2 gap-2">
               {tasks.map((task, taskIndex) => (
                 <TaskField
                   key={task.id + taskIndex + "task field"}
                   control={control}
-                  index={index}
+                  seasonIndex={seasonIndex}
+                  stageIndex={stageIndex}
                   taskIndex={taskIndex}
                   removeTask={removeTask}
                 />
@@ -432,7 +480,7 @@ const StageField = ({ control, index, stageIndex, removeStage }: any) => {
 
           <Controller
             control={control}
-            name={`seasons[${index}].stages[${stageIndex}].tasks`}
+            name={`seasons[${seasonIndex}].stages[${stageIndex}].tasks`}
             render={({ fieldState: { error } }) => (
               <p className="text-red-500 text-xs">{error?.message}</p>
             )}
@@ -441,13 +489,14 @@ const StageField = ({ control, index, stageIndex, removeStage }: any) => {
 
         <div className="col-span-2">
           <h5 className="text-sm">Activities ({activities.length})</h5>
-          <div>
+          <div className="border rounded-lg p-2">
             <div className="grid grid-cols-1 gap-2">
               {activities.map((activity, activityIndex) => (
                 <ActivityField
                   key={activity.id + activityIndex + "activity field"}
                   control={control}
-                  index={index}
+                  seasonIndex={seasonIndex}
+                  stageIndex={stageIndex}
                   activityIndex={activityIndex}
                   removeActivity={removeActivity}
                 />
@@ -472,7 +521,7 @@ const StageField = ({ control, index, stageIndex, removeStage }: any) => {
           </div>
           <Controller
             control={control}
-            name={`seasons[${index}].stages[${stageIndex}].activities`}
+            name={`seasons[${seasonIndex}].stages[${stageIndex}].activities`}
             render={({ fieldState: { error } }) => (
               <p className="text-red-500 text-xs">{error?.message}</p>
             )}
@@ -526,7 +575,8 @@ const SeasonField = ({
 
   return (
     <div key={season.id + index + "season field"}>
-      <div className="grid grid-cols-2 gap-1">
+      <h4 className="text-sm">Season {index + 1}</h4>
+      <div className="grid grid-cols-2 gap-1 border rounded-lg p-2">
         <Controller
           control={control}
           name={`seasons[${index}].name`}
@@ -606,7 +656,7 @@ const SeasonField = ({
         />
 
         {/* stages */}
-        <div className="col-span-2">
+        <div className="col-span-2 border rounded-lg p-2">
           <h5 className="text-sm">Stages ({stages.length})</h5>
           <div>
             <div className="grid grid-cols-1 gap-2">
@@ -614,7 +664,8 @@ const SeasonField = ({
                 <StageField
                   key={stage.id + stageIndex + "stage field"}
                   control={control}
-                  index={index}
+                  // index={index}
+                  seasonIndex={index}
                   stageIndex={stageIndex}
                   removeStage={removeStage}
                 />
@@ -637,6 +688,7 @@ const SeasonField = ({
                     tasks: [],
                     phase: "",
                     activities: [],
+                    order: stages.length + 1,
                   })
                 }
               >

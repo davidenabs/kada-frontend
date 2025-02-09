@@ -25,6 +25,7 @@ function Sidebar({ setValue, getValues }: any) {
                     period: "",
                     isRecommended: false,
                     activities: [],
+                    order: getValues("seasons").length + 1,
                   },
                 ])
               }
