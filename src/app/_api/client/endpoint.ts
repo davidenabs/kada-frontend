@@ -105,6 +105,10 @@ const API_ENDPOINTS = {
   APPROVE_VENDOR_REVIEW: "/vendor-reviews/approve",
 
   GET_VENDOR_CERTIFICATE: "/certificates/vendor/:vendorId",
+
+  // livestocks
+  GET_LIVESTOCKS: "/livestocks",
+  GET_LIVESTOCK: "/livestocks/:id",
 };
 
 export default API_ENDPOINTS;
