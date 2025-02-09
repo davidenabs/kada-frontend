@@ -14,6 +14,12 @@ const cmsClient = {
 
     return ApiClient.post(API_ENDPOINTS.CMS_CREATE_POST, data);
   },
+  updatePost: (data: any, id: any): Promise<any> => {
+    const formData = objectToFormData(data);
+    return ApiClient.put(API_ENDPOINTS.CMS_UPDATE_POST.replace(":postId", id), formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+  },
 };
 
 export default cmsClient;

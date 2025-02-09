@@ -31,3 +31,16 @@ export const useCreateCmsPostMutation = () => {
     },
   });
 };
+
+export const useUpdateCmsPostMutation = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ data, id }: { data: any, id: any }) => cmsClient.updatePost(data, id),
+    mutationKey: [API_ENDPOINTS.CMS_UPDATE_POST],
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [API_ENDPOINTS.CMS_GET_POSTS],
+      });
+    },
+  });
+};

@@ -84,11 +84,11 @@ const adminMenuItems: MenuItem[] = [
     label: "Opportunities",
     href: `${adminBasePath}/opportunities`,
   },
-  {
-    icon: ProfileIcon,
-    label: "Profile",
-    href: `${adminBasePath}/profile`,
-  },
+  // {
+  //   icon: ProfileIcon,
+  //   label: "Profile",
+  //   href: `${adminBasePath}/profile`,
+  // },
 ];
 
 // Regular User Menu

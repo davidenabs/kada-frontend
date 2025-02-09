@@ -4,6 +4,19 @@ import { Badge, cn } from "rizzui";
 
 const columns: Column<any>[] = [
   {
+    label: "Image",
+    key: "featuredImage",
+    render: (item) => (
+      <div className="">
+        <img
+          src={item.featuredImage}
+          alt="Featured"
+          className="w-16 h-16 object-cover"
+        />
+      </div>
+    ),
+  },
+  {
     label: "Date Publish",
     key: "date",
     render: (item) => <div className="">{format(new Date(), "dd/mm/yy")}</div>,
@@ -13,21 +26,23 @@ const columns: Column<any>[] = [
     key: "title",
     render: (item) => <div className="">{item.title}</div>,
   },
+  // {
+  //   label: "Description",
+  //   key: "shortDescription",
+  //   render: (item) => (
+  //     <div className="">
+  //       {item.shortDescription.length > 100 ? item.shortDescription.substring(0, 100) + "..." : item.shortDescription}
+  //     </div>
+  //   ),
+  // },
   {
-    label: "Description",
-    key: "shortDescription",
+    label: "Post type",
+    key: "type",
     render: (item) => (
       <div className="">
-        {item.shortDescription.length > 100 ? item.shortDescription.substring(0, 100) + "..." : item.shortDescription}
+        {item.type.charAt(0).toUpperCase() + item.type.slice(1).toLowerCase()}
       </div>
     ),
-  },
-  {
-    label: "CTA",
-    key: "cta",
-    render: (item) => <div className="">
-      {item.cta.length > 20 ? item.cta.substring(0, 20) + "..." : item.cta}
-    </div>,
   },
   {
     label: "Availability",
@@ -35,22 +50,26 @@ const columns: Column<any>[] = [
     render: (item) => <div className="">{item.userType}</div>,
   },
   {
-    label: "Status",
-    key: "status",
-    render: (item) => {
-      const isClosed = new Date() > new Date(item.dueDate);
-      return (
-        <Badge
-          variant="outline"
-          className={cn(
-            "text-xs font-normal",
-            isClosed ? "bg-red-500 text-white" : "bg-green-500"
-          )}
-        >
-          {isClosed ? "Closed" : "Open"}
-        </Badge>
-      );
-    },
+    label: "Limit",
+    key: "applicationLimit",
+    render: (item) => (
+      <div className="">
+        {item.applicationLimit == null ? "Unlimited" : item.applicationLimit}
+      </div>
+    ),
+  },
+  {
+    label: "Region",
+    key: "zone",
+    render: (item) => (
+      <div className="">
+        <ul className=" list-disc">
+          <li>Zone: {item.zone}</li>
+          <li>Ward: {item.ward}</li>
+          <li>LGA: {item.lga}</li>
+        </ul>
+      </div>
+    ),
   },
 ];
 
