@@ -41,19 +41,23 @@ const columns: Column<any>[] = [
       </div>
     ),
   },
-  {
-    label: "CTA",
-    key: "cta",
-    render: (item) => (
-      <div className="">
-        {/* {item.cta.length > 20 ? item.cta.substring(0, 20) + "..." : item.cta} */}
-      </div>
-    ),
-  },
+  // {
+  //   label: "CTA",
+  //   key: "cta",
+  //   render: (item) => (
+  //     <div className="">
+  //       {/* {item.cta.length > 20 ? item.cta.substring(0, 20) + "..." : item.cta} */}
+  //     </div>
+  //   ),
+  // },
   {
     label: "Post type",
     key: "type",
-    render: (item) => <div className="">{item.type}</div>,
+    render: (item) => (
+      <div className="">
+        {item.type.charAt(0).toUpperCase() + item.type.slice(1).toLowerCase()}
+      </div>
+    ),
   },
   {
     label: "Availability",

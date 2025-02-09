@@ -60,7 +60,7 @@ function PartnerOpportunitiesPage() {
       )}
       <section className="space-y-3">
         <div className="flex justify-between items-start">
-          <h4 className="text-sm font-bold text-zinc-700">Manage Program</h4>
+          <h4 className="text-sm font-bold text-zinc-700">Manage Programs</h4>
 
           <KadaButton
             className="rounded-full"
