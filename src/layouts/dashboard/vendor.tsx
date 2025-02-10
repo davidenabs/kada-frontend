@@ -27,7 +27,7 @@ export default function VendorDahboardLayout({
     },
     {
       field: "vendorProfile.isVerified",
-      redirectTo: "/account-setup/profile/vendor",
+      redirectTo: "/account-setup/profile/vendor/pending-verification",
       condition: (value) => value === false,
     },
   ]);

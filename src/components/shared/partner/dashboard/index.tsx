@@ -1,5 +1,5 @@
 "use client";
-import Overview from "@/components/dashboards/cooperative/overview";
+// import Overview from "@/components/dashboards/cooperative/overview";
 import useDashboardTitle from "@/hooks/use-dashboard-tite";
 import React from "react";
 import { useAtomValue } from "jotai";
@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { useModal } from "@/hooks/use-modal";
 import EditPartnerProfile from "@/components/modals/edit-profile/partner";
 import { KadaButton } from "@/components/form/button";
+import PartnerOverview from "@/components/dashboards/partner/overview";
 
 function PartnerDashboardPage() {
   useDashboardTitle("Dashboard");
@@ -39,7 +40,7 @@ function PartnerDashboardPage() {
         <div className="flex"><KadaButton onClick={handleEditClick} className="rounded-full"> Profile </KadaButton></div>
       </div>
 
-      <Overview />
+      <PartnerOverview />
     </>
   );
 }
