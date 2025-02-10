@@ -173,7 +173,14 @@ const Navbar: React.FC = () => {
         <div className="flex justify-between items-center h-[90px] lg:h-[121px] app_container relative z-[999] leading-tight bg-[#F2F9F5] !backdrop-blur-lg">
           {/* Logo */}
           <div className="flex items-center gap-2">
-            <Logo
+            {/* <Logo
+              className={cn(
+                width < 1024 ? "h-[46.49px] w-[46px]" : "h-[66.49px] w-[66px]"
+              )}
+            /> */}
+            <img
+              src="/images/logo.svg"
+              alt="Kaduna State Agricultural Development Agency Logo"
               className={cn(
                 width < 1024 ? "h-[46.49px] w-[46px]" : "h-[66.49px] w-[66px]"
               )}
@@ -184,7 +191,7 @@ const Navbar: React.FC = () => {
                 KADA
               </h1>
               <p className="text-tertiary-700 text-[10px] md:text-[12px]">
-                Kada Agricultural <br />
+                Kaduna Agricultural <br />
                 Development Agency
               </p>
             </div>

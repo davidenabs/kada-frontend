@@ -23,9 +23,7 @@ const Footer: React.FC = () => {
                     />
                     <p className="mt-8">
                       Kaduna State Agricultural Development Agency paves the way
-                      for a sustainable future in Kaduna. Kaduna State
-                      Agricultural Development Agency paves the way for a
-                      sustainable future in Kaduna.
+                      for a sustainable future in Kaduna.
                     </p>
                   </div>
                 </div>
