@@ -29,11 +29,15 @@ function AdminUsersSharedPage() {
     totalVendors: number;
     totalCooperatives: number;
     totalPartner: number;
+    totalZonalHeads: number;
+    totalStaff: number;
   }>({
     totalFarmers: 0,
     totalVendors: 0,
     totalCooperatives: 0,
     totalPartner: 0,
+    totalZonalHeads: 0,
+    totalStaff: 0,
   });
 
   const userType = React.useMemo(() => {
@@ -44,6 +48,10 @@ function AdminUsersSharedPage() {
       : activeTab === "Cooperative"
       ? UserType.COOPERATIVE
       : activeTab === "Partner"
+      ? UserType.ZONAL
+      : activeTab === "Zonal Officer"
+      ? UserType.STAFF
+      : activeTab === "Staff"
       ? UserType.PARTNER
       : null;
   }, [activeTab]);
@@ -68,6 +76,8 @@ function AdminUsersSharedPage() {
           totalVendors: stats.totalVendors,
           totalCooperatives: stats.totalCooperatives,
           totalPartner: stats.totalPartner,
+          totalZonalHeads: stats.totalZonalHeads,
+          totalStaff: stats.totalStaff,
         });
       }
     }
@@ -94,6 +104,16 @@ function AdminUsersSharedPage() {
         value: UserType.PARTNER,
         label: "Partner",
         count: stats?.totalPartner || 0,
+      },
+      {
+        value: UserType.ZONAL,
+        label: "Zonal Officer",
+        count: stats?.totalZonalHeads || 0,
+      },
+      {
+        value: UserType.STAFF,
+        label: "Staff",
+        count: stats?.totalStaff || 0,
       },
     ];
   }, [stats]);

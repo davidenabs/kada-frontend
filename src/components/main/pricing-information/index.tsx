@@ -70,15 +70,21 @@ function PricingInformation() {
 
   React.useEffect(() => {
     if (productsData?.data && productsData.success && !productIsFetching) {
-      const temp = productsData.data.items.map((product: any) => ({
-        label: product.name,
-        value: product.name,
-        data: product,
-      }));
+      const uniqueProducts = new Map();
 
-      setProducts(temp);
+      productsData.data.items.forEach((product: any) => {
+        if (!uniqueProducts.has(product.name)) {
+          uniqueProducts.set(product.name, {
+            label: product.name,
+            value: product.name,
+            data: product,
+          });
+        }
+      });
+
+      setProducts(Array.from(uniqueProducts.values()));
     }
-  }, [productsData, productIsFetching]);
+  }, [productsData, productIsFetching])
 
   React.useEffect(() => {
     if (
