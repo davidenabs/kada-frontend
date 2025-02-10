@@ -20,7 +20,7 @@ const PriceCard: React.FC<PriceCardProps> = (product: any) => {
   const [app, setApp] = useAtom(appAtom);
   return (
     <Link
-      href={"/pricing-information/market"}
+      href={"/commodity-pricing/market"}
       onClick={() => {
         setApp({ ...app, selectedMarket: product?.market });
       }}

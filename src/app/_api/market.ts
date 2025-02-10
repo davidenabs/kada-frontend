@@ -27,7 +27,6 @@ export const useGetProductsQuery = ({
   enabled = true,
   params = {},
 }: IQueryParams) => {
-  console.log("params", params);
   return useQuery<IResponse<any>, Error>({
     queryKey: [API_ENDPOINTS.GET_PRODUCTS, params],
     queryFn: () => marketClient.getProducts(params),
