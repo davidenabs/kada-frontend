@@ -9,9 +9,11 @@ import { useGetMarketsQuery, useGetProductsQuery } from "@/app/_api/market";
 import useDebounce from "@/hooks/use-debounce";
 import DatePicker from "@/components/form/date-picker";
 import { format } from "date-fns";
+import { MultiSelect } from "rizzui";
 
 function PricingInformation() {
   const [products, setProducts] = useState<any[]>([]);
+  const [searchProducts, setSearchProducts] = useState<any[]>([]);
   const [showDetails, setShowDetails] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const [search, setSearch] = useState("");
@@ -26,6 +28,9 @@ function PricingInformation() {
   const debouncedSearchQuery = useDebounce(search);
   const debouncedSearchMarketQuery = useDebounce(searchMarket);
   const [showAllMarkets, setShowAllMarkets] = useState(false);
+  const [marketIds, setMarketIds] = useState<string[]>([]);
+  const [marketSizes, setMarketSizes] = useState<string[]>([]);
+  const [productNames, setProductNames] = useState<string[]>([]);
 
   const { data, isFetching, isLoading, isError } = useGetProductsQuery({
     enabled: showDetails && loaded,
@@ -34,6 +39,9 @@ function PricingInformation() {
       page,
       limit,
       ...(startDate && { date: format(startDate, "yyyy-MM-dd") }),
+      ...(marketIds.length > 0 && { marketIds }),
+      ...(marketSizes.length > 0 && { marketSizes }),
+      ...(productNames.length > 0 && { productNames }),
     },
   });
 
@@ -51,6 +59,27 @@ function PricingInformation() {
     },
   });
 
+  const { data: productsData, isFetching: productIsFetching } =
+    useGetProductsQuery({
+      enabled: loaded,
+      params: {
+        page: 1,
+        limit: 10,
+      },
+    });
+
+  React.useEffect(() => {
+    if (productsData?.data && productsData.success && !productIsFetching) {
+      const temp = productsData.data.items.map((product: any) => ({
+        label: product.name,
+        value: product.name,
+        data: product,
+      }));
+
+      setProducts(temp);
+    }
+  }, [productsData, productIsFetching]);
+
   React.useEffect(() => {
     if (
       marketData?.data &&
@@ -58,7 +87,7 @@ function PricingInformation() {
       !marketIsFetching &&
       !marketIsRefetching
     ) {
-      setProducts(
+      setMarkets(
         marketData.data.markets.map((market) => ({
           label: market.name,
           value: market.id,
@@ -70,24 +99,17 @@ function PricingInformation() {
 
   React.useEffect(() => {
     if (data?.data && data.success && !isFetching && !isLoading) {
-      // const combinedProducts = data.data.markets.flatMap((market) =>
-      //   market.products.map((product) => ({
-      //     ...product,
-      //     marketId: market.id,
-      //     marketName: market.name,
-      //     marketAddress: market.address,
-      //     marketCode: market.marketCode,
-      //     marketSize: market.size,
-      //   }))
-      // );
-
-      setProducts((data.data as any).items);
+      setSearchProducts((data.data as any).items);
     }
   }, [data, isFetching, isLoading]);
 
   React.useEffect(() => {
     setLoaded(true);
   }, []);
+
+  const handleSubmit = () => {
+    setShowDetails(true);
+  };
 
   return (
     <>
@@ -120,51 +142,59 @@ function PricingInformation() {
                       className="px-5 py-6"
                     /> */}
 
-                    <div className="flex flex-col flex-1 shrink basis-0 min-h-[109px] min-w-[240px]">
-                      <Select
-                        label="Select Market"
-                        searchable={true}
-                        options={products}
-                        value={value}
-                        onChange={(e: any) => {
-                          setValue(e);
-                        }}
-                        clearable={value !== null}
-                        onClear={() => {
-                          setValue(null);
-                          setSearchMarket("");
-                        }}
-                        onSearchChange={(e) => {
-                          setSearchMarket(e);
-                        }}
-                        disableDefaultFilter
-                        searchPlaceHolder="Search here..."
-                        searchPrefix={<SearchIcon className="fill-black" />}
-                      />
+                    {/* <div className="flex flex-col flex-1 shrink basis-0 min-h-[109px] min-w-[240px]"> */}
+                    {/* <div className="grid grid-cols-2 gap-6"> */}
+                    <MultiSelect
+                      label="Select Markets"
+                      value={marketIds}
+                      options={markets}
+                      onChange={(e: any) => {
+                        setMarketIds(e);
+                      }}
+                      className="w-full"
+                      clearable={true}
+                      onClear={() => {
+                        setMarketIds([]);
+                      }}
+                      selectClassName="!h-[56px] rounded-full border-[0.4px] border-primary"
+                      errorClassName="text-red-500"
+                    />
 
-                      <div className="flex gap-2 items-center self-start mt-3">
-                        <div className="flex flex-col self-stretch my-auto w-4">
-                          <input
-                            type="checkbox"
-                            id="searchAllMarkets"
-                            className="w-4 h-4 rounded-sm border border-gray-300"
-                            checked={showAllMarkets}
-                            onChange={(e) => {
-                              if (e.target.checked) {
-                                setValue(null);
-                              }
-                              setShowAllMarkets(e.target.checked);
-                            }}
-                          />
-                        </div>
-                        <label
-                          htmlFor="searchAllMarkets"
-                          className="self-stretch my-auto w-28 text-xs font-medium leading-none text-gray-900"
-                        >
-                          Search all markets?
-                        </label>
-                      </div>
-                    </div>
+                    <MultiSelect
+                      label="Select Products"
+                      value={productNames}
+                      options={products}
+                      onChange={(e: any) => {
+                        setProductNames(e);
+                      }}
+                      className="w-full"
+                      clearable={true}
+                      onClear={() => {
+                        setProductNames([]);
+                      }}
+                      selectClassName="!h-[56px] rounded-full border-[0.4px] border-primary"
+                      errorClassName="text-red-500"
+                    />
+
+                    <MultiSelect
+                      label="Market Size"
+                      value={marketSizes}
+                      options={[
+                        { value: "Small", label: "Small" },
+                        { value: "Medium", label: "Medium" },
+                        { value: "Large", label: "Large" },
+                      ]}
+                      onChange={(e: any) => {
+                        setMarketSizes(e);
+                      }}
+                      className="w-full"
+                      clearable={true}
+                      onClear={() => {
+                        setMarketSizes([]);
+                      }}
+                      selectClassName="!h-[56px] rounded-full border-[0.4px] border-primary"
+                      errorClassName="text-red-500"
+                    />
 
                     <div className="flex flex-col">
                       <DatePicker
@@ -191,11 +221,37 @@ function PricingInformation() {
                         </KadaButton>
                       </div>
                     </div>
+
+                    <div className="flex gap-2 items-center self-start mt-3 col-span-2">
+                      <div className="flex flex-col self-stretch my-auto w-4">
+                        <input
+                          type="checkbox"
+                          id="searchAllMarkets"
+                          className="w-4 h-4 rounded-sm border border-gray-300"
+                          checked={showAllMarkets}
+                          onChange={(e) => {
+                            if (e.target.checked) {
+                              setMarketIds([]);
+                              setShowAllMarkets(true);
+                            } else {
+                              setShowAllMarkets(false);
+                            }
+                          }}
+                        />
+                      </div>
+                      <label
+                        htmlFor="searchAllMarkets"
+                        className="self-stretch my-auto text-xs font-medium leading-none text-gray-900"
+                      >
+                        Search all markets?
+                      </label>
+                    </div>
+                    {/* </div> */}
                   </form>
 
                   <div className="text-center mt-8">
                     <KadaButton
-                      onClick={() => setShowDetails(true)}
+                      onClick={handleSubmit}
                       className="w-[300px] h-[40px] rounded-full gap-2"
                       type="button"
                     >
@@ -264,7 +320,7 @@ function PricingInformation() {
                     <div className="flex flex-wrap gap-1 items-center w-full max-md:max-w-full">
                       <div className="flex flex-col flex-1 shrink self-stretch my-auto basis-0 min-w-[240px] max-md:max-w-full">
                         <h2 className="text-2xl text-green-600 uppercase max-md:max-w-full">
-                          RESULT ({products.length})
+                          RESULT ({searchProducts.length})
                         </h2>
                         <div className="flex flex-wrap gap-3 items-start mt-1 w-full text-base text-neutral-700 max-md:max-w-full">
                           <span className="uppercase">
@@ -285,7 +341,7 @@ function PricingInformation() {
                     </div>
 
                     <div className="flex flex-wrap flex-1 shrink gap-6 items-center self-stretch my-auto w-full basis-0 min-w-[240px] max-md:max-w-full mt-3">
-                      {products?.map((product, index) => (
+                      {searchProducts?.map((product, index) => (
                         <PriceCard key={index} {...product} />
                       ))}
                     </div>
