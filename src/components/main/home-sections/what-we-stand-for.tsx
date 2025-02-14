@@ -9,8 +9,8 @@ export interface InfoCardProps {
 
 const InfoCard: React.FC<InfoCardProps> = ({ iconSrc, title, description }) => {
   return (
-    <div className="flex flex-col w[33%] min-h-[327px] max-md:ml-0 w-full z-10">
-      <div className="flex overflow-hidden relative flex-col items-start px-8 pt-7 pb-20 w-full bg-white rounded-lg max-md:px-5 max-md:mt-8 lg:h-[340px]">
+    <div className="flex flex-col w[33%] minh-[327px] max-md:ml-0 w-full z-10">
+      <div className="flex overflow-hidden relative flex-col items-start px-8 pt-7 pb-20 w-full bg-white rounded-lg max-md:px-5 max-md:mt-8 lg:h-[440px]">
         <img
           src={iconSrc}
           alt=""
@@ -19,7 +19,7 @@ const InfoCard: React.FC<InfoCardProps> = ({ iconSrc, title, description }) => {
         <h2 className="mt-4 text-xl font-bold leading-none text-zinc-700">
           {title}
         </h2>
-        <p className="self-stretch mt-8 text-xs font-thin leading-6 text-tertiary-700">
+        <p className="self-stretch mt-8 text- font-thin leading-6 text-tertiary-700">
           {description}
         </p>
       </div>

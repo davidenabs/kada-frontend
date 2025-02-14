@@ -15,7 +15,7 @@ export const farmersColumns: Column<Partial<IUser>>[] = [
       <div className="flex gap-2 items-center">
         <div className="relative w-[40px] h-[40px]">
           <Image
-            src={item.imagePath || "/images/avatar.png"}
+            src={item.imagePath ? (item.imagePath.startsWith("http") ? item.imagePath : `data:image/png;base64,${item.imagePath}`) : "/images/avatar.png"}
             alt="avatar"
             fill
             objectFit="cover"

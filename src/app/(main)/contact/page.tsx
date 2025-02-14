@@ -36,13 +36,13 @@ const ContactUs: React.FC = () => {
 
   const officeDetails: OfficeDetails[] = [
     {
-      name: "HEAD OFFICE:",
+      name: "HEAD QUATRES:",
       address:
         "No 1, Gashashi Road, Aliyu Makama Barnawa GRA, P.M.B 2269, Kaduna, Kaduna State.",
     },
     {
-      name: "MaiGana Agric Zonal Office:",
-      address: "Tudun SOibu community, Maigana, Saba Local Government Area.",
+      name: "Maigana Agric Zonal Office:",
+      address: "Tudun Sobu community, Maigana, Saba Local Government Area.",
     },
     {
       name: "Samaru Agric Zonal Office:",

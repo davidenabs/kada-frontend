@@ -133,7 +133,7 @@ function PricingInformation() {
                   <div className="flex flex-col items-center self-center max-w-full leading-tight w-[472px]">
                     <BadgeTag className="w-12 h-12" />
                     <h1 className="mt-1 text-2xl font-semibold text-green-600 uppercase">
-                      PRICING INFORMATION
+                    Commodity PRICING INFORMATION
                     </h1>
                     <p className="mt-1 text-sm text-center text-neutral-700 max-md:max-w-full">
                       Get insight on product pricing

@@ -3,7 +3,10 @@ import Link from "next/link";
 
 const OurMandate = () => {
   return (
-    <div className="app_container py-[123px] md:py-[165px] items-center flex flex-col md:flex-row relative bg-[#fefffd] max-md:border-b-0 border-b-[12px] border-[#0BCE6B]">
+    <div
+      id="explore-section"
+      className="app_container py-[123px] md:py-[165px] items-center flex flex-col md:flex-row relative bg-[#fefffd] max-md:border-b-0 border-b-[12px] border-[#0BCE6B]"
+    >
       <img
         src="/images/vector-leaf-bg.svg"
         className="absolute -top-10 right-28 w-[523px] hidden md:block"
@@ -17,7 +20,7 @@ const OurMandate = () => {
             <br />a sustainable future for
             <br /> Agriculture
           </h2>
-          <p className="mt-5 text-sm leading-6 text-gray-400">
+          <p className="mt-5 text- leading-6 text-gray-400">
             {" "}
             Kaduna State Agricultural Development
             <br /> Agency paves the way for a sustainable <br />
@@ -55,20 +58,20 @@ const OurMandate = () => {
               <img
                 src="/images/vector-bg.png"
                 alt="img-1"
-                className="rounded-full w-[250px] mb-0"
+                className="rounded-full w-[350px] mb-0"
               />
 
               <img
                 src="/images/uba.png"
                 alt="img-2"
-                className="rounded-full w-[184px] h-[184px] absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 mb-0"
+                className="rounded-full w-[284px] h-[284px] absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 mb-0"
               />
             </div>
 
-            <div className="pt-6 max-w-[148px] items-center">
+            <div className="pt-6 max-w[148px] items-center">
               <span>UBA SANI</span>
-              <p className="text-tertiary-400 text-sm ">
-                Executive Governor of Kaduna State
+              <p className="text-tertiary-400  ">
+                Executive Governor of<br/>Kaduna State
               </p>
             </div>
           </div>
@@ -78,20 +81,20 @@ const OurMandate = () => {
               <img
                 src="/images/vector-bg.png"
                 alt="img-1"
-                className="rounded-full w-[250px] mb-0"
+                className="rounded-full w-[350px] mb-0"
               />
 
               <img
                 src="/images/rili.png"
                 alt="img-2"
-                className="rounded-full w-[184px] h-[184px] absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 mb-0"
+                className="rounded-full w-[284px] h-[284px] absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 mb-0"
               />
             </div>
 
             <div className="pt-6 max-w-[332px] items-center">
               <span>MUHAMMAD RILI ESQ</span>
-              <p className="text-tertiary-400 text-sm ">
-                General Manager, Kaduna State Agricultural Development Agency
+              <p className="text-tertiary-400  ">
+                General Manager, Kaduna State<br/>Agricultural Development Agency
               </p>
             </div>
           </div>

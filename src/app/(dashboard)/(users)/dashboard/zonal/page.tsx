@@ -1,5 +1,5 @@
 import React from "react";
 
 export default function Zonaal() {
-  return <div>Zonal Officer</div>;
+  return <div>Zonal Manager</div>;
 }

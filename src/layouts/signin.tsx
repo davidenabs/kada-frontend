@@ -24,7 +24,7 @@ function SignInLayout({ children }: { children: React.ReactNode }) {
               {children}
 
               <div className="py-3 text-white w-[272px]">
-                4.5 Million Hectres (97%) Arable Land
+                4.5 Million Hectares (97%) Arable Land
               </div>
             </div>
           </div>

@@ -7,8 +7,8 @@ interface ZonalOffice {
 
 const zonalOffices: ZonalOffice[] = [
   {
-    name: "MaiGana Agric Zonal Office",
-    address: "Tudun SOibu community, Maigana, Saba Local Government Area",
+    name: "Maigana Agric Zonal Office",
+    address: "Tudun Sobu community, Maigana, Saba Local Government Area",
   },
   {
     name: "Samaru Agric Zonal Office",
@@ -34,7 +34,7 @@ const ZonalOffices: React.FC = () => {
       {zonalOffices.map((office, index) => (
         <div
           key={index}
-          className="flex flex-col mt-4 w-full text-sm tracking-wide"
+          className="flex flex-col mt-4 w-full  tracking-wide"
         >
           <h4 className="font-bold leading-snug text-zinc-700">
             {office.name}

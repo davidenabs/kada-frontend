@@ -44,9 +44,9 @@ const CommunityAids: React.FC = () => {
         </>
       );
     } else if (activeTab === "ZACO") {
-      return <p>Content for ZACO</p>;
+      return <p></p>;
     } else if (activeTab === "SADEC") {
-      return <p>Content for SADEC</p>;
+      return <p></p>;
     } else if (activeTab === "DIRECTORATES") {
       return (
         <>

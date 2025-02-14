@@ -7,7 +7,7 @@ const Pricing = () => {
         <>
             <div className='bg-[url("/images/tree-header-bg.png")] bg-cover h-full w-full pt-[123px] md:py-[165px] '>
                 <h1 className="self-center mt-28 text-4xl text-center font-semibold text-white max-md:mt-10">
-                    Pricing Information
+                Commodity Pricing Information
                 </h1>
             </div>
 

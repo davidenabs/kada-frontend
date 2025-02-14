@@ -16,6 +16,7 @@
 
 body {
   @apply font-oxygen;
+  font-size: 17px;
 }
 
 @layer base {

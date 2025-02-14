@@ -1,40 +1,40 @@
 export const committeeMembers = [
-  {
-    name: "John Doe",
-    role: "Committee chairman KALAC",
-    imageSrc: "/images/rili.png",
-    background: "/images/vector-bg-1.svg",
-  },
-  {
-    name: "John Doe",
-    role: "Committee chairman KALAC",
-    imageSrc: "/images/rili.png",
-    background: "/images/vector-bg.png",
-  },
-  {
-    name: "John Doe",
-    role: "Committee chairman KALAC",
-    imageSrc: "/images/rili.png",
-    background: "/images/vector-bg-2.svg",
-  },
-  {
-    name: "John Doe",
-    role: "Committee chairman KALAC",
-    imageSrc: "/images/rili.png",
-    background: "/images/vector-bg-1.svg",
-  },
-  {
-    name: "John Doe",
-    role: "Committee chairman KALAC",
-    imageSrc: "/images/rili.png",
-    background: "/images/vector-bg.png",
-  },
-  {
-    name: "John Doe",
-    role: "Committee chairman KALAC",
-    imageSrc: "/images/rili.png",
-    background: "/images/vector-bg-2.svg",
-  },
+  // {
+  //   name: "John Doe",
+  //   role: "Committee chairman KALAC",
+  //   imageSrc: "/images/rili.png",
+  //   background: "/images/vector-bg-1.svg",
+  // },
+  // {
+  //   name: "John Doe",
+  //   role: "Committee chairman KALAC",
+  //   imageSrc: "/images/rili.png",
+  //   background: "/images/vector-bg.png",
+  // },
+  // {
+  //   name: "John Doe",
+  //   role: "Committee chairman KALAC",
+  //   imageSrc: "/images/rili.png",
+  //   background: "/images/vector-bg-2.svg",
+  // },
+  // {
+  //   name: "John Doe",
+  //   role: "Committee chairman KALAC",
+  //   imageSrc: "/images/rili.png",
+  //   background: "/images/vector-bg-1.svg",
+  // },
+  // {
+  //   name: "John Doe",
+  //   role: "Committee chairman KALAC",
+  //   imageSrc: "/images/rili.png",
+  //   background: "/images/vector-bg.png",
+  // },
+  // {
+  //   name: "John Doe",
+  //   role: "Committee chairman KALAC",
+  //   imageSrc: "/images/rili.png",
+  //   background: "/images/vector-bg-2.svg",
+  // },
 ];
 
 export const ZoneMembers = [

@@ -134,7 +134,7 @@ const navItems: NavItemProps[] = [
   { text: "Home", route: "/" },
   { text: "About KADA", route: "/about-kada" },
   { text: "Programs", route: "/programs" },
-  { text: "Interventions", route: "/interventions" },
+  { text: "Special Project", route: "/interventions" },
   { text: "Tools", route: "#", hasDropdown: true },
   { text: "Contact Us", route: "/contact" },
 ];
@@ -170,7 +170,7 @@ const Navbar: React.FC = () => {
         />
       )}
       <header className="fixed w-full z-[999] top-0">
-        <div className="flex justify-between items-center h-[90px] lg:h-[121px] app_container relative z-[999] leading-tight bg-[#F2F9F5] !backdrop-blur-lg">
+        <div className="flex justify-between items-center h-[90px] lg:h-[121px] app_containe px-10 relative z-[999] leading-tight bg-[#F2F9F5] !backdrop-blur-lg">
           {/* Logo */}
           <div className="flex items-center gap-2">
             {/* <Logo
@@ -179,14 +179,14 @@ const Navbar: React.FC = () => {
               )}
             /> */}
             <img
-              src="/images/logo.svg"
+              src="/images/main-logo.png"
               alt="Kaduna State Agricultural Development Agency Logo"
               className={cn(
-                width < 1024 ? "h-[46.49px] w-[46px]" : "h-[66.49px] w-[66px]"
+                width < 1024 ? "h[46.49px] w-[166px]" : "h[66.49px] w-[266px]"
               )}
             />
 
-            <div>
+            {/* <div>
               <h1 className="text-[#367B62] font-bold  text-[22px] md:text-[26px]">
                 KADA
               </h1>
@@ -194,7 +194,7 @@ const Navbar: React.FC = () => {
                 Kaduna Agricultural <br />
                 Development Agency
               </p>
-            </div>
+            </div> */}
           </div>
 
           {/* Hamburger Icon for Mobile Screens */}

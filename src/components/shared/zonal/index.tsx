@@ -170,7 +170,9 @@ function ZonalVendorsSharedPage() {
                       ) : activeTab === "Members" ? (
                         <button
                           onClick={() => {
-                            console.log("View");
+                            setVendor((item as any));
+                            setView(true);
+                            // console.log("View");
                           }}
                           className="text-primary"
                         >

@@ -255,7 +255,7 @@ const Sidebar: React.FC = () => {
             <img
               src="/images/logo.svg"
               alt="Logo"
-              className="object-contain shrink-0 aspect-[0.97] w-[39px]"
+              className="object-contain shrink-0 aspect-[0.97] w-[100px]"
             />
             <div className="my-auto">KADA</div>
           </div>
