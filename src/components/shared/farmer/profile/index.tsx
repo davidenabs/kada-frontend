@@ -70,9 +70,13 @@ function FarmerProfileSharedPage() {
 
   let profileImagePath = "/images/avatar.png";
 
-  if (isValidValue(user?.farmerProfile?.ninData?.photo)) {
-    profileImagePath = `data:image/jpeg;base64,${user?.farmerProfile?.ninData?.photo}`;
-  } else if (user?.imagePath) {
+  // if (isValidValue(user?.farmerProfile?.ninData?.photo)) {
+  //   profileImagePath = `data:image/jpeg;base64,${user?.farmerProfile?.ninData?.photo}`;
+  // } else if (user?.imagePath) {
+  //   profileImagePath = user?.imagePath;
+  // }
+
+  if (user?.imagePath) {
     profileImagePath = user?.imagePath;
   }
 
