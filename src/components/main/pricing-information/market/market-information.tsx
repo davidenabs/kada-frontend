@@ -1,6 +1,6 @@
 "use client";
 import { Brick } from "@/icons";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import MarketDetails from "./market-details";
 import MarketMap from "./market-map";
 import MarketActions from "./market-actions";
@@ -19,10 +19,16 @@ const MarketInformation: React.FC<MarketInformationProps> = ({
 }) => {
   const [page, setPage] = useState(1);
   const [limit] = useState(10);
-  const { data, isFetching, isRefetching } = useGetMarketProductsQuery({
+  const { data, isFetching, isRefetching, refetch } = useGetMarketProductsQuery({
     enabled: showDetails,
-    marketId: selectedMarket?.id,
+    marketId: selectedMarket?.marketCode,
   });
+
+  useEffect(() => {
+    if (selectedMarket) {
+      refetch();
+    }
+  }, [selectedMarket, refetch]);
 
   return (
     <section className="flex flex-col w-[59%] max-md:ml-0 max-md:w-full">

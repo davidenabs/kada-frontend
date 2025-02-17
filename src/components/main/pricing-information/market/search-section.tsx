@@ -4,6 +4,7 @@ import { BadgeTag, SearchIcon } from "@/icons";
 import Button from "@/components/form/button";
 import { useGetMarketsQuery } from "@/app/_api/market";
 import useDebounce from "@/hooks/use-debounce";
+import { InputProps } from "rizzui";
 
 interface SearchSectionProps {
   setShowDetails: (show: boolean) => void;
@@ -94,8 +95,9 @@ const SearchSection: React.FC<SearchSectionProps> = ({
                   setSearch(e);
                 }}
                 disableDefaultFilter
-                searchPlaceHolder="Search here..."
+                searchPlaceHolder="Search for a market..."
                 searchPrefix={<SearchIcon className="fill-black" />}
+                placeholder="Select a market"
               />
 
               {/* <Button

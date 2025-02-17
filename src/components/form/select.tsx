@@ -5,7 +5,7 @@ import { cn, Select as RizzSelect, SelectOption, SelectProps } from "rizzui";
 interface SelectProp extends SelectProps<SelectOption> {}
 
 const Select = React.forwardRef<HTMLSelectElement, SelectProp>(
-  ({ error, label, className, placeholder, ...props }, ref) => (
+  ({ error, label, className, ...props }, ref) => (
     <div className="flex flex-col my-1">
       <RizzSelect
         label={label}

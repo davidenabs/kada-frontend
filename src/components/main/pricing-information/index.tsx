@@ -84,7 +84,7 @@ function PricingInformation() {
 
       setProducts(Array.from(uniqueProducts.values()));
     }
-  }, [productsData, productIsFetching])
+  }, [productsData, productIsFetching]);
 
   React.useEffect(() => {
     if (
@@ -133,7 +133,7 @@ function PricingInformation() {
                   <div className="flex flex-col items-center self-center max-w-full leading-tight w-[472px]">
                     <BadgeTag className="w-12 h-12" />
                     <h1 className="mt-1 text-2xl font-semibold text-green-600 uppercase">
-                    Commodity PRICING INFORMATION
+                      Commodity PRICING INFORMATION
                     </h1>
                     <p className="mt-1 text-sm text-center text-neutral-700 max-md:max-w-full">
                       Get insight on product pricing
@@ -164,6 +164,7 @@ function PricingInformation() {
                       }}
                       selectClassName="!h-[56px] rounded-full border-[0.4px] border-primary"
                       errorClassName="text-red-500"
+                      placeholder="Select one or more markets"
                     />
 
                     <MultiSelect
@@ -180,6 +181,7 @@ function PricingInformation() {
                       }}
                       selectClassName="!h-[56px] rounded-full border-[0.4px] border-primary"
                       errorClassName="text-red-500"
+                      placeholder="Select one or more products"
                     />
 
                     <MultiSelect
@@ -200,6 +202,7 @@ function PricingInformation() {
                       }}
                       selectClassName="!h-[56px] rounded-full border-[0.4px] border-primary"
                       errorClassName="text-red-500"
+                      placeholder="Select one or more market sizes"
                     />
 
                     <div className="flex flex-col">
@@ -211,8 +214,9 @@ function PricingInformation() {
                         wrapperClassName="w-full"
                         inputProps={{
                           inputClassName:
-                            "!rounded-full border-primary border-[.5px]",
+                            "!rounded-full border-primary border-[.5px] !h-[56px]",
                           label: "Select Date",
+                          placeholder: "Select a date",
                         }}
                       />
                       <div className="">
@@ -278,7 +282,7 @@ function PricingInformation() {
                   <h2 className="mt-1 text-lg font-semibold text-[#205B42]">
                     No Pricing information to show yet!
                   </h2>
-                  <p className="mt-1 text-sm text-center text-neutral-700 max-md:max-w-full">
+                  <p className="mt-1 textsm text-center text-neutral-700 max-md:max-w-full">
                     Select a product / market to see price information
                   </p>
                 </div>

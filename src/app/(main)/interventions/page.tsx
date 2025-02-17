@@ -14,7 +14,7 @@ export default function InterventionsPage() {
       <section className="app_container flex flex-col rounded-none py-[83px] md:py-[105px]">
         <div className="flex flex-col self-center max-w-full w-[828px]">
           <h2 className="self-center text-3xl font-bold leading-tight text-green-800">
-            Interventions
+            Special Project
           </h2>
         </div>
       </section>

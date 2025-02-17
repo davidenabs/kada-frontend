@@ -66,8 +66,14 @@ const NavItem: React.FC<NavItemProps> = ({
       desc: "Market locations, products and other related market data",
       href: "/commodity-pricing/market",
     },
+    {
+      id: 4,
+      title: "Good Agronomic practices",
+      desc: "Knowledge Bank for Good Agronomic practices",
+      href: "/good-agronomic-practices",
+    },
   ];
-
+ 
   return (
     <div className="flex flex-col items-center relative" ref={dropdownRef}>
       {hasDropdown ? (
@@ -99,7 +105,7 @@ const NavItem: React.FC<NavItemProps> = ({
       )}
       {hasDropdown && isDropdownOpen && (
         <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 bg-[#F2F9F5] shadow-md rounded-b-md py-6 z-10 px-4">
-          <h2 className="text-[14px] font-semibold pl-4">KADA TOOLS</h2>
+          <h2 className="text-[14px] font-semibold pl-4 uppercase">Advisory TOOLS</h2>
           <div className="flex flex-col gap-3 w-[250px] mt-4">
             {dropdownData.map((data) => {
               return (

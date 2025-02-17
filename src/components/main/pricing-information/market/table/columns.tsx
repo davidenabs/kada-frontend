@@ -1,5 +1,5 @@
 import { Column } from "@/components/common/table";
-import { PriceHighIcon } from "@/icons";
+import { PriceHighIcon, PriceLowIcon } from "@/icons";
 import { format } from "date-fns";
 
 const columns: Column<any>[] = [
@@ -23,7 +23,7 @@ const columns: Column<any>[] = [
     key: "date",
     render: (item) => (
       <div className="text-left text-xs">
-        {format(new Date(item.currentPriceDate), "PP")}
+        {format(new Date(item.priceDate), "PP")}
       </div>
     ),
   },
@@ -33,9 +33,15 @@ const columns: Column<any>[] = [
     render: (item) => (
       <div className="text-left flex text-sm">
         <span className="self-stretch my-auto text-black">
-          {item.priceTrend.percentage}%{/* {item.priceTrend.trend}  */}
+          {item.priceTrend.percentageChange}%{/* {item.priceTrend.trend}  */}
         </span>
-        <PriceHighIcon className="w-[18px] h-[18px]" />
+        {item.priceTrend.trend == "increase" ? (
+          <PriceLowIcon className="w-[18px] h-[18px]" />
+        ) : item.priceTrend.trend == "increase" ? (
+          <PriceHighIcon className="w-[18px] h-[18px]" />
+        ) : (
+          ""
+        )}
       </div>
     ),
   },

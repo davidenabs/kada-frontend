@@ -1,4 +1,4 @@
-import { PriceHighIcon, PriceMarketIcon } from "@/icons";
+import { PriceHighIcon, PriceLowIcon, PriceMarketIcon } from "@/icons";
 import { appAtom } from "@/stores/app";
 import { formatDate } from "date-fns";
 import { useAtom } from "jotai";
@@ -13,7 +13,7 @@ interface PriceCardProps {
   lastUpdated: string;
   percentageChange: string;
   comparisonText: string;
-  currentPriceDate: string;
+  priceDate: string;
 }
 
 const PriceCard: React.FC<PriceCardProps> = (product: any) => {
@@ -28,19 +28,21 @@ const PriceCard: React.FC<PriceCardProps> = (product: any) => {
     >
       <div className="flex flex-col w-full">
         <h2 className="text-xs leading-tight text-black capitalize">
-          {formatDistanceToNow(
-            new Date(product.currentPriceDate ?? new Date()),
-            {
-              addSuffix: true,
-            }
-          )}
+          {formatDistanceToNow(new Date(product.priceDate ?? new Date()), {
+            addSuffix: true,
+          })}
         </h2>
         <div className="flex flex-col mt-4 w-full">
           <div className="flex flex-col leading-tight text-black whitespace-nowrap w-[83px]">
             <h3 className="text-xl">{product?.name}</h3>
             <div className="flex items-center mt-1 w-full text-2xl font-bold text-center">
               <span>₦&nbsp;</span>
-              <span className="self-stretch my-auto">{product?.price}</span>
+              <span className="self-stretch my-auto">
+                {product?.price}{" "}
+                <sup>
+                  <span className="text-[10px] text-zinc-600">AVG</span>
+                </sup>
+              </span>
             </div>
           </div>
           <div className="flex flex-col mt-6 w-full">
@@ -65,12 +67,31 @@ const PriceCard: React.FC<PriceCardProps> = (product: any) => {
               <span className="self-stretch my-auto text-black">
                 {/* {percentageChange} */}
                 {/* 3% rise */}
-                {product?.priceTrend?.percentage ?? 0}% rise
+                {product?.priceTrend?.percentageChange ?? 0}% rise
               </span>
-              <PriceHighIcon className="w-[18px] h-[18px]" />
+              {product.priceTrend.trend == "increase" ? (
+                <PriceLowIcon className="w-[18px] h-[18px]" />
+              ) : product.priceTrend.trend == "increase" ? (
+                <PriceHighIcon className="w-[18px] h-[18px]" />
+              ) : (
+                ""
+              )}
               <span className="self-stretch my-auto text-zinc-600">
                 {/* {comparisonText} */}
-                Compared to yesterday
+                {product?.priceTrend?.previousUploadedDate ? (
+                  <>
+                    {" "}
+                    Compared to last uploaded:{" "}
+                    {formatDate(
+                      new Date(
+                        product?.priceTrend?.previousUploadedDate ?? new Date()
+                      ),
+                      "dd MMM yyyy"
+                    )}
+                  </>
+                ) : (
+                  <></>
+                )}
               </span>
             </div>
           </div>

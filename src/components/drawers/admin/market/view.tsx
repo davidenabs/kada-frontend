@@ -14,7 +14,7 @@ function ViewMarketDrawer({ open, close, market }: ViewMarketDrawerProps) {
   const [loaded, setLoaded] = React.useState(false);
   const { data, isFetching, isRefetching } = useGetMarketProductsQuery({
     enabled: loaded,
-    marketId: market?.id,
+    marketId: market?.marketCode,
   });
 
   React.useEffect(() => {
@@ -107,7 +107,7 @@ function ViewMarketDrawer({ open, close, market }: ViewMarketDrawerProps) {
                           <Table.Cell>{product.quantity}</Table.Cell>
                           <Table.Cell>{product.unit || "N/A"}</Table.Cell>
                           <Table.Cell>
-                            {format(product.currentPriceDate, "PP")}
+                            {format(product.priceDate, "PP")}
                           </Table.Cell>
                         </Table.Row>
                       ))}
