@@ -25,7 +25,7 @@ const ContactUs: React.FC = () => {
     {
       icon: "https://cdn.builder.io/api/v1/image/assets/TEMP/dbeee2692aa6950454f8d20cc6f4c30632b7d9d4ac47de5994c719828e14e5ff?placeholderIfAbsent=true&apiKey=e3159558e3c24b7bb6f2db02f0873db3",
       title: "E-mails",
-      details: ["muhammad.rii@kdsg.gov.ng"],
+      details: ["muhammadrili@kdsg.gov.ng"],
     },
     {
       icon: "https://cdn.builder.io/api/v1/image/assets/TEMP/8937116792d4c23b6a481a409dd63643d28a57b81378ba83609b132b53cd2e0e?placeholderIfAbsent=true&apiKey=e3159558e3c24b7bb6f2db02f0873db3",
@@ -47,7 +47,7 @@ const ContactUs: React.FC = () => {
     {
       name: "Samaru Agric Zonal Office:",
       address:
-        "Samaru Kataf Along Zankuwa Kagoro Road Zangan Kataf Local Government Area.",
+        "Zangon Kataf Along Zankuwa Kagoro Road Zangan Kataf Local Government Area.",
     },
     {
       name: "Lere Agric Zonal Office:",
@@ -57,7 +57,7 @@ const ContactUs: React.FC = () => {
     {
       name: "Birni Gwari Agric Zonal Office:",
       address:
-        "Aliyu Makama Road, Adjacent Living fiath Church, Garden, Kaduna South Local Government Area.",
+        "Aliyu Makama Road, Adjacent Living Faith Church, Garden, Kaduna South Local Government Area.",
     },
   ];
 

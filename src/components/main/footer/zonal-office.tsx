@@ -13,7 +13,7 @@ const zonalOffices: ZonalOffice[] = [
   {
     name: "Samaru Agric Zonal Office",
     address:
-      "Samaru Kataf Along Zankuwa Kagoro Road Zangan Kataf Local Government Area.",
+      "Zangon Kataf Along Zankuwa Kagoro Road Zangan Kataf Local Government Area.",
   },
   {
     name: "Lere Agric Zonal Office",
@@ -23,7 +23,7 @@ const zonalOffices: ZonalOffice[] = [
   {
     name: "Birni Gwari Agric Zonal Office",
     address:
-      "Aliyu Makama Road, Adjacent Living fiath Church, Garden, Kaduna South Local Government Area",
+      "Aliyu Makama Road, Adjacent Living Faith Church, Garden, Kaduna South Local Government Area",
   },
 ];
 
@@ -32,10 +32,7 @@ const ZonalOffices: React.FC = () => {
     <div className="flex flex-col mt-6 max-w-full w-[268px]">
       <h3 className="text-base leading-tight text-zinc-700">Zonal Offices</h3>
       {zonalOffices.map((office, index) => (
-        <div
-          key={index}
-          className="flex flex-col mt-4 w-full  tracking-wide"
-        >
+        <div key={index} className="flex flex-col mt-4 w-full  tracking-wide">
           <h4 className="font-bold leading-snug text-zinc-700">
             {office.name}
           </h4>

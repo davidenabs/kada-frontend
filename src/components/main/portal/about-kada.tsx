@@ -89,63 +89,6 @@ const Content: React.FC<{ activeTab: string }> = ({ activeTab }) => {
   );
 };
 
-const FarmerContent = () => {
-  return (
-    <>
-      <h3 className="self-start text-xl font-semibold leading-snug text-green-800">
-        Small Holder Farmers
-      </h3>
-      <h4 className="mt-7 mr-7 text-3xl font-bold leading-8 max-md:mr-2.5 max-md:max-w-full">
-        Fostering growth and development for all categories
-      </h4>
-      <p className="mt-9 text-lg leading-6 max-md:max-w-full">
-        Kaduna State Agricultural Development Agency paves the way for a
-        sustainable future in Kaduna.
-        <br />
-        <br />
-        Kaduna State Agricultural Development Agency paves the way for a
-        sustainable future in Kaduna. Kaduna State Agricultural Development
-        Agency paves the way for a sustainable future in Kaduna. Kaduna State
-        Agricultural
-        <br />
-        <br />
-        Development Agency paves the way for a sustainable future in Kaduna.
-        Kaduna State Agricultural Development Agency paves the way for a
-        sustainable future in Kaduna.
-      </p>
-    </>
-  );
-};
-
-const ProcessorContent = () => {
-  return (
-    <>
-      <h3 className="self-start text-xl font-semibold leading-snug text-green-800">
-        Processors & Marketers
-      </h3>
-      <h4 className="mt-7 mr-7 text-3xl font-bold leading-8 max-md:mr-2.5 max-md:max-w-full">
-        Fostering growth and development for all categories
-      </h4>
-      <p className="mt-9 text-lg leading-6 max-md:max-w-full">
-        Kaduna State Agricultural Development Agency paves the way for a
-        sustainable future in Kaduna.
-        <br />
-        <br />
-        Kaduna State Agricultural Development Agency paves the way for a
-        sustainable future in Kaduna. Kaduna State Agricultural Development
-        Agency paves the way for a sustainable future in Kaduna. Kaduna State
-        Agricultural
-        <br />
-        <br />
-        Development Agency paves the way for a sustainable future in Kaduna.
-        Kaduna State Agricultural Development Agency paves the way for a
-        sustainable future in Kaduna.
-      </p>
-    </>
-  );
-};
-
-//   other category contents
 
 const AboutKada: React.FC = () => {
   const [activeTab, setActiveTab] = useState("Small Holder Farmers");

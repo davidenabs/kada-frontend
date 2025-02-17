@@ -17,10 +17,14 @@ import "swiper/css";
 import "swiper/swiper-bundle.css";
 import "swiper/css/effect-fade";
 import "swiper/css/pagination";
+import useScreenSize from "@/hooks/use-screen-size";
 
 const Statistics: React.FC<{ hasBg?: boolean }> = ({ hasBg = true }) => {
   const swiperRef = React.useRef<SwiperType | null>(null);
   const [ref, isInView] = useInView<HTMLDivElement>();
+  const { width } = useScreenSize();
+
+  const isLargeScreen = React.useMemo(() => width > 992, [width]);
 
   const settings = {
     dots: true,
@@ -97,7 +101,7 @@ const Statistics: React.FC<{ hasBg?: boolean }> = ({ hasBg = true }) => {
             onSwiper={(swiper) => {
               swiperRef.current = swiper;
             }}
-            slidesPerView={4}
+            slidesPerView={isLargeScreen ? 4 : 1}
             autoplay={{
               delay: 3000,
               disableOnInteraction: false,

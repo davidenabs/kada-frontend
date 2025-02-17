@@ -23,16 +23,16 @@ const StatCard: React.FC<StatCardProps> = ({
 }) => {
   return (
     <article
-      className={`flex flex-col w-full w[33%] max-md:w-full h-[317.05px] relative bg-transparent`}
+      className={`flex flex-col w-full h-[317.05px] relative bg-transparent`}
     >
-      <div className={`flex flex-col grow pb-9 w-full rounded-3xl ${bgColor} `}>
-        {title === "Arable Land" && (
+      <div className={`flex flex-col grow pb-9 w-full rounded-3xl ${bgColor} shadow-sm`}>
+        {/* {title === "Arable Land" && (
           <img
             src="https://cdn.builder.io/api/v1/image/assets/TEMP/9c20e9d273d0f3567dae0f0fffed726ab57797b5ac298ccf60a5d92e8d9481d2?placeholderIfAbsent=true&apiKey=e3159558e3c24b7bb6f2db02f0873db3"
             alt=""
             className="object-contain absolute self-end max-w-full aspect[3] w-[129px]"
           />
-        )}
+        )} */}
         <div className="flex flex-col items-start px-9 mt-8 max-md:px-5 ">
           <h3
             className={`self-stretch font-thin text-xl md:text-4xl leading-10 ${textColor}`}
