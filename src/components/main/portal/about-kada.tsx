@@ -26,16 +26,16 @@ const NavMenu: React.FC<{
   ];
 
   return (
-    <nav className="flex overflow-hidden flex-wrap gap-10 items-center px-1 py-0.5 mt-11 max-w-full text-base leading-none text-center bg-white rounded-[60px] text-zinc-700 w-[919px] max-md:mt-10">
+    <nav className="flex overflow-auto flex-nowrap md:gap-10 max-md:gap-3 items-center px-1 py-0.5 mt-11 max-w-full text-base leading-none text-center md:bg-white md:rounded-[60px] text-zinc-700 md:w[919px] max-md:mt-10">
       {navItems.map((item, index) => (
         <button
           key={index}
           onClick={() => setActiveTab(item.label)}
-          className={`${
+          className={`self-stretch whitespace-nowrap px-5 ${
             activeTab === item.label
-              ? "self-stretch px-11 py-5 font-bold text-white bg-zinc-700 rounded-[33px] max-md:px-5"
-              : "grow shrink self-stretch my-auto"
-          } ${activeTab !== item.label ? "w-[89px]" : ""}`}
+              ? "px-11 py-5 font-bold text-white bg-zinc-700 rounded-[33px] max-md:px-5"
+              : " my-auto"
+          } ${activeTab !== item.label ? "w[89px] wfull" : ""}`}
         >
           {item.label}
         </button>
@@ -46,10 +46,10 @@ const NavMenu: React.FC<{
 
 const Content: React.FC<{ activeTab: string }> = ({ activeTab }) => {
   return (
-    <section className="self-stretch mt-16 max-md:mt-10 max-md:max-w-full">
+    <section className="self-stretch mt-16 max-md:mt-0 max-md:max-w-full">
       <div className="flex gap-5 max-md:flex-col">
         <div className="flex flex-col w-6/12 max-md:ml-0 max-md:w-full">
-          <div className="flex flex-col text-zinc-700 max-md:mt-10 max-md:max-w-full">
+          <div className="flex flex-col text-zinc-700 max-md:max-w-full">
             {activeTab === "Small Holder Farmers" && (
               <FarmerSection hasWidth={false} />
             )}
@@ -68,7 +68,7 @@ const Content: React.FC<{ activeTab: string }> = ({ activeTab }) => {
             {/* Add other content components here based on the activeTab */}
           </div>
         </div>
-        <div className="flex flex-col ml-5 w-6/12 max-md:ml-0 max-md:w-full">
+        <div className="flex flex-col ml-5 w-6/12 max-md:ml-0 max-md:w-full max-md:hidden">
           <div className="flex relative flex-col grow items-end px-20 pt-56 min-h-[534px] rounded-[68px_68px_68px_68px] max-md:pt-24 max-md:mt-10 max-md:max-w-full">
             <img
               loading="lazy"
