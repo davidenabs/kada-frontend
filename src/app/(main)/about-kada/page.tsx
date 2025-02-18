@@ -20,7 +20,7 @@ const About = () => {
           <h2 className="self-center text-3xl font-bold leading-tight text-green-800">
             About Kada
           </h2>
-          <div className="mt-9 text-base leading-6 text-center text-zinc-700 max-md:max-w-full space-y-5">
+          <div className="mt-9 text-xl leading-6 text-center text-zinc-700 max-md:max-w-full space-y-5">
             <p>
               The Kaduna Agricultural Development Agency (KADA) is dedicated to
               driving agricultural transformation in Kaduna State by promoting
@@ -59,7 +59,7 @@ const About = () => {
           <h2 className="self-center text-3xl font-bold leading-tight text-[#F2A50C]">
             FOREWORD
           </h2>
-          <div className="mt-9 text-base font-thin leading-6 text-center text-zinc-700 max-md:max-w-full space-y-5">
+          <div className="mt-9 text-xl font-thin leading-6 text-center text-zinc-700 max-md:max-w-full space-y-5">
             <p>
               The Kaduna State Agricultural Development Agency (KADA) is a
               beacon of innovation, resilience, and growth in the agricultural

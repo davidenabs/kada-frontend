@@ -70,7 +70,7 @@ const CommunityAids: React.FC = () => {
           <div className="flex max-md:flex-col gap-5 md:justify-between md:items-end self-stretch mt-7 w-full text-base text-center max-md:max-w-full">
             <LocalGovernmentSelector />
             {/* buttons to tap */}
-            <div className="flex gap-3 mt-7 font-bold whitespace-nowrap">
+            <div className="flex gap-3 mt-7 font-bold whitespace-nowrap overflow-auto">
               <Button
                 className={`px-16 !py-2 rounded-[33px] max-md:px-5 !shadow-none ${
                   activeTab === "KALAC"
@@ -123,7 +123,7 @@ const CommunityAids: React.FC = () => {
               </Button>
             </div>
           </div>
-          <h2 className="mt-28 text-2xl md:text-3xl font-semibold leading-tight text-zinc-700 max-md:mt-10 max-md:max-w-full">
+          <h2 className="mt-28 text-2xl md:text-3xl text-center font-semibold leading-tight text-zinc-700 max-md:mt-10 max-md:max-w-full">
             {activeTab === "KALAC"
               ? "KADA Local Agric Community (KALAC)"
               : activeTab === "KAWAC"
