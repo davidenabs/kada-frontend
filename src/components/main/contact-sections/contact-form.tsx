@@ -99,7 +99,7 @@ const ContactForm: React.FC = () => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="flex flex-col text-xl leading-tight text-black rounded-none mt-10 w-fulll"
+      className="flex flex-col text-xl leading-tight text-black rounded-none mt-10 w-full max-md:px-5"
     >
       <div className="self-center text-2xl font- leading-none text-center text-green-800">
         <h1>Send Us a Message</h1>
@@ -151,7 +151,7 @@ const ContactForm: React.FC = () => {
 
       <Button
         type="submit"
-        className=" mt-12 font-bold !text-amber-300 !rounded-full max-md:mt-10 w-[538px] max-md:max-w-[538px]"
+        className=" mt-12 font-bold !text-amber-300 !rounded-full max-md:mt-10 w-[538px] max-md:max-w-full"
         loading={isPending}
       >
         Submit
