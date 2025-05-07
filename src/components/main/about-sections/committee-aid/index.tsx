@@ -12,7 +12,7 @@ import "swiper/css/pagination";
 import "swiper/css/scrollbar";
 
 const CommunityAids: React.FC = () => {
-  const [activeTab, setActiveTab] = useState("KALAC");
+  const [activeTab, setActiveTab] = useState("DIRECTORATES");
 
   const renderCommitteeContent = () => {
     if (activeTab === "KALAC") {
@@ -27,7 +27,6 @@ const CommunityAids: React.FC = () => {
           scrollbar={{ draggable: true }}
           className="mt-9 max-md:max-w-full"
         >
-         
           {/* <div className="grid md:grid-cols-3 gap-10 items-start mt-9 max-md:max-w-full">
             {committeeMembers.slice().map((member, index) => (
               <CommitteeMember key={index} {...member} />
@@ -62,10 +61,10 @@ const CommunityAids: React.FC = () => {
             COMMUNITY AIDS
           </h1>
           <div className="flex max-md:flex-col gap-5 md:justify-between md:items-end self-stretch mt-7 w-full text-base text-center max-md:max-w-full">
-            <LocalGovernmentSelector />
+            {/* <LocalGovernmentSelector /> */}
             {/* buttons to tap */}
-            <div className="flex gap-3 mt-7 font-bold whitespace-nowrap overflow-auto">
-              <Button
+            <div className="flex w-full gap-3 mt-7 font-bold whitespace-nowrap overflow-auto justify-center">
+              {/* <Button
                 className={`px-16 !py-2 rounded-[33px] max-md:px-5 !shadow-none ${
                   activeTab === "KALAC"
                     ? "!bg-zinc-700 text-white"
@@ -104,17 +103,19 @@ const CommunityAids: React.FC = () => {
                 handleClick={() => setActiveTab("SADEC")}
               >
                 SADEC
-              </Button>
-              <Button
-                className={`px-16 !py-2 rounded-[33px] max-md:px-5 !shadow-none ${
-                  activeTab === "DIRECTORATES"
-                    ? "!bg-zinc-700 text-white"
-                    : "border-[0.5px] !bg-white text-zinc-700 border-zinc-700"
-                }`}
-                handleClick={() => setActiveTab("DIRECTORATES")}
-              >
-                DIRECTORATES
-              </Button>
+              </Button> */}
+              <div>
+                <Button
+                  className={`px-16 !py-2 rounded-[33px] max-md:px-5 !shadow-none flex ${
+                    activeTab === "DIRECTORATES"
+                      ? "!bg-zinc-700 text-white"
+                      : "border-[0.5px] !bg-white text-zinc-700 border-zinc-700"
+                  }`}
+                  handleClick={() => setActiveTab("DIRECTORATES")}
+                >
+                  DIRECTORATES
+                </Button>
+              </div>
             </div>
           </div>
           <h2 className="mt-28 text-2xl md:text-3xl text-center font-semibold leading-tight text-zinc-700 max-md:mt-10 max-md:max-w-full">
