@@ -65,7 +65,7 @@ const Footer: React.FC = () => {
                     Kaduna
                   </p>
                   <p className="mt-5 tracking-wide leading-5 text-zinc-500">
-                    No 1, Gashashi Road, Aliyu Makama Barnawa GRA, P.M.B 2269,
+                    No 1, Gashash Road, Aliyu Makama Barnawa GRA, P.M.B 2269,
                     Kaduna, Kaduna State.
                   </p>
                 </div>

@@ -34,15 +34,7 @@ const CommunityAids: React.FC = () => {
         </Swiper>
       );
     } else if (activeTab === "KAWAC") {
-      return (
-        <>
-          <div className="grid md:grid-cols-3 gap-10 items-start mt-9 max-md:max-w-full">
-            {committeeMembers.slice().map((member, index) => (
-              <CommitteeMember key={index} {...member} />
-            ))}
-          </div>
-        </>
-      );
+      return <p></p>;
     } else if (activeTab === "ZACO") {
       return <p></p>;
     } else if (activeTab === "SADEC") {

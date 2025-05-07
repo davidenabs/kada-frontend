@@ -8,12 +8,12 @@ interface ZonalOffice {
 const zonalOffices: ZonalOffice[] = [
   {
     name: "Maigana Agric Zonal Office",
-    address: "Tudun Sobu community, Maigana, Saba Local Government Area",
+    address: "Tudun Sobu community, Maigana, Soba Local Government Area",
   },
   {
     name: "Samaru Agric Zonal Office",
     address:
-      "Zangon Kataf Along Zankuwa Kagoro Road Zangan Kataf Local Government Area.",
+      "Zangon Kataf Along Zonkwa Kagoro Road Zonkwa Kataf Local Government Area.",
   },
   {
     name: "Lere Agric Zonal Office",
