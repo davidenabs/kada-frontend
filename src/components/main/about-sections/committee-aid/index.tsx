@@ -16,6 +16,7 @@ const CommunityAids: React.FC = () => {
 
   const renderCommitteeContent = () => {
     if (activeTab === "KALAC") {
+      return <p></p>;
       return (
         <Swiper
           modules={[Navigation, Pagination, Scrollbar]}
@@ -26,11 +27,12 @@ const CommunityAids: React.FC = () => {
           scrollbar={{ draggable: true }}
           className="mt-9 max-md:max-w-full"
         >
-          <div className="grid md:grid-cols-3 gap-10 items-start mt-9 max-md:max-w-full">
+         
+          {/* <div className="grid md:grid-cols-3 gap-10 items-start mt-9 max-md:max-w-full">
             {committeeMembers.slice().map((member, index) => (
               <CommitteeMember key={index} {...member} />
             ))}
-          </div>
+          </div> */}
         </Swiper>
       );
     } else if (activeTab === "KAWAC") {
@@ -43,7 +45,7 @@ const CommunityAids: React.FC = () => {
       return (
         <>
           <div className="grid md:grid-cols-3 gap-10 items-start mt-9 max-md:max-w-full">
-            {ZoneMembers.slice().map((member, index) => (
+            {committeeMembers.slice().map((member, index) => (
               <CommitteeMember key={index} {...member} />
             ))}
           </div>
