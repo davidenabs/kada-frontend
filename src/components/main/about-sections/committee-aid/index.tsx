@@ -57,9 +57,9 @@ const CommunityAids: React.FC = () => {
     <div className="app_container py-[123px] md:py-[165px] flex flex-col">
       <section className="flex flex-wrap gap-5 justify-center ">
         <div className="flex flex-col items-center self-start max-md:max-w-full">
-          <h1 className="text-3xl font-bold leading-tight text-right text-zinc-700">
+          {/* <h1 className="text-3xl font-bold leading-tight text-right text-zinc-700">
             COMMUNITY AIDS
-          </h1>
+          </h1> */}
           <div className="flex max-md:flex-col gap-5 md:justify-between md:items-end self-stretch mt-7 w-full text-base text-center max-md:max-w-full">
             {/* <LocalGovernmentSelector /> */}
             {/* buttons to tap */}

@@ -25,7 +25,7 @@ const ContactUs: React.FC = () => {
     {
       icon: "https://cdn.builder.io/api/v1/image/assets/TEMP/dbeee2692aa6950454f8d20cc6f4c30632b7d9d4ac47de5994c719828e14e5ff?placeholderIfAbsent=true&apiKey=e3159558e3c24b7bb6f2db02f0873db3",
       title: "E-mails",
-      details: ["muhammadrili@kdsg.gov.ng"],
+      details: ["kada.kdsg@gmail.com", "kada.kdsg@yahoo.com"],
     },
     {
       icon: "https://cdn.builder.io/api/v1/image/assets/TEMP/8937116792d4c23b6a481a409dd63643d28a57b81378ba83609b132b53cd2e0e?placeholderIfAbsent=true&apiKey=e3159558e3c24b7bb6f2db02f0873db3",
@@ -38,16 +38,16 @@ const ContactUs: React.FC = () => {
     {
       name: "HEAD QUATRES:",
       address:
-        "No 1, Gashashi Road, Aliyu Makama Barnawa GRA, P.M.B 2269, Kaduna, Kaduna State.",
+        "No 1, Gashash Road, Aliyu Makama Barnawa GRA, P.M.B 2269, Kaduna, Kaduna State.",
     },
     {
       name: "Maigana Agric Zonal Office:",
-      address: "Tudun Sobu community, Maigana, Saba Local Government Area.",
+      address: "Tudun Sobu community, Maigana, Soba Local Government Area.",
     },
     {
       name: "Samaru Agric Zonal Office:",
       address:
-        "Zangon Kataf Along Zankuwa Kagoro Road Zangan Kataf Local Government Area.",
+        "Zangon Kataf Along Zonkwa Kagoro Road Zangan Kataf Local Government Area.",
     },
     {
       name: "Lere Agric Zonal Office:",
@@ -86,8 +86,9 @@ const ContactUs: React.FC = () => {
         </div>
       </section>
       <OfficeInfo offices={officeDetails} />
-
-      <ContactForm />
+      <section className="flex flex-col items-center px16 py-11 mt-14 max-w-full l w-[880px] max-md:px-5 max-md:mt-10">
+        <ContactForm />
+      </section>
     </main>
   );
 };

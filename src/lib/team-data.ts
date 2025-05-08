@@ -14,7 +14,8 @@ export const committeeMembers = [
   {
     name: "Dr. Blessed Madaki",
     role: "Director Livestock and Veterinary Services",
-    imageSrc: "/images/about/Director Livestock and Veterinary Services Dr. Blessed Madakig.jpeg",
+    imageSrc:
+      "/images/about/Director Livestock and Veterinary Services Dr. Blessed Madakig.jpeg",
     background: "/images/vector-bg-2.svg",
   },
   {
@@ -24,28 +25,30 @@ export const committeeMembers = [
     background: "/images/vector-bg-1.svg",
   },
   {
-    name: "Shehu Na’awu Umar (Ican)",
+    name: "Shehu Na’awu Umar (CNA)",
     role: "Director Finance and Supply",
-    imageSrc: "/images/about/Director Finance and Supply Shehu Na’awu Umar (Ican).jpeg",
+    imageSrc:
+      "/images/about/Director Finance and Supply Shehu Na’awu Umar (CNA).jpeg",
     background: "/images/vector-bg.png",
   },
   {
     name: "Rakiya Abdu na Abdu",
     role: "Director Women in Agriculture",
-    imageSrc: "/images/about/Director Women in Agriculture Rakiya Abdu na Abdu.jpeg",
+    imageSrc:
+      "/images/about/Director Women in Agriculture Rakiya Abdu na Abdu.jpeg",
     background: "/images/vector-bg-2.svg",
   },
   {
     name: "Joshua Mallam",
     role: "Zonal Manager LERE zone",
     imageSrc: "/images/about/Zonal Manager LERE zone  Joshua Mallam.jpeg",
-    background: "/images/vector-bg-2.svg",
+    background: "/images/vector-bg-1.svg",
   },
   {
     name: "Jonathan David",
     role: "Zonal Manager SAMARU zone",
     imageSrc: "/images/about/Zonal Manager SAMARU zone Jonathan David.jpeg",
-    background: "/images/vector-bg-2.svg",
+    background: "/images/vector-bg.png",
   },
   {
     name: "Ahmed Abubakar",
@@ -56,8 +59,9 @@ export const committeeMembers = [
   {
     name: "Suleiman Abubakar",
     role: "Zonal manager Birnin Gwari",
-    imageSrc: "/images/about/Zonal manager Birnin Gwari  Suleiman Abubakar.jpeg",
-    background: "/images/vector-bg-2.svg",
+    imageSrc:
+      "/images/about/Zonal manager Birnin Gwari  Suleiman Abubakar.jpeg",
+    background: "/images/vector-bg-1.svg",
   },
 ];
 
