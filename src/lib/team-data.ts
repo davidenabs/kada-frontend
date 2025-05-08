@@ -28,7 +28,7 @@ export const committeeMembers = [
     name: "Shehu Na’awu Umar (CNA)",
     role: "Director Finance and Supply",
     imageSrc:
-      "/images/about/Director Finance and Supply Shehu Na’awu Umar (CNA).jpeg",
+      "/images/about/Director Finance and Supply Shehu Na’awu Umar (Ican).jpeg",
     background: "/images/vector-bg.png",
   },
   {

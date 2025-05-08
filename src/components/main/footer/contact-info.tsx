@@ -9,6 +9,7 @@ interface ContactItem {
 const contactItems: ContactItem[] = [
   // { icon: <EnvelopeIcon className='h-4 w-4' />, text: "kadphq@yahoo.com," },
   { icon: <EnvelopeIcon className='h-4 w-4' />, text: "kada.kdsg@gmail.com" },
+  { icon: <EnvelopeIcon className='h-4 w-4' />, text: "kada.kdsg@yahoo.com" },
   { icon: <PhoneIcon className='h-4 w-4' />, text: "+2348091947789" },
   { icon: <PhoneIcon className='h-4 w-4' />, text: "+2348023023039" }
 ];
