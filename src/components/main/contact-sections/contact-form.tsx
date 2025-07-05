@@ -149,13 +149,15 @@ const ContactForm: React.FC = () => {
       </div>
       {/* <SubmitButton /> */}
 
-      <Button
-        type="submit"
-        className=" mt-12 font-bold !text-amber-300 !rounded-full max-md:mt-10 w-[538px] max-md:max-w-full"
-        loading={isPending}
-      >
-        Submit
-      </Button>
+      <div className="justify-center flex">
+        <Button
+          type="submit"
+          className=" mt-12 font-bold !text-amber-300 !rounded-full max-md:mt-10 w-[538px] max-md:max-w-full"
+          loading={isPending}
+        >
+          Submit
+        </Button>
+      </div>
     </form>
   );
 };

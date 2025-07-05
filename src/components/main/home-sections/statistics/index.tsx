@@ -149,8 +149,8 @@ const Statistics: React.FC<{ hasBg?: boolean }> = ({ hasBg = true }) => {
 const statisticsData: StatCardProps[] = [
   {
     title: "Arable Land",
-    value: "4.5 Million Hectres (97%) Arable Land",
-    subtitle: "2.9 Million Hectres (65%) under cultivation",
+    value: "4.5 Million Hectares (97%) Arable Land",
+    subtitle: "2.9 Million Hectares (65%) under cultivation",
     source: "KBS, 2017",
     bgColor: "bg-neutral-800",
     textColor: "text-emerald-50",

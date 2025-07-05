@@ -94,7 +94,7 @@ function FarmInfo(farm: IFarm & { farmId: string }) {
             <div className="text-center mt-6">
               <h1 className="mt- text-lg font-bold">{farm?.name}</h1>
               <p className="text-base font-thin pt-1">
-                {farm?.landArea} HECTRES
+                {farm?.landArea} Hectares
               </p>
               <p className="text-sm font-thin pt-2 max-w-[213px]">
                 LGA: {farm?.lga}

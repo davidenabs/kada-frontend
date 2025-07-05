@@ -1,7 +1,7 @@
 export const committeeMembers = [
   {
     name: "Nasiru Sani",
-    role: "Director Administration",
+    role: "Director Administration & Finance",
     imageSrc: "/images/about/Director Administration  Nasiru Sani.jpeg",
     background: "/images/vector-bg-1.svg",
   },
@@ -61,6 +61,13 @@ export const committeeMembers = [
     role: "Zonal manager Birnin Gwari",
     imageSrc:
       "/images/about/Zonal manager Birnin Gwari  Suleiman Abubakar.jpeg",
+    background: "/images/vector-bg-1.svg",
+  },
+  {
+    name: "Mr Nasiru Sani",
+    role: "Director Administration and Finance",
+    imageSrc:
+      "/images/about/Mr Nasiru Sani.jpeg",
     background: "/images/vector-bg-1.svg",
   },
 ];
