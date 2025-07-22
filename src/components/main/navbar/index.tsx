@@ -16,6 +16,8 @@ interface NavItemProps {
   route: string;
   isActive?: boolean;
   hasDropdown?: boolean;
+  isMobile?: boolean;
+  onMobileMenuClose?: () => void;
 }
 
 const NavItem: React.FC<NavItemProps> = ({
@@ -23,6 +25,8 @@ const NavItem: React.FC<NavItemProps> = ({
   isActive,
   route,
   hasDropdown,
+  isMobile = false,
+  onMobileMenuClose,
 }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -37,14 +41,25 @@ const NavItem: React.FC<NavItemProps> = ({
       }
     };
 
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
+    // Only add click outside listener for desktop
+    if (!isMobile) {
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+      };
+    }
+  }, [isMobile]);
 
-  const toggleDropdown = () => {
+  const toggleDropdown = (e: React.MouseEvent) => {
+    e.stopPropagation(); // Prevent event bubbling
     setIsDropdownOpen(!isDropdownOpen);
+  };
+
+  const handleLinkClick = (e: React.MouseEvent) => {
+    e.stopPropagation(); // Prevent event bubbling
+    if (onMobileMenuClose) {
+      onMobileMenuClose();
+    }
   };
 
   const dropdownData = [
@@ -75,48 +90,68 @@ const NavItem: React.FC<NavItemProps> = ({
   ];
 
   return (
-    <div className="flex flex-col items-center relative" ref={dropdownRef}>
+    <div className={cn(
+      "flex flex-col items-center relative",
+      isMobile && "w-full"
+    )} ref={dropdownRef}>
       {hasDropdown ? (
         <button
           onClick={toggleDropdown}
           className={cn(
             "text-tertiary-700 flex items-center gap-1",
-            isActive && "font-bold text-primary-700"
+            isActive && "font-bold text-primary-700",
+            isMobile && "py-2 w-full justify-center"
           )}
           aria-haspopup="true"
           aria-expanded={isDropdownOpen}
         >
           <span>{text}</span>
-          <ChevronDownIcon className="h-4 w-4" />
+          <ChevronDownIcon className={cn(
+            "h-4 w-4 transition-transform duration-200",
+            isDropdownOpen && "rotate-180"
+          )} />
         </button>
       ) : (
         <Link
           href={route}
+          onClick={handleLinkClick}
           className={cn(
             "text-tertiary-700",
-            isActive && "font-bold text-primary-700"
+            isActive && "font-bold text-primary-700",
+            isMobile && "py-2 w-full text-center"
           )}
         >
           {text}
         </Link>
       )}
-      {isActive && (
+
+      {isActive && !isMobile && (
         <div className="h-1.5 w-1.5 bg-primary-700 rounded-full mt-1" />
       )}
+
       {hasDropdown && isDropdownOpen && (
-        <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 bg-[#F2F9F5] shadow-md rounded-b-md py-6 z-10 px-4">
+        <div className={cn(
+          "bg-[#F2F9F5] shadow-md rounded-b-md py-6 z-10 px-4",
+          isMobile
+            ? "w-full mt-2 relative"
+            : "absolute top-full left-1/2 transform -translate-x-1/2 mt-2"
+        )}>
           <h2 className="text-[14px] font-semibold pl-4 uppercase">
             Advisory TOOLS
           </h2>
-          <div className="flex flex-col gap-3 w-[250px] mt-4">
+          <div className={cn(
+            "flex flex-col gap-3 mt-4",
+            isMobile ? "w-full" : "w-[250px]"
+          )}>
             {dropdownData.map((data) => {
               return (
                 <Link
                   key={data.id}
                   href={data.href}
+                  onClick={handleLinkClick}
                   className="block px-4 py-2 text-sm text-tertiary-700 hover:bg-primary-100 hover:rounded-md"
                 >
-                  <div className="flex gap-4 items-start ">
+                  <div className="flex gap-4 items-start">
                     <img
                       src="/icons/hastagIcon.svg"
                       alt="hashtag icon"
@@ -124,7 +159,6 @@ const NavItem: React.FC<NavItemProps> = ({
                     />
                     <div>
                       <h3 className="font-semibold">{data.title}</h3>
-
                       <p className="text-gray-500 text-[12px]">{data.desc}</p>
                     </div>
                   </div>
@@ -142,7 +176,7 @@ const navItems: NavItemProps[] = [
   { text: "Home", route: "/" },
   { text: "About KADA", route: "/about-kada" },
   { text: "Programs", route: "/programs" },
-  { text: "Special Project", route: "/interventions" },
+  { text: "Partners", route: "/partners" },
   { text: "Tools", route: "#", hasDropdown: true },
   { text: "Contact Us", route: "/contact" },
 ];
@@ -163,11 +197,22 @@ const Navbar: React.FC = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  const handleMobileMenuClose = () => {
+    setIsMenuOpen(false);
+  };
+
   useEffect(() => {
     if (app.openNavDrawer) {
       handleCloseNavDrawer();
     }
   }, [app.openNavDrawer, handleCloseNavDrawer]);
+
+  // Close mobile menu when screen size changes to desktop
+  useEffect(() => {
+    if (width >= 1024) {
+      setIsMenuOpen(false);
+    }
+  }, [width]);
 
   return (
     <>
@@ -181,11 +226,6 @@ const Navbar: React.FC = () => {
         <div className="flex justify-between items-center h-[90px] lg:h-[121px] app_containe max-md:px-4 px-10 relative z-[999] leading-tight bg-[#F2F9F5] !backdrop-blur-lg">
           {/* Logo */}
           <div className="flex items-center gap-2">
-            {/* <Logo
-              className={cn(
-                width < 1024 ? "h-[46.49px] w-[46px]" : "h-[66.49px] w-[66px]"
-              )}
-            /> */}
             <img
               src="/images/main-logo.png"
               alt="Kaduna State Agricultural Development Agency Logo"
@@ -193,16 +233,6 @@ const Navbar: React.FC = () => {
                 width < 1024 ? "h[46.49px] w-[166px]" : "h[66.49px] w-[266px]"
               )}
             />
-
-            {/* <div>
-              <h1 className="text-[#367B62] font-bold  text-[22px] md:text-[26px]">
-                KADA
-              </h1>
-              <p className="text-tertiary-700 text-[10px] md:text-[12px]">
-                Kaduna Agricultural <br />
-                Development Agency
-              </p>
-            </div> */}
           </div>
 
           {/* Hamburger Icon for Mobile Screens */}
@@ -247,15 +277,23 @@ const Navbar: React.FC = () => {
         {/* Mobile Dropdown Menu */}
         {isMenuOpen && width < 1024 && (
           <nav className="absolute top-[90px] left-0 w-full bg-primary-100 text-zinc-700 z-[998]">
-            <ul className="flex flex-col items-center gap-5 py-4">
+            <ul className="flex flex-col items-center gap-2 py-4">
               {navItems.map((item, index) => (
-                <li key={index} onClick={() => setIsMenuOpen(false)}>
-                  <NavItem {...item} />
+                <li key={index} className="w-full px-4">
+                  <NavItem
+                    {...item}
+                    isActive={currentPath === item.route}
+                    isMobile={true}
+                    onMobileMenuClose={handleMobileMenuClose}
+                  />
                 </li>
               ))}
-              <li>
+              <li className="mt-4">
                 <Button
-                  handleClick={() => router.push("/portal")}
+                  handleClick={() => {
+                    router.push("/portal");
+                    handleMobileMenuClose();
+                  }}
                   className="flex w-[146px] h-[45px] gap-2.5 justify-center items-center  !px-5 !py-0 my-auto font-bold text-white !rounded-full"
                 >
                   <span className="self-stretch my-auto">Kada Portal</span>
