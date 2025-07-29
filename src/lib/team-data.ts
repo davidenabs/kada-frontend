@@ -38,7 +38,13 @@ export const committeeMembers = [
       "/images/about/Mr Nasiru Sani.jpeg",
     background: "/images/vector-bg-1.svg",
   },
-
+  {
+    name: "Rakiya Abdu na Abdu",
+    role: "Director Women in Agriculture",
+    imageSrc:
+      "/images/about/Director Women in Agriculture Rakiya Abdu na Abdu.jpeg",
+    background: "/images/vector-bg-2.svg",
+  },
   {
     name: "Joshua Mallam",
     role: "Zonal Manager LERE zone",
@@ -63,13 +69,6 @@ export const committeeMembers = [
     imageSrc:
       "/images/about/Zonal manager Birnin Gwari  Suleiman Abubakar.jpeg",
     background: "/images/vector-bg-1.svg",
-  },
-  {
-    name: "Rakiya Abdu na Abdu",
-    role: "Director Women in Agriculture",
-    imageSrc:
-      "/images/about/Director Women in Agriculture Rakiya Abdu na Abdu.jpeg",
-    background: "/images/vector-bg-2.svg",
   },
 ];
 
