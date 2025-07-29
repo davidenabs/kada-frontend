@@ -10,6 +10,13 @@ export default function PartnersPage() {
 
   const partners = [
     {
+      name: "StarAgri",
+      fullName: "Star Agri",
+      logo: "/images/partners/startagri.jpeg",
+      category: "international",
+      description: "Leading the charge for agricultural transformation in Africa"
+    },
+     {
       name: "AGRA",
       fullName: "Alliance for a Green Revolution in Africa",
       logo: "/images/partners/AGRA.jpg",
@@ -189,7 +196,7 @@ export default function PartnersPage() {
   return (
     <main className="bg-gradient-to-br from-blue-50 via-white to-green-50 min-h-screen">
       {/* Header Section */}
-      <div className="flex overflow-hidden flex-col pt-[173px] md:pt-[65px] pb-10">
+      <div className="flex overflow-hidden flex-col pt-[173px] md:pt-[135px] pb-10">
         <div className="relative w-full max-md:hidden">
           <img
             src={"/images/header-banner.png"}

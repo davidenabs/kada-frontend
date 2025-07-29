@@ -152,7 +152,7 @@ export default function ProgramsPage() {
         </div>
       </div> */}
 
-      <div className="flex overflow-hidden flex-col pt-[273px] md:pt-[65px]">
+      <div className="flex overflow-hidden flex-col pt-[273px] md:pt-[135px]">
         <div className="relative w-full max-md:hidden">
           <img
             src={"/images/header-banner.png"}
@@ -366,7 +366,7 @@ export default function ProgramsPage() {
       </div>
 
       {/* Call to Action */}
-      <div className="bg-gradient-to-r from-green-800 to-emerald-700 text-white py-16">
+      {/* <div className="bg-gradient-to-r from-green-800 to-emerald-700 text-white py-16">
         <div className="max-w-4xl mx-auto px-6 text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">Join Our Agricultural Transformation</h2>
           <p className="text-lg md:text-xl opacity-90 mb-8 max-w-2xl mx-auto">
@@ -381,7 +381,7 @@ export default function ProgramsPage() {
             </button>
           </div>
         </div>
-      </div>
+      </div> */}
     </main>
   );
 }
