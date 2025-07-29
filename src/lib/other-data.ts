@@ -12,7 +12,7 @@ export const whatWeStandForData = {
       iconSrc: "/images/policy-statement.svg",
       title: "POLICY STATEMENT",
       description:
-        "Kaduna Agricultural Development Agency (KADA) is committed to fostering sustainable agricultural growth in Kaduna State by empowering farmers with training and resources, promoting modern technologies and climate-smart practices, building partnerships to strengthen value chains, ensuring environmental sustainability, and enhancing food security and economic development. Together, we aim to transform agriculture into a driver of prosperity and sustainability for all.",
+        "Kaduna Agricultural Development Agency (KADA) drives sustainable growth by empowering farmers, promoting modern and climate-smart practices, strengthening value chains, fostering partnerships, and enhancing food security and economic development.",
     },
     {
       iconSrc: "/images/mission.svg",
