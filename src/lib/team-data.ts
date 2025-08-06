@@ -26,7 +26,7 @@ export const committeeMembers = [
   },
   {
     name: "Shehu Na’awu Umar (CNA)",
-    role: "Director Finance and Supply",
+    role: "Head of Finance and Supply",
     imageSrc:
       "/images/about/Director Finance and Supply Shehu Na’awu Umar (Ican).jpeg",
     background: "/images/vector-bg.png",
@@ -40,7 +40,7 @@ export const committeeMembers = [
   },
   {
     name: "Rakiya Abdu na Abdu",
-    role: "Director Women in Agriculture",
+    role: "Head of Women in Agriculture",
     imageSrc:
       "/images/about/Director Women in Agriculture Rakiya Abdu na Abdu.jpeg",
     background: "/images/vector-bg-2.svg",
