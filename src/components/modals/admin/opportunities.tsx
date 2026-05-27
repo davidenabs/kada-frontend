@@ -8,23 +8,32 @@ import { LinkIcon } from "@heroicons/react/16/solid";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React, { Fragment } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { cn, Switch } from "rizzui";
-import ReactQuill from "react-quill";
+import { cn, Switch, MultiSelect } from "rizzui";
+import dynamic from "next/dynamic";
+import ReactDOM from "react-dom";
+
+if (typeof window !== "undefined" && !ReactDOM.findDOMNode) {
+  ReactDOM.findDOMNode = (node) => {
+    return node as any;
+  };
+}
+
+const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 import "react-quill/dist/quill.snow.css";
 import Input from "@/components/form/input";
 import DatePicker from "@/components/form/date-picker";
 import { TagInput } from "./tag-input";
-import { useCreateCmsPostMutation } from "@/app/_api/cms";
+import { useCreateCmsPostMutation, useUpdateCmsPostMutation } from "@/app/_api/cms";
 import { toast } from "sonner";
-import { PostType } from "@/interface/cms";
+import { PostType, IPost } from "@/interface/cms";
 import {
-  lgaOptionsByZone,
-  wardOptionsByLga,
+  kadaLGA,
   zoneOptions,
 } from "@/lib/lga-data";
 
 type PostOpportunityModalProps = {
   close: () => void;
+  post?: IPost;
 };
 
 const defaultValues: OpportunitySchemaType = {
@@ -36,39 +45,22 @@ const defaultValues: OpportunitySchemaType = {
   // applicationLimit: "" as number,
   type: PostType.opportunity,
   keywords: [],
-  applicationDate: "" as any,
-  closingDate: "" as any,
-  zone: "",
-  lga: "",
-  ward: "",
+  applicationDate: undefined,
+  closingDate: undefined,
+  zone: [],
+  lga: [],
+  ward: [],
   image: new File([], ""),
 };
 
-function PostOpportunityModal({ close }: PostOpportunityModalProps) {
+function PostOpportunityModal({ close, post }: PostOpportunityModalProps) {
   const fileInputRef = React.useRef<HTMLInputElement>(null);
   const handleClick = () => fileInputRef.current?.click();
   const [file, setFile] = React.useState<File | null>(null);
   const [appDate, setApplicationDate] = React.useState<Date>();
   const [closeDate, setClosingDate] = React.useState<Date>();
-  const { mutateAsync, isPending } = useCreateCmsPostMutation();
-  const [zoneOption, setZoneOption] = React.useState<any>(null);
-  const [option, setOption] = React.useState<any>(null);
-  const [wardOption, setWardOption] = React.useState<any>(null);
-
-  const lgaOptions = React.useMemo(() => {
-    if (zoneOption) {
-      return lgaOptionsByZone(zoneOption.value);
-    }
-    return [];
-  }, [zoneOption]);
-
-  const wardOptions = React.useMemo(() => {
-    if (option) {
-      return wardOptionsByLga(option.value);
-    }
-    return [];
-  }, [option]);
-
+  const { mutateAsync: createPost, isPending: isCreating } = useCreateCmsPostMutation();
+  const { mutateAsync: updatePost, isPending: isUpdating } = useUpdateCmsPostMutation();
   const {
     reset,
     control,
@@ -82,6 +74,94 @@ function PostOpportunityModal({ close }: PostOpportunityModalProps) {
     resolver: zodResolver(opportunitySchema),
   });
 
+  React.useEffect(() => {
+    if (post) {
+      reset({
+        title: post.title || "",
+        content: post.content || "",
+        shortDescription: post.shortDescription || "",
+        userType: post.userType as any || "",
+        type: post.type as any || PostType.opportunity,
+        keywords: post.meta?.keywords || [],
+        applicationDate: post.applicationDate ? new Date(post.applicationDate) : undefined,
+        closingDate: post.closingDate ? new Date(post.closingDate) : undefined,
+        zone: post.zone ? post.zone.split(',') : [],
+        lga: post.lga ? post.lga.split(',') : [],
+        ward: post.ward ? post.ward.split(',') : [],
+        image: null as any,
+        applicationLimit: post.applicationLimit != null ? post.applicationLimit.toString() : "",
+      });
+
+      if (post.applicationDate) {
+        setApplicationDate(new Date(post.applicationDate));
+      }
+      if (post.closingDate) {
+        setClosingDate(new Date(post.closingDate));
+      }
+    }
+  }, [post, reset]);
+
+  const selectedZones = watch("zone") || [];
+  const selectedLgas = watch("lga") || [];
+  const selectedWards = watch("ward") || [];
+
+  const lgaOptions = React.useMemo(() => {
+    if (selectedZones && selectedZones.length > 0) {
+      const lgasSet = new Set<string>();
+      selectedZones.forEach((zone: string) => {
+        const zoneLgas = kadaLGA.zones[zone] || [];
+        zoneLgas.forEach((lga) => lgasSet.add(lga));
+      });
+      return Array.from(lgasSet).map((lga) => ({
+        value: lga,
+        label: lga,
+      }));
+    }
+    return [];
+  }, [selectedZones]);
+
+  const wardOptions = React.useMemo(() => {
+    if (selectedLgas && selectedLgas.length > 0) {
+      const wardsSet = new Set<string>();
+      selectedLgas.forEach((lga: string) => {
+        const lgaWards = kadaLGA.wards[lga] || [];
+        lgaWards.forEach((ward) => wardsSet.add(ward));
+      });
+      return Array.from(wardsSet).map((ward) => ({
+        value: ward,
+        label: ward,
+      }));
+    }
+    return [];
+  }, [selectedLgas]);
+
+  // Synchronize LGAs and Wards when parent selections change
+  React.useEffect(() => {
+    const validLgas = selectedLgas.filter((lga: string) => {
+      return selectedZones.some((zone: string) => {
+        const zoneLgas = kadaLGA.zones[zone] || [];
+        return zoneLgas.includes(lga);
+      });
+    });
+
+    if (validLgas.length !== selectedLgas.length) {
+      setValue("lga", validLgas);
+    }
+  }, [selectedZones, selectedLgas, setValue]);
+
+  React.useEffect(() => {
+    const validWards = selectedWards.filter((ward: string) => {
+      return selectedLgas.some((lga: string) => {
+        const lgaWards = kadaLGA.wards[lga] || [];
+        return lgaWards.includes(ward);
+      });
+    });
+
+    if (validWards.length !== selectedWards.length) {
+      setValue("ward", validWards);
+    }
+  }, [selectedLgas, selectedWards, setValue]);
+
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setFile(event.target.files?.[0] ?? null);
   };
@@ -90,31 +170,35 @@ function PostOpportunityModal({ close }: PostOpportunityModalProps) {
     const { keywords, applicationDate, closingDate, ...rest } = data;
     const newData = {
       ...rest,
-      applicationDate: applicationDate?.toISOString(),
-      closingDate: closingDate?.toISOString(),
+      applicationDate: applicationDate instanceof Date ? applicationDate.toISOString() : undefined,
+      closingDate: closingDate instanceof Date ? closingDate.toISOString() : undefined,
       meta: {
         // keywords,
       },
     };
-    console.log(newData);
 
-    // return;
-    mutateAsync(
-      { data: newData },
-      {
-        onSuccess: (response) => {
-          console.log(response);
-          if (response.success) {
-            toast.success("Created successfully");
-            reset(defaultValues);
-            close();
-          }
-        },
-        onError: (error) => {
-          // toast.error("Failed to create opportunity");
-        },
-      }
-    );
+    if (post && !newData.image) {
+      delete newData.image;
+    }
+
+    const options = {
+      onSuccess: (response: any) => {
+        if (response.success) {
+          toast.success(post ? "Updated successfully" : "Created successfully");
+          reset(defaultValues);
+          close();
+        }
+      },
+      onError: (error: any) => {
+        toast.error(error?.message || `Failed to ${post ? "update" : "create"} publication`);
+      },
+    };
+
+    if (post) {
+      updatePost({ data: newData, id: post.id }, options);
+    } else {
+      createPost({ data: newData }, options);
+    }
   };
   console.log(errors);
 
@@ -343,17 +427,17 @@ function PostOpportunityModal({ close }: PostOpportunityModalProps) {
             <Controller
               name="zone"
               control={control}
-              render={({ field: { name, onChange } }) => (
-                <Select
+              render={({ field: { value, onChange } }) => (
+                <MultiSelect
                   label="Zone"
-                  id="zone"
+                  value={value}
                   options={zoneOptions}
-                  onChange={(e: any) => {
-                    setZoneOption(e);
-                    onChange(e.value);
-                  }}
-                  value={zoneOption}
+                  onChange={onChange}
                   error={errors.zone?.message}
+                  clearable={true}
+                  onClear={() => onChange([])}
+                  selectClassName="ring-0 bg-[#F9F9F9] rounded-[60px] max-md:px-5 max-md:max-w-full border-[0.4px] border-primary"
+                  className="w-full"
                 />
               )}
             />
@@ -361,17 +445,18 @@ function PostOpportunityModal({ close }: PostOpportunityModalProps) {
             <Controller
               name="lga"
               control={control}
-              render={({ field: { name, onChange } }) => (
-                <Select
+              render={({ field: { value, onChange } }) => (
+                <MultiSelect
                   label="Local Government Area (LGA)"
-                  id="lga"
+                  value={value}
                   options={lgaOptions}
-                  onChange={(e: any) => {
-                    setOption(e);
-                    onChange(e.value);
-                  }}
-                  value={option}
+                  onChange={onChange}
                   error={errors.lga?.message}
+                  clearable={true}
+                  onClear={() => onChange([])}
+                  disabled={!selectedZones || selectedZones.length === 0}
+                  selectClassName="ring-0 bg-[#F9F9F9] rounded-[60px] max-md:px-5 max-md:max-w-full border-[0.4px] border-primary"
+                  className="w-full"
                 />
               )}
             />
@@ -379,17 +464,18 @@ function PostOpportunityModal({ close }: PostOpportunityModalProps) {
             <Controller
               name="ward"
               control={control}
-              render={({ field: { name, onChange } }) => (
-                <Select
+              render={({ field: { value, onChange } }) => (
+                <MultiSelect
                   label="Ward"
-                  id="ward"
+                  value={value}
                   options={wardOptions}
-                  onChange={(e: any) => {
-                    setWardOption(e);
-                    onChange(e.value);
-                  }}
+                  onChange={onChange}
                   error={errors.ward?.message}
-                  value={wardOption}
+                  clearable={true}
+                  onClear={() => onChange([])}
+                  disabled={!selectedLgas || selectedLgas.length === 0}
+                  selectClassName="ring-0 bg-[#F9F9F9] rounded-[60px] max-md:px-5 max-md:max-w-full border-[0.4px] border-primary"
+                  className="w-full"
                 />
               )}
             />
@@ -429,10 +515,10 @@ function PostOpportunityModal({ close }: PostOpportunityModalProps) {
         <div className="px-6 pb-6">
           <KadaButton
             type="submit"
-            loading={isPending || isSubmitting}
+            loading={isCreating || isUpdating || isSubmitting}
             className="!w-full rounded-full"
           >
-            Publish
+            {post ? "Update Publication" : "Publish"}
           </KadaButton>
         </div>
       </form>

@@ -28,7 +28,7 @@ function OpportunitiesCard({ onClick, data }: OpportunitiesCardProps) {
         <p className="text-[#676E77] text-xs mt-2">{data?.shortDescription}</p>
 
         <p className="text-xs text-[#676E77] mt-3">
-          Posted {getTimeAgo(data?.createdAt)} ago
+          Posted {getTimeAgo(data?.createdAt)}
         </p>
 
         <KadaButton

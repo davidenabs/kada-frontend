@@ -1,5 +1,5 @@
 "use client";
-import { useGetCmsPostsQuery } from "@/app/_api/cms";
+import { useGetCmsPostsQuery, useDeleteCmsPostMutation } from "@/app/_api/cms";
 import KadaTable from "@/components/common/table";
 import { KadaButton } from "@/components/form/button";
 import PostOpportunityModal from "@/components/modals/admin/opportunities";
@@ -11,15 +11,18 @@ import { BriefcaseIcon, SearchIcon, VerifiedIcon } from "@/icons";
 import { PlusIcon } from "@heroicons/react/16/solid";
 import React, { Fragment } from "react";
 import { Empty, Input } from "rizzui";
+import { toast } from "sonner";
 import columns from "./columns";
 import ExploreOpportunityDraewr from "@/components/drawers/cooperative/explore-opportunity";
 import { IPost } from "@/interface/cms";
 import Tab from "@/components/common/tab";
 import AdminExploreOpportunityDrawer from "@/components/drawers/admin/explore-opportunity";
+import AssignUsersDrawer from "@/components/drawers/admin/assign-users";
 
 function AdminOpportunitiesPage() {
   useDashboardTitle("Opportunities");
   const [open, setOpen] = React.useState(false);
+  const [openAssign, setOpenAssign] = React.useState(false);
   const [loaded, setLoaded] = React.useState(false);
   const [search, setSearch] = React.useState("");
   const [limit, setLimit] = React.useState(10);
@@ -27,6 +30,26 @@ function AdminOpportunitiesPage() {
   const debouncedSearchQuery = useDebounce(search);
   const { openModal, closeModal } = useModal();
   const [post, setPost] = React.useState<IPost | null>(null);
+
+  const { mutateAsync: deletePost } = useDeleteCmsPostMutation();
+
+  const handleEditPost = (item: IPost) => {
+    openModal({
+      view: <PostOpportunityModal close={closeModal} post={item} />,
+      size: "lg",
+    });
+  };
+
+  const handleDeletePost = async (id: any) => {
+    if (confirm("Are you sure you want to delete this publication?")) {
+      try {
+        await deletePost(id);
+        toast.success("Deleted successfully");
+      } catch (error) {
+        toast.error("Failed to delete publication");
+      }
+    }
+  };
   const [stats, setStats] = React.useState<{
     verifiedPosts: number;
     unverifiedPosts: number;
@@ -34,14 +57,14 @@ function AdminOpportunitiesPage() {
     verifiedPosts: 0,
     unverifiedPosts: 0,
   });
-  const [activeTab, setActiveTab] = React.useState("Pending");
+  const [activeTab, setActiveTab] = React.useState("Active");
 
   const filter = React.useMemo(() => {
     return activeTab === "Pending"
       ? "pending"
       : activeTab === "Active"
-      ? "active"
-      : "pending";
+        ? "active"
+        : "pending";
   }, [activeTab]);
 
   const { data, isFetching, isLoading, isError } = useGetCmsPostsQuery({
@@ -77,22 +100,25 @@ function AdminOpportunitiesPage() {
   const tabs = React.useMemo(() => {
     return [
       {
-        id: "pending",
-        label: "Pending",
-        badge: stats?.unverifiedPosts || 0,
-        icon: BriefcaseIcon,
-      },
-      {
         id: "active",
         label: "Active",
         badge: stats?.verifiedPosts || 0,
         icon: VerifiedIcon,
-      },
+      }, {
+        id: "pending",
+        label: "Pending",
+        badge: stats?.unverifiedPosts || 0,
+        icon: BriefcaseIcon,
+      }
     ];
   }, [stats]);
 
   const toggleDrawer = () => {
     setOpen(!open);
+  };
+
+  const toggleAssignDrawer = () => {
+    setOpenAssign(!openAssign);
   };
 
   React.useEffect(() => {
@@ -110,19 +136,34 @@ function AdminOpportunitiesPage() {
           data={post}
         />
       )}
+      {openAssign && (
+        <AssignUsersDrawer
+          close={toggleAssignDrawer}
+          open={openAssign}
+        />
+      )}
       <section className="space-y-3">
         <div className="flex justify-between items-start">
           <h4 className="text-sm font-bold text-zinc-700">
             Manage Opportunities
           </h4>
 
-          {/* <KadaButton
-            className="rounded-full"
-            leftIcon={<PlusIcon className="w-4 h-4 fill-white mr-1" />}
-            onClick={handleAddProductService}
-          >
-            Post Opportunity
-          </KadaButton> */}
+          <div className="flex gap-3">
+            <KadaButton
+              className="rounded-full !bg-zinc-800 hover:!bg-zinc-900"
+              onClick={toggleAssignDrawer}
+            >
+              Assign Users
+            </KadaButton>
+
+            <KadaButton
+              className="rounded-full"
+              leftIcon={<PlusIcon className="w-4 h-4 fill-white mr-1" />}
+              onClick={handleAddProductService}
+            >
+              Post Opportunity
+            </KadaButton>
+          </div>
         </div>
 
         <div className="flex items-center justify-between">
@@ -176,15 +217,27 @@ function AdminOpportunitiesPage() {
               data={data?.data?.posts || []}
               columns={columns}
               renderActions={(item) => (
-                <div className="flex items-center">
+                <div className="flex items-center gap-3">
                   <button
-                    className="text-xs text-blue-600"
+                    className="text-xs text-blue-600 font-semibold hover:underline"
                     onClick={() => {
                       setPost(item);
                       toggleDrawer();
                     }}
                   >
                     View
+                  </button>
+                  <button
+                    className="text-xs text-green-600 font-semibold hover:underline"
+                    onClick={() => handleEditPost(item)}
+                  >
+                    Edit
+                  </button>
+                  <button
+                    className="text-xs text-red-600 font-semibold hover:underline"
+                    onClick={() => handleDeletePost(item.id)}
+                  >
+                    Delete
                   </button>
                 </div>
               )}

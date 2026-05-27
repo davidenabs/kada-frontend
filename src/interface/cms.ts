@@ -40,4 +40,7 @@ export interface IPost {
   applications: IApplication[] | [],
   applicationDate: string;
   closingDate: string;
+  zone?: string | null;
+  lga?: string | null;
+  ward?: string | null;
 }

@@ -13,8 +13,20 @@ export function objectToFormData<T extends Record<string, any>>(
 
   Object.keys(obj).forEach((key) => {
     const value = obj[key];
+    if (value === undefined || value === null) {
+      return; // Skip undefined or null values safely
+    }
     if (value instanceof File || value instanceof Blob) {
       formData.append(key, value); // Append files or blobs directly
+    } else if (Array.isArray(value)) {
+      // Append each array element under the same key to construct multiple multi-part values
+      value.forEach((val) => {
+        if (val !== undefined && val !== null) {
+          formData.append(key, typeof val === "object" ? JSON.stringify(val) : val.toString());
+        }
+      });
+    } else if (typeof value === "object") {
+      formData.append(key, JSON.stringify(value)); // Safely serialize objects/JSON
     } else {
       formData.append(key, value.toString()); // Convert other values to strings
     }

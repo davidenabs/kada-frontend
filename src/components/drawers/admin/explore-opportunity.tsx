@@ -7,6 +7,7 @@ import Image from "next/image";
 import React, { Fragment } from "react";
 import { cn, Drawer } from "rizzui";
 import { toast } from "sonner";
+import ProgramApplicationsDrawer from "../partner/program-application";
 
 type ExploreOpportunityDrawerProps = {
   close: () => void;
@@ -20,6 +21,8 @@ function AdminExploreOpportunityDrawer({
   data,
 }: ExploreOpportunityDrawerProps) {
   const { mutateAsync, isPending } = useUpdateCmsPostMutation();
+  const [openApplicants, setOpenApplicants] = React.useState(false);
+  const toggleApplicantsDrawer = () => setOpenApplicants(!openApplicants);
 
   const handleVerifyPost = () => {
     mutateAsync(
@@ -46,6 +49,13 @@ function AdminExploreOpportunityDrawer({
 
   return (
     <Fragment>
+      {openApplicants && (
+        <ProgramApplicationsDrawer
+          close={toggleApplicantsDrawer}
+          open={openApplicants}
+          postId={data?.id || ""}
+        />
+      )}
       <Drawer
         isOpen={open}
         onClose={() => {
@@ -70,14 +80,14 @@ function AdminExploreOpportunityDrawer({
 
           <div className="bg-white px-6 p-6 h-full overflow-y-auto">
             <div className="flex gap-7 justify-items-stretch">
-              <div className="relative w-[171px] h-[160px] rounded-xl overflow-hidden">
+              {data?.featuredImage && <div className="relative w-[171px] h-[160px] rounded-xl overflow-hidden">
                 <Image
                   src={data?.featuredImage || "/images/bdo.png"}
                   fill
                   className="object-cover"
                   alt="Funding Opportunities for Farmers!"
                 />
-              </div>
+              </div>}
 
               <div className="h-auto flex flex-col justify-between">
                 <h4 className="text-sm font-semibold">
@@ -91,7 +101,7 @@ function AdminExploreOpportunityDrawer({
                   </p>
 
                   <p className="text-xs text-[#676E77] mt-2">
-                    Posted {getTimeAgo(data?.createdAt ?? new Date())} ago
+                    Posted {getTimeAgo(data?.createdAt ?? new Date())}
                   </p>
                 </div>
 
@@ -102,6 +112,18 @@ function AdminExploreOpportunityDrawer({
                     loading={isPending}
                   >
                     Approve Post
+                  </KadaButton>
+                )}
+
+                {data?.isVerified && (data?.type === "program" || data?.type === "interventions") && (
+                  <KadaButton
+                    className="w-fit rounded-full mt-4 !bg-[#00A551] !inline-flex"
+                    onClick={toggleApplicantsDrawer}
+                  >
+                    View Applicants
+                    <span className="mx-2 bg-white px-2 text-black rounded-full text-[11px] font-bold">
+                      {data?.applications?.length || 0}
+                    </span>
                   </KadaButton>
                 )}
               </div>

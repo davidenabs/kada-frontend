@@ -102,16 +102,16 @@ export const useForceUpdateMutation = () => {
     mutationFn: (data: any) => userClient.forceUpdate(data),
     onSuccess: (data) => {
       queryClient.invalidateQueries({
-        queryKey: [API_ENDPOINTS.GET_PROFILE],
+        queryKey: [API_ENDPOINTS.GET_USER],
       });
     },
   });
 };
 
-export const useGetProfileQuery = ({ enabled = true }: IQueryParams) => {
+export const useGetProfileQuery = ({ id, enabled = true }: IQueryParams & { id?: string }) => {
   return useQuery<IResponse<any>, Error>({
-    queryKey: [API_ENDPOINTS.GET_PROFILE],
-    queryFn: userClient.getProfile,
+    queryKey: [API_ENDPOINTS.GET_USER, id],
+    queryFn: () => userClient.getProfile(id || "self"),
     enabled,
   });
 };
@@ -122,7 +122,7 @@ export const useUpdateUserMutation = () => {
     mutationFn: (data: any) => userClient.updateUser(data),
     onSuccess: (data) => {
       queryClient.invalidateQueries({
-        queryKey: [API_ENDPOINTS.GET_PROFILE],
+        queryKey: [API_ENDPOINTS.GET_USER],
       });
     },
   });

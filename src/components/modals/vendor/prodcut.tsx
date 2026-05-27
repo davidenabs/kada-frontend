@@ -15,7 +15,7 @@ function ProductForm({
   setValue,
   type,
 }: {
-  control: Control<any>;
+  control: any;
   errors: FieldErrors<CreateCatalogSchemaType>;
   register: any;
   setValue: any;

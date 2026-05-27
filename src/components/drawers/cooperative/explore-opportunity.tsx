@@ -1,10 +1,13 @@
+import { useApplyToPostMutation } from "@/app/_api/cms";
+import { useGetProfileQuery } from "@/app/_api/user";
 import { KadaButton } from "@/components/form/button";
 import { CloseIcon } from "@/icons";
-import { IPost } from "@/interface/cms";
+import { IPost, PostType } from "@/interface/cms";
 import { getTimeAgo } from "@/utils/utils";
 import Image from "next/image";
 import React, { Fragment } from "react";
 import { cn, Drawer } from "rizzui";
+import { toast } from "sonner";
 
 type ExploreOpportunityDraewrProps = {
   close: () => void;
@@ -17,6 +20,27 @@ function ExploreOpportunityDraewr({
   open,
   data,
 }: ExploreOpportunityDraewrProps) {
+  const { data: profileData } = useGetProfileQuery({});
+  const loggedInUserId = profileData?.data?.id;
+  const { mutateAsync: applyToPost, isPending } = useApplyToPostMutation();
+
+  const isProgramOrIntervention = data?.type === PostType.program || data?.type === PostType.interventions;
+  const hasApplied = data?.applications?.some((app: any) => Number(app.userId) === Number(loggedInUserId)) || false;
+
+  const handleApply = async () => {
+    try {
+      const response = await applyToPost(data?.id);
+      if (response.success) {
+        toast.success("Successfully joined the program!");
+        close();
+      } else {
+        toast.error(response.message || "Failed to join program");
+      }
+    } catch (err: any) {
+      toast.error(err?.message || "Failed to join program");
+    }
+  };
+
   return (
     <Fragment>
       <Drawer
@@ -64,18 +88,36 @@ function ExploreOpportunityDraewr({
                   </p>
 
                   <p className="text-xs text-[#676E77] mt-2">
-                    Posted {getTimeAgo(data?.createdAt ?? new Date())} ago
+                    Posted {getTimeAgo(data?.createdAt ?? new Date())}
                   </p>
                 </div>
 
-                <KadaButton
-                  className="w-fit rounded-full mt-4 !bg-[#00A551] !inline-flex"
-                  onClick={() => {
-                    window.open(data?.cta || "", "_blank");
-                  }}
-                >
-                  Apply Now
-                </KadaButton>
+                {isProgramOrIntervention ? (
+                  <KadaButton
+                    className={cn(
+                      "w-fit rounded-full mt-4 !inline-flex",
+                      hasApplied ? "!bg-gray-400 !text-white cursor-default" : "!bg-[#00A551]"
+                    )}
+                    onClick={hasApplied ? undefined : handleApply}
+                    loading={isPending}
+                    disabled={hasApplied}
+                  >
+                    {hasApplied ? "Joined ✓" : "Join Program"}
+                  </KadaButton>
+                ) : (
+                  <KadaButton
+                    className="w-fit rounded-full mt-4 !bg-[#00A551] !inline-flex"
+                    onClick={() => {
+                      if (data?.cta) {
+                        window.open(data.cta.startsWith("http") ? data.cta : `https://${data.cta}`, "_blank");
+                      } else {
+                        toast.info("No application link provided.");
+                      }
+                    }}
+                  >
+                    Apply Now
+                  </KadaButton>
+                )}
               </div>
             </div>
 

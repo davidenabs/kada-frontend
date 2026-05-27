@@ -49,8 +49,8 @@ function KadaTable<T extends Record<string, any>>({
 
   return (
     <Fragment>
-      <div className="overflow-x-scroll">
-        <Table variant="minimal" className="rounded-lg">
+      <div className="overflow-x-scroll rounded-xl border border-[#ECF2F6]">
+        <Table variant="elegant" className="rounded-xl">
           <Table.Header>
             <Table.Row>
               {columns.map((col) => (

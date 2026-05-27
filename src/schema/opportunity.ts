@@ -18,27 +18,30 @@ export const opportunitySchema = z.object({
     UserType.FARMER,
     UserType.COOPERATIVE,
     UserType.VENDOR,
-  ]).optional(),
+  ], {
+    errorMap: () => ({ message: "Please select a valid audience (Publish to is required)" }),
+  }),
   // isPublished: z.boolean({ message: "Published status is required" }).optional(),
   type: z.enum([PostType.opportunity, PostType.program, PostType.interventions]).optional(),
   keywords: z.array(z.string()).optional(),
-  applicationDate: z.date().optional(),
-  closingDate: z.date().optional(),
+  applicationDate: z.preprocess((val) => (val === "" || val === null ? undefined : val), z.date().optional()),
+  closingDate: z.preprocess((val) => (val === "" || val === null ? undefined : val), z.date().optional()),
   image: z
     .custom<File>()
     .nullable()
-    .refine((file) => file instanceof File, "Must be a valid file")
+    .optional()
+    .refine((file) => !file || file instanceof File, "Must be a valid file")
     .refine(
-      (file) => file && file.size <= MAX_FILE_SIZE,
+      (file) => !file || file.size <= MAX_FILE_SIZE,
       `File size should be less than 5MB`
     )
     .refine(
-      (file) => file && ACCEPTED_FILE_TYPES.includes(file.type),
+      (file) => !file || ACCEPTED_FILE_TYPES.includes(file.type),
       "Only .jpg, .jpeg, .png, .webp and .pdf files are accepted"
     ),
-  lga: z.string().trim().min(1, { message: "LGA is required" }).optional(),
-  ward: z.string().trim().min(1, { message: "Ward is required" }).optional(),
-  zone: z.string().trim().min(1, { message: "Zone is required" }).optional(),
+  lga: z.array(z.string()).optional(),
+  ward: z.array(z.string()).optional(),
+  zone: z.array(z.string()).optional(),
   applicationLimit: z.string().optional(),
 });
 

@@ -20,6 +20,14 @@ const cmsClient = {
       headers: { "Content-Type": "multipart/form-data" },
     });
   },
+  deletePost: (id: any): Promise<any> =>
+    ApiClient.delete(API_ENDPOINTS.CMS_DELETE_POST.replace(":postId", id)),
+  applyToPost: (postId: any): Promise<any> =>
+    ApiClient.post(API_ENDPOINTS.CMS_APPLY_POST, { postId }),
+  getPostApplicants: (postId: any): Promise<any> =>
+    ApiClient.get(API_ENDPOINTS.CMS_GET_POST_APPLICANTS.replace(":postId", postId)),
+  assignUsers: (data: { userIds: any[], postIds: any[] }): Promise<any> =>
+    ApiClient.post(API_ENDPOINTS.CMS_ASSIGN_USERS, data),
 };
 
 export default cmsClient;

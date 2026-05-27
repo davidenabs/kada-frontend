@@ -82,6 +82,10 @@ const API_ENDPOINTS = {
   CMS_CREATE_POST: "/cms/posts",
   CMS_USER_POST_OVERVIEW: "/cms/my-stats",
   CMS_UPDATE_POST: "/cms/posts/:postId",
+  CMS_DELETE_POST: "/cms/posts/:postId",
+  CMS_APPLY_POST: "/cms/apply",
+  CMS_GET_POST_APPLICANTS: "/cms/posts/:postId/applicants",
+  CMS_ASSIGN_USERS: "/cms/assign",
 
   // payment
   PAYMENT_INITIATE: "/payments",

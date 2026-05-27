@@ -29,8 +29,8 @@ function ProgramDetailsDrawer({
       {openApplication && (
         <ProgramApplicationsDrawer
           close={toggleDrawer}
-          open={open}
-          data={data?.applications ?? []}
+          open={openApplication}
+          postId={data?.id || ""}
         />
       )}
       <Drawer
@@ -70,7 +70,7 @@ function ProgramDetailsDrawer({
                       "Share an exciting opportunity with your network"}
                   </p>
                   <p className="text-xs text-[#676E77] mt-2">
-                    Posted {getTimeAgo(data?.createdAt ?? new Date())} ago
+                    Posted {getTimeAgo(data?.createdAt ?? new Date())}
                   </p>
                 </div>
               </div>

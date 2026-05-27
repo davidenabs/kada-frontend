@@ -44,3 +44,50 @@ export const useUpdateCmsPostMutation = () => {
     },
   });
 };
+
+export const useDeleteCmsPostMutation = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (id: any) => cmsClient.deletePost(id),
+    mutationKey: [API_ENDPOINTS.CMS_DELETE_POST],
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [API_ENDPOINTS.CMS_GET_POSTS],
+      });
+    },
+  });
+};
+
+export const useApplyToPostMutation = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (postId: any) => cmsClient.applyToPost(postId),
+    mutationKey: [API_ENDPOINTS.CMS_APPLY_POST],
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [API_ENDPOINTS.CMS_GET_POSTS],
+      });
+    },
+  });
+};
+
+export const useGetPostApplicantsQuery = (postId: any, enabled = true) => {
+  return useQuery<IResponse<any[]>, Error>({
+    queryKey: [API_ENDPOINTS.CMS_GET_POST_APPLICANTS, postId],
+    queryFn: () => cmsClient.getPostApplicants(postId),
+    enabled: enabled && !!postId,
+  });
+};
+
+export const useAssignUsersMutation = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (data: { userIds: any[], postIds: any[] }) => cmsClient.assignUsers(data),
+    mutationKey: [API_ENDPOINTS.CMS_ASSIGN_USERS],
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [API_ENDPOINTS.CMS_GET_POSTS],
+      });
+    },
+  });
+};
