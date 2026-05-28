@@ -81,9 +81,9 @@ function AdminExploreOpportunityDrawer({
           <div className="bg-white px-6 p-6 h-full overflow-y-auto">
             <div className="flex gap-7 justify-items-stretch">
               {data?.featuredImage && <div className="relative w-[171px] h-[160px] rounded-xl overflow-hidden">
-                <Image
+                <img
                   src={data?.featuredImage || "/images/bdo.png"}
-                  fill
+                  // fill
                   className="object-cover"
                   alt="Funding Opportunities for Farmers!"
                 />

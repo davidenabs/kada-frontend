@@ -14,11 +14,19 @@ const nextConfig = {
     return config;
   },
   images: {
-    domains: [
-      "randomuser.me",
-      "images.remotePatterns",
-      "localhost",
-      "plus.unsplash.com",
+    remotePatterns: [
+      {
+        protocol: "http",
+        hostname: "localhost",
+      },
+      {
+        protocol: "https",
+        hostname: "randomuser.me",
+      },
+      {
+        protocol: "https",
+        hostname: "plus.unsplash.com",
+      },
     ],
   },
 };

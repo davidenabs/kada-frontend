@@ -26,6 +26,8 @@ const cmsClient = {
     ApiClient.post(API_ENDPOINTS.CMS_APPLY_POST, { postId }),
   getPostApplicants: (postId: any): Promise<any> =>
     ApiClient.get(API_ENDPOINTS.CMS_GET_POST_APPLICANTS.replace(":postId", postId)),
+  getUserApplications: (userId: any): Promise<any> =>
+    ApiClient.get(API_ENDPOINTS.CMS_GET_USER_APPLICATIONS.replace(":userId", userId)),
   assignUsers: (data: { userIds: any[], postIds: any[] }): Promise<any> =>
     ApiClient.post(API_ENDPOINTS.CMS_ASSIGN_USERS, data),
 };

@@ -3,7 +3,7 @@ import {
   IQueryParams,
   IResponse,
 } from "@/interface/client";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient, keepPreviousData } from "@tanstack/react-query";
 import userClient from "./client/user";
 import {
   ISendContactMailPayload,
@@ -26,6 +26,7 @@ export const useGetUsersQuery = ({
   return useQuery<IResponse<IPaginatedResponse<IUser, "users">>, Error>({
     queryKey: [API_ENDPOINTS.GET_USERS, params],
     queryFn: () => userClient.getUsers(params),
+    placeholderData: keepPreviousData,
     enabled,
   });
 };
@@ -59,6 +60,7 @@ export const useGetVendorsQuery = ({
   return useQuery<IResponse<IPaginatedResponse<IUser, "users">>, Error>({
     queryKey: [API_ENDPOINTS.GET_VENDORS, params],
     queryFn: () => userClient.getVendors(params),
+    placeholderData: keepPreviousData,
     enabled,
   });
 };
@@ -70,6 +72,7 @@ export const useGetFarmersQuery = ({
   return useQuery<IResponse<IPaginatedResponse<IUser, "users">>, Error>({
     queryKey: [API_ENDPOINTS.GET_FARMERS, params],
     queryFn: () => userClient.getFarmers(params),
+    placeholderData: keepPreviousData,
     enabled,
   });
 };
@@ -81,6 +84,7 @@ export const useGetCooperativesQuery = ({
   return useQuery<IResponse<IPaginatedResponse<IUser, "users">>, Error>({
     queryKey: [API_ENDPOINTS.GET_COOPERATIVES, params],
     queryFn: () => userClient.getCooperatives(params),
+    placeholderData: keepPreviousData,
     enabled,
   });
 };
@@ -92,6 +96,7 @@ export const useGetCooperativeFarmersQuery = ({
   return useQuery<IResponse<IPaginatedResponse<IUser, "users">>, Error>({
     queryKey: [API_ENDPOINTS.GET_COOPERATIVE_FARMERS, params],
     queryFn: () => userClient.getCooperativeFarmers(params),
+    placeholderData: keepPreviousData,
     enabled,
   });
 };
@@ -123,6 +128,21 @@ export const useUpdateUserMutation = () => {
     onSuccess: (data) => {
       queryClient.invalidateQueries({
         queryKey: [API_ENDPOINTS.GET_USER],
+      });
+      queryClient.invalidateQueries({
+        queryKey: [API_ENDPOINTS.GET_USERS],
+      });
+    },
+  });
+};
+
+export const useDeleteUserMutation = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (id: string) => userClient.deleteUser(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [API_ENDPOINTS.GET_USERS],
       });
     },
   });
@@ -162,5 +182,31 @@ export const useSendContactMailMutation = () => {
   return useMutation({
     mutationFn: (data: ISendContactMailPayload) =>
       userClient.sendContactMail(data),
+  });
+};
+
+export const useBulkUploadUsersMutation = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (data: FormData) => userClient.bulkUploadUsers(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [API_ENDPOINTS.GET_USERS],
+      });
+    },
+  });
+};
+
+export const useGetBulkUploadJobQuery = (jobId: string, enabled: boolean = true) => {
+  return useQuery<IResponse<any>, Error>({
+    queryKey: [API_ENDPOINTS.GET_BULK_UPLOAD_JOB, jobId],
+    queryFn: () => userClient.getBulkUploadJob(jobId),
+    enabled: enabled && !!jobId,
+    refetchInterval: (query: any) => {
+       // Poll every 5 seconds if job is processing or pending
+       const status = query?.state?.data?.data?.status;
+       if (status === 'PENDING' || status === 'PROCESSING') return 5000;
+       return false;
+    }
   });
 };

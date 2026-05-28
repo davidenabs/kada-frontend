@@ -24,6 +24,15 @@ const userClient = {
     ApiClient.get(API_ENDPOINTS.GET_USER.replace(":id", id)),
   updateUser: (data: any): Promise<IResponse<any>> =>
     ApiClient.put(API_ENDPOINTS.UPDATE_USER, data),
+  deleteUser: (id: string): Promise<IResponse<any>> =>
+    ApiClient.delete(API_ENDPOINTS.DELETE_USER.replace(":id", id)),
+  bulkUploadUsers: (data: FormData): Promise<IResponse<any>> => {
+    return ApiClient.post(API_ENDPOINTS.BULK_UPLOAD_USERS, data, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+  },
+  getBulkUploadJob: (id: string): Promise<IResponse<any>> =>
+    ApiClient.get(API_ENDPOINTS.GET_BULK_UPLOAD_JOB.replace(":id", id)),
   addFarmersFromCsv: (data: FormData): Promise<IResponse<any>> => {
     return ApiClient.post(API_ENDPOINTS.ADD_FARMERS_FROM_CSV, data, {
       headers: { "Content-Type": "multipart/form-data" },

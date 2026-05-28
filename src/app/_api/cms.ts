@@ -3,7 +3,7 @@ import {
   IQueryParams,
   IResponse,
 } from "@/interface/client";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient, keepPreviousData } from "@tanstack/react-query";
 import API_ENDPOINTS from "./client/endpoint";
 import cmsClient from "./client/cms";
 import { IPost } from "@/interface/cms";
@@ -15,6 +15,7 @@ export const useGetCmsPostsQuery = ({
   return useQuery<IResponse<IPaginatedResponse<IPost, "posts">>, Error>({
     queryKey: [API_ENDPOINTS.CMS_GET_POSTS, params],
     queryFn: () => cmsClient.getPosts(params),
+    placeholderData: keepPreviousData,
     enabled: enabled,
   });
 };
@@ -76,6 +77,14 @@ export const useGetPostApplicantsQuery = (postId: any, enabled = true) => {
     queryKey: [API_ENDPOINTS.CMS_GET_POST_APPLICANTS, postId],
     queryFn: () => cmsClient.getPostApplicants(postId),
     enabled: enabled && !!postId,
+  });
+};
+
+export const useGetUserApplicationsQuery = (userId: any, enabled = true) => {
+  return useQuery<IResponse<any[]>, Error>({
+    queryKey: [API_ENDPOINTS.CMS_GET_USER_APPLICANTS, userId],
+    queryFn: () => cmsClient.getUserApplications(userId),
+    enabled: enabled && !!userId,
   });
 };
 

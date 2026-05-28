@@ -220,7 +220,7 @@ function ProgramApplicationsDrawer({
       isOpen={open}
       onClose={close}
       placement={"right"}
-      size={"xl"}
+      size={"full"}
       overlayClassName="bg-opacity-40 backdrop-blur-sm"
       containerClassName={cn("bg-gray-50 rounded-l-2xl")}
       className="z-[9999]"
@@ -507,7 +507,7 @@ function ProgramApplicationsDrawer({
             ) : (
               <Fragment>
                 {/* Visual analytical charts view */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="flex flex-col gap-6">
                   {/* LGA Demographics Chart */}
                   <div className="bg-white p-5 rounded-xl border border-gray-200 shadow-sm flex flex-col h-[380px]">
                     <div className="mb-4">

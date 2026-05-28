@@ -3,7 +3,7 @@ import {
   IQueryParams,
   IResponse,
 } from "@/interface/client";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient, keepPreviousData } from "@tanstack/react-query";
 import API_ENDPOINTS from "./client/endpoint";
 import farmClient from "./client/farm";
 import {
@@ -20,6 +20,7 @@ export const useGetFarmsQuerry = ({
   return useQuery<IResponse<IPaginatedResponse<IFarm, "farms">>, Error>({
     queryKey: [API_ENDPOINTS.GET_FARMS, params],
     queryFn: () => farmClient.getFarms(params),
+    placeholderData: keepPreviousData,
     enabled: enabled !== undefined ? enabled : true,
   });
 };

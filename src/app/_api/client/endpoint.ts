@@ -12,6 +12,9 @@ const API_ENDPOINTS = {
   GET_COOPERATIVE_FARMERS: "/users/cooperative-farmers",
   VERIFY_NIN: "/verification/nin",
   UPDATE_USER: "/users",
+  DELETE_USER: "/users/:id",
+  BULK_UPLOAD_USERS: "/users/bulk-upload",
+  GET_BULK_UPLOAD_JOB: "/users/bulk-upload/job/:id",
   FORCE_UPDATE: "/users/force-update",
   GET_PROFILE: "/users/get-user",
   GET_VENDORS: "/users/vendors",
@@ -86,6 +89,7 @@ const API_ENDPOINTS = {
   CMS_APPLY_POST: "/cms/apply",
   CMS_GET_POST_APPLICANTS: "/cms/posts/:postId/applicants",
   CMS_ASSIGN_USERS: "/cms/assign",
+  CMS_GET_USER_APPLICATIONS: "/cms/user-applications/:userId",
 
   // payment
   PAYMENT_INITIATE: "/payments",

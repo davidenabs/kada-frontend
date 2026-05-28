@@ -17,6 +17,7 @@ interface KadaTableProps<T> {
   totalItems: number;
   page: number;
   onPageChange: (page: number) => void;
+  onLimitChange?: (limit: number) => void;
 }
 
 /**
@@ -31,6 +32,7 @@ interface KadaTableProps<T> {
  * @param {number} props.totalItems - The total number of items.
  * @param {number} props.page - The current page number.
  * @param {(page: number) => void} props.onPageChange - The function to call when the page changes.
+ * @param {(limit: number) => void} [props.onLimitChange] - The function to call when the items per page changes.
  * @returns {JSX.Element} The rendered table component.
  */
 function KadaTable<T extends Record<string, any>>({
@@ -42,7 +44,9 @@ function KadaTable<T extends Record<string, any>>({
   totalItems,
   page,
   onPageChange,
+  onLimitChange,
 }: KadaTableProps<T>) {
+  const [jumpPage, setJumpPage] = useState<string>("");
   const totalPages = Math.ceil(totalItems / itemsPerPage);
   const startIndex = (page - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
@@ -96,16 +100,59 @@ function KadaTable<T extends Record<string, any>>({
       </div>
 
       {data.length > 0 && (
-        <div className="flex max-md:flex-col justify-between items-center mt-4">
-          <p className="text-sm text-gray-500">
-            Showing {startIndex + 1} to {Math.min(endIndex, totalItems)} of{" "}
-            {totalItems} entries
-          </p>
-          <Pagination
-            currentPage={page}
-            totalPages={totalPages}
-            onPageChange={onPageChange}
-          />
+        <div className="flex max-md:flex-col justify-between items-center mt-4 gap-4">
+          <div className="flex items-center gap-4">
+            <p className="text-sm text-gray-500">
+              Showing {startIndex + 1} to {Math.min(endIndex, totalItems)} of{" "}
+              {totalItems} entries
+            </p>
+            {onLimitChange && (
+              <div className="flex items-center gap-2">
+                <span className="text-sm text-gray-500">Show:</span>
+                <select
+                  value={itemsPerPage}
+                  onChange={(e) => {
+                    onLimitChange(Number(e.target.value));
+                    onPageChange(1); // Reset to page 1 on limit change
+                  }}
+                  className="border-gray-300 rounded-md text-sm py-1 pl-2 pr-8 focus:ring-primary-500 focus:border-primary-500 outline-none"
+                >
+                  <option value={10}>10</option>
+                  <option value={20}>20</option>
+                  <option value={50}>50</option>
+                  <option value={100}>100</option>
+                </select>
+              </div>
+            )}
+          </div>
+
+          <div className="flex items-center gap-4">
+            <Pagination
+              currentPage={page}
+              totalPages={totalPages}
+              onPageChange={onPageChange}
+            />
+            
+            <div className="flex items-center gap-2 border-l pl-4 border-gray-200">
+              <span className="text-sm text-gray-500">Go to:</span>
+              <input
+                type="number"
+                min={1}
+                max={totalPages}
+                value={jumpPage}
+                onChange={(e) => setJumpPage(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && jumpPage) {
+                    const p = Math.max(1, Math.min(totalPages, Number(jumpPage)));
+                    onPageChange(p);
+                    setJumpPage("");
+                  }
+                }}
+                className="border-gray-300 rounded-md text-sm w-16 py-1 px-2 focus:ring-primary-500 focus:border-primary-500 text-center outline-none"
+                placeholder={page.toString()}
+              />
+            </div>
+          </div>
         </div>
       )}
     </Fragment>

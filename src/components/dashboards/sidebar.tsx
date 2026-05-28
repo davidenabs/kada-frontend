@@ -46,19 +46,19 @@ const adminMenuItems: MenuItem[] = [
     label: "Dashboard",
     href: `${adminBasePath}/dashboard`,
   },
-  { icon: LotusIcon, label: "Farmers", href: `${adminBasePath}/farmers` },
+  // { icon: LotusIcon, label: "Farmers", href: `${adminBasePath}/farmers` },
+  // {
+  //   icon: HandCoins,
+  //   label: "Cooperatives",
+  //   href: `${adminBasePath}/cooperatives`,
+  // },
+  // {
+  //   icon: TreeIcon,
+  //   label: "Vendors",
+  //   href: `${adminBasePath}/requests`,
+  // },
   {
-    icon: HandCoins,
-    label: "Cooperatives",
-    href: `${adminBasePath}/cooperatives`,
-  },
-  {
-    icon: TreeIcon,
-    label: "Vendors",
-    href: `${adminBasePath}/requests`,
-  },
-  {
-    icon: TreeIcon,
+    icon: LotusIcon,
     label: "Users",
     href: `${adminBasePath}/users`,
   },

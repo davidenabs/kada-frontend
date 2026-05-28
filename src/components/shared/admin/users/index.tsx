@@ -10,10 +10,12 @@ import useDashboardTitle from "@/hooks/use-dashboard-tite";
 import useDebounce from "@/hooks/use-debounce";
 import { BriefcaseIcon, SearchIcon } from "@/icons";
 import { UserType } from "@/interface/user";
-import { ChevronDownIcon, PlusIcon } from "@heroicons/react/24/outline";
+import { ChevronDownIcon, PlusIcon, ArrowUpTrayIcon } from "@heroicons/react/24/outline";
 import React from "react";
 import columns from "./columns";
 import { Button, Dropdown } from "rizzui";
+import BulkUploadDrawer from "@/components/drawers/admin/bulk-upload-users";
+import { UserActions } from "./user-actions";
 
 function AdminUsersSharedPage() {
   useDashboardTitle("Users");
@@ -21,6 +23,7 @@ function AdminUsersSharedPage() {
   const [limit, setLimit] = React.useState(10);
   const [page, setPage] = React.useState(1);
   const [open, setOpen] = React.useState(false);
+  const [openBulkUpload, setOpenBulkUpload] = React.useState(false);
   const [search, setSearch] = React.useState("");
   const debouncedSearchQuery = useDebounce(search);
   const [activeTab, setActiveTab] = React.useState("Farmer");
@@ -125,11 +128,19 @@ function AdminUsersSharedPage() {
   return (
     <>
       {open && <AddUserModal open={open} close={() => setOpen(false)} />}
+      {openBulkUpload && <BulkUploadDrawer open={openBulkUpload} close={() => setOpenBulkUpload(false)} />}
 
       <section className="space-y-3 border rounded-2xl p-4 bg-white">
         <div className="flex justify-between">
           <h4 className="text-sm font-bold text-zinc-700">Users</h4>
-          <div className="">
+          <div className="flex space-x-2">
+            <KadaButton
+              className="rounded-full bg-green-600 hover:bg-green-700 text-white"
+              leftIcon={<ArrowUpTrayIcon className="w-4 h-4 mr-1" />}
+              onClick={() => setOpenBulkUpload(true)}
+            >
+              Bulk Upload
+            </KadaButton>
             <KadaButton
               className="rounded-full"
               leftIcon={<PlusIcon className="w-4 h-4 fill-white mr-1" />}
@@ -176,8 +187,8 @@ function AdminUsersSharedPage() {
           </div>
         </div>
 
-        <div className="">
-          {isFetching || isLoading ? (
+        <div className={`transition-opacity duration-200 ${isFetching ? "opacity-60 pointer-events-none" : "opacity-100"}`}>
+          {isLoading ? (
             <MembersTableSkeleton />
           ) : isError ? (
             <div className="text-center">An error occurred</div>
@@ -186,14 +197,16 @@ function AdminUsersSharedPage() {
               data={data?.data?.users || []}
               columns={columns}
               renderActions={(item) => (
-                <div className="flex">
-                  <button className="text-xs text-blue-600">View</button>
-                </div>
+                <UserActions 
+                  user={item} 
+                  onRefresh={() => refetch()} 
+                />
               )}
               itemsPerPage={limit}
               totalItems={data?.data?.total || 0}
               page={page}
               onPageChange={(page) => setPage(page)}
+              onLimitChange={(newLimit) => setLimit(newLimit)}
             />
           )}
         </div>
