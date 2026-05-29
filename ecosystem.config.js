@@ -3,13 +3,13 @@ module.exports = {
     {
       name: "kada-front",
       cwd: "/var/www/kada/frontend/kada-frontend",
-      script: "npm",
-      args: "run start -- -p 5991",
+      script: ".next/standalone/server.js",
       instances: 1,
       autorestart: true,
       watch: false,
       env: {
-        NODE_ENV: "production"
+        NODE_ENV: "production",
+        PORT: 5991
       }
     }
   ]
