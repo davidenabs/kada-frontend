@@ -59,7 +59,7 @@ function AdminUsersSharedPage() {
       : null;
   }, [activeTab]);
 
-  const { data, isFetching, isLoading, isError } = useGetUsersQuery({
+  const { data, isFetching, isLoading, isError, refetch } = useGetUsersQuery({
     enabled: loaded,
     params: {
       search: debouncedSearchQuery,

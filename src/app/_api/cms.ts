@@ -82,7 +82,7 @@ export const useGetPostApplicantsQuery = (postId: any, enabled = true) => {
 
 export const useGetUserApplicationsQuery = (userId: any, enabled = true) => {
   return useQuery<IResponse<any[]>, Error>({
-    queryKey: [API_ENDPOINTS.CMS_GET_USER_APPLICANTS, userId],
+    queryKey: [API_ENDPOINTS.CMS_GET_USER_APPLICATIONS, userId],
     queryFn: () => cmsClient.getUserApplications(userId),
     enabled: enabled && !!userId,
   });

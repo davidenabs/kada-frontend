@@ -18,7 +18,7 @@ export default function EditUserDrawer({
   userId: number | null;
 }) {
   const { data: userData, isLoading } = useGetUserQuery({
-    id: userId?.toString(),
+    id: userId?.toString() || "",
     enabled: !!userId && open,
   });
 

@@ -16,7 +16,7 @@ export default function ViewUserDrawer({
   userId: number | null;
 }) {
   const { data: userData, isLoading: isLoadingUser } = useGetUserQuery({
-    id: userId?.toString(),
+    id: userId?.toString() || "",
     enabled: !!userId && open,
   });
 
@@ -38,7 +38,7 @@ export default function ViewUserDrawer({
   const farms = farmsData?.data?.farms || [];
   const applications = Array.isArray(appsData?.data) 
     ? appsData?.data 
-    : (appsData?.data?.data || []);
+    : ((appsData?.data as any)?.data || []);
 
   return (
     <Drawer
