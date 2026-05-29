@@ -33,7 +33,7 @@ jobs:
           key: ${{ secrets.VPS_SSH_KEY }}
           port: ${{ secrets.VPS_PORT }}
           script: |
-            cd /var/www/kada/frontend/kada-frontend
+            cd /var/www/kada/frontend
 
             echo "Pulling latest code..."
             git pull origin main
