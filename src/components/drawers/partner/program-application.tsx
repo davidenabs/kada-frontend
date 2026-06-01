@@ -99,12 +99,16 @@ function ProgramApplicationsDrawer({
       const farms = app.farms || [];
 
       // LGA Stats
-      const lga = user.lga || "Unspecified";
-      lgaStats[lga] = (lgaStats[lga] || 0) + 1;
+      const lga = user.lga;
+      if (lga && String(lga).toLowerCase() !== "unspecified") {
+        lgaStats[lga] = (lgaStats[lga] || 0) + 1;
+      }
 
       // Ward Stats
-      const ward = user.ward || "Unspecified";
-      wardStats[ward] = (wardStats[ward] || 0) + 1;
+      const ward = user.ward;
+      if (ward && String(ward).toLowerCase() !== "unspecified") {
+        wardStats[ward] = (wardStats[ward] || 0) + 1;
+      }
 
       // Timeline Stats (by Date)
       if (app.createdAt) {
@@ -152,12 +156,14 @@ function ProgramApplicationsDrawer({
   // Premium Exporter to structured CSV Spreadsheet format
   const exportToCSV = () => {
     const headers = [
-      "Applicant ID",
-      "User ID",
+      "Public ID",
       "First Name",
       "Last Name",
       "Email",
       "Phone Number",
+      "NIN",
+      "BVN",
+      "Date of Birth",
       "Community",
       "Ward",
       "LGA",
@@ -189,12 +195,14 @@ function ProgramApplicationsDrawer({
       );
 
       return [
-        app.id,
-        app.userId,
+        user.publicId || app.publicId || "N/A",
         user.firstName || app.meta?.firstName || "N/A",
         user.lastName || app.meta?.lastName || "N/A",
         user.email || app.meta?.email || "N/A",
         user.phoneNumber || app.meta?.phoneNumber || "N/A",
+        user.farmerProfile?.nationalIdentificationNumber || "N/A",
+        user.bvn || user.farmerProfile?.bvn || "N/A",
+        user.farmerProfile?.dob ? format(new Date(user.farmerProfile.dob), "dd/MM/yyyy") : "N/A",
         user.community || "N/A",
         user.ward || "N/A",
         user.lga || "N/A",
@@ -431,11 +439,17 @@ function ProgramApplicationsDrawer({
                                     {user.firstName || meta.firstName || "N/A"}{" "}
                                     {user.lastName || meta.lastName || "N/A"}
                                   </div>
-                                  <div className="text-xs text-gray-500">
-                                    {user.email || meta.email || "N/A"}
+                                  <div className="text-xs text-gray-500 font-medium">
+                                    ID: {user.publicId || "N/A"}
                                   </div>
                                   <div className="text-xs text-gray-500">
-                                    {user.phoneNumber || meta.phoneNumber || "N/A"}
+                                    {user.email || meta.email || "N/A"} • {user.phoneNumber || meta.phoneNumber || "N/A"}
+                                  </div>
+                                  <div className="text-xs text-gray-500">
+                                    NIN: {user.farmerProfile?.nationalIdentificationNumber || "N/A"} • BVN: {user.bvn || user.farmerProfile?.bvn || "N/A"}
+                                  </div>
+                                  <div className="text-xs text-gray-500">
+                                    DOB: {user.farmerProfile?.dob ? format(new Date(user.farmerProfile.dob), "dd/MM/yyyy") : "N/A"}
                                   </div>
                                   <div className="flex gap-1.5 mt-1">
                                     <span className="inline-flex items-center px-1.5 py-0.5 rounded-full text-[10px] font-semibold bg-blue-50 text-blue-700 border border-blue-100 capitalize">

@@ -62,7 +62,7 @@ const columns: Column<any>[] = [
     key: "applicants",
     render: (item) => (
       <div className="text-sm font-semibold text-green-600">
-        {item.applications?.length || 0}
+        {item.applicationsCount ?? item.applications?.length ?? 0}
       </div>
     ),
   },
