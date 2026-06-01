@@ -4,6 +4,7 @@ import { XMarkIcon } from "@heroicons/react/24/outline";
 import { toast } from "sonner";
 import { useBulkUploadUsersMutation, useGetBulkUploadJobQuery } from "@/app/_api/user";
 import { useGetCmsPostsQuery } from "@/app/_api/cms";
+import useDebounce from "@/hooks/use-debounce";
 
 export default function BulkUploadDrawer({
   open,
@@ -14,6 +15,9 @@ export default function BulkUploadDrawer({
 }) {
   const [file, setFile] = useState<File | null>(null);
   const [selectedPrograms, setSelectedPrograms] = useState<any[]>([]);
+  const [search, setSearch] = useState("");
+  const debouncedSearchQuery = useDebounce(search);
+
   const [jobId, setJobId] = useState<string | null>(() => {
     if (typeof window !== "undefined") {
       return localStorage.getItem("activeBulkUploadJobId");
@@ -29,8 +33,8 @@ export default function BulkUploadDrawer({
     }
   }, [jobId]);
 
-  const { data: postsData, isLoading: isLoadingPosts } = useGetCmsPostsQuery({
-    params: { limit: 100, filter: "active" },
+  const { data: postsData, isLoading: isLoadingPosts, isFetching } = useGetCmsPostsQuery({
+    params: { limit: 100, filter: "active", search: debouncedSearchQuery },
   });
 
   const { mutate: uploadFile, isPending } = useBulkUploadUsersMutation();
@@ -109,7 +113,12 @@ export default function BulkUploadDrawer({
             placeholder="Select programs..."
             className="w-full"
             clearable={true}
-            onClear={() => setSelectedPrograms([])}
+            onClear={() => {
+              setSelectedPrograms([]);
+              setSearch("");
+            }}
+            searchable={true}
+            onSearchChange={(v: string) => setSearch(v)}
           />
         </div>
 

@@ -1,9 +1,10 @@
 import { useGetPostApplicantsQuery } from "@/app/_api/cms";
 import { CloseIcon, SearchIcon } from "@/icons";
-import React, { Fragment, useState, useMemo } from "react";
+import React, { Fragment, useState, useMemo, useEffect } from "react";
 import { cn, Drawer, Input, Select } from "rizzui";
 import { format } from "date-fns";
 import { lgaOptions, wardOptionsByLga } from "@/lib/lga-data";
+import { Pagination } from "@/components/common/table/pagination";
 import {
   BarChart,
   Bar,
@@ -38,6 +39,8 @@ function ProgramApplicationsDrawer({
   const [search, setSearch] = useState("");
   const [selectedLga, setSelectedLga] = useState<any>(null);
   const [selectedWard, setSelectedWard] = useState<any>(null);
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(10);
 
   // Fetch enriched applicants data from gateway
   const { data: response, isLoading } = useGetPostApplicantsQuery(postId, open);
@@ -66,6 +69,17 @@ function ProgramApplicationsDrawer({
       return matchesSearch && matchesLga && matchesWard;
     });
   }, [applicants, search, selectedLga, selectedWard]);
+
+  const paginatedApplicants = useMemo(() => {
+    const startIndex = (page - 1) * limit;
+    return filteredApplicants.slice(startIndex, startIndex + limit);
+  }, [filteredApplicants, page, limit]);
+
+  const totalPages = Math.ceil(filteredApplicants.length / limit);
+
+  useEffect(() => {
+    setPage(1);
+  }, [search, selectedLga, selectedWard]);
 
   // Ward options dynamically filtered by LGA
   const wardOptions = useMemo(() => {
@@ -385,8 +399,8 @@ function ProgramApplicationsDrawer({
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-gray-100 text-sm">
-                        {filteredApplicants.length > 0 ? (
-                          filteredApplicants.map((app: any) => {
+                        {paginatedApplicants.length > 0 ? (
+                          paginatedApplicants.map((app: any) => {
                             const user = app.user || {};
                             const meta = app.meta || {};
                             const farms = app.farms || [];
@@ -502,6 +516,18 @@ function ProgramApplicationsDrawer({
                       </tbody>
                     </table>
                   </div>
+                  {filteredApplicants.length > 0 && (
+                    <div className="flex justify-between items-center p-4 border-t border-gray-200">
+                      <div className="text-xs text-gray-500">
+                        Showing {(page - 1) * limit + 1} to {Math.min(page * limit, filteredApplicants.length)} of {filteredApplicants.length} applicants
+                      </div>
+                      <Pagination
+                        currentPage={page}
+                        totalPages={totalPages}
+                        onPageChange={setPage}
+                      />
+                    </div>
+                  )}
                 </div>
               </Fragment>
             ) : (
