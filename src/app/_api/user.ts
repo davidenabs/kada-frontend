@@ -5,6 +5,7 @@ import {
 } from "@/interface/client";
 import { useMutation, useQuery, useQueryClient, keepPreviousData } from "@tanstack/react-query";
 import userClient from "./client/user";
+import { ApiClient } from "./client";
 import {
   ISendContactMailPayload,
   ISendInvitationPayload,
@@ -208,5 +209,49 @@ export const useGetBulkUploadJobQuery = (jobId: string, enabled: boolean = true)
        if (status === 'PENDING' || status === 'PROCESSING') return 5000;
        return false;
     }
+  });
+};
+
+
+export const useExportDataMutation = () => {
+  return useMutation({
+    mutationFn: (data: { exportType: string; filters?: any; fields: string[] }) =>
+      ApiClient.post('/users/export', data),
+  });
+};
+
+export const useGetExportJobQuery = ({
+  params,
+  enabled,
+}: {
+  params: { jobId: string };
+  enabled: boolean;
+}) => {
+  return useQuery({
+    queryKey: ['exportJob', params.jobId],
+    queryFn: () => ApiClient.get(`/users/export/job/${params.jobId}`),
+    enabled,
+    refetchInterval: (query: any) => {
+      // Poll every 3 seconds if status is PENDING or PROCESSING
+      const status = query?.state?.data?.data?.status;
+      if (status === 'PENDING' || status === 'PROCESSING') {
+        return 3000;
+      }
+      return false;
+    },
+  });
+};
+
+export const useGetCooperativesListQuery = ({
+  params,
+  enabled,
+}: {
+  params: any;
+  enabled: boolean;
+}) => {
+  return useQuery({
+    queryKey: ['cooperatives-list', params],
+    queryFn: () => userClient.getCooperativesList(params),
+    enabled,
   });
 };

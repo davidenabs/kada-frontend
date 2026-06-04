@@ -1,5 +1,5 @@
 "use client";
-import { useGetUsersQuery } from "@/app/_api/user";
+import { useGetUsersQuery, useGetCooperativesListQuery } from "@/app/_api/user";
 import Tab from "@/components/common/tab";
 import KadaTable from "@/components/common/table";
 import { KadaButton } from "@/components/form/button";
@@ -10,11 +10,12 @@ import useDashboardTitle from "@/hooks/use-dashboard-tite";
 import useDebounce from "@/hooks/use-debounce";
 import { BriefcaseIcon, SearchIcon } from "@/icons";
 import { UserType } from "@/interface/user";
-import { ChevronDownIcon, PlusIcon, ArrowUpTrayIcon } from "@heroicons/react/24/outline";
+import { ChevronDownIcon, PlusIcon, ArrowUpTrayIcon, ArrowDownTrayIcon } from "@heroicons/react/24/outline";
 import React from "react";
 import columns from "./columns";
 import { Button, Dropdown } from "rizzui";
 import BulkUploadDrawer from "@/components/drawers/admin/bulk-upload-users";
+import ExportEngineDrawer from "@/components/drawers/admin/export-engine-drawer";
 import { UserActions } from "./user-actions";
 
 function AdminUsersSharedPage() {
@@ -24,6 +25,7 @@ function AdminUsersSharedPage() {
   const [page, setPage] = React.useState(1);
   const [open, setOpen] = React.useState(false);
   const [openBulkUpload, setOpenBulkUpload] = React.useState(false);
+  const [openExport, setOpenExport] = React.useState(false);
   const [search, setSearch] = React.useState("");
   const debouncedSearchQuery = useDebounce(search);
   const [activeTab, setActiveTab] = React.useState("Farmer");
@@ -59,8 +61,9 @@ function AdminUsersSharedPage() {
       : null;
   }, [activeTab]);
 
+  
   const { data, isFetching, isLoading, isError, refetch } = useGetUsersQuery({
-    enabled: loaded,
+    enabled: loaded && activeTab !== "Cooperative",
     params: {
       search: debouncedSearchQuery,
       userType,
@@ -69,9 +72,27 @@ function AdminUsersSharedPage() {
     },
   });
 
+  const { data: coopData, isFetching: coopFetching, isLoading: coopLoading, isError: coopError, refetch: coopRefetch } = useGetCooperativesListQuery({
+    enabled: loaded && activeTab === "Cooperative",
+    params: {
+      search: debouncedSearchQuery,
+      page,
+      limit,
+    },
+  });
+
+  const currentIsFetching = activeTab === "Cooperative" ? coopFetching : isFetching;
+  const currentIsLoading = activeTab === "Cooperative" ? coopLoading : isLoading;
+  const currentIsError = activeTab === "Cooperative" ? coopError : isError;
+  const currentRefetch = activeTab === "Cooperative" ? coopRefetch : refetch;
+  
+  // Use data?.data for stats
+  const activeDataForStats = data;
+
+
   React.useEffect(() => {
-    if (data?.data && data.success && !isFetching) {
-      const stats = (data.data as unknown as any).stats;
+    if (activeDataForStats?.data && activeDataForStats.success && !isFetching) {
+      const stats = (activeDataForStats.data as unknown as any).stats;
 
       if (stats) {
         setStats({
@@ -84,7 +105,7 @@ function AdminUsersSharedPage() {
         });
       }
     }
-  }, [data, isFetching]);
+  }, [activeDataForStats, isFetching]);
 
   const userOptions = React.useMemo(() => {
     return [
@@ -121,6 +142,20 @@ function AdminUsersSharedPage() {
     ];
   }, [stats]);
 
+  const tableColumns = React.useMemo(() => {
+    if (activeTab === "Cooperative") {
+      return [
+        ...columns,
+        {
+          label: "Total Farmers",
+          key: "totalFarmers",
+          render: (item: any) => item?.cooperativeProfile?.totalMembers || 0,
+        },
+      ];
+    }
+    return columns;
+  }, [activeTab]);
+
   React.useEffect(() => {
     setLoaded(true);
   }, []);
@@ -129,11 +164,19 @@ function AdminUsersSharedPage() {
     <>
       {open && <AddUserModal open={open} close={() => setOpen(false)} />}
       {openBulkUpload && <BulkUploadDrawer open={openBulkUpload} close={() => setOpenBulkUpload(false)} />}
+      <ExportEngineDrawer isOpen={openExport} onClose={() => setOpenExport(false)} />
 
       <section className="space-y-3 border rounded-2xl p-4 bg-white">
         <div className="flex justify-between">
           <h4 className="text-sm font-bold text-zinc-700">Users</h4>
           <div className="flex space-x-2">
+            <KadaButton
+              className="rounded-full bg-blue-600 hover:bg-blue-700 text-white"
+              leftIcon={<ArrowDownTrayIcon className="w-4 h-4 mr-1" />}
+              onClick={() => setOpenExport(true)}
+            >
+              Export Data
+            </KadaButton>
             <KadaButton
               className="rounded-full bg-green-600 hover:bg-green-700 text-white"
               leftIcon={<ArrowUpTrayIcon className="w-4 h-4 mr-1" />}
@@ -187,23 +230,23 @@ function AdminUsersSharedPage() {
           </div>
         </div>
 
-        <div className={`transition-opacity duration-200 ${isFetching ? "opacity-60 pointer-events-none" : "opacity-100"}`}>
-          {isLoading ? (
+        <div className={`transition-opacity duration-200 ${currentIsFetching ? "opacity-60 pointer-events-none" : "opacity-100"}`}>
+          {currentIsLoading ? (
             <MembersTableSkeleton />
-          ) : isError ? (
+          ) : currentIsError ? (
             <div className="text-center">An error occurred</div>
           ) : (
             <KadaTable
-              data={data?.data?.users || []}
-              columns={columns}
+              data={(activeTab === "Cooperative" ? coopData?.data?.data : data?.data?.users) || []}
+              columns={tableColumns as any}
               renderActions={(item) => (
                 <UserActions 
                   user={item} 
-                  onRefresh={() => refetch()} 
+                  onRefresh={() => currentRefetch()} 
                 />
               )}
               itemsPerPage={limit}
-              totalItems={data?.data?.total || 0}
+              totalItems={(activeTab === "Cooperative" ? coopData?.data?.meta?.total : data?.data?.total) || 0}
               page={page}
               onPageChange={(page) => setPage(page)}
               onLimitChange={(newLimit) => setLimit(newLimit)}

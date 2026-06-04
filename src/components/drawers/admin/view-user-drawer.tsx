@@ -5,6 +5,7 @@ import { useGetUserQuery } from "@/app/_api/user";
 import { useGetFarmsQuerry } from "@/app/_api/farm";
 import { useGetUserApplicationsQuery } from "@/app/_api/cms";
 import { UserType } from "@/interface/user";
+import CooperativeFarmersList from "@/components/shared/admin/cooperatives/cooperative-farmers-list";
 
 export default function ViewUserDrawer({
   open,
@@ -24,6 +25,7 @@ export default function ViewUserDrawer({
 
   // Only fetch farms and apps if user is a farmer
   const isFarmer = user?.userType === UserType.FARMER;
+  const isCooperative = user?.userType === UserType.COOPERATIVE;
 
   const { data: farmsData, isLoading: isLoadingFarms } = useGetFarmsQuerry({
     enabled: !!userId && isFarmer && open,
@@ -45,7 +47,8 @@ export default function ViewUserDrawer({
       isOpen={open}
       onClose={close}
       placement="right"
-      className="max-w-md w-full"
+      size={"lg"}
+      className="max-w-lg w-full"
     >
       <div className="flex items-center justify-between px-5 py-4 border-b bg-white">
         <Title as="h5">User Details</Title>
@@ -62,7 +65,7 @@ export default function ViewUserDrawer({
         ) : (
           <div className="space-y-6">
             {/* Profile Section */}
-            <section className="bg-gray-50 p-4 rounded-lg">
+            <section className="bg-gray-50 p-4 rounded-lg sticky top-0 z-10">
               <div className="flex justify-between items-start mb-4">
                 <Title as="h6">Profile Information</Title>
                 <Badge color="success">{user.userType}</Badge>
@@ -139,6 +142,14 @@ export default function ViewUserDrawer({
                     ))}
                   </div>
                 )}
+              </section>
+            )}
+
+            {/* Cooperative Members (Cooperatives Only) */}
+            {isCooperative && (
+              <section>
+                <Title as="h6" className="mb-3">Registered Farmers</Title>
+                <CooperativeFarmersList cooperativeId={user.id} />
               </section>
             )}
           </div>

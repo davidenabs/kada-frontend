@@ -14,6 +14,7 @@ const userClient = {
     ApiClient.get(API_ENDPOINTS.GET_VENDORS, params),
   getFarmers: (params: IParams): Promise<IResponse<any>> =>
     ApiClient.get(API_ENDPOINTS.GET_FARMERS, params),
+  getCooperativesList: (params: IParams): Promise<IResponse<any>> => ApiClient.get(API_ENDPOINTS.GET_COOPERATIVES_LIST, params),
   getCooperatives: (params: IParams): Promise<IResponse<any>> =>
     ApiClient.get(API_ENDPOINTS.GET_COOPERATIVES, params),
   getCooperativeFarmers: (params: IParams): Promise<IResponse<any>> =>

@@ -19,6 +19,7 @@ const API_ENDPOINTS = {
   GET_PROFILE: "/users/get-user",
   GET_VENDORS: "/users/vendors",
   GET_FARMERS: "/users/farmers",
+  GET_COOPERATIVES_LIST: '/cooperatives',
   GET_COOPERATIVES: "/users/cooperatives",
   SEDN_CONTACT_MAIL: "/contact/send",
   INVITE_USER: "/contact/invite",
