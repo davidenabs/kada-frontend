@@ -24,8 +24,10 @@ const cmsClient = {
     ApiClient.delete(API_ENDPOINTS.CMS_DELETE_POST.replace(":postId", id)),
   applyToPost: (postId: any): Promise<any> =>
     ApiClient.post(API_ENDPOINTS.CMS_APPLY_POST, { postId }),
-  getPostApplicants: (postId: any): Promise<any> =>
-    ApiClient.get(API_ENDPOINTS.CMS_GET_POST_APPLICANTS.replace(":postId", postId)),
+  getPostApplicants: (postId: any, params?: any): Promise<any> =>
+    ApiClient.get(API_ENDPOINTS.CMS_GET_POST_APPLICANTS.replace(":postId", postId), params),
+  getPostApplicantInsights: (postId: any): Promise<any> =>
+    ApiClient.get(API_ENDPOINTS.CMS_GET_POST_APPLICANT_INSIGHTS.replace(":postId", postId)),
   getUserApplications: (userId: any): Promise<any> =>
     ApiClient.get(API_ENDPOINTS.CMS_GET_USER_APPLICATIONS.replace(":userId", userId)),
   assignUsers: (data: { userIds: any[], postIds: any[] }): Promise<any> =>

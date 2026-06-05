@@ -46,11 +46,13 @@ const data = [
 
 export default function FarmersLGAChart({ stats }: Props): JSX.Element {
   const lgaData = React.useMemo(() => {
-    const lga = Object.entries(stats?.lgaStats || {}).map(([key, value]) => ({
-      name: key,
-      value: (value as any).total,
-    }));
-
+    const lga = Object.entries(stats?.lgaStats || {})
+      .filter(([_, v]) => (v as any).total > 0)
+      .map(([key, value]) => ({
+        name: key,
+        value: (value as any).total,
+      }))
+      .sort((a, b) => b.value - a.value);
     return lga;
   }, [stats]);
   return (
@@ -104,11 +106,18 @@ export default function FarmersLGAChart({ stats }: Props): JSX.Element {
               data={lgaData}
               margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
             >
-              <XAxis dataKey="name" />
-              <YAxis dataKey="value" />
+              <XAxis
+                dataKey="name"
+                tick={{ fontSize: 10 }}
+                interval={0}
+                angle={-20}
+                textAnchor="end"
+                height={50}
+              />
+              <YAxis allowDecimals={false} tick={{ fontSize: 10 }} />
               <Tooltip />
               <Legend layout="vertical" />
-              <Bar dataKey="value" radius={[5, 5, 0, 0]}>
+              <Bar dataKey="value" radius={[4, 4, 0, 0]}>
                 {lgaData.map((entry, index) => (
                   <Cell key={`cell-${index}`} fill={generateColor(index)} />
                 ))}

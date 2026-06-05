@@ -89,6 +89,7 @@ const API_ENDPOINTS = {
   CMS_DELETE_POST: "/cms/posts/:postId",
   CMS_APPLY_POST: "/cms/apply",
   CMS_GET_POST_APPLICANTS: "/cms/posts/:postId/applicants",
+  CMS_GET_POST_APPLICANT_INSIGHTS: "/cms/posts/:postId/applicants/insights",
   CMS_ASSIGN_USERS: "/cms/assign",
   CMS_GET_USER_APPLICATIONS: "/cms/user-applications/:userId",
 

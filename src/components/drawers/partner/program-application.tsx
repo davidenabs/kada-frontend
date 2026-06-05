@@ -1,4 +1,4 @@
-import { useGetPostApplicantsQuery } from "@/app/_api/cms";
+import { useGetPostApplicantsQuery, useGetPostApplicantInsightsQuery } from "@/app/_api/cms";
 import { CloseIcon, SearchIcon } from "@/icons";
 import React, { Fragment, useState, useMemo, useEffect } from "react";
 import { cn, Drawer, Input, Select } from "rizzui";
@@ -41,41 +41,25 @@ function ProgramApplicationsDrawer({
   const [selectedWard, setSelectedWard] = useState<any>(null);
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
+  const [isExporting, setIsExporting] = useState(false);
 
-  // Fetch enriched applicants data from gateway
-  const { data: response, isLoading } = useGetPostApplicantsQuery(postId, open);
-  const applicants = response?.data || [];
+  // Fetch paginated list data from gateway
+  const { data: listResponse, isLoading: isLoadingList } = useGetPostApplicantsQuery(
+    postId, 
+    { page, limit, search, lga: selectedLga?.value, ward: selectedWard?.value },
+    open && activeTab === "list"
+  );
+  
+  // Fetch insights data from gateway
+  const { data: insightsResponse, isLoading: isLoadingInsights } = useGetPostApplicantInsightsQuery(
+    postId, 
+    open && activeTab === "insights"
+  );
 
-  // Client-side filtering & search
-  const filteredApplicants = useMemo(() => {
-    return applicants.filter((app: any) => {
-      const user = app.user || {};
-      const meta = app.meta || {};
-      const firstName = (user.firstName || meta.firstName || "").toLowerCase();
-      const lastName = (user.lastName || meta.lastName || "").toLowerCase();
-      const email = (user.email || meta.email || "").toLowerCase();
-      const phone = (user.phoneNumber || meta.phoneNumber || "").toLowerCase();
-      const searchLower = search.toLowerCase();
-
-      const matchesSearch =
-        firstName.includes(searchLower) ||
-        lastName.includes(searchLower) ||
-        email.includes(searchLower) ||
-        phone.includes(searchLower);
-
-      const matchesLga = !selectedLga || user.lga === selectedLga.value;
-      const matchesWard = !selectedWard || user.ward === selectedWard.value;
-
-      return matchesSearch && matchesLga && matchesWard;
-    });
-  }, [applicants, search, selectedLga, selectedWard]);
-
-  const paginatedApplicants = useMemo(() => {
-    const startIndex = (page - 1) * limit;
-    return filteredApplicants.slice(startIndex, startIndex + limit);
-  }, [filteredApplicants, page, limit]);
-
-  const totalPages = Math.ceil(filteredApplicants.length / limit);
+  const paginatedApplicants = listResponse?.data?.data || [];
+  const totalRecords = listResponse?.data?.total || 0;
+  const totalPages = Math.ceil(totalRecords / limit);
+  const insightsData = insightsResponse?.data || { lgaChart: [], wardChart: [], timelineChart: [], cropChart: [] };
 
   useEffect(() => {
     setPage(1);
@@ -86,97 +70,37 @@ function ProgramApplicationsDrawer({
     if (!selectedLga?.value) return [];
     return wardOptionsByLga(selectedLga.value);
   }, [selectedLga]);
-
-  // Insights Calculations
-  const insightsData = useMemo(() => {
-    const lgaStats: Record<string, number> = {};
-    const wardStats: Record<string, number> = {};
-    const timelineStats: Record<string, number> = {};
-    const cropStats: Record<string, number> = {};
-
-    applicants.forEach((app: any) => {
-      const user = app.user || {};
-      const farms = app.farms || [];
-
-      // LGA Stats
-      const lga = user.lga;
-      if (lga && String(lga).toLowerCase() !== "unspecified") {
-        lgaStats[lga] = (lgaStats[lga] || 0) + 1;
-      }
-
-      // Ward Stats
-      const ward = user.ward;
-      if (ward && String(ward).toLowerCase() !== "unspecified") {
-        wardStats[ward] = (wardStats[ward] || 0) + 1;
-      }
-
-      // Timeline Stats (by Date)
-      if (app.createdAt) {
-        try {
-          const dateStr = format(new Date(app.createdAt), "yyyy-MM-dd");
-          timelineStats[dateStr] = (timelineStats[dateStr] || 0) + 1;
-        } catch (_) {}
-      }
-
-      // Crop Stats
-      farms.forEach((f: any) => {
-        f.crops?.forEach((c: any) => {
-          if (c.name) {
-            cropStats[c.name] = (cropStats[c.name] || 0) + 1;
-          }
-        });
-      });
-    });
-
-    const lgaChart = Object.entries(lgaStats).map(([name, count]) => ({
-      name,
-      count
-    }));
-
-    const wardChart = Object.entries(wardStats).map(([name, count]) => ({
-      name,
-      count
-    }));
-
-    const timelineChart = Object.entries(timelineStats)
-      .map(([date, count]) => ({
-        date,
-        count
-      }))
-      .sort((a, b) => a.date.localeCompare(b.date));
-
-    const cropChart = Object.entries(cropStats).map(([name, count]) => ({
-      name,
-      count
-    }));
-
-    return { lgaChart, wardChart, timelineChart, cropChart };
-  }, [applicants]);
-
   // Premium Exporter to structured CSV Spreadsheet format
-  const exportToCSV = () => {
-    const headers = [
-      "Public ID",
-      "First Name",
-      "Last Name",
-      "Email",
-      "Phone Number",
-      "NIN",
-      "BVN",
-      "Date of Birth",
-      "Community",
-      "Ward",
-      "LGA",
-      "Zone",
-      "Address",
-      "Farms Count",
-      "Total Land Area (ha)",
-      "Crops Grown",
-      "Livestock Raised",
-      "Application Date"
-    ];
+  const exportToCSV = async () => {
+    setIsExporting(true);
+    try {
+      // Dynamically import cmsClient to avoid circular dependencies if needed, or just import it at top
+      const { cmsClient } = await import('@/app/_api/client/cms');
+      const response = await cmsClient.getPostApplicants(postId, { limit: 100000, search, lga: selectedLga?.value, ward: selectedWard?.value });
+      const allApplicants = response?.data?.data || [];
 
-    const rows = filteredApplicants.map((app: any) => {
+      const headers = [
+        "Public ID",
+        "First Name",
+        "Last Name",
+        "Email",
+        "Phone Number",
+        "NIN",
+        "BVN",
+        "Date of Birth",
+        "Community",
+        "Ward",
+        "LGA",
+        "Zone",
+        "Address",
+        "Farms Count",
+        "Total Land Area (ha)",
+        "Crops Grown",
+        "Livestock Raised",
+        "Application Date"
+      ];
+
+      const rows = allApplicants.map((app: any) => {
       const user = app.user || {};
       const farms = app.farms || [];
       const cropNames = farms
@@ -232,9 +156,14 @@ function ProgramApplicationsDrawer({
       "download",
       `program_applicants_post_${postId}_${format(new Date(), "dd-MM-yyyy")}.csv`
     );
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (error) {
+      console.error("Export failed:", error);
+    } finally {
+      setIsExporting(false);
+    }
   };
 
   return (
@@ -278,7 +207,7 @@ function ProgramApplicationsDrawer({
                   : "border-transparent text-gray-500 hover:text-gray-900"
               )}
             >
-              Applicant List ({filteredApplicants.length})
+              Applicant List ({totalRecords})
             </button>
             <button
               onClick={() => setActiveTab("insights")}
@@ -293,7 +222,7 @@ function ProgramApplicationsDrawer({
             </button>
           </div>
 
-          {filteredApplicants.length > 0 && activeTab === "list" && (
+          {totalRecords > 0 && activeTab === "list" && (
             <button
               onClick={exportToCSV}
               className="py-1.5 px-3.5 bg-[#00A551] hover:bg-[#008f45] text-white text-xs font-semibold rounded-full flex items-center gap-1.5 transition-colors shadow-sm"
@@ -312,13 +241,13 @@ function ProgramApplicationsDrawer({
                   d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"
                 />
               </svg>
-              Export to CSV
+              {isExporting ? "Exporting..." : "Export to CSV"}
             </button>
           )}
         </div>
 
         {/* Loading Spinner */}
-        {isLoading ? (
+        {(isLoadingList || isLoadingInsights) ? (
           <div className="flex-1 flex items-center justify-center bg-white m-6 rounded-xl border border-gray-200">
             <div className="flex flex-col items-center gap-2">
               <div className="animate-spin rounded-full h-8 w-8 border-4 border-[#00A551] border-t-transparent"></div>
@@ -530,10 +459,10 @@ function ProgramApplicationsDrawer({
                       </tbody>
                     </table>
                   </div>
-                  {filteredApplicants.length > 0 && (
+                  {totalRecords > 0 && (
                     <div className="flex justify-between items-center p-4 border-t border-gray-200">
                       <div className="text-xs text-gray-500">
-                        Showing {(page - 1) * limit + 1} to {Math.min(page * limit, filteredApplicants.length)} of {filteredApplicants.length} applicants
+                        Showing {(page - 1) * limit + 1} to {Math.min(page * limit, totalRecords)} of {totalRecords} applicants
                       </div>
                       <Pagination
                         currentPage={page}

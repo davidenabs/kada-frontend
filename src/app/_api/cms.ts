@@ -72,10 +72,18 @@ export const useApplyToPostMutation = () => {
   });
 };
 
-export const useGetPostApplicantsQuery = (postId: any, enabled = true) => {
-  return useQuery<IResponse<any[]>, Error>({
-    queryKey: [API_ENDPOINTS.CMS_GET_POST_APPLICANTS, postId],
-    queryFn: () => cmsClient.getPostApplicants(postId),
+export const useGetPostApplicantsQuery = (postId: any, params?: any, enabled = true) => {
+  return useQuery<IResponse<any>, Error>({
+    queryKey: [API_ENDPOINTS.CMS_GET_POST_APPLICANTS, postId, params],
+    queryFn: () => cmsClient.getPostApplicants(postId, params),
+    enabled: enabled && !!postId,
+  });
+};
+
+export const useGetPostApplicantInsightsQuery = (postId: any, enabled = true) => {
+  return useQuery<IResponse<any>, Error>({
+    queryKey: [API_ENDPOINTS.CMS_GET_POST_APPLICANT_INSIGHTS, postId],
+    queryFn: () => cmsClient.getPostApplicantInsights(postId),
     enabled: enabled && !!postId,
   });
 };
