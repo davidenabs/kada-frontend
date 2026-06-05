@@ -17,6 +17,7 @@ import {
   Cell,
   Legend
 } from "recharts";
+import cmsClient from "@/app/_api/client/cms";
 
 type ProgramApplicationsDrawerProps = {
   close: () => void;
@@ -75,7 +76,7 @@ function ProgramApplicationsDrawer({
     setIsExporting(true);
     try {
       // Dynamically import cmsClient to avoid circular dependencies if needed, or just import it at top
-      const { cmsClient } = await import('@/app/_api/client/cms');
+      // const { cmsClient } = await import('@/app/_api/client/cms');
       const response = await cmsClient.getPostApplicants(postId, { limit: 100000, search, lga: selectedLga?.value, ward: selectedWard?.value });
       const allApplicants = response?.data?.data || [];
 
@@ -144,8 +145,8 @@ function ProgramApplicationsDrawer({
       "data:text/csv;charset=utf-8,\uFEFF" +
       [
         headers.join(","),
-        ...rows.map((r) =>
-          r.map((val) => `"${String(val).replace(/"/g, '""')}"`).join(",")
+        ...rows.map((r: any) =>
+          r.map((val: any) => `"${String(val).replace(/"/g, '""')}"`).join(",")
         )
       ].join("\n");
 
@@ -502,7 +503,7 @@ function ProgramApplicationsDrawer({
                             <YAxis allowDecimals={false} tick={{ fontSize: 10 }} />
                             <Tooltip />
                             <Bar dataKey="count" radius={[4, 4, 0, 0]}>
-                              {insightsData.lgaChart.map((_, index) => (
+                              {insightsData.lgaChart.map((_: any, index: number) => (
                                 <Cell
                                   key={`cell-${index}`}
                                   fill={generateColor(index)}
@@ -544,7 +545,7 @@ function ProgramApplicationsDrawer({
                             <YAxis allowDecimals={false} tick={{ fontSize: 10 }} />
                             <Tooltip />
                             <Bar dataKey="count" radius={[4, 4, 0, 0]}>
-                              {insightsData.cropChart.map((_, index) => (
+                              {insightsData.cropChart.map((_: any, index: number) => (
                                 <Cell
                                   key={`cell-${index}`}
                                   fill={generateColor(index + 3)}
